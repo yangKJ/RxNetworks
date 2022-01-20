@@ -5,37 +5,41 @@
 //  Created by Condy on 2021/10/6.
 //
 
+///`Toast_Swift`文档
+/// https://github.com/scalessec/Toast-Swift
+
 import Foundation
 import Moya
-import MBProgressHUD
+import Toast_Swift
 
-/// 自动提示插件
-/// Indicator plug-in, the plug-in has been set for global use
+/// 自动提示插件，基于Toast封装
+/// Warning plugin, based on Toast package
 public final class NetworkWarningPlugin {
     
-    // 用于区分其他插件等是否使用过`MBProgressHUD`
-    // Used to distinguish whether other plugins have used `MBProgressHUD`
-    public static let WarningHUDT = 5200124
-    
+    let position: ToastPosition
     /// Whether to display the Window again, the default is YES
     let displayInWindow: Bool
     /// Show time
-    let displayTime: TimeInterval
+    let duration: TimeInterval
     
     /// 是否会覆盖上次的错误展示，
     /// 如果上次错误展示还在，新的错误展示是否需要覆盖上次
     /// Whether it will overwrite the last error display,
     /// If the last error display is still there, whether the new error display needs to overwrite the last one
-    let coverLastHUD: Bool
+    let coverLastToast: Bool
     
-    /// 更改`hud`相关配置闭包
-    /// Change `hud` related configuration closures.
-    public var changeHud: ((_ hud: MBProgressHUD) -> Void)? = nil
+    public private(set) var toastStyle: ToastStyle? = nil
     
-    public init(in window: Bool = true, time: TimeInterval = 1, cover: Bool = true) {
+    public init(in window: Bool = true,
+                duration: TimeInterval = 3,
+                cover: Bool = true,
+                position: ToastPosition = ToastPosition.bottom,
+                toastStyle: ToastStyle? = nil) {
+        self.position = position
         self.displayInWindow = window
-        self.displayTime = time
-        self.coverLastHUD = cover
+        self.duration = duration
+        self.coverLastToast = cover
+        self.toastStyle = toastStyle
     }
 }
 
@@ -57,29 +61,28 @@ extension NetworkWarningPlugin {
         DispatchQueue.main.async {
             guard let view = self.displayInWindow ? RxNetworks.View.keyWindow :
                     RxNetworks.View.topViewController?.view else { return }
-            if let _hud = MBProgressHUD.forView(view), _hud.tag == NetworkWarningPlugin.WarningHUDT {
-                if self.coverLastHUD {
-                    _hud.detailsLabel.text = text
-                    _hud.hide(animated: true, afterDelay: self.displayTime)
-                }
-                return
+            
+            if self.coverLastToast {
+                view.hideToast()
             }
-            let hud = MBProgressHUD.showAdded(to: view, animated: true)
-            hud.tag = NetworkWarningPlugin.WarningHUDT
-            hud.mode = MBProgressHUDMode.text
-            hud.animationType = MBProgressHUDAnimation.zoom
-            hud.removeFromSuperViewOnHide = true
-            hud.bezelView.style = MBProgressHUDBackgroundStyle.solidColor
-            hud.bezelView.color = UIColor.black.withAlphaComponent(0.7)
-            hud.bezelView.layer.cornerRadius = 14
-            hud.detailsLabel.text = text
-            hud.detailsLabel.numberOfLines = 0
-            hud.detailsLabel.textColor = UIColor.white
-            hud.detailsLabel.font = UIFont.systemFont(ofSize: 16)
-            hud.hide(animated: true, afterDelay: self.displayTime)
-            if let changeHud = self.changeHud {
-                changeHud(hud)
+            
+            var style = self.toastStyle
+            if style == nil {
+                style = ToastStyle()
+                style!.messageColor = UIColor.white
             }
+            
+            view.makeToast(text, duration: self.duration, position: self.position, style: style!)
+
+            // or perhaps you want to use this style for all toasts going forward?
+            // just set the shared style and there's no need to provide the style again
+            ToastManager.shared.style = style!
+            
+            // toggle "tap to dismiss" functionality
+            ToastManager.shared.isTapToDismissEnabled = true
+
+            // toggle queueing behavior
+            ToastManager.shared.isQueueEnabled = !self.coverLastToast
         }
     }
 }
