@@ -188,7 +188,6 @@ class ChainViewModel: NSObject {
                 print("Network Failed: \($0)")
             }).disposed(by: disposeBag)
     }
-    
 }
 
 extension ChainViewModel {
@@ -249,23 +248,27 @@ class BatchViewModel: NSObject {
 }
 ```
 
-
 ### MoyaPlugins
-This module is mainly based on moya package network related plug-ins
+This module is mainly based on moya package network related plugins
 
-- At present, 4 plug-ins have been packaged for you to use:
+- At present, 5 plugins have been packaged for you to use:
     - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin
     - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin
     - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin
     - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin
+    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Debugging/NetworkDebuggingPlugin.swift): Network printing, built in plugin
 
 🏠 - Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
 
 ```
 var plugins: APIPlugins {
     let cache = NetworkCachePlugin(cacheType: .networkElseCache)
-    let loading = NetworkLoadingPlugin.init(delayHideHUD: 0.5)
-    return [loading, cache]
+    let loading = NetworkLoadingPlugin.init(delay: 0.5)
+    let warning = NetworkWarningPlugin.init()
+    warning.changeHud = { (hud) in
+        hud.detailsLabel.textColor = UIColor.yellow
+    }
+    return [loading, cache, warning]
 }
 ```
 

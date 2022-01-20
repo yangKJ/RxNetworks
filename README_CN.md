@@ -188,7 +188,6 @@ class ChainViewModel: NSObject {
                 print("Network Failed: \($0)")
             }).disposed(by: disposeBag)
     }
-    
 }
 
 extension ChainViewModel {
@@ -252,19 +251,24 @@ class BatchViewModel: NSObject {
 ### MoyaPlugins
 该模块主要就是基于moya封装网络相关插件
 
-- 目前已封装4款插件供您使用：
+- 目前已封装5款插件供您使用：
     - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
     - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
     - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
     - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
-
+    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
+    
 🏠 - 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
 
 ```
 var plugins: APIPlugins {
     let cache = NetworkCachePlugin(cacheType: .networkElseCache)
-    let loading = NetworkLoadingPlugin.init(delayHideHUD: 0.5)
-    return [loading, cache]
+    let loading = NetworkLoadingPlugin.init(delay: 0.5)
+    let warning = NetworkWarningPlugin.init()
+    warning.changeHud = { (hud) in
+        hud.detailsLabel.textColor = UIColor.yellow
+    }
+    return [loading, cache, warning]
 }
 ```
 
