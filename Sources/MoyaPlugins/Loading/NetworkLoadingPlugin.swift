@@ -13,12 +13,8 @@ import Moya
 import MBProgressHUD
 
 /// 加载插件，基于MBProgressHUD封装
-/// Load the plug-in, based on MBProgressHUD package
+/// Loading plugin, based on MBProgressHUD package
 public final class NetworkLoadingPlugin {
-    
-    // 用于区分其他插件等是否使用过`MBProgressHUD`
-    // Used to distinguish whether other plugins have used `MBProgressHUD`
-    public static let LoadingHUDT = 5200123
     
     /// Whether to display the Window again, the default is YES
     let displayInWindow: Bool
@@ -83,7 +79,7 @@ extension NetworkLoadingPlugin {
         DispatchQueue.main.async {
             guard let view = window ? RxNetworks.View.keyWindow :
                     RxNetworks.View.topViewController?.view else { return }
-            if let _hud = MBProgressHUD.forView(view), _hud.tag == NetworkLoadingPlugin.LoadingHUDT {
+            if let _ = MBProgressHUD.forView(view) {
                 return
             }
             // 设置加载为白色
@@ -91,7 +87,6 @@ extension NetworkLoadingPlugin {
             indicatorView.color = UIColor.white
             
             let hud = MBProgressHUD.showAdded(to: view, animated: true)
-            hud.tag = NetworkLoadingPlugin.LoadingHUDT
             hud.mode = MBProgressHUDMode.indeterminate
             hud.animationType = MBProgressHUDAnimation.zoom
             hud.removeFromSuperViewOnHide = true
@@ -115,17 +110,11 @@ extension NetworkLoadingPlugin {
     private static func hideMBProgressHUD() {
         DispatchQueue.main.async {
             if let view = RxNetworks.View.keyWindow {
-                NetworkLoadingPlugin.hideView(view)
+                MBProgressHUD.hide(for: view, animated: true)
             }
             if let vc = RxNetworks.View.topViewController, let view = vc.view {
-                NetworkLoadingPlugin.hideView(view)
+                MBProgressHUD.hide(for: view, animated: true)
             }
-        }
-    }
-    
-    private static func hideView(_ view: UIView) {
-        if let hud = MBProgressHUD.forView(view), hud.tag == NetworkLoadingPlugin.LoadingHUDT {
-            MBProgressHUD.hide(for: view, animated: true)
         }
     }
 }
