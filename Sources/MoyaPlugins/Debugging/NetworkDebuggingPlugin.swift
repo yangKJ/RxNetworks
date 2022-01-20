@@ -9,8 +9,8 @@ import Foundation
 import RxSwift
 import Moya
 
-/// 网络打印，内置插件
-/// Network printing, built-in plugin in Debug mode.
+/// 网络打印，DEBUG模式内置插件
+/// Network printing, DEBUG mode built in plugin.
 public final class NetworkDebuggingPlugin {
     
     /// Enable print request information.
@@ -55,27 +55,27 @@ extension NetworkDebuggingPlugin {
         let date = formatter.string(from: Date())
         if let param = target.parameters, param.isEmpty == false {
             print("""
-                  ------- 🎈 请求接口 🎈 -------
-                  当前时间: \(date)
-                  请求类型: \(target.method.rawValue)
-                  请求端口: \(target.ip)
-                  请求路径: \(target.path)
-                  请求参数: \(param)
-                  默认参数: \(NetworkConfig.baseParameters)
-                  请求插件: \(pluginString(target.plugins))
-                  完整链接: \(requestFullLink(with: target))
+                  ------- 🎈 Request 🎈 -------
+                  Time: \(date)
+                  Method: \(target.method.rawValue)
+                  Host: \(target.ip)
+                  Path: \(target.path)
+                  Parameters: \(param)
+                  BaseParameters: \(NetworkConfig.baseParameters)
+                  Plugins: \(pluginString(target.plugins))
+                  LinkURL: \(requestFullLink(with: target))
                   
                   """)
         } else {
             print("""
-              ------- 🎈 请求接口 🎈 -------
-              当前时间: \(date)
-              请求类型: \(target.method.rawValue)
-              请求端口: \(target.ip)
-              请求路径: \(target.path)
-              默认参数: \(NetworkConfig.baseParameters)
-              请求插件: \(pluginString(target.plugins))
-              完整链接: \(requestFullLink(with: target))
+              ------- 🎈 Request 🎈 -------
+              Time: \(date)
+              Method: \(target.method.rawValue)
+              Host: \(target.ip)
+              Path: \(target.path)
+              BaseParameters: \(NetworkConfig.baseParameters)
+              Plugins: \(pluginString(target.plugins))
+              LinkURL: \(requestFullLink(with: target))
               
               """)
         }
@@ -141,11 +141,11 @@ extension NetworkDebuggingPlugin {
         formatter.locale = Locale(identifier: "zh_CN")
         let date = formatter.string(from: Date())
         print("""
-              ------- 🎈 数据响应 🎈 -------
-              当前时间: \(date)
-              是否成功: \(success ? "Successed." : "Failed.")
-              数据类型: \(local ? "Local data." : "Remote data.")
-              请求结果: \(json)
+              ------- 🎈 Response 🎈 -------
+              Time: \(date)
+              Result: \(success ? "Successed." : "Failed.")
+              DataType: \(local ? "Local data." : "Remote data.")
+              Response: \(json)
               
               """)
     }

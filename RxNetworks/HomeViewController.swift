@@ -39,7 +39,7 @@ class HomeViewController: UIViewController {
     func setupDefault() {
         NetworkConfig.setupDefault(
             host: "https://www.httpbin.org",
-            parameters: ["defult": "defult param"]
+            parameters: ["key": "RxNetworks"]
         )
     }
     
@@ -49,7 +49,7 @@ class HomeViewController: UIViewController {
     }
     
     func setupBinding() {
-        /// 绑定数据源
+        
         viewModel.datasObservable.bind(to: tableView.rx.items) { (tableView, row, element) in
             let cell = UITableViewCell(style: .value1, reuseIdentifier: HomeViewController.homeCellIdentifier)
             cell.selectionStyle = .none
@@ -64,12 +64,10 @@ class HomeViewController: UIViewController {
         }
         .disposed(by: disposeBag)
         
-        /// 订阅点击事件
         tableView.rx.modelSelected(ViewControllerType.self).subscribe (onNext: { type in
             let vc: UIViewController = type.viewController
             vc.title = type.rawValue
             self.navigationController?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
     }
-
 }

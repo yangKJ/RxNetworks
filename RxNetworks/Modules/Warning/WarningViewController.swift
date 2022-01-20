@@ -13,10 +13,9 @@ import RxCocoa
 class WarningViewController: BaseViewController<WarningViewModel> {
     
     lazy var textView: UITextView = {
-        let rect = CGRect(x: 20, y: 150, width: view.bounds.size.width-40, height: 400)
+        let rect = CGRect(x: 20, y: 100, width: view.bounds.size.width-40, height: 200)
         let view = UITextView.init(frame: rect)
-        view.font = UIFont.systemFont(ofSize: 18)
-        view.textColor = UIColor.blue.withAlphaComponent(0.9)
+        view.font = UIFont.systemFont(ofSize: 14)
         self.view.addSubview(view)
         return view
     }()

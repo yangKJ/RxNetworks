@@ -16,10 +16,11 @@ import Toast_Swift
 /// Warning plugin, based on Toast package
 public final class NetworkWarningPlugin {
     
+    /// Sets the default position. Used for the `makeToast` and `showToast` methods that don't require an explicit position.
     let position: ToastPosition
     /// Whether to display the Window again, the default is YES
     let displayInWindow: Bool
-    /// Show time
+    /// The default duration. Used for the `makeToast` and `showToast` methods that don't require an explicit duration.
     let duration: TimeInterval
     
     /// 是否会覆盖上次的错误展示，
@@ -31,9 +32,9 @@ public final class NetworkWarningPlugin {
     public private(set) var toastStyle: ToastStyle? = nil
     
     public init(in window: Bool = true,
-                duration: TimeInterval = 3,
+                duration: TimeInterval = 1,
                 cover: Bool = true,
-                position: ToastPosition = ToastPosition.bottom,
+                position: ToastPosition = .bottom,
                 toastStyle: ToastStyle? = nil) {
         self.position = position
         self.displayInWindow = window

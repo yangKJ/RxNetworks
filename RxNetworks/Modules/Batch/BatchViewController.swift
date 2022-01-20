@@ -12,10 +12,9 @@ import RxNetworks
 class BatchViewController: BaseViewController<BatchViewModel> {
     
     lazy var textView: UITextView = {
-        let rect = CGRect(x: 20, y: 100, width: view.bounds.size.width-40, height: view.bounds.size.height-150)
+        let rect = CGRect(x: 20, y: 100, width: view.bounds.size.width-40, height: 200)
         let view = UITextView.init(frame: rect)
         view.font = UIFont.systemFont(ofSize: 14)
-        view.textColor = UIColor.blue.withAlphaComponent(0.9)
         self.view.addSubview(view)
         return view
     }()

@@ -23,11 +23,11 @@ extension WarningAPI: NetworkAPI {
     }
     
     var path: APIPath {
-        return "/pos"
+        return "/failed/path"
     }
     
     var plugins: APIPlugins {
-        let warning = NetworkWarningPlugin.init()
+        let warning = NetworkWarningPlugin.init(duration: 5, position: .bottom)
         let loading = NetworkLoadingPlugin.init(text: "Loading..", delay: 0.5)
         loading.changeHud = { (hud) in
             hud.detailsLabel.textColor = UIColor.yellow
