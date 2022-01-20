@@ -21,6 +21,9 @@
 		0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89C2791E9E500AB04DB /* ChainViewModel.swift */; };
 		0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89D2791E9E500AB04DB /* ChainViewController.swift */; };
 		0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89E2791E9E500AB04DB /* ChainAPI.swift */; };
+		04BB29B4279911DD0056F94A /* WarningAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BB29B1279911DC0056F94A /* WarningAPI.swift */; };
+		04BB29B5279911DD0056F94A /* WarningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BB29B2279911DC0056F94A /* WarningViewModel.swift */; };
+		04BB29B6279911DD0056F94A /* WarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BB29B3279911DD0056F94A /* WarningViewController.swift */; };
 		04C04F302792A69400E85B6B /* BatchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C04F2D2792A69400E85B6B /* BatchAPI.swift */; };
 		04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C04F2E2792A69400E85B6B /* BatchViewController.swift */; };
 		04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C04F2F2792A69400E85B6B /* BatchViewModel.swift */; };
@@ -49,6 +52,9 @@
 		0442C89C2791E9E500AB04DB /* ChainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewModel.swift; sourceTree = "<group>"; };
 		0442C89D2791E9E500AB04DB /* ChainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewController.swift; sourceTree = "<group>"; };
 		0442C89E2791E9E500AB04DB /* ChainAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainAPI.swift; sourceTree = "<group>"; };
+		04BB29B1279911DC0056F94A /* WarningAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarningAPI.swift; sourceTree = "<group>"; };
+		04BB29B2279911DC0056F94A /* WarningViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarningViewModel.swift; sourceTree = "<group>"; };
+		04BB29B3279911DD0056F94A /* WarningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarningViewController.swift; sourceTree = "<group>"; };
 		04C04F2D2792A69400E85B6B /* BatchAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchAPI.swift; sourceTree = "<group>"; };
 		04C04F2E2792A69400E85B6B /* BatchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchViewController.swift; sourceTree = "<group>"; };
 		04C04F2F2792A69400E85B6B /* BatchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchViewModel.swift; sourceTree = "<group>"; };
@@ -122,6 +128,17 @@
 			path = Modules/Chain;
 			sourceTree = "<group>";
 		};
+		04BB29B0279911DC0056F94A /* Warning */ = {
+			isa = PBXGroup;
+			children = (
+				04BB29B1279911DC0056F94A /* WarningAPI.swift */,
+				04BB29B3279911DD0056F94A /* WarningViewController.swift */,
+				04BB29B2279911DC0056F94A /* WarningViewModel.swift */,
+			);
+			name = Warning;
+			path = RxNetworks/Modules/Warning;
+			sourceTree = SOURCE_ROOT;
+		};
 		04C04F2C2792A69400E85B6B /* Batch */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +170,7 @@
 				0442C89B2791E9E500AB04DB /* Chain */,
 				04233506278E61DE00547494 /* Loading */,
 				0423350A278E61DE00547494 /* OO */,
+				04BB29B0279911DC0056F94A /* Warning */,
 			);
 			name = Modules;
 			sourceTree = "<group>";
@@ -361,12 +379,15 @@
 				0423350E278E61DE00547494 /* CacheViewModel.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
 				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
+				04BB29B6279911DD0056F94A /* WarningViewController.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
 				04233516278E61DE00547494 /* OOViewController.swift in Sources */,
 				04233514278E61DE00547494 /* LoadingViewController.swift in Sources */,
 				04C04F302792A69400E85B6B /* BatchAPI.swift in Sources */,
 				04233510278E61DE00547494 /* CacheAPI.swift in Sources */,
+				04BB29B5279911DD0056F94A /* WarningViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				04BB29B4279911DD0056F94A /* WarningAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

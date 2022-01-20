@@ -15,6 +15,7 @@ enum ViewControllerType: String {
     case Batch = "Batch"
     case Loading = "Loading"
     case Cache = "Cache"
+    case Warning = "Warning"
     
     var title: String {
         switch self {
@@ -23,6 +24,7 @@ enum ViewControllerType: String {
         case .Batch: return "批量并行网络"
         case .Loading: return "加载动画"
         case .Cache: return "缓存插件"
+        case .Warning: return "错误提示插件"
         }
     }
     
@@ -33,6 +35,7 @@ enum ViewControllerType: String {
         case .Batch: return BatchViewController()
         case .Loading: return LoadingViewController()
         case .Cache: return CacheViewController()
+        case .Warning: return WarningViewController()
         }
     }
 }
@@ -44,6 +47,7 @@ struct HomeViewModel {
         .Chain,
         .Batch,
         .Loading,
-        .Cache
+        .Cache,
+        .Warning,
     ])
 }
