@@ -33,9 +33,8 @@ public enum NetworkCacheType {
 /// Cache plug-in, based on YYCache package use
 public final class NetworkCachePlugin {
     
-    static let kCacheName = "ykj.Network.cache.plugin"
     private lazy var cache: YYCache? = {
-        let cache = YYCache.init(name: NetworkCachePlugin.kCacheName)
+        let cache = YYCache.init(name: CacheManager.Cache.name)
         if let cache = cache {
             cache.memoryCache.countLimit = CacheManager.maxCountLimit
             cache.memoryCache.costLimit = CacheManager.maxCostLimit
@@ -81,9 +80,7 @@ extension NetworkCachePlugin: PluginSubType {
         switch result {
         case .success(let response):
             switch self.cacheType {
-            case NetworkCacheType.networkElseCache,
-                NetworkCacheType.cacheThenNetwork,
-                NetworkCacheType.cacheElseNetwork:
+            case .networkElseCache, .cacheThenNetwork, .cacheElseNetwork:
                 self.saveCacheResponse(response, target: target)
             default:
                 break
