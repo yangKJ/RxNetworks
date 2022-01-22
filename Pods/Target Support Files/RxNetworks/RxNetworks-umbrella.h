@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "RxNetworks.h"
 
 FOUNDATION_EXPORT double RxNetworksVersionNumber;
 FOUNDATION_EXPORT const unsigned char RxNetworksVersionString[];

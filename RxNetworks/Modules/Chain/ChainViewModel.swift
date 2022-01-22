@@ -36,7 +36,7 @@ extension ChainViewModel {
             .catchAndReturn("") // 异常抛出
     }
     
-    func requestData(_ ip: String) -> Single<NSDictionary> {
+    func requestData(_ ip: String) -> Observable<NSDictionary> {
         return ChainAPI.test2(ip).request()
             .map { ($0 as! NSDictionary) }
             .catchAndReturn(["data": "nil"])

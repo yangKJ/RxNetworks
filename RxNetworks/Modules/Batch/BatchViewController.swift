@@ -27,7 +27,7 @@ class BatchViewController: BaseViewController<BatchViewModel> {
     
     func setupBindings() {
         viewModel.data.subscribe { [weak self] dict in
-            self?.textView.text = toJSON(form: dict.element as Any, prettyPrint: true)
+            self?.textView.text = X.toJSON(form: dict.element as Any, prettyPrint: true)
         }.disposed(by: disposeBag)
         
         viewModel.batchLoad()

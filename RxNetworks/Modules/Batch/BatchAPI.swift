@@ -32,6 +32,6 @@ extension BatchAPI: NetworkAPI {
     }
     
     var method: APIMethod {
-        return .get
+        return APIMethod.get
     }
 }

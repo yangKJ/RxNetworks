@@ -16,6 +16,7 @@ enum ViewControllerType: String {
     case Loading = "Loading"
     case Cache = "Cache"
     case Warning = "Warning"
+    case GZip = "GZip"
     
     var title: String {
         switch self {
@@ -25,6 +26,7 @@ enum ViewControllerType: String {
         case .Loading: return "加载动画"
         case .Cache: return "缓存插件"
         case .Warning: return "错误提示插件"
+        case .GZip: return "压缩解压插件"
         }
     }
     
@@ -36,6 +38,7 @@ enum ViewControllerType: String {
         case .Loading: return LoadingViewController()
         case .Cache: return CacheViewController()
         case .Warning: return WarningViewController()
+        case .GZip: return GZipViewController()
         }
     }
 }
@@ -49,5 +52,6 @@ struct HomeViewModel {
         .Loading,
         .Cache,
         .Warning,
+        .GZip,
     ])
 }

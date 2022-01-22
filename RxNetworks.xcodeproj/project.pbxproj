@@ -29,6 +29,9 @@
 		04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C04F2F2792A69400E85B6B /* BatchViewModel.swift */; };
 		04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C05416278D66F0008BCC42 /* HomeViewModel.swift */; };
 		04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C0541F278D6A49008BCC42 /* BaseViewController.swift */; };
+		04F0A887279A465C008534D8 /* GZipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A884279A465C008534D8 /* GZipViewModel.swift */; };
+		04F0A888279A465C008534D8 /* GZipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A885279A465C008534D8 /* GZipViewController.swift */; };
+		04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A886279A465C008534D8 /* GZipAPI.swift */; };
 		36ADE5ADE90CB24F23D9B8B5 /* Pods_RxNetworks_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* HomeViewController.swift */; };
@@ -60,6 +63,9 @@
 		04C04F2F2792A69400E85B6B /* BatchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchViewModel.swift; sourceTree = "<group>"; };
 		04C05416278D66F0008BCC42 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		04C0541F278D6A49008BCC42 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		04F0A884279A465C008534D8 /* GZipViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewModel.swift; sourceTree = "<group>"; };
+		04F0A885279A465C008534D8 /* GZipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewController.swift; sourceTree = "<group>"; };
+		04F0A886279A465C008534D8 /* GZipAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipAPI.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* RxNetworks_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxNetworks_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -168,11 +174,23 @@
 				04C04F2C2792A69400E85B6B /* Batch */,
 				04233501278E61DE00547494 /* Cache */,
 				0442C89B2791E9E500AB04DB /* Chain */,
+				04F0A883279A465C008534D8 /* GZip */,
 				04233506278E61DE00547494 /* Loading */,
 				0423350A278E61DE00547494 /* OO */,
 				04BB29B0279911DC0056F94A /* Warning */,
 			);
 			name = Modules;
+			sourceTree = "<group>";
+		};
+		04F0A883279A465C008534D8 /* GZip */ = {
+			isa = PBXGroup;
+			children = (
+				04F0A886279A465C008534D8 /* GZipAPI.swift */,
+				04F0A885279A465C008534D8 /* GZipViewController.swift */,
+				04F0A884279A465C008534D8 /* GZipViewModel.swift */,
+			);
+			name = GZip;
+			path = Modules/GZip;
 			sourceTree = "<group>";
 		};
 		52E8D0F8A548010FC369397B /* Pods */ = {
@@ -370,7 +388,10 @@
 			files = (
 				04233512278E61DE00547494 /* LoadingAPI.swift in Sources */,
 				04233511278E61DE00547494 /* CacheModel.swift in Sources */,
+				04F0A887279A465C008534D8 /* GZipViewModel.swift in Sources */,
 				607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */,
+				04F0A888279A465C008534D8 /* GZipViewController.swift in Sources */,
+				04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */,
 				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
 				0423350F278E61DE00547494 /* CacheViewController.swift in Sources */,
 				0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */,

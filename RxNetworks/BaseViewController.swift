@@ -20,4 +20,8 @@ class BaseViewController<VM: NSObject>: UIViewController {
         // Do any additional setup after loading the view.
         self.view.backgroundColor = UIColor.green
     }
+    
+    deinit {
+        print("🎷\(String(describing: self)): Deinited")
+    }
 }

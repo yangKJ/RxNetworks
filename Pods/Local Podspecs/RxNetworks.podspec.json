@@ -24,7 +24,7 @@
   "static_framework": true,
   "module_name": "RxNetworks",
   "ios": {
-    "source_files": "Sources/RxNetworks.swift"
+    "source_files": "Sources/RxNetworks.h"
   },
   "pod_target_xcconfig": {
     "SWIFT_WHOLE_MODULE_OPTIMIZATION": "YES",
@@ -116,6 +116,15 @@
 
             ],
             "YYCache": [
+
+            ]
+          }
+        },
+        {
+          "name": "GZip",
+          "source_files": "Sources/MoyaPlugins/GZip/*.swift",
+          "dependencies": {
+            "RxNetworks/MoyaNetwork": [
 
             ]
           }

@@ -27,11 +27,11 @@ class BatchViewModel: NSObject {
     }()
     
     func batchLoad() {
-        Single.zip(
+        Observable.zip(
             APIProvider.rx.request(api: BatchAPI.test),
             APIProvider.rx.request(api: BatchAPI.test2("666")),
             APIProvider.rx.request(api: BatchAPI.test3)
-        ).subscribe(onSuccess: { [weak self] in
+        ).subscribe(onNext: { [weak self] in
             guard var data1 = $0 as? Dictionary<String, Any>,
                   let data2 = $1 as? Dictionary<String, Any>,
                   let data3 = $2 as? Dictionary<String, Any> else {
@@ -40,7 +40,7 @@ class BatchViewModel: NSObject {
             data1 += data2
             data1 += data3
             self?.data.accept(data1)
-        }, onFailure: {
+        }, onError: {
             print("Network Failed: \($0)")
         }).disposed(by: disposeBag)
     }
