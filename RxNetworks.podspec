@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = '🧚 响应式插件网络架构 RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.static_framework = true
   s.module_name      = 'RxNetworks'
-  s.ios.source_files = 'Sources/RxNetworks.swift'
+  s.ios.source_files = 'Sources/RxNetworks.h'
   
   s.pod_target_xcconfig = {
     'SWIFT_WHOLE_MODULE_OPTIMIZATION' => 'YES',
@@ -80,6 +80,10 @@ Pod::Spec.new do |s|
       xxx.source_files = 'Sources/MoyaPlugins/Cache/*.swift'
       xxx.dependency 'RxNetworks/MoyaNetwork'
       xxx.dependency 'YYCache'
+    end
+    xx.subspec 'GZip' do |xxx|
+      xxx.source_files = 'Sources/MoyaPlugins/GZip/*.swift'
+      xxx.dependency 'RxNetworks/MoyaNetwork'
     end
   end
   
