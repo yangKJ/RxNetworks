@@ -13,11 +13,11 @@ import Moya
 /// Protocol default implementation scheme
 extension NetworkAPI {
     
-    public func request() -> APISingleJSON {
+    public func request() -> APIObservableJSON {
         return request(callbackQueue: nil)
     }
     
-    public func request(callbackQueue: DispatchQueue?) -> APISingleJSON {
+    public func request(callbackQueue: DispatchQueue?) -> APIObservableJSON {
         var tempPlugins: APIPlugins = self.plugins
         NetworkUtil.defaultPlugin(&tempPlugins, api: self)
         
@@ -36,13 +36,7 @@ extension NetworkAPI {
         let MoyaProvider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
         }, session: session, plugins: tempPlugins)
-        let single = MoyaProvider.rx.request(api: self, callbackQueue: callbackQueue)
-        
-        let angin = NetworkUtil.handyLastNeverPlugin(tempPlugins, target: target, single: single)
-        if angin == true {
-            return self.request(callbackQueue: callbackQueue)
-        }
-        return single
+        return MoyaProvider.rx.request(api: self, callbackQueue: callbackQueue, result: result)
     }
 }
 

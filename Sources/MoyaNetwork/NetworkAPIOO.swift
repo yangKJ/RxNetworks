@@ -51,7 +51,7 @@ public struct NetworkAPIOO {
     ///
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Single sequence JSON object.
-    public func cdy_HTTPRequest(_ callbackQueue: DispatchQueue? = nil) -> APISingleJSON {
+    public func cdy_HTTPRequest(_ callbackQueue: DispatchQueue? = nil) -> APIObservableJSON {
         var api = NetworkObjectAPI.init()
         api.cdy_ip = cdy_ip
         api.cdy_path = cdy_path

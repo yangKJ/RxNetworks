@@ -30,24 +30,25 @@ internal struct NetworkUtil {
         plugins = temp
     }
     
-    static func transformAPISingleJSON(_ result: MoyaResultable) -> APISingleJSON {
-        return APISingleJSON.create { single in
+    static func transformAPISingleJSON(_ result: MoyaResult?) -> APIObservableJSON {
+        return APIObservableJSON.create { (observer) in
             if let result = result {
                 switch result {
                 case let .success(response):
                     do {
                         let response = try response.filterSuccessfulStatusCodes()
-                        let json = try response.mapJSON()
-                        single(.success(json))
+                        let jsonObject = try response.mapJSON()
+                        observer.onNext(jsonObject)
+                        observer.onCompleted()
                     } catch MoyaError.jsonMapping(let response) {
-                        single(.failure(MoyaError.jsonMapping(response)))
+                        observer.onError(MoyaError.jsonMapping(response))
                     } catch MoyaError.statusCode(let response) {
-                        single(.failure(MoyaError.statusCode(response)))
+                        observer.onError(MoyaError.statusCode(response))
                     } catch {
-                        single(.failure(error))
+                        observer.onError(error)
                     }
                 case let .failure(error):
-                    single(.failure(error))
+                    observer.onError(error)
                 }
             }
             return Disposables.create { }
@@ -62,10 +63,11 @@ internal struct NetworkUtil {
         return tuple
     }
     
-    static func handyLastNeverPlugin(_ plugins: APIPlugins, target: TargetType, single: APISingleJSON) -> Bool {
-
-        // TODO: 项目暂时未使用，有时间再来完善
-        // TODO: The project has not been used for the time being, and it will be improved when there is time.
-        return false
+    static func handyLastNeverPlugin(_ plugins: APIPlugins, result: MoyaResult, target: TargetType) -> LastNeverTuple {
+        var tuple: LastNeverTuple
+        tuple.result = result
+        tuple.againRequest = false
+        plugins.forEach { tuple = $0.lastNever(tuple, target: target) }
+        return tuple
     }
 }

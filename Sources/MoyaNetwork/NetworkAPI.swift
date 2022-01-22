@@ -35,10 +35,10 @@ public protocol NetworkAPI: Moya.TargetType {
     ///     }
     ///
     /// - Returns: Single sequence JSON object.
-    func request() -> APISingleJSON
+    func request() -> APIObservableJSON
     
     /// Network request.
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Single sequence JSON object.
-    func request(callbackQueue: DispatchQueue?) -> APISingleJSON
+    func request(callbackQueue: DispatchQueue?) -> APIObservableJSON
 }

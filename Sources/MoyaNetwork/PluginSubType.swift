@@ -8,9 +8,9 @@
 import Foundation
 import Moya
 
-public typealias MoyaResultable = Result<Moya.Response, MoyaError>?
-public typealias ConfigurationTuple = (result: MoyaResultable, endRequest: Bool)
-public typealias LastNeverTuple = (result: MoyaResultable, againRequest: Bool)
+public typealias MoyaResult = Result<Moya.Response, MoyaError>
+public typealias ConfigurationTuple = (result: MoyaResult?, endRequest: Bool)
+public typealias LastNeverTuple = (result: MoyaResult, againRequest: Bool)
 
 /// 继承Moya插件协议，方便后序扩展，所有插件方法都必须实现该协议
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol
