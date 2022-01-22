@@ -31,7 +31,7 @@ public final class NetworkLoadingPlugin {
     
     /// 更改`hud`相关配置闭包
     /// Change `hud` related configuration closures.
-    public var changeHud: ((_ hud: MBProgressHUD) -> Void)? = nil
+    public var changeHudCallback: ((_ hud: MBProgressHUD) -> Void)? = nil
     
     public init(in window: Bool = true,
                 text: String = "",
@@ -77,8 +77,8 @@ extension NetworkLoadingPlugin {
     ///   - delay: 延迟隐藏时间
     private func showText(_ text: String, window: Bool, delay: TimeInterval) {
         DispatchQueue.main.async {
-            guard let view = window ? RxNetworks.View.keyWindow :
-                    RxNetworks.View.topViewController?.view else { return }
+            guard let view = window ? RxNetworks.X.View.keyWindow :
+                    RxNetworks.X.View.topViewController?.view else { return }
             if let _ = MBProgressHUD.forView(view) {
                 return
             }
@@ -100,7 +100,7 @@ extension NetworkLoadingPlugin {
             if (delay > 0) {
                 hud.hide(animated: true, afterDelay: delay)
             }
-            if let changeHud = self.changeHud {
+            if let changeHud = self.changeHudCallback {
                 changeHud(hud)
             }
         }
@@ -109,10 +109,10 @@ extension NetworkLoadingPlugin {
     /// 隐藏加载
     private static func hideMBProgressHUD() {
         DispatchQueue.main.async {
-            if let view = RxNetworks.View.keyWindow {
+            if let view = RxNetworks.X.View.keyWindow {
                 MBProgressHUD.hide(for: view, animated: true)
             }
-            if let vc = RxNetworks.View.topViewController, let view = vc.view {
+            if let vc = RxNetworks.X.View.topViewController, let view = vc.view {
                 MBProgressHUD.hide(for: view, animated: true)
             }
         }

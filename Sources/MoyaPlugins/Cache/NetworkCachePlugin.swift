@@ -44,48 +44,38 @@ public final class NetworkCachePlugin {
     
     /// Network cache plugin type
     let cacheType: NetworkCacheType
-    /// Cached data closure callback of type `cacheThenNetwork`
-    let completion: Moya.Completion?
     
     /// Initialize
     /// - Parameters:
     ///   - cacheType: Network cache type
     ///   - completion: The cached data closure callback of type `cacheThenNetwork`
-    public init(cacheType: NetworkCacheType = NetworkCacheType.ignoreCache,
-                completion: Moya.Completion? = nil) {
+    public init(cacheType: NetworkCacheType = NetworkCacheType.ignoreCache) {
         self.cacheType = cacheType
-        self.completion = completion
     }
 }
 
 extension NetworkCachePlugin: PluginSubType {
     
     public func configuration(_ tuple: ConfigurationTuple, target: TargetType) -> ConfigurationTuple {
-        if self.cacheType == NetworkCacheType.cacheElseNetwork, let response = self.readCacheResponse(target) {
-            return (.success(response), true)
+        if (cacheType == .cacheElseNetwork || cacheType == .cacheThenNetwork),
+           let response = self.readCacheResponse(target) {
+            if cacheType == .cacheElseNetwork {
+                return (.success(response), true)
+            } else {
+                return (.success(response), false)
+            }
         }
         return tuple
     }
     
-    public func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
-        if self.cacheType == NetworkCacheType.cacheThenNetwork {
-            if let completion = completion, let response = self.readCacheResponse(target) {
-                completion(.success(response))
-            }
-        }
-        return request
-    }
-    
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        switch result {
-        case .success(let response):
+        if case .success(let response) = result {
             switch self.cacheType {
             case .networkElseCache, .cacheThenNetwork, .cacheElseNetwork:
                 self.saveCacheResponse(response, target: target)
             default:
                 break
             }
-        case .failure(_): break
         }
     }
     

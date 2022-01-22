@@ -47,10 +47,7 @@ public final class NetworkWarningPlugin {
 extension NetworkWarningPlugin: PluginSubType {
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        switch result {
-        case .success(_):
-            break
-        case let .failure(error):
+        if case .failure(let error) = result {
             self.showText(error.localizedDescription)
         }
     }
@@ -60,8 +57,8 @@ extension NetworkWarningPlugin {
     
     private func showText(_ text: String) {
         DispatchQueue.main.async {
-            guard let view = self.displayInWindow ? RxNetworks.View.keyWindow :
-                    RxNetworks.View.topViewController?.view else { return }
+            guard let view = self.displayInWindow ? RxNetworks.X.View.keyWindow :
+                    RxNetworks.X.View.topViewController?.view else { return }
             
             if self.coverLastToast {
                 view.hideToast()
@@ -74,14 +71,14 @@ extension NetworkWarningPlugin {
             }
             
             view.makeToast(text, duration: self.duration, position: self.position, style: style!)
-
+            
             // or perhaps you want to use this style for all toasts going forward?
             // just set the shared style and there's no need to provide the style again
             ToastManager.shared.style = style!
             
             // toggle "tap to dismiss" functionality
             ToastManager.shared.isTapToDismissEnabled = true
-
+            
             // toggle queueing behavior
             ToastManager.shared.isQueueEnabled = !self.coverLastToast
         }
