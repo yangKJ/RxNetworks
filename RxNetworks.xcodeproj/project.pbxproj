@@ -16,8 +16,8 @@
 		04233514278E61DE00547494 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04233509278E61DE00547494 /* LoadingViewController.swift */; };
 		04233515278E61DE00547494 /* OOViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350B278E61DE00547494 /* OOViewModel.swift */; };
 		04233516278E61DE00547494 /* OOViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350C278E61DE00547494 /* OOViewController.swift */; };
-		04233519278E620D00547494 /* README_CN.md in Resources */ = {isa = PBXBuildFile; fileRef = 04233518278E620D00547494 /* README_CN.md */; };
-		0423351B278E622400547494 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0423351A278E622400547494 /* README.md */; };
+		04233519278E620D00547494 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 04233518278E620D00547494 /* README.md */; };
+		0423351B278E622400547494 /* README_EN.md in Resources */ = {isa = PBXBuildFile; fileRef = 0423351A278E622400547494 /* README_EN.md */; };
 		0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89C2791E9E500AB04DB /* ChainViewModel.swift */; };
 		0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89D2791E9E500AB04DB /* ChainViewController.swift */; };
 		0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89E2791E9E500AB04DB /* ChainAPI.swift */; };
@@ -50,8 +50,8 @@
 		04233509278E61DE00547494 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		0423350B278E61DE00547494 /* OOViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOViewModel.swift; sourceTree = "<group>"; };
 		0423350C278E61DE00547494 /* OOViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOViewController.swift; sourceTree = "<group>"; };
-		04233518278E620D00547494 /* README_CN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_CN.md; sourceTree = SOURCE_ROOT; };
-		0423351A278E622400547494 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		04233518278E620D00547494 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		0423351A278E622400547494 /* README_EN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_EN.md; sourceTree = SOURCE_ROOT; };
 		0442C89C2791E9E500AB04DB /* ChainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewModel.swift; sourceTree = "<group>"; };
 		0442C89D2791E9E500AB04DB /* ChainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewController.swift; sourceTree = "<group>"; };
 		0442C89E2791E9E500AB04DB /* ChainAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainAPI.swift; sourceTree = "<group>"; };
@@ -162,8 +162,8 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				04233518278E620D00547494 /* README_CN.md */,
-				0423351A278E622400547494 /* README.md */,
+				04233518278E620D00547494 /* README.md */,
+				0423351A278E622400547494 /* README_EN.md */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -313,8 +313,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
-				04233519278E620D00547494 /* README_CN.md in Resources */,
-				0423351B278E622400547494 /* README.md in Resources */,
+				04233519278E620D00547494 /* README.md in Resources */,
+				0423351B278E622400547494 /* README_EN.md in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);

@@ -15,18 +15,22 @@ internal struct NetworkUtil {
     /// - Parameter plugins: 插件数组
     static func defaultPlugin(_ plugins: inout APIPlugins, api: NetworkAPI) {
         var temp = plugins
-        #if RxNetworks_MoyaPlugins_Indicator
-        if !temp.contains(where: { $0 is NetworkIndicatorPlugin}) {
-            let Indicator = NetworkIndicatorPlugin.init()
-            temp.insert(Indicator, at: 0)
+        if NetworkConfig.addIndicator {
+            #if RxNetworks_MoyaPlugins_Indicator
+            if !temp.contains(where: { $0 is NetworkIndicatorPlugin}) {
+                let Indicator = NetworkIndicatorPlugin.init()
+                temp.insert(Indicator, at: 0)
+            }
+            #endif
         }
-        #endif
-        #if DEBUG && RxNetworks_MoyaPlugins_Debugging
-        if !temp.contains(where: { $0 is NetworkDebuggingPlugin}) {
-            let Debugging = NetworkDebuggingPlugin(api: api)
-            temp.append(Debugging)
+        if NetworkConfig.addDebugging {
+            #if DEBUG && RxNetworks_MoyaPlugins_Debugging
+            if !temp.contains(where: { $0 is NetworkDebuggingPlugin}) {
+                let Debugging = NetworkDebuggingPlugin(api: api)
+                temp.append(Debugging)
+            }
+            #endif
         }
-        #endif
         plugins = temp
     }
     

@@ -34,11 +34,11 @@ public protocol NetworkAPI: Moya.TargetType {
     ///                 .asDriver(onErrorJustReturn: []) // return null at the moment of error
     ///     }
     ///
-    /// - Returns: Single sequence JSON object.
+    /// - Returns: Observable sequence JSON object. data may be thrown twice.
     func request() -> APIObservableJSON
     
     /// Network request.
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
-    /// - Returns: Single sequence JSON object.
+    /// - Returns: Observable sequence JSON object. data may be thrown twice.
     func request(callbackQueue: DispatchQueue?) -> APIObservableJSON
 }

@@ -40,7 +40,6 @@ extension CacheViewModel {
             .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
             .compactMap { $0.data }
             .observe(on: MainScheduler.instance) // 结果在主线程返回
-            //.delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回
             .asDriver(onErrorJustReturn: []) // 错误时刻返回空
     }
 }

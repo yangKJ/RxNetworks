@@ -19,7 +19,7 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
     /// - Parameters:
     ///   - api: Request body
     ///   - callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
-    /// - Returns: Single sequence JSON object.
+    /// - Returns: Observable sequence JSON object. data may be thrown twice.
     func request(api: NetworkAPI, callbackQueue: DispatchQueue? = nil, result: MoyaResult? = nil) -> APIObservableJSON {
         var single: APIObservableJSON = APIObservableJSON.create { (observer) in
             // First process local data
@@ -29,7 +29,7 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
                let jsonObject = try? response.mapJSON() {
                 observer.onNext(jsonObject)
             }
-            // And process network data
+            // And then process network data
             let token = self.beginRequest(api, queue: callbackQueue, successed: {
                 observer.onNext($0)
                 observer.onCompleted()
@@ -43,7 +43,7 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
         if api.retry > 0 {
             single = single.retry(api.retry) // Number of retries after failed.
         }
-        return single//.distinctUntilChanged()
+        return single.share(replay: 1, scope: .forever)
     }
     
     @discardableResult
@@ -53,16 +53,20 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
                               failed: @escaping (_ error: Swift.Error) -> Void,
                               progress: ProgressBlock? = nil) -> Cancellable {
         let target = MultiTarget.target(api)
-        let tempPlugins = base.plugins as! [PluginSubType]
+        let tempPlugins = base.plugins
         return base.request(target, callbackQueue: queue, progress: progress, completion: { result in
-            // last never handy data, last chance
-            let tuple = NetworkUtil.handyLastNeverPlugin(tempPlugins, result: result, target: target)
-            if tuple.againRequest == true {
-                beginRequest(api, queue: queue, successed: successed, failed: failed)
-                return
+            var _result = result
+            if let plugins = tempPlugins as? [PluginSubType] {
+                // last never handy data, last chance
+                let tuple = NetworkUtil.handyLastNeverPlugin(plugins, result: _result, target: target)
+                if tuple.againRequest == true {
+                    beginRequest(api, queue: queue, successed: successed, failed: failed, progress: progress)
+                    return
+                }
+                _result = tuple.result
             }
             
-            switch tuple.result {
+            switch _result {
             case let .success(response):
                 do {
                     let response = try response.filterSuccessfulStatusCodes()

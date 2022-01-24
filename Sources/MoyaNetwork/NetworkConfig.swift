@@ -29,12 +29,17 @@ public typealias APIObservableJSON = RxSwift.Observable<Any>
 /// Network configuration information, only need to be configured once when the program is started
 public struct NetworkConfig {
     
+    /// Whether to add the Debugging plugin by default
+    public static var addDebugging: Bool = true
+    /// Whether to add the Indicator plugin by default
+    public static var addIndicator: Bool = true
+    
     /// Root path address
     public private(set) static var baseURL: APIHost = ""
     /// Default basic parameters, similar to: userID, token, etc.
     public private(set) static var baseParameters: APIParameters = [:]
     /// Default request type, default `post`
-    public private(set) static var baseMethod: APIMethod = Method.post
+    public private(set) static var baseMethod: APIMethod = APIMethod.post
     
     /// Configuration information
     /// - Parameters:
@@ -43,7 +48,7 @@ public struct NetworkConfig {
     ///   - method: Default request type, default `post`
     public static func setupDefault(host: APIHost = "",
                                     parameters: APIParameters = [:],
-                                    method: APIMethod = Method.post) {
+                                    method: APIMethod = APIMethod.post) {
         self.baseURL = host
         self.baseParameters = parameters
         self.baseMethod = method

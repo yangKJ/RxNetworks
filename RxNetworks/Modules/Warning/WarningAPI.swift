@@ -27,7 +27,7 @@ extension WarningAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let warning = NetworkWarningPlugin.init(duration: 5, position: .bottom)
+        let warning = NetworkWarningPlugin.init(duration: 2, position: .bottom)
         let loading = NetworkLoadingPlugin.init(text: "Loading..", delay: 0.5)
         loading.changeHudCallback = { (hud) in
             hud.detailsLabel.textColor = UIColor.yellow
