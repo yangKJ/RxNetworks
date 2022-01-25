@@ -19,8 +19,8 @@ extension NetworkGZipPlugin: PluginSubType {
     
     public func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
         if case .success(let response) = result {
-            // 只能解开GZip压缩数据
-            guard response.data.isGZipCompressed else {
+            // Can only unpack GZip compressed data
+            guard GZipManager.isGZipCompressed(response.data) else {
                 return result
             }
             let data = GZipManager.gzipUncompress(response.data)

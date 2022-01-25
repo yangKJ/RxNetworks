@@ -27,6 +27,7 @@ class OOViewModel: NSObject {
         api.cdy_HTTPRequest()
             .asObservable()
             .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
+            .catchAndReturn("")
             .bind(to: data)
             .disposed(by: disposeBag)
     }

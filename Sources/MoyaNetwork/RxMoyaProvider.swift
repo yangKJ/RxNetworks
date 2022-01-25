@@ -19,7 +19,7 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
     /// - Parameters:
     ///   - api: Request body
     ///   - callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
-    /// - Returns: Observable sequence JSON object. data may be thrown twice.
+    /// - Returns: Observable sequence JSON object. May be thrown twice.
     func request(api: NetworkAPI, callbackQueue: DispatchQueue? = nil, result: MoyaResult? = nil) -> APIObservableJSON {
         var single: APIObservableJSON = APIObservableJSON.create { (observer) in
             // First process local data

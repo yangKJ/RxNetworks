@@ -50,9 +50,9 @@ public struct NetworkAPIOO {
     ///         .disposed(by: disposeBag)
     ///
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
-    /// - Returns: Single sequence JSON object.
+    /// - Returns: Observable sequence JSON object. May be thrown twice.
     public func cdy_HTTPRequest(_ callbackQueue: DispatchQueue? = nil) -> APIObservableJSON {
-        var api = NetworkObjectAPI.init()
+        var api = RxNetworks.NetworkObjectAPI.init()
         api.cdy_ip = cdy_ip
         api.cdy_path = cdy_path
         api.cdy_parameters = cdy_parameters

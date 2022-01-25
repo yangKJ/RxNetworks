@@ -34,7 +34,7 @@ internal struct NetworkUtil {
         plugins = temp
     }
     
-    static func transformAPISingleJSON(_ result: MoyaResult?) -> APIObservableJSON {
+    static func transformAPIObservableJSON(_ result: MoyaResult?) -> APIObservableJSON {
         return APIObservableJSON.create { (observer) in
             if let result = result {
                 switch result {

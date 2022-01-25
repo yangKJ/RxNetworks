@@ -25,7 +25,7 @@ extension NetworkAPI {
 
         let (result, end) = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
         if end == true {
-            let single = NetworkUtil.transformAPISingleJSON(result)
+            let single = NetworkUtil.transformAPIObservableJSON(result)
             return single
         }
         

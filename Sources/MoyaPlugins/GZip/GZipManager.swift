@@ -8,18 +8,15 @@
 import Foundation
 import zlib
 
-extension Data {
-    /// 判断是否为`GZip`压缩数据
-    public var isGZipCompressed: Bool {
-        return self.starts(with: [0x1f, 0x8b])
-    }
-}
-
 public struct GZipManager {
-    // 解压缩流大小
+    /// Decompression stream size
     static let GZIP_STREAM_SIZE: Int32 = Int32(MemoryLayout<z_stream>.size)
-    // 解压缩缓冲区大小
+    /// Decompression buffer size
     static let GZIP_BUF_LENGTH: Int = 512
+    /// Whether to compress data for `GZip`
+    static func isGZipCompressed(_ data: Data) -> Bool {
+        return data.starts(with: [0x1f, 0x8b])
+    }
 }
 
 extension GZipManager {
@@ -72,7 +69,7 @@ extension GZipManager {
         guard data.count > 0 else {
             return Data()
         }
-        guard data.isGZipCompressed else {
+        guard isGZipCompressed(data) else {
             return data
         }
         var stream = z_stream()
