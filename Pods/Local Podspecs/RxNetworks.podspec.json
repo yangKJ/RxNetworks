@@ -1,6 +1,6 @@
 {
   "name": "RxNetworks",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "summary": "🧚 响应式插件网络架构 RxSwift + Moya + HandyJSON + Plugins.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/yangKJ/RxNetworks.git",
-    "tag": "0.1.4"
+    "tag": "0.1.5"
   },
   "social_media_url": "https://juejin.cn/user/1987535102554472/posts",
   "platforms": {
