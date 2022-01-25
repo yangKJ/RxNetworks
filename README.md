@@ -9,51 +9,50 @@
 
 -------
 
-[**English**](README_EN.md) | 简体中文
+English | [**简体中文**](README_CN.md)
 
-基于 **RxSwift + Moya** 搭建响应式数据绑定网络API架构
+This is a set of infrastructure based on `RxSwift + Moya`
 
 ### MoyaNetwork
-该模块是基于Moya封装的网络API架构
+This module is based on the Moya encapsulated network API architecture.
 
-- 主要分为8部分：
-    - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift)：在程序最开始处设置配置信息，全局通用
-        - **addDebugging**：是否默认引入调试模式插件
-        - **baseURL**：根路径地址
-        - **baseParameters**：默认基本参数，类似：userID，token等
-        - **baseMethod**：默认请求类型
-        - **updateBaseParametersWithValue**：更新默认基本参数数据
-    - [RxMoyaProvider](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/RxMoyaProvider.swift)：对网络请求添加响应式，返回`Single`序列
-    - [NetworkUtil](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkUtil.swift)：网络相关函数
-        - **defaultPlugin**：添加默认插件
-        - **transformAPIObservableJSON**：转换成可观察序列JSON对象
-        - **handyConfigurationPlugin**：处理配置插件
-        - **handyLastNeverPlugin**：最后的插件处理
-    - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift)：继承替换Moya插件协议，方便后序扩展
-        - **configuration**：设置网络配置信息之后，开始准备请求之前，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
-        - **lastNever**：最后的最后网络响应返回时刻，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
-    - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift)：在`TargetType`基础上增加协议属性和封装基础网络请求
-        - **ip**：根路径地址
-        - **parameters**：请求参数
-        - **plugins**：插件
-        - **stubBehavior**：是否走测试数据
-        - **retry**：网络请求失败重试次数
-        - **request**：网络请求方法，返回可观察序列JSON对象
-    - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI+Ext.swift): 协议默认实现方案
-    - [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift)：面向对象转换器，面向协议模式转面向对象，方便习惯OC思维的小伙伴
-        - **cdy_ip**：根路径地址
-        - **cdy_path**：请求路径
-        - **cdy_parameters**：请求参数
-        - **cdy_plugins**：插件
-        - **cdy_testJSON**：测试数据
-        - **cdy_testTime**：测试数据返回时间，默认半秒
-        - **cdy_HTTPRequest**：网络请求方法
-    - [NetworkX](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkX.swift)：扩展函数方法等
-        - **toJSON**：对象转JSON字符串
-        - **toDictionary**：JSON字符串转字典
-        - **+=**：字典拼接
+- Mainly divided into 8 parts:
+    - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift): Set the configuration information at the beginning of the program.
+        - **addDebugging**：Whether to introduce the debug mode plugin by default.
+        - **baseURL**: Root path address to base URL.
+        - **baseParameters**: Default basic parameters, like: userID, token, etc.
+        - **baseMethod**: Default request method type.
+        - **updateBaseParametersWithValue**: Update default base parameter value.
+    - [RxMoyaProvider](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/RxMoyaProvider.swift): Add responsiveness to network requests, returning `Single` sequence.
+    - [NetworkUtil](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkUtil.swift): Network related functions
+         - **defaultPlugin**: Add default plugin.
+         - **transformAPIObservableJSON**: Transforms a `Observable` sequence JSON object.
+         - **handyConfigurationPlugin**: Handles configuration plugins.
+	- [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift): Inherit and replace the Moya plug-in protocol to facilitate subsequent expansion.
+         - **configuration**: After setting the network configuration information, this method can be used in scenarios such as throwing data directly when the local cache exists without executing subsequent network requests.
+         - **lastNever**: When the last network response is returned, this method can be used in scenarios such as key failure to re-obtain the key and then automatically re-request the network.
+    - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift): Add protocol attributes and encapsulate basic network requests based on TargetType.
+        - **ip**: Root path address to base URL.
+        - **parameters**: Request parameters.
+        - **plugins**: Set network plugins.
+        - **stubBehavior**: Whether to take the test data.
+        - **retry**：Network request failure retries.
+        - **request**: Network request method and return a Single sequence object.
+    - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI+Ext.swift): Protocol default implementation scheme.
+	- [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift): OOP converter, MVP to OOP, convenient for friends who are used to OC thinking
+        - **cdy_ip**: Root path address to base URL.
+        - **cdy_path**: Request path.
+        - **cdy_parameters**: Request parameters.
+        - **cdy_plugins**: Set network plugins.
+        - **cdy_testJSON**: Network testing json string.
+        - **cdy_testTime**: Network test data return time, the default is half a second.
+        - **cdy_HTTPRequest**: Network request method and return a Single sequence object.
+    - [NetworkX](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkX.swift): extension function methods etc.
+        - **toJSON**: to JSON string.
+        - **toDictionary**: JSON string to dictionary.
+        - **+=**: Dictionary concatenation.
 
-🎷 - 面向对象使用示例1:
+🎷 - OO Example 1:
 
 ```
 class OOViewModel: NSObject {
@@ -76,7 +75,7 @@ class OOViewModel: NSObject {
 }
 ```
 
-🎷 - MVP使用示例2:
+🎷 - MVP Example 2:
 
 ```
 enum LoadingAPI {
@@ -104,7 +103,7 @@ class LoadingViewModel: NSObject {
     let disposeBag = DisposeBag()
     let data = PublishRelay<NSDictionary>()
     
-    /// 配置加载动画插件
+    /// Configure the loading animation plugin
     let APIProvider: MoyaProvider<MultiTarget> = {
         let configuration = URLSessionConfiguration.default
         configuration.headers = .default
@@ -126,7 +125,7 @@ class LoadingViewModel: NSObject {
 }
 ```
 
-🎷 - MVVM使用示例3:
+🎷 - MVVM Example 3:
 
 ```
 class CacheViewModel: NSObject {
@@ -157,14 +156,14 @@ extension CacheViewModel {
             .asObservable()
             .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
             .compactMap { $0.data }
-            .observe(on: MainScheduler.instance) // 结果在主线程返回
-            .delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回
-            .asDriver(onErrorJustReturn: []) // 错误时刻返回空
+            .observe(on: MainScheduler.instance)
+            .delay(.seconds(1), scheduler: MainScheduler.instance) 
+            .asDriver(onErrorJustReturn: [])
     }
 }
 ```
 
-🎷 - 链式请求使用示例4:
+🎷 - Chain Example 4:
 
 ```
 class ChainViewModel: NSObject {
@@ -187,7 +186,7 @@ extension ChainViewModel {
         return ChainAPI.test.request()
             .asObservable()
             .map { ($0 as! NSDictionary)["origin"] as! String }
-            .catchAndReturn("") // 异常抛出
+            .catchAndReturn("") // Exception thrown
     }
     
     func requestData(_ ip: String) -> Observable<NSDictionary> {
@@ -199,14 +198,14 @@ extension ChainViewModel {
 }
 ```
 
-🎷 - 批量请求使用示例5:
+🎷 - Batch Example 5:
 
 ```
 class BatchViewModel: NSObject {
     let disposeBag = DisposeBag()
     let data = PublishRelay<NSDictionary>()
     
-    /// 配置加载动画插件
+    /// Configure loading animation plugin
     let APIProvider: MoyaProvider<MultiTarget> = {
         let configuration = URLSessionConfiguration.default
         configuration.headers = .default
@@ -238,17 +237,17 @@ class BatchViewModel: NSObject {
 ```
 
 ### MoyaPlugins
-该模块主要就是基于moya封装网络相关插件
+This module is mainly based on moya package network related plugins
 
-- 目前已封装6款插件供您使用：
-    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
-    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
-    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
-    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
-    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
-    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/GZip/NetworkGZipPlugin.swift): 解压缩插件
-    
-🏠 - 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
+- At present, 6 plugins have been packaged for you to use:
+    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin
+    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin
+    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin
+    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin
+    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Debugging/NetworkDebuggingPlugin.swift): Network printing, built in plugin
+    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/GZip/NetworkGZipPlugin.swift): Network data unzip plugin
+
+🏠 - Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
 
 ```
 var plugins: APIPlugins {
@@ -263,16 +262,16 @@ var plugins: APIPlugins {
 ```
 
 ### HandyJSON
-该模块是基于`HandyJSON`封装网络数据解析
+This module is based on `HandyJSON` package network data parsing
 
-- 大致分为以下3个部分：
-    - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift)：网络外层数据模型
-    - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift)：解析错误相关
-    - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift)：HandyJSON数据解析，目前提供两种解析方案
-        - **方案1** - 结合`HandyDataModel`模型使用解析出`data`数据
-        - **方案2** - 根据`keyPath`解析出指定key的数据，前提条件数据源必须字典形式
+- Roughly divided into the following 3 parts:
+    - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift): Network outer data model
+    - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift): Parse error related
+    - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift): HandyJSON data parsing, currently provides two parsing solutions
+        - **Option 1**: Combine `HandyDataModel` model to parse out data.
+        - **Option 2**: Parse the data of the specified key according to `keyPath`, the precondition is that the json data source must be in the form of a dictionary.
 
-🎷 - 结合网络部分使用示例：
+🎷 - Example of use in conjunction with the network part:
 
 ```
 func request(_ count: Int) -> Driver<[CacheModel]> {
@@ -280,30 +279,41 @@ func request(_ count: Int) -> Driver<[CacheModel]> {
         .asObservable()
         .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
         .compactMap { $0.data }
-        .observe(on: MainScheduler.instance) // 结果在主线程返回
-        .delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回
-        .asDriver(onErrorJustReturn: []) // 错误时刻返回空
+        .observe(on: MainScheduler.instance)
+        .delay(.seconds(1), scheduler: MainScheduler.instance)
+        .asDriver(onErrorJustReturn: [])
 }
 ```
 
 ### CocoaPods Install
 ```
-Ex: 导入网络架构API
+Ex: Import Network Architecture API
 - pod 'RxNetworks/MoyaNetwork'
 
-Ex: 导入数据解析
+Ex: Import Model Anslysis 
 - pod 'RxNetworks/HandyJSON'
 
-Ex: 导入加载动画插件
+Ex: Import loading animation plugin
 - pod 'RxNetworks/MoyaPlugins/Loading'
 ```
 
+### Remarks
+
+> The general process is almost like this, the Demo is also written in great detail, you can check it out for yourself.🎷
+>
+> [**RxNetworksDemo**](https://github.com/yangKJ/RxNetworks)
+>
+> Tip: If you find it helpful, please help me with a star. If you have any questions or needs, you can also issue.
+>
+> Thanks.🎇
+
+### About the author
+- 🎷 **E-mail address: [yangkj310@gmail.com](yangkj310@gmail.com) 🎷**
+- 🎸 **GitHub address: [yangKJ](https://github.com/yangKJ) 🎸**
+
 -----
 
-> <font color=red>**觉得有帮助的老哥们，请帮忙点个星 ⭐..**</font>
-
-**救救孩子吧，谢谢各位老板。**
-
-🥺 - [**传送门**](https://github.com/yangKJ/RxNetworks)
+### License
+RxNetworks is available under the [MIT](LICENSE) license. See the [LICENSE](LICENSE) file for more info.
 
 -----
