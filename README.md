@@ -16,8 +16,9 @@
 ### MoyaNetwork
 该模块是基于Moya封装的网络API架构
 
-- 主要分为3部分：
+- 主要分为8部分：
     - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift)：在程序最开始处设置配置信息，全局通用
+        - **addDebugging**：是否默认引入调试模式插件
         - **baseURL**：根路径地址
         - **baseParameters**：默认基本参数，类似：userID，token等
         - **baseMethod**：默认请求类型
@@ -25,8 +26,9 @@
     - [RxMoyaProvider](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/RxMoyaProvider.swift)：对网络请求添加响应式，返回`Single`序列
     - [NetworkUtil](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkUtil.swift)：网络相关函数
         - **defaultPlugin**：添加默认插件
-        - **transformAPISingleJSON**：转换`Single`序列对象
+        - **transformAPIObservableJSON**：转换成可观察序列JSON对象
         - **handyConfigurationPlugin**：处理配置插件
+        - **handyLastNeverPlugin**：最后的插件处理
     - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift)：继承替换Moya插件协议，方便后序扩展
         - **configuration**：设置网络配置信息之后，开始准备请求之前，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
         - **lastNever**：最后的最后网络响应返回时刻，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
@@ -35,7 +37,9 @@
         - **parameters**：请求参数
         - **plugins**：插件
         - **stubBehavior**：是否走测试数据
-        - **request**：网络请求方法
+        - **retry**：网络请求失败重试次数
+        - **request**：网络请求方法，返回可观察序列JSON对象
+    - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI+Ext.swift): 协议默认实现方案
     - [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift)：面向对象转换器，面向协议模式转面向对象，方便习惯OC思维的小伙伴
         - **cdy_ip**：根路径地址
         - **cdy_path**：请求路径
@@ -53,9 +57,7 @@
 
 ```
 class OOViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<String>()
     
     func loadData() {
@@ -82,7 +84,6 @@ enum LoadingAPI {
 }
 
 extension LoadingAPI: NetworkAPI {
-    
     var ip: APIHost {
         return NetworkConfig.baseURL
     }
@@ -100,9 +101,7 @@ extension LoadingAPI: NetworkAPI {
 
 
 class LoadingViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<NSDictionary>()
     
     /// 配置加载动画插件
@@ -131,20 +130,16 @@ class LoadingViewModel: NSObject {
 
 ```
 class CacheViewModel: NSObject {
-
     let disposeBag = DisposeBag()
-    
     struct Input {
         let count: Int
     }
-
     struct Output {
         let items: Driver<[CacheModel]>
     }
     
     func transform(input: Input) -> Output {
         let elements = BehaviorRelay<[CacheModel]>(value: [])
-        
         let output = Output(items: elements.asDriver())
         
         request(input.count)
@@ -157,7 +152,6 @@ class CacheViewModel: NSObject {
 }
 
 extension CacheViewModel {
-    
     func request(_ count: Int) -> Driver<[CacheModel]> {
         CacheAPI.cache(count).request()
             .asObservable()
@@ -174,9 +168,7 @@ extension CacheViewModel {
 
 ```
 class ChainViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<NSDictionary>()
     
     func chainLoad() {
@@ -191,7 +183,6 @@ class ChainViewModel: NSObject {
 }
 
 extension ChainViewModel {
-    
     func requestIP() -> Observable<String> {
         return ChainAPI.test.request()
             .asObservable()
@@ -212,9 +203,7 @@ extension ChainViewModel {
 
 ```
 class BatchViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<NSDictionary>()
     
     /// 配置加载动画插件
@@ -251,12 +240,13 @@ class BatchViewModel: NSObject {
 ### MoyaPlugins
 该模块主要就是基于moya封装网络相关插件
 
-- 目前已封装5款插件供您使用：
+- 目前已封装6款插件供您使用：
     - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
     - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
     - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
     - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
     - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
+    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/GZip/NetworkGZipPlugin.swift): 解压缩插件
     
 🏠 - 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
 

@@ -16,7 +16,7 @@ This is a set of infrastructure based on `RxSwift + Moya`
 ### MoyaNetwork
 This module is based on the Moya encapsulated network API architecture.
 
-- Mainly divided into 3 parts:
+- Mainly divided into 8 parts:
     - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift): Set the configuration information at the beginning of the program.
         - **baseURL**: Root path address to base URL.
         - **baseParameters**: Default basic parameters, like: userID, token, etc.
@@ -36,6 +36,7 @@ This module is based on the Moya encapsulated network API architecture.
         - **plugins**: Set network plugins.
         - **stubBehavior**: Whether to take the test data.
         - **request**: Network request method and return a Single sequence object.
+    - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI+Ext.swift): Protocol default implementation scheme.
 	- [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift): OOP converter, MVP to OOP, convenient for friends who are used to OC thinking
         - **cdy_ip**: Root path address to base URL.
         - **cdy_path**: Request path.
@@ -53,9 +54,7 @@ This module is based on the Moya encapsulated network API architecture.
 
 ```
 class OOViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<String>()
     
     func loadData() {
@@ -100,9 +99,7 @@ extension LoadingAPI: NetworkAPI {
 
 
 class LoadingViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<NSDictionary>()
     
     /// Configure the loading animation plugin
@@ -131,20 +128,16 @@ class LoadingViewModel: NSObject {
 
 ```
 class CacheViewModel: NSObject {
-
     let disposeBag = DisposeBag()
-    
     struct Input {
         let count: Int
     }
-
     struct Output {
         let items: Driver<[CacheModel]>
     }
     
     func transform(input: Input) -> Output {
         let elements = BehaviorRelay<[CacheModel]>(value: [])
-        
         let output = Output(items: elements.asDriver())
         
         request(input.count)
@@ -157,7 +150,6 @@ class CacheViewModel: NSObject {
 }
 
 extension CacheViewModel {
-    
     func request(_ count: Int) -> Driver<[CacheModel]> {
         CacheAPI.cache(count).request()
             .asObservable()
@@ -174,9 +166,7 @@ extension CacheViewModel {
 
 ```
 class ChainViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<NSDictionary>()
     
     func chainLoad() {
@@ -191,7 +181,6 @@ class ChainViewModel: NSObject {
 }
 
 extension ChainViewModel {
-    
     func requestIP() -> Observable<String> {
         return ChainAPI.test.request()
             .asObservable()
@@ -212,9 +201,7 @@ extension ChainViewModel {
 
 ```
 class BatchViewModel: NSObject {
-    
     let disposeBag = DisposeBag()
-    
     let data = PublishRelay<NSDictionary>()
     
     /// Configure loading animation plugin
@@ -251,12 +238,13 @@ class BatchViewModel: NSObject {
 ### MoyaPlugins
 This module is mainly based on moya package network related plugins
 
-- At present, 5 plugins have been packaged for you to use:
+- At present, 6 plugins have been packaged for you to use:
     - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin
     - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin
     - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin
     - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin
     - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Debugging/NetworkDebuggingPlugin.swift): Network printing, built in plugin
+    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/GZip/NetworkGZipPlugin.swift): Network data unzip plugin
 
 🏠 - Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
 
