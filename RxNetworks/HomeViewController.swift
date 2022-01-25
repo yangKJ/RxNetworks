@@ -12,7 +12,7 @@ import RxNetworks
 
 class HomeViewController: UIViewController {
 
-    private static let homeCellIdentifier = "homeCellIdentifier"
+    private static let identifier = "homeCellIdentifier"
     private let disposeBag = DisposeBag()
     private let viewModel: HomeViewModel = HomeViewModel()
     
@@ -23,8 +23,9 @@ class HomeViewController: UIViewController {
         tableView.sectionFooterHeight = 0.00001
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
-        tableView.backgroundColor = UIColor.white
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: HomeViewController.homeCellIdentifier)
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorStyle = .none
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: HomeViewController.identifier)
         return tableView
     }()
     
@@ -44,22 +45,24 @@ class HomeViewController: UIViewController {
     }
     
     func setupUI() {
-        self.view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.background
         self.view.addSubview(self.tableView)
     }
     
     func setupBinding() {
         
         viewModel.datasObservable.bind(to: tableView.rx.items) { (tableView, row, element) in
-            let cell = UITableViewCell(style: .value1, reuseIdentifier: HomeViewController.homeCellIdentifier)
+            let indexPath = IndexPath(index: row)
+            let cell = tableView.dequeueReusableCell(withIdentifier: HomeViewController.identifier, for: indexPath)
             cell.selectionStyle = .none
-            cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.textColor = UIColor.blue
+            cell.textLabel?.textColor = UIColor.defaultTint
             cell.textLabel?.text = "\(row + 1). " + element.rawValue
             cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
-            cell.detailTextLabel?.textColor = UIColor.blue.withAlphaComponent(0.5)
-            cell.detailTextLabel?.text = element.title
-            cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 13)
+            if row % 2 == 0 {
+                cell.backgroundColor = UIColor.cell_background?.withAlphaComponent(0.6)
+            } else {
+                cell.backgroundColor = UIColor.background
+            }
             return cell
         }
         .disposed(by: disposeBag)

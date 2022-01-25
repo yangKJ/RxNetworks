@@ -16,8 +16,8 @@
 		04233514278E61DE00547494 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04233509278E61DE00547494 /* LoadingViewController.swift */; };
 		04233515278E61DE00547494 /* OOViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350B278E61DE00547494 /* OOViewModel.swift */; };
 		04233516278E61DE00547494 /* OOViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350C278E61DE00547494 /* OOViewController.swift */; };
-		04233519278E620D00547494 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 04233518278E620D00547494 /* README.md */; };
-		0423351B278E622400547494 /* README_EN.md in Resources */ = {isa = PBXBuildFile; fileRef = 0423351A278E622400547494 /* README_EN.md */; };
+		04233519278E620D00547494 /* README_CN.md in Resources */ = {isa = PBXBuildFile; fileRef = 04233518278E620D00547494 /* README_CN.md */; };
+		0423351B278E622400547494 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0423351A278E622400547494 /* README.md */; };
 		0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89C2791E9E500AB04DB /* ChainViewModel.swift */; };
 		0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89D2791E9E500AB04DB /* ChainViewController.swift */; };
 		0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89E2791E9E500AB04DB /* ChainAPI.swift */; };
@@ -38,6 +38,8 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		6817A39627A022AC0034F283 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6817A39527A022AC0034F283 /* Color.xcassets */; };
+		6817A39827A022CB0034F283 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6817A39727A022CB0034F283 /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,8 +52,8 @@
 		04233509278E61DE00547494 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		0423350B278E61DE00547494 /* OOViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOViewModel.swift; sourceTree = "<group>"; };
 		0423350C278E61DE00547494 /* OOViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOViewController.swift; sourceTree = "<group>"; };
-		04233518278E620D00547494 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		0423351A278E622400547494 /* README_EN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_EN.md; sourceTree = SOURCE_ROOT; };
+		04233518278E620D00547494 /* README_CN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_CN.md; sourceTree = SOURCE_ROOT; };
+		0423351A278E622400547494 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		0442C89C2791E9E500AB04DB /* ChainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewModel.swift; sourceTree = "<group>"; };
 		0442C89D2791E9E500AB04DB /* ChainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewController.swift; sourceTree = "<group>"; };
 		0442C89E2791E9E500AB04DB /* ChainAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainAPI.swift; sourceTree = "<group>"; };
@@ -73,6 +75,8 @@
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		6817A39527A022AC0034F283 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		6817A39727A022CB0034F283 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		728016062553DB205A17A393 /* Pods-RxNetworks_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.release.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.release.xcconfig"; sourceTree = "<group>"; };
 		98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworks_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.debug.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -159,11 +163,12 @@
 		04C053FD278D5705008BCC42 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6817A39527A022AC0034F283 /* Color.xcassets */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				04233518278E620D00547494 /* README.md */,
-				0423351A278E622400547494 /* README_EN.md */,
+				04233518278E620D00547494 /* README_CN.md */,
+				0423351A278E622400547494 /* README.md */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -225,6 +230,7 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				04C0541F278D6A49008BCC42 /* BaseViewController.swift */,
+				6817A39727A022CB0034F283 /* Color.swift */,
 				607FACD71AFB9204008FA782 /* HomeViewController.swift */,
 				04C05416278D66F0008BCC42 /* HomeViewModel.swift */,
 				04C053FE278D5D07008BCC42 /* Modules */,
@@ -313,10 +319,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
-				04233519278E620D00547494 /* README.md in Resources */,
-				0423351B278E622400547494 /* README_EN.md in Resources */,
+				04233519278E620D00547494 /* README_CN.md in Resources */,
+				0423351B278E622400547494 /* README.md in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				6817A39627A022AC0034F283 /* Color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +410,7 @@
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
 				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
 				04BB29B6279911DD0056F94A /* WarningViewController.swift in Sources */,
+				6817A39827A022CB0034F283 /* Color.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
 				04233516278E61DE00547494 /* OOViewController.swift in Sources */,
 				04233514278E61DE00547494 /* LoadingViewController.swift in Sources */,

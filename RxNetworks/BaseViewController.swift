@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class BaseViewController<VM: NSObject>: UIViewController {
 
@@ -18,7 +19,7 @@ class BaseViewController<VM: NSObject>: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.view.backgroundColor = UIColor.green
+        self.view.backgroundColor = UIColor.background
     }
     
     deinit {
