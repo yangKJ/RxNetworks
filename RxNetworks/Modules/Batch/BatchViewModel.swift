@@ -16,22 +16,13 @@ class BatchViewModel: NSObject {
     
     let data = PublishRelay<Dictionary<String, Any>>()
     
-    /// 配置加载动画插件
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let load = NetworkLoadingPlugin.init()
-        return MoyaProvider<MultiTarget>(session: session, plugins: [load])
-    }()
-    
     func batchLoad() {
         Observable.zip(
-            APIProvider.rx.request(api: BatchAPI.test),
-            APIProvider.rx.request(api: BatchAPI.test2("666")),
-            APIProvider.rx.request(api: BatchAPI.test3)
+            BatchAPI.test.request(),
+            BatchAPI.test2("666").request(),
+            BatchAPI.test3.request()
         ).subscribe(onNext: { [weak self] in
+            NetworkLoadingPlugin.hideMBProgressHUD()
             guard var data1 = $0 as? Dictionary<String, Any>,
                   let data2 = $1 as? Dictionary<String, Any>,
                   let data3 = $2 as? Dictionary<String, Any> else {

@@ -25,13 +25,36 @@ extension BatchAPI: NetworkAPI {
         case .test:
             return "/ip"
         case .test2:
-            return "/user-agent"
-        case .test3:
             return "/uuid"
+        case .test3:
+            return "/user-agent"
         }
     }
     
     var method: APIMethod {
         return APIMethod.get
+    }
+    
+    var plugins: APIPlugins {
+        let loading = NetworkLoadingPlugin(autoHide: false)
+        return [loading]
+    }
+    
+    var stubBehavior: APIStubBehavior {
+        switch self {
+        case .test3:
+            return APIStubBehavior.delayed(seconds: 2)
+        default:
+            return APIStubBehavior.never
+        }
+    }
+    
+    var sampleData: Data {
+        let dict: [String : Any] = [
+            "data": "delayed 2 seconds return data.",
+            "code": 200,
+            "message": "successed."
+        ]
+        return X.toJSON(form: dict)!.data(using: String.Encoding.utf8)!
     }
 }

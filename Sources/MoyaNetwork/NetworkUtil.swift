@@ -11,8 +11,6 @@ import RxSwift
 
 internal struct NetworkUtil {
     
-    /// 默认指定插件
-    /// - Parameter plugins: 插件数组
     static func defaultPlugin(_ plugins: inout APIPlugins, api: NetworkAPI) {
         var temp = plugins
         if NetworkConfig.addIndicator {
@@ -26,7 +24,7 @@ internal struct NetworkUtil {
         if NetworkConfig.addDebugging {
             #if DEBUG && RxNetworks_MoyaPlugins_Debugging
             if !temp.contains(where: { $0 is NetworkDebuggingPlugin}) {
-                let Debugging = NetworkDebuggingPlugin(api: api)
+                let Debugging = NetworkDebuggingPlugin.init()
                 temp.append(Debugging)
             }
             #endif
@@ -61,9 +59,9 @@ internal struct NetworkUtil {
     
     static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> ConfigurationTuple {
         var tuple: ConfigurationTuple
-        tuple.result = nil // 空数据，方便后序插件操作
+        tuple.result = nil // Empty data, convenient for subsequent plugin operations
         tuple.endRequest = false
-        plugins.forEach { tuple = $0.configuration(tuple, target: target) }
+        plugins.forEach { tuple = $0.configuration(tuple, target: target, plugins: plugins) }
         return tuple
     }
     

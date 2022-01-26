@@ -42,6 +42,20 @@ public final class NetworkLoadingPlugin {
         self.delayHideHUD = hideHUD
         self.autoHideLoading = loading
     }
+    
+    /// 如果设置过`autoHide`请记得自己来关闭加载动画，倘若失败插件会帮你关闭，倘若均成功请自己来关闭
+    /// If you have set `autoHide = false`, please remember to close the loading animation yourself.
+    /// If it fails, the plug-in will help you close it. If it is successful, please close it yourself.
+    public static func hideMBProgressHUD() {
+        DispatchQueue.main.async {
+            if let view = RxNetworks.X.View.keyWindow {
+                MBProgressHUD.hide(for: view, animated: true)
+            }
+            if let vc = RxNetworks.X.View.topViewController, let view = vc.view {
+                MBProgressHUD.hide(for: view, animated: true)
+            }
+        }
+    }
 }
 
 extension NetworkLoadingPlugin: PluginSubType {
@@ -70,11 +84,11 @@ extension NetworkLoadingPlugin: PluginSubType {
 
 extension NetworkLoadingPlugin {
     
-    /// 显示提示文本
+    /// Display the prompt text
     /// - Parameters:
-    ///   - text: 显示内容
-    ///   - window: 是否显示在窗口
-    ///   - delay: 延迟隐藏时间
+    ///   - text: display content
+    ///   - window: whether to display in the window
+    ///   - delay: delay hiding time
     private func showText(_ text: String, window: Bool, delay: TimeInterval) {
         DispatchQueue.main.async {
             guard let view = window ? RxNetworks.X.View.keyWindow :
@@ -82,7 +96,7 @@ extension NetworkLoadingPlugin {
             if let _ = MBProgressHUD.forView(view) {
                 return
             }
-            // 设置加载为白色
+            // Set Activity Indicator View to white for hud loading.
             let indicatorView = UIActivityIndicatorView.appearance(whenContainedInInstancesOf: [MBProgressHUD.self])
             indicatorView.color = UIColor.white
             
@@ -102,18 +116,6 @@ extension NetworkLoadingPlugin {
             }
             if let changeHud = self.changeHudCallback {
                 changeHud(hud)
-            }
-        }
-    }
-    
-    /// 隐藏加载
-    private static func hideMBProgressHUD() {
-        DispatchQueue.main.async {
-            if let view = RxNetworks.X.View.keyWindow {
-                MBProgressHUD.hide(for: view, animated: true)
-            }
-            if let vc = RxNetworks.X.View.topViewController, let view = vc.view {
-                MBProgressHUD.hide(for: view, animated: true)
             }
         }
     }

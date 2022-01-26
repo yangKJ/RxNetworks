@@ -56,7 +56,7 @@ public final class NetworkCachePlugin {
 
 extension NetworkCachePlugin: PluginSubType {
     
-    public func configuration(_ tuple: ConfigurationTuple, target: TargetType) -> ConfigurationTuple {
+    public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
         if (cacheType == .cacheElseNetwork || cacheType == .cacheThenNetwork),
            let response = self.readCacheResponse(target) {
             if cacheType == .cacheElseNetwork {

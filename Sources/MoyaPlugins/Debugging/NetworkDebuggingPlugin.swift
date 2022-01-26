@@ -18,18 +18,14 @@ public final class NetworkDebuggingPlugin {
     /// Turn on printing the response result.
     public static var openDebugResponse: Bool = true
     
-    private(set) var api: NetworkAPI
-    
-    public init(api: NetworkAPI) {
-        self.api = api
-    }
+    public init() { }
 }
 
 extension NetworkDebuggingPlugin: PluginSubType {
     
-    public func configuration(_ tuple: ConfigurationTuple, target: TargetType) -> ConfigurationTuple {
+    public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
         #if DEBUG
-        NetworkDebuggingPlugin.DebuggingRequest(api)
+        NetworkDebuggingPlugin.DebuggingRequest(target, plugins: plugins)
         if let result = tuple.result, tuple.endRequest {
             NetworkDebuggingPlugin.ansysisResult(result, local: true)
         }
@@ -47,22 +43,29 @@ extension NetworkDebuggingPlugin: PluginSubType {
 
 extension NetworkDebuggingPlugin {
     
-    static func DebuggingRequest(_ api: NetworkAPI?) {
-        guard openDebugRequest, let target = api else { return }
+    static func DebuggingRequest(_ target: TargetType, plugins: APIPlugins) {
+        guard openDebugRequest else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
         formatter.locale = Locale(identifier: "zh_CN")
         let date = formatter.string(from: Date())
-        if let param = target.parameters, param.isEmpty == false {
+        var parameters: APIParameters? = nil
+        switch target.task {
+        case .requestParameters(let p, _):
+            parameters = p
+        default:
+            break
+        }
+        if let param = parameters, param.isEmpty == false {
             print("""
                   ------- 🎈 Request 🎈 -------
                   Time: \(date)
                   Method: \(target.method.rawValue)
-                  Host: \(target.ip)
+                  Host: \(target.baseURL.absoluteString)
                   Path: \(target.path)
                   Parameters: \(param)
                   BaseParameters: \(NetworkConfig.baseParameters)
-                  Plugins: \(pluginString(target.plugins))
+                  Plugins: \(pluginString(plugins))
                   LinkURL: \(requestFullLink(with: target))
                   
                   """)
@@ -71,10 +74,10 @@ extension NetworkDebuggingPlugin {
               ------- 🎈 Request 🎈 -------
               Time: \(date)
               Method: \(target.method.rawValue)
-              Host: \(target.ip)
+              Host: \(target.baseURL.absoluteString)
               Path: \(target.path)
               BaseParameters: \(NetworkConfig.baseParameters)
-              Plugins: \(pluginString(target.plugins))
+              Plugins: \(pluginString(plugins))
               LinkURL: \(requestFullLink(with: target))
               
               """)

@@ -21,6 +21,7 @@ public protocol PluginSubType: PluginType {
     /// - Parameters:
     ///   - tuple: 配置信息元组，其中包含数据源和是否结束后序网络请求
     ///   - target: 参数协议
+    ///   - plugins: 配置的插件数组
     /// - Returns: 包涵数据源和是否结束后序网络请求的元组
     ///
     /// After setting the network configuration information, before starting to prepare the request,
@@ -28,8 +29,9 @@ public protocol PluginSubType: PluginType {
     /// - Parameters:
     ///   - tuple: A tuple of configuration information, which contains the data source and whether to end the subsequent network request.
     ///   - target: The protocol used to define the specifications necessary for a `MoyaProvider`.
+    ///   - plugins: Array of configured plugins.
     /// - Returns: The tuple containing the data source and whether to end the subsequent network request.
-    func configuration(_ tuple: ConfigurationTuple, target: TargetType) -> ConfigurationTuple
+    func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple
     
     /// 最后的最后网络响应返回时刻，
     /// 该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
@@ -50,7 +52,7 @@ public protocol PluginSubType: PluginType {
 
 public extension PluginSubType {
     
-    func configuration(_ tuple: ConfigurationTuple, target: TargetType) -> ConfigurationTuple {
+    func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
         return tuple
     }
     
