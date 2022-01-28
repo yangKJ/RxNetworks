@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import RxCocoa
 import RxNetworks
 
 class LoadingViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishRelay<NSDictionary>()
+    let data = PublishSubject<NSDictionary>()
     
     /// 配置加载动画插件
     let APIProvider: MoyaProvider<MultiTarget> = {
@@ -31,7 +30,7 @@ class LoadingViewModel: NSObject {
             .asObservable()
             .subscribe { [weak self] (event) in
                 if let dict = event.element as? NSDictionary {
-                    self?.data.accept(dict)
+                    self?.data.onNext(dict)
                 }
             }.disposed(by: disposeBag)
     }

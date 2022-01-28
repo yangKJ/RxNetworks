@@ -7,20 +7,19 @@
 //
 
 import Foundation
-import RxCocoa
 import RxNetworks
 
 class ChainViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishRelay<NSDictionary>()
+    let data = PublishSubject<NSDictionary>()
     
     func chainLoad() {
         requestIP()
             .flatMapLatest(requestData)
-            .subscribe(onNext: { [weak self] data in
-                self?.data.accept(data)
+            .subscribe(onNext: { [weak self] (data) in
+                self?.data.onNext(data)
             }, onError: {
                 print("Network Failed: \($0)")
             }).disposed(by: disposeBag)

@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import RxCocoa
 import RxNetworks
 
 class BatchViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishRelay<Dictionary<String, Any>>()
+    let data = PublishSubject<Dictionary<String, Any>>()
     
     func batchLoad() {
         Observable.zip(
@@ -30,7 +29,7 @@ class BatchViewModel: NSObject {
                   }
             data1 += data2
             data1 += data3
-            self?.data.accept(data1)
+            self?.data.onNext(data1)
         }, onError: {
             print("Network Failed: \($0)")
         }).disposed(by: disposeBag)

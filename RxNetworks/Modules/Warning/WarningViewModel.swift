@@ -7,21 +7,20 @@
 //
 
 import Foundation
-import RxCocoa
 import RxNetworks
 
 class WarningViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishRelay<String>()
-    
+    let data = PublishSubject<String>()
+
     func loadData() {
         WarningAPI.warning.request()
             .asObservable()
             .map { $0 as! String }
             .catchAndReturn("catch and return.")
-            .bind(to: data)
+            .subscribe(data)
             .disposed(by: disposeBag)
     }
 }

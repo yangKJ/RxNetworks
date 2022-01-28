@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RxCocoa
 import RxNetworks
 
 class CacheViewController: BaseViewController<CacheViewModel> {
@@ -31,12 +30,9 @@ class CacheViewController: BaseViewController<CacheViewModel> {
         
         let output = viewModel.transform(input: input)
         
-        output.items.drive(onNext: { [weak self] datas in
+        output.items.subscribe(onNext: { [weak self] (datas) in
             guard datas.isEmpty == false else { return }
             self?.textView.text = datas.toJSONString(prettyPrint: true)
         }).disposed(by: disposeBag)
-        
-        /// 无数据时刻隐藏
-        output.items.map { $0.isEmpty }.drive(textView.rx.isHidden).disposed(by: disposeBag)
     }
 }

@@ -8,11 +8,10 @@
 
 import UIKit
 import RxSwift
-import RxCocoa
 
 class BaseViewController<VM: NSObject>: UIViewController {
 
-    public lazy var viewModel: VM = VM.self.init()
+    public lazy var viewModel: VM = VM.init()
     public let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -25,4 +24,10 @@ class BaseViewController<VM: NSObject>: UIViewController {
     deinit {
         print("🎷\(String(describing: self)): Deinited")
     }
+}
+
+extension UIColor {
+    static let background = UIColor(named: "background")
+    static let defaultTint = UIColor(named: "defaultTint")
+    static let cell_background = UIColor(named: "cell_background")
 }

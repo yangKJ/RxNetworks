@@ -8,7 +8,6 @@
 
 import UIKit
 import RxNetworks
-import RxCocoa
 
 class WarningViewController: BaseViewController<WarningViewModel> {
     
@@ -28,9 +27,10 @@ class WarningViewController: BaseViewController<WarningViewModel> {
     }
     
     func setupBindings() {
-        
-        viewModel.data.bind(to: textView.rx.text).disposed(by: disposeBag)
-        
+        viewModel.data.subscribe { [weak self] (text) in
+            self?.textView.text = text
+        }.disposed(by: disposeBag)
+
         viewModel.loadData()
     }
 }

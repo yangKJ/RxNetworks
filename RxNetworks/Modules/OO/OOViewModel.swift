@@ -7,28 +7,36 @@
 //
 
 import Foundation
-import RxCocoa
 import RxNetworks
 
 class OOViewModel: NSObject {
     
-    let disposeBag = DisposeBag()
+    struct Input {
+        let retry: Int
+    }
     
-    let data = PublishRelay<String>()
+    struct Output {
+        let items: Observable<String>
+    }
     
-    func loadData() {
+    func transform(input: Input) -> Output {
+        return Output(items: input.request())
+    }
+}
+
+extension OOViewModel.Input {
+    func request() -> Observable<String> {
         var api = NetworkAPIOO.init()
         api.cdy_ip = NetworkConfig.baseURL
         api.cdy_path = "/ip"
-        api.cdy_method = .get
-        api.cdy_plugins = [NetworkLoadingPlugin.init()]
-        api.cdy_retry = 3
+        api.cdy_method = APIMethod.get
+        api.cdy_plugins = [NetworkLoadingPlugin()]
+        api.cdy_retry = self.retry
         
-        api.cdy_HTTPRequest()
+        return api.cdy_HTTPRequest()
             .asObservable()
             .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
             .catchAndReturn("")
-            .bind(to: data)
-            .disposed(by: disposeBag)
+            .observe(on: MainScheduler.instance)
     }
 }

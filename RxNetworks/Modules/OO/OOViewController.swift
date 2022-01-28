@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RxCocoa
 import RxNetworks
 
 class OOViewController: BaseViewController<OOViewModel> {
@@ -28,8 +27,12 @@ class OOViewController: BaseViewController<OOViewModel> {
     }
     
     func setupBindings() {
-        viewModel.data.bind(to: textView.rx.text).disposed(by: disposeBag)
+        let input = OOViewModel.Input(retry: 3)
         
-        viewModel.loadData()
+        let output = viewModel.transform(input: input)
+        
+        output.items.subscribe(onNext: { [weak self] (text) in
+            self?.textView.text = text
+        }).disposed(by: disposeBag)
     }
 }

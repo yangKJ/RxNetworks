@@ -8,38 +8,31 @@
 
 import Foundation
 import RxNetworks
-import RxCocoa
 
 class CacheViewModel: NSObject {
 
-    let disposeBag = DisposeBag()
-    
     struct Input {
         let count: Int
     }
 
     struct Output {
-        let items: Driver<[CacheModel]>
+        let items: Observable<[CacheModel]>
     }
     
     func transform(input: Input) -> Output {
-        let elements = BehaviorRelay<[CacheModel]>(value: [])
+        let items = request(input.count).asObservable()
         
-        let output = Output(items: elements.asDriver())
-        
-        request(input.count).drive(elements).disposed(by: disposeBag)
-        
-        return output
+        return Output(items: items)
     }
 }
 
 extension CacheViewModel {
     
-    func request(_ count: Int) -> Driver<[CacheModel]> {
+    func request(_ count: Int) -> Observable<[CacheModel]> {
         CacheAPI.cache(count).request()
             .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
             .compactMap { $0.data }
             .observe(on: MainScheduler.instance) // 结果在主线程返回
-            .asDriver(onErrorJustReturn: []) // 错误时刻返回空
+            .catchAndReturn([]) // 错误时刻返回空
     }
 }

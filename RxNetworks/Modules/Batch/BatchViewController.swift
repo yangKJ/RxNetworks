@@ -30,7 +30,7 @@ class BatchViewController: BaseViewController<BatchViewModel> {
         viewModel.data.subscribe { [weak self] dict in
             self?.textView.text = X.toJSON(form: dict.element as Any, prettyPrint: true)
         }.disposed(by: disposeBag)
-        
+
         viewModel.batchLoad()
     }
 }

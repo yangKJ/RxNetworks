@@ -18,7 +18,7 @@ enum ViewControllerType: String {
     case Warning = "Failed Prompting Plugin"
     case GZip = "GZip UnCompression Plugin"
     
-    var viewController: UIViewController {
+    func viewController() -> UIViewController {
         switch self {
         case .OO: return OOViewController()
         case .Chain: return ChainViewController()
@@ -33,13 +33,15 @@ enum ViewControllerType: String {
 
 struct HomeViewModel {
 
-    let datasObservable = Observable<[ViewControllerType]>.just([
-        .OO,
-        .Chain,
-        .Batch,
-        .Loading,
-        .Cache,
-        .Warning,
-        .GZip,
-    ])
+    lazy var datas: [ViewControllerType] = {
+        return [
+            .OO,
+            .Chain,
+            .Batch,
+            .Loading,
+            .Cache,
+            .Warning,
+            .GZip,
+        ]
+    }()
 }

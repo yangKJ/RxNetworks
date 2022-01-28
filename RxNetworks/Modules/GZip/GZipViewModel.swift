@@ -7,21 +7,21 @@
 //
 
 import Foundation
-import RxCocoa
 import RxNetworks
 
 class GZipViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishRelay<String>()
+    let data = PublishSubject<String>()
     
     func loadData() {
         GZipAPI.gzip.request()
             .asObservable()
             .mapHandyJSON(HandyDataModel<CacheModel>.self)
             .map { ($0.data?.url)! }
-            .bind(to: data)
+            .catchAndReturn("")
+            .subscribe(data)
             .disposed(by: disposeBag)
     }
 }

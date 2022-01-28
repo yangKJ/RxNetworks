@@ -8,7 +8,6 @@
 
 import UIKit
 import RxNetworks
-import RxCocoa
 
 class GZipViewController: BaseViewController<GZipViewModel> {
     
@@ -28,8 +27,9 @@ class GZipViewController: BaseViewController<GZipViewModel> {
     }
     
     func setupBindings() {
-        
-        viewModel.data.bind(to: textView.rx.text).disposed(by: disposeBag)
+        viewModel.data.subscribe { [weak self] (text) in
+            self?.textView.text = text
+        }.disposed(by: disposeBag)
         
         viewModel.loadData()
     }

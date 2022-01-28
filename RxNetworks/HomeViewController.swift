@@ -7,23 +7,25 @@
 //
 
 import UIKit
-import RxCocoa
 import RxNetworks
 
 class HomeViewController: UIViewController {
 
     private static let identifier = "homeCellIdentifier"
-    private let disposeBag = DisposeBag()
-    private let viewModel: HomeViewModel = HomeViewModel()
+    private var viewModel: HomeViewModel = HomeViewModel()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView.init(frame: self.view.bounds, style: .plain)
-        tableView.rowHeight = 44
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.sectionHeaderHeight = 0.00001
         tableView.sectionFooterHeight = 0.00001
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
-        tableView.backgroundColor = UIColor.clear
+        tableView.backgroundColor = view.backgroundColor
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: HomeViewController.identifier)
         return tableView
@@ -34,7 +36,6 @@ class HomeViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.setupDefault()
         self.setupUI()
-        self.setupBinding()
     }
     
     func setupDefault() {
@@ -50,29 +51,38 @@ class HomeViewController: UIViewController {
         view.backgroundColor = UIColor.background
         self.view.addSubview(self.tableView)
     }
+}
+
+// MARK: - UITableViewDataSource,UITableViewDelegate
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
     
-    func setupBinding() {
-        
-        viewModel.datasObservable.bind(to: tableView.rx.items) { (tableView, row, element) in
-            let indexPath = IndexPath(index: row)
-            let cell = tableView.dequeueReusableCell(withIdentifier: HomeViewController.identifier, for: indexPath)
-            cell.selectionStyle = .none
-            cell.textLabel?.textColor = UIColor.defaultTint
-            cell.textLabel?.text = "\(row + 1). " + element.rawValue
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
-            if row % 2 == 0 {
-                cell.backgroundColor = UIColor.cell_background?.withAlphaComponent(0.6)
-            } else {
-                cell.backgroundColor = UIColor.background
-            }
-            return cell
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.datas.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let element = self.viewModel.datas[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: HomeViewController.identifier, for: indexPath)
+        cell.selectionStyle = .none
+        cell.textLabel?.textColor = UIColor.defaultTint
+        cell.textLabel?.text = "\(indexPath.row + 1). " + element.rawValue
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = UIColor.cell_background?.withAlphaComponent(0.6)
+        } else {
+            cell.backgroundColor = UIColor.background
         }
-        .disposed(by: disposeBag)
-        
-        tableView.rx.modelSelected(ViewControllerType.self).subscribe (onNext: { type in
-            let vc: UIViewController = type.viewController
-            vc.title = type.rawValue
-            self.navigationController?.pushViewController(vc, animated: true)
-        }).disposed(by: disposeBag)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let type = self.viewModel.datas[indexPath.row]
+        let vc: UIViewController = type.viewController()
+        vc.title = type.rawValue
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

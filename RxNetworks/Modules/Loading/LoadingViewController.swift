@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RxCocoa
 import RxNetworks
 
 class LoadingViewController: BaseViewController<LoadingViewModel> {
@@ -31,9 +30,11 @@ class LoadingViewController: BaseViewController<LoadingViewModel> {
         viewModel.data
             .asObservable()
             .map { $0["data"] as? String }
-            .bind(to: textView.rx.text)
+            .subscribe(onNext: { [weak self] in
+                self?.textView.text = $0
+            })
             .disposed(by: disposeBag)
-        
+
         viewModel.loadData()
     }
 }
