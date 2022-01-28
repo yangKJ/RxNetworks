@@ -30,9 +30,11 @@ public typealias APIObservableJSON = RxSwift.Observable<Any>
 public struct NetworkConfig {
     
     /// Whether to add the Debugging plugin by default
-    public static var addDebugging: Bool = true
+    public static var addDebugging: Bool = false
     /// Whether to add the Indicator plugin by default
-    public static var addIndicator: Bool = true
+    public static var addIndicator: Bool = false
+    /// Set the request timeout, the default is 30 seconds
+    public static var timeoutIntervalForRequest: TimeInterval = 30
     
     /// Root path address
     public private(set) static var baseURL: APIHost = ""

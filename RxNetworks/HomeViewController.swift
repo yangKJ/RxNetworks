@@ -42,7 +42,8 @@ class HomeViewController: UIViewController {
             host: "https://www.httpbin.org",
             parameters: ["key": "RxNetworks"]
         )
-        NetworkConfig.addDebugging = false
+        NetworkConfig.addDebugging = true
+        NetworkConfig.addIndicator = true
     }
     
     func setupUI() {

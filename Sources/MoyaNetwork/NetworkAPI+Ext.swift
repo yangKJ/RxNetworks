@@ -31,7 +31,7 @@ extension NetworkAPI {
         
         let configuration = URLSessionConfiguration.default
         configuration.headers = Alamofire.HTTPHeaders.default
-        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
         let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
         let MoyaProvider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
