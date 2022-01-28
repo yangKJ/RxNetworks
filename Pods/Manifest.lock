@@ -9,35 +9,35 @@ PODS:
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
-  - RxNetworks (0.1.6):
-    - RxNetworks/HandyJSON (= 0.1.6)
-    - RxNetworks/MoyaNetwork (= 0.1.6)
-    - RxNetworks/MoyaPlugins (= 0.1.6)
-  - RxNetworks/HandyJSON (0.1.6):
+  - RxNetworks (0.1.7):
+    - RxNetworks/HandyJSON (= 0.1.7)
+    - RxNetworks/MoyaNetwork (= 0.1.7)
+    - RxNetworks/MoyaPlugins (= 0.1.7)
+  - RxNetworks/HandyJSON (0.1.7):
     - HandyJSON
     - RxSwift
-  - RxNetworks/MoyaNetwork (0.1.6):
+  - RxNetworks/MoyaNetwork (0.1.7):
     - Moya
     - RxSwift
-  - RxNetworks/MoyaPlugins (0.1.6):
-    - RxNetworks/MoyaPlugins/Cache (= 0.1.6)
-    - RxNetworks/MoyaPlugins/Debugging (= 0.1.6)
-    - RxNetworks/MoyaPlugins/GZip (= 0.1.6)
-    - RxNetworks/MoyaPlugins/Indicator (= 0.1.6)
-    - RxNetworks/MoyaPlugins/Loading (= 0.1.6)
-    - RxNetworks/MoyaPlugins/Warning (= 0.1.6)
-  - RxNetworks/MoyaPlugins/Cache (0.1.6):
+  - RxNetworks/MoyaPlugins (0.1.7):
+    - RxNetworks/MoyaPlugins/Cache (= 0.1.7)
+    - RxNetworks/MoyaPlugins/Debugging (= 0.1.7)
+    - RxNetworks/MoyaPlugins/GZip (= 0.1.7)
+    - RxNetworks/MoyaPlugins/Indicator (= 0.1.7)
+    - RxNetworks/MoyaPlugins/Loading (= 0.1.7)
+    - RxNetworks/MoyaPlugins/Warning (= 0.1.7)
+  - RxNetworks/MoyaPlugins/Cache (0.1.7):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Debugging (0.1.6):
+  - RxNetworks/MoyaPlugins/Debugging (0.1.7):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/GZip (0.1.6):
+  - RxNetworks/MoyaPlugins/GZip (0.1.7):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Indicator (0.1.6):
+  - RxNetworks/MoyaPlugins/Indicator (0.1.7):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Loading (0.1.6):
+  - RxNetworks/MoyaPlugins/Loading (0.1.7):
     - MBProgressHUD
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Warning (0.1.6):
+  - RxNetworks/MoyaPlugins/Warning (0.1.7):
     - RxNetworks/MoyaNetwork
     - Toast-Swift
   - RxRelay (6.5.0):
@@ -70,7 +70,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
-  RxNetworks: abeb60c756cf74ff657faf4bb669459b89470d23
+  RxNetworks: f10f58c340b3042433243ed15354fa159e0d2739
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
