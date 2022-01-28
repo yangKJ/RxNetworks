@@ -56,21 +56,34 @@ This module is based on the Moya encapsulated network API architecture.
 
 ```
 class OOViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<String>()
+
+    struct Input {
+        let retry: Int
+    }
     
-    func loadData() {
+    struct Output {
+        let items: Observable<String>
+    }
+    
+    func transform(input: Input) -> Output {
+        return Output(items: input.request())
+    }
+}
+
+extension OOViewModel.Input {
+    func request() -> Observable<String> {
         var api = NetworkAPIOO.init()
         api.cdy_ip = NetworkConfig.baseURL
         api.cdy_path = "/ip"
-        api.cdy_method = .get
-        api.cdy_plugins = [NetworkLoadingPlugin.init()]
+        api.cdy_method = APIMethod.get
+        api.cdy_plugins = [NetworkLoadingPlugin()]
+        api.cdy_retry = self.retry
         
-        api.cdy_HTTPRequest()
+        return api.cdy_HTTPRequest()
             .asObservable()
             .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
-            .bind(to: data)
-            .disposed(by: disposeBag)
+            .catchAndReturn("")
+            .observe(on: MainScheduler.instance)
     }
 }
 ```
@@ -129,36 +142,30 @@ class LoadingViewModel: NSObject {
 
 ```
 class CacheViewModel: NSObject {
-    let disposeBag = DisposeBag()
+
     struct Input {
         let count: Int
     }
+
     struct Output {
-        let items: Driver<[CacheModel]>
+        let items: Observable<[CacheModel]>
     }
     
     func transform(input: Input) -> Output {
-        let elements = BehaviorRelay<[CacheModel]>(value: [])
-        let output = Output(items: elements.asDriver())
+        let items = request(input.count).asObservable()
         
-        request(input.count)
-            .asObservable()
-            .bind(to: elements)
-            .disposed(by: disposeBag)
-        
-        return output
+        return Output(items: items)
     }
 }
 
 extension CacheViewModel {
-    func request(_ count: Int) -> Driver<[CacheModel]> {
+    
+    func request(_ count: Int) -> Observable<[CacheModel]> {
         CacheAPI.cache(count).request()
-            .asObservable()
             .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
             .compactMap { $0.data }
-            .observe(on: MainScheduler.instance)
-            .delay(.seconds(1), scheduler: MainScheduler.instance) 
-            .asDriver(onErrorJustReturn: [])
+            .observe(on: MainScheduler.instance) // the result is returned on the main thread
+            .catchAndReturn([]) // return null on error
     }
 }
 ```
