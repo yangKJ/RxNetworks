@@ -22,12 +22,15 @@ public struct GZipManager {
 extension GZipManager {
     
     public static func gzipCompress(_ data: Data) -> Data {
-        guard data.count > 0 else { return data }
+        guard data.count > 0 else {
+            return data
+        }
         var stream = z_stream()
         stream.avail_in = uInt(data.count)
         stream.total_out = 0
-        data.withUnsafeBytes { (bytes: UnsafePointer<Bytef>) in
-            stream.next_in = UnsafeMutablePointer<Bytef>(mutating: bytes)
+        data.withUnsafeBytes { (inputPointer: UnsafeRawBufferPointer) in
+            stream.next_in = UnsafeMutablePointer<Bytef>(mutating: inputPointer.bindMemory(to: Bytef.self).baseAddress!)
+                .advanced(by: Int(stream.total_in))
         }
         var status = deflateInit2_(&stream,
                                    Z_DEFAULT_COMPRESSION,
@@ -37,7 +40,7 @@ extension GZipManager {
                                    Z_DEFAULT_STRATEGY,
                                    ZLIB_VERSION,
                                    GZIP_STREAM_SIZE)
-        if  status != Z_OK {
+        if status != Z_OK {
             return Data()
         }
         
@@ -47,8 +50,9 @@ extension GZipManager {
                 compressedData.count += GZIP_BUF_LENGTH
             }
             stream.avail_out = uInt(GZIP_BUF_LENGTH)
-            compressedData.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<Bytef>) -> Void in
-                stream.next_out = bytes.advanced(by: Int(stream.total_out))
+            compressedData.withUnsafeMutableBytes { (outputPointer: UnsafeMutableRawBufferPointer) in
+                stream.next_out = outputPointer.bindMemory(to: Bytef.self).baseAddress!
+                    .advanced(by: Int(stream.total_out))
             }
             status = deflate(&stream, Z_FINISH)
             if status != Z_OK && status != Z_STREAM_END {
@@ -66,15 +70,16 @@ extension GZipManager {
 extension GZipManager {
     
     public static func gzipUncompress(_ data: Data) -> Data {
-        guard data.count > 0 else {
+        guard !data.isEmpty else {
             return Data()
         }
         guard isGZipCompressed(data) else {
             return data
         }
         var stream = z_stream()
-        data.withUnsafeBytes { (bytes: UnsafePointer<Bytef>) in
-            stream.next_in =  UnsafeMutablePointer<Bytef>(mutating: bytes)
+        data.withUnsafeBytes { (inputPointer: UnsafeRawBufferPointer) in
+            stream.next_in = UnsafeMutablePointer<Bytef>(mutating: inputPointer.bindMemory(to: Bytef.self).baseAddress!)
+                .advanced(by: Int(stream.total_in))
         }
         stream.avail_in = uInt(data.count)
         stream.total_out = 0
@@ -86,8 +91,9 @@ extension GZipManager {
         while stream.avail_out == 0 {
             stream.avail_out = uInt(GZIP_BUF_LENGTH)
             decompressed.count += GZIP_BUF_LENGTH
-            decompressed.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<Bytef>) in
-                stream.next_out = bytes.advanced(by: Int(stream.total_out))
+            decompressed.withUnsafeMutableBytes { (outputPointer: UnsafeMutableRawBufferPointer) in
+                stream.next_out = outputPointer.bindMemory(to: Bytef.self).baseAddress!
+                    .advanced(by: Int(stream.total_out))
             }
             status = inflate(&stream, Z_SYNC_FLUSH)
             if status != Z_OK && status != Z_STREAM_END {
