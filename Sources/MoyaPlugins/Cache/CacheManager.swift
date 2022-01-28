@@ -6,42 +6,49 @@
 //
 
 import Foundation
-import YYCache
 
 public struct CacheManager {
-    public struct Cache { }
     /// Maximum number of cache lines
-    public static var maxCountLimit: UInt = 100
+    public static var maxCountLimit: Int = 100
     /// Disk cache size, default 30m
-    public static var maxCostLimit: UInt = 30 * 1024
-}
-
-extension CacheManager.Cache {
-    public static let name = "ykj.Network.cache.plugin"
+    public static var maxCostLimit: Int = 30 * 1024
+    
+    private let cache = { () -> NSCache<AnyObject, AnyObject> in
+        let cache = NSCache<AnyObject, AnyObject>()
+        cache.countLimit = CacheManager.maxCountLimit
+        cache.totalCostLimit = CacheManager.maxCostLimit
+        return cache
+    }()
 }
 
 extension CacheManager {
     
-    /// Current cached size
-    public static var totalCost: Int {
-        if let cache = YYCache.init(name: CacheManager.Cache.name) {
-            return cache.diskCache.totalCost()
-        }
-        return 0
-    }
-    
-    /// The current number of cached items
-    public static var totalCount: Int {
-        if let cache = YYCache.init(name: CacheManager.Cache.name) {
-            return cache.diskCache.totalCount()
-        }
-        return 0
-    }
-    
     /// Delete the disk cache
     public static func removeAllCache() {
-        if let cache = YYCache.init(name: CacheManager.Cache.name) {
-            cache.diskCache.removeAllObjects()
+        CacheManager().cache.removeAllObjects()
+    }
+    
+    /// Delete the specified key data
+    /// - Parameter key: Cache key name
+    public static func deleteCacheWithKey(_ key: String) {
+        CacheManager().cache.removeObject(forKey: key as AnyObject)
+    }
+    
+    /// cache data
+    /// - Parameters:
+    ///   - dict: The cached object
+    ///   - key: Cache key name
+    public static func saveCacheWithDictionary(_ dict: NSDictionary, key: String) {
+        CacheManager().cache.setObject(dict, forKey: key as AnyObject)
+    }
+    
+    /// Read cache data
+    /// - Parameter key: Cache key name
+    /// - Returns: Cache object
+    public static func fetchCachedWithKey(_ key: String) -> NSDictionary? {
+        guard let data = CacheManager().cache.object(forKey: key as AnyObject) else {
+            return nil
         }
+        return data as? NSDictionary
     }
 }

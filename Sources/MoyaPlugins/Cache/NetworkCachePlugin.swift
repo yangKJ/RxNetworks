@@ -7,7 +7,6 @@
 
 import Foundation
 import Moya
-import YYCache
 import CommonCrypto
 
 /// Network cache plugin type
@@ -29,18 +28,9 @@ public enum NetworkCacheType {
     case cacheThenNetwork
 }
 
-/// 缓存插件，基于YYCache封装使用
-/// Cache plug-in, based on YYCache package use
+/// 缓存插件，基于`NSCache`封装使用
+/// Cache plugin, based on `NSCache` package use
 public final class NetworkCachePlugin {
-    
-    private lazy var cache: YYCache? = {
-        let cache = YYCache.init(name: CacheManager.Cache.name)
-        if let cache = cache {
-            cache.memoryCache.countLimit = CacheManager.maxCountLimit
-            cache.memoryCache.costLimit = CacheManager.maxCostLimit
-        }
-        return cache
-    }()
     
     /// Network cache plugin type
     let cacheType: NetworkCacheType
@@ -96,11 +86,9 @@ extension NetworkCachePlugin: PluginSubType {
 extension NetworkCachePlugin {
     
     private func readCacheResponse(_ target: TargetType) -> Moya.Response? {
-        guard let cache = self.cache else { return nil }
-        
         let link = requestFullLink(with: target)
         let key = NetworkCachePlugin.MD5(link)
-        guard let dict = cache.object(forKey: key) as? NSDictionary,
+        guard let dict = CacheManager.fetchCachedWithKey(key),
               let statusCode = dict.value(forKey: "statusCode") as? Int,
               let data = dict.value(forKey: "data") as? Data else {
                   return nil
@@ -111,17 +99,17 @@ extension NetworkCachePlugin {
     }
     
     private func saveCacheResponse(_ response: Moya.Response?, target: TargetType) {
-        guard let response = response, let cache = self.cache else { return }
+        guard let response = response else { return }
         
         let link = requestFullLink(with: target)
         let key = NetworkCachePlugin.MD5(link)
         let storage: NSDictionary = [
-            //"key": key,
-            //"link": link,
             "data": response.data,
             "statusCode": response.statusCode
         ]
-        cache.setObject(storage, forKey: key)
+        DispatchQueue.global().async {
+            CacheManager.saveCacheWithDictionary(storage, key: key)
+        }
     }
     
     private func requestFullLink(with target: TargetType) -> String {
