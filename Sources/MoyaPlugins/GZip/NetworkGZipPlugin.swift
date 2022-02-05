@@ -24,11 +24,11 @@ extension NetworkGZipPlugin: PluginSubType {
                 return result
             }
             let data = GZipManager.gzipUncompress(response.data)
-            let res = Response.init(statusCode: response.statusCode,
-                                    data: data,
-                                    request: response.request,
-                                    response: response.response)
-            return .success(res)
+            let _response = Response(statusCode: response.statusCode,
+                                     data: data,
+                                     request: response.request,
+                                     response: response.response)
+            return .success(_response)
         }
         return result
     }

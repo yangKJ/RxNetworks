@@ -114,11 +114,8 @@ extension NetworkCachePlugin {
     
     private func requestFullLink(with target: TargetType) -> String {
         var parameters: APIParameters? = nil
-        switch target.task {
-        case .requestParameters(let p, _):
-            parameters = p
-        default:
-            break
+        if case .requestParameters(let parame, _) = target.task {
+            parameters = parame
         }
         guard let parameters = parameters, !parameters.isEmpty else {
             return target.baseURL.absoluteString + target.path

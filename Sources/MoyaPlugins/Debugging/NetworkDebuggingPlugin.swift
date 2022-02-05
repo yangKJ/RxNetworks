@@ -33,11 +33,11 @@ extension NetworkDebuggingPlugin: PluginSubType {
         return tuple
     }
     
-    public func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
+    public func lastNever(_ tuple: LastNeverTuple, target: TargetType) -> LastNeverTuple {
         #if DEBUG
-        NetworkDebuggingPlugin.ansysisResult(result, local: false)
+        NetworkDebuggingPlugin.ansysisResult(tuple.result, local: false)
         #endif
-        return result
+        return tuple
     }
 }
 
@@ -47,14 +47,11 @@ extension NetworkDebuggingPlugin {
         guard openDebugRequest else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
-        formatter.locale = Locale(identifier: "zh_CN")
+        formatter.locale = Locale.current
         let date = formatter.string(from: Date())
         var parameters: APIParameters? = nil
-        switch target.task {
-        case .requestParameters(let p, _):
-            parameters = p
-        default:
-            break
+        if case .requestParameters(let parame, _) = target.task {
+            parameters = parame
         }
         if let param = parameters, param.isEmpty == false {
             print("""
@@ -96,11 +93,8 @@ extension NetworkDebuggingPlugin {
     
     private static func requestFullLink(with target: TargetType) -> String {
         var parameters: APIParameters? = nil
-        switch target.task {
-        case .requestParameters(let p, _):
-            parameters = p
-        default:
-            break
+        if case .requestParameters(let parame, _) = target.task {
+            parameters = parame
         }
         guard let parameters = parameters, !parameters.isEmpty else {
             return target.baseURL.absoluteString + target.path
@@ -141,7 +135,7 @@ extension NetworkDebuggingPlugin {
         guard openDebugResponse else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
-        formatter.locale = Locale(identifier: "zh_CN")
+        formatter.locale = Locale.current
         let date = formatter.string(from: Date())
         print("""
               ------- 🎈 Response 🎈 -------

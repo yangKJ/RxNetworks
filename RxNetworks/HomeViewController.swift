@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
     private var viewModel: HomeViewModel = HomeViewModel()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView.init(frame: self.view.bounds, style: .plain)
+        let tableView = UITableView.init(frame: .zero, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.sectionHeaderHeight = 0.00001
@@ -50,6 +50,12 @@ class HomeViewController: UIViewController {
     func setupUI() {
         view.backgroundColor = UIColor.background
         self.view.addSubview(self.tableView)
+        NSLayoutConstraint.activate([
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
     }
 }
 
@@ -64,7 +70,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let element = self.viewModel.datas[indexPath.row]
+        let element: ViewControllerType = self.viewModel.datas[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: HomeViewController.identifier, for: indexPath)
         cell.selectionStyle = .none
         cell.textLabel?.textColor = UIColor.defaultTint
