@@ -114,6 +114,9 @@
           "dependencies": {
             "RxNetworks/MoyaNetwork": [
 
+            ],
+            "YYCache": [
+
             ]
           }
         },

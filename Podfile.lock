@@ -25,6 +25,7 @@ PODS:
     - RxNetworks/MoyaPlugins/Warning (= 0.1.8)
   - RxNetworks/MoyaPlugins/Cache (0.1.8):
     - RxNetworks/MoyaNetwork
+    - YYCache
   - RxNetworks/MoyaPlugins/Debugging (0.1.8):
     - RxNetworks/MoyaNetwork
   - RxNetworks/MoyaPlugins/GZip (0.1.8):
@@ -39,6 +40,7 @@ PODS:
     - Toast-Swift
   - RxSwift (6.5.0)
   - Toast-Swift (5.0.1)
+  - YYCache (1.0.4)
 
 DEPENDENCIES:
   - RxNetworks (from `./`)
@@ -51,6 +53,7 @@ SPEC REPOS:
     - Moya
     - RxSwift
     - Toast-Swift
+    - YYCache
 
 EXTERNAL SOURCES:
   RxNetworks:
@@ -61,9 +64,10 @@ SPEC CHECKSUMS:
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
-  RxNetworks: 742a2c2e8e27d90e12d425a339830f9f1781edcc
+  RxNetworks: 8b043c6c98711b41b38e7e355581f652b924fe60
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
+  YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
 PODFILE CHECKSUM: 9edd06bc8693f46df41637929b378c51b04b4db4
 

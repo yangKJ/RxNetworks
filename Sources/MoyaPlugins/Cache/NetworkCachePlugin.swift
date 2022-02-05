@@ -28,8 +28,8 @@ public enum NetworkCacheType {
     case cacheThenNetwork
 }
 
-/// 缓存插件，基于`NSCache`封装使用
-/// Cache plugin, based on `NSCache` package use
+/// 缓存插件，基于`YYCache`封装使用
+/// Cache plugin, based on `YYCache` package use
 public final class NetworkCachePlugin {
     
     /// Network cache plugin type
