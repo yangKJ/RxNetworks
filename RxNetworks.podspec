@@ -79,6 +79,7 @@ Pod::Spec.new do |s|
     xx.subspec 'Cache' do |xxx|
       xxx.source_files = 'Sources/MoyaPlugins/Cache/*.swift'
       xxx.dependency 'RxNetworks/MoyaNetwork'
+      xxx.dependency 'YYCache'
     end
     xx.subspec 'GZip' do |xxx|
       xxx.source_files = 'Sources/MoyaPlugins/GZip/*.swift'
