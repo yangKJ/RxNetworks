@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import RxSwift
 import Moya
 
 /// 协议默认实现方案
@@ -23,20 +24,23 @@ extension NetworkAPI {
         
         let target = MultiTarget.target(self)
 
-        let (result, end) = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
-        if end == true {
-            let single = NetworkUtil.transformAPIObservableJSON(result)
-            return single
+        let tuple = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
+        if tuple.endRequest == true {
+            return NetworkUtil.transformAPIObservableJSON(tuple.result)
         }
-        
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = Alamofire.HTTPHeaders.default
-        configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let MoyaProvider = MoyaProvider<MultiTarget>(stubClosure: { _ in
+        var session: Moya.Session
+        if let _session = tuple.session {
+            session = _session
+        } else {
+            let configuration = URLSessionConfiguration.af.default
+            configuration.headers = Alamofire.HTTPHeaders.default
+            configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
+            session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        }
+        let provider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
         }, session: session, plugins: tempPlugins)
-        return MoyaProvider.rx.request(api: self, callbackQueue: callbackQueue, result: result)
+        return provider.rx.request(api: self, callbackQueue: callbackQueue, result: tuple.result)
     }
 }
 

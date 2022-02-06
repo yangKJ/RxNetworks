@@ -26,7 +26,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
     public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
         #if DEBUG
         NetworkDebuggingPlugin.DebuggingRequest(target, plugins: plugins)
-        if let result = tuple.result, tuple.endRequest {
+        if let result = tuple.result {
             NetworkDebuggingPlugin.ansysisResult(result, local: true)
         }
         #endif
@@ -35,7 +35,16 @@ extension NetworkDebuggingPlugin: PluginSubType {
     
     public func lastNever(_ tuple: LastNeverTuple, target: TargetType) -> LastNeverTuple {
         #if DEBUG
-        NetworkDebuggingPlugin.ansysisResult(tuple.result, local: false)
+        if let map = tuple.mapResult {
+            switch map {
+            case .success(let json):
+                NetworkDebuggingPlugin.DebuggingResponse(json, false, true)
+            case .failure(let error):
+                NetworkDebuggingPlugin.DebuggingResponse(error.localizedDescription, false, false)
+            }
+        } else {
+            NetworkDebuggingPlugin.ansysisResult(tuple.result, local: false)
+        }
         #endif
         return tuple
     }

@@ -56,6 +56,7 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
         let tempPlugins = base.plugins
         return base.request(target, callbackQueue: queue, progress: progress, completion: { result in
             var _result = result
+            var _mapResult: MapJSONResult?
             if let plugins = tempPlugins as? [PluginSubType] {
                 // last never handy data, last chance
                 let tuple = NetworkUtil.handyLastNeverPlugin(plugins, result: _result, target: target)
@@ -64,23 +65,33 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
                     return
                 }
                 _result = tuple.result
+                _mapResult = tuple.mapResult
             }
             
-            switch _result {
-            case let .success(response):
-                do {
-                    let response = try response.filterSuccessfulStatusCodes()
-                    let json = try response.mapJSON()
+            if let _mapResult = _mapResult {
+                switch _mapResult {
+                case let .success(json):
                     successed(json)
-                } catch MoyaError.statusCode(let response) {
-                    failed(MoyaError.statusCode(response))
-                } catch MoyaError.jsonMapping(let response) {
-                    failed(MoyaError.jsonMapping(response))
-                } catch {
+                case let .failure(error):
                     failed(error)
                 }
-            case let .failure(error):
-                failed(error)
+            } else {
+                switch _result {
+                case let .success(response):
+                    do {
+                        let response = try response.filterSuccessfulStatusCodes()
+                        let json = try response.mapJSON()
+                        successed(json)
+                    } catch MoyaError.statusCode(let response) {
+                        failed(MoyaError.statusCode(response))
+                    } catch MoyaError.jsonMapping(let response) {
+                        failed(MoyaError.jsonMapping(response))
+                    } catch {
+                        failed(error)
+                    }
+                case let .failure(error):
+                    failed(error)
+                }
             }
         })
     }

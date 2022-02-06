@@ -61,6 +61,7 @@ internal struct NetworkUtil {
         var tuple: ConfigurationTuple
         tuple.result = nil // Empty data, convenient for subsequent plugin operations
         tuple.endRequest = false
+        tuple.session = nil
         plugins.forEach { tuple = $0.configuration(tuple, target: target, plugins: plugins) }
         return tuple
     }
@@ -69,6 +70,7 @@ internal struct NetworkUtil {
         var tuple: LastNeverTuple
         tuple.result = result
         tuple.againRequest = false
+        tuple.mapResult = nil
         plugins.forEach { tuple = $0.lastNever(tuple, target: target) }
         return tuple
     }

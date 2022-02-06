@@ -8,9 +8,12 @@
 import Foundation
 import Moya
 
+// 解决重复解析问题，如果某款插件已经对数据进行解析成`Any`之后
+// Solve the problem of repeated parsing, if a plugin has parsed the data into `Any`
+public typealias MapJSONResult = Result<Any, MoyaError>
 public typealias MoyaResult = Result<Moya.Response, MoyaError>
-public typealias ConfigurationTuple = (result: MoyaResult?, endRequest: Bool)
-public typealias LastNeverTuple = (result: MoyaResult, againRequest: Bool)
+public typealias ConfigurationTuple = (result: MoyaResult?, endRequest: Bool, session: Moya.Session?)
+public typealias LastNeverTuple = (result: MoyaResult, againRequest: Bool, mapResult: MapJSONResult?)
 
 /// 继承Moya插件协议，方便后序扩展，所有插件方法都必须实现该协议
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol

@@ -50,9 +50,9 @@ extension NetworkCachePlugin: PluginSubType {
         if (cacheType == .cacheElseNetwork || cacheType == .cacheThenNetwork),
            let response = self.readCacheResponse(target) {
             if cacheType == .cacheElseNetwork {
-                return (.success(response), true)
+                return (.success(response), true, tuple.session)
             } else {
-                return (.success(response), false)
+                return (.success(response), false, tuple.session)
             }
         }
         return tuple
