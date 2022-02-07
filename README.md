@@ -3,7 +3,9 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks)
 [![Releases Compatible](https://img.shields.io/github/release/yangKJ/RxNetworks.svg?style=flat&label=Releases&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks/releases)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/RxNetworks.svg?style=flat&label=CocoaPods&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
-[![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)](#installation)
+![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)
+
+**[RxNetworks](https://github.com/yangKJ/RxNetworks)** is a declarative and reactive networking library for Swift. Developed for Swift 5, it aims to make use of the latest language features. The framework's ultimate goal is to enable easy networking that makes it easy to write well-maintainable code.
 
 <font color=red>**🧚. RxSwift + Moya + HandyJSON + Plugins.👒👒👒**</font>
 
@@ -12,6 +14,17 @@
 English | [**简体中文**](README_CN.md)
 
 This is a set of infrastructure based on `RxSwift + Moya`
+
+## Features
+At the moment, the most important features of RxNetworks can be summarized as follows:
+
+- Support reactive network requests combined with [RxSwift](https://github.com/ReactiveX/RxSwift).
+- Support for OOP also support POP network requests.
+- Support data parsing with [HandyJSON](https://github.com/alibaba/HandyJSON).
+- Support configuration of general request and path, general parameters, etc.
+- Support simple customization of various network plugins for [Moya](https://github.com/Moya/Moya).
+- Support for injecting default plugins.
+- Support 6 plugins have been packaged for you to use.
 
 ### MoyaNetwork
 This module is based on the Moya encapsulated network API architecture.
