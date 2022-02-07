@@ -18,13 +18,13 @@ This is a set of infrastructure based on `RxSwift + Moya`
 ## Features
 At the moment, the most important features of RxNetworks can be summarized as follows:
 
-- Support reactive network requests combined with [RxSwift](https://github.com/ReactiveX/RxSwift).
-- Support for OOP also support POP network requests.
-- Support data parsing with [HandyJSON](https://github.com/alibaba/HandyJSON).
-- Support configuration of general request and path, general parameters, etc.
-- Support simple customization of various network plugins for [Moya](https://github.com/Moya/Moya).
-- Support for injecting default plugins.
-- Support 6 plugins have been packaged for you to use.
+- [x] Support reactive network requests combined with [RxSwift](https://github.com/ReactiveX/RxSwift).
+- [x] Support for OOP also support POP network requests.
+- [x] Support data parsing with [HandyJSON](https://github.com/alibaba/HandyJSON).
+- [x] Support configuration of general request and path, general parameters, etc.
+- [x] Support simple customization of various network plugins for [Moya](https://github.com/Moya/Moya).
+- [x] Support for injecting default plugins.
+- [x] Support 6 plugins have been packaged for you to use.
 
 ### MoyaNetwork
 This module is based on the Moya encapsulated network API architecture.
@@ -64,197 +64,6 @@ This module is based on the Moya encapsulated network API architecture.
         - **toJSON**: to JSON string.
         - **toDictionary**: JSON string to dictionary.
         - **+=**: Dictionary concatenation.
-
-🎷 - OO Example 1:
-
-```
-class OOViewModel: NSObject {
-
-    struct Input {
-        let retry: Int
-    }
-    
-    struct Output {
-        let items: Observable<String>
-    }
-    
-    func transform(input: Input) -> Output {
-        return Output(items: input.request())
-    }
-}
-
-extension OOViewModel.Input {
-    func request() -> Observable<String> {
-        var api = NetworkAPIOO.init()
-        api.cdy_ip = NetworkConfig.baseURL
-        api.cdy_path = "/ip"
-        api.cdy_method = APIMethod.get
-        api.cdy_plugins = [NetworkLoadingPlugin()]
-        api.cdy_retry = self.retry
-        
-        return api.cdy_HTTPRequest()
-            .asObservable()
-            .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
-            .catchAndReturn("")
-            .observe(on: MainScheduler.instance)
-    }
-}
-```
-
-🎷 - MVP Example 2:
-
-```
-enum LoadingAPI {
-    case test2(String)
-}
-
-extension LoadingAPI: NetworkAPI {
-    var ip: APIHost {
-        return NetworkConfig.baseURL
-    }
-    
-    var path: String {
-        return "/post"
-    }
-    
-    var parameters: APIParameters? {
-        switch self {
-        case .test2(let string): return ["key": string]
-        }
-    }
-}
-
-
-class LoadingViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
-    
-    /// Configure the loading animation plugin
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let loading = NetworkLoadingPlugin.init()
-        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
-    }()
-    
-    func loadData() {
-        APIProvider.rx.request(api: LoadingAPI.test2("666"))
-            .asObservable()
-            .subscribe { [weak self] (event) in
-                if let dict = event.element as? NSDictionary {
-                    self?.data.accept(dict)
-                }
-            }.disposed(by: disposeBag)
-    }
-}
-```
-
-🎷 - MVVM Example 3:
-
-```
-class CacheViewModel: NSObject {
-
-    struct Input {
-        let count: Int
-    }
-
-    struct Output {
-        let items: Observable<[CacheModel]>
-    }
-    
-    func transform(input: Input) -> Output {
-        let items = request(input.count).asObservable()
-        
-        return Output(items: items)
-    }
-}
-
-extension CacheViewModel {
-    
-    func request(_ count: Int) -> Observable<[CacheModel]> {
-        CacheAPI.cache(count).request()
-            .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
-            .compactMap { $0.data }
-            .observe(on: MainScheduler.instance) // the result is returned on the main thread
-            .catchAndReturn([]) // return null on error
-    }
-}
-```
-
-🎷 - Chain Example 4:
-
-```
-class ChainViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
-    
-    func chainLoad() {
-        requestIP()
-            .flatMapLatest(requestData)
-            .subscribe(onNext: { [weak self] data in
-                self?.data.accept(data)
-            }, onError: {
-                print("Network Failed: \($0)")
-            }).disposed(by: disposeBag)
-    }
-}
-
-extension ChainViewModel {
-    func requestIP() -> Observable<String> {
-        return ChainAPI.test.request()
-            .asObservable()
-            .map { ($0 as! NSDictionary)["origin"] as! String }
-            .catchAndReturn("") // Exception thrown
-    }
-    
-    func requestData(_ ip: String) -> Observable<NSDictionary> {
-        return ChainAPI.test2(ip).request()
-            .asObservable()
-            .map { ($0 as! NSDictionary) }
-            .catchAndReturn(["data": "nil"])
-    }
-}
-```
-
-🎷 - Batch Example 5:
-
-```
-class BatchViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
-    
-    /// Configure loading animation plugin
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let loading = NetworkLoadingPlugin.init()
-        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
-    }()
-    
-    func batchLoad() {
-        Observable.zip(
-            APIProvider.rx.request(api: BatchAPI.test).asObservable(),
-            APIProvider.rx.request(api: BatchAPI.test2("666")).asObservable(),
-            APIProvider.rx.request(api: BatchAPI.test3).asObservable()
-        ).subscribe(onNext: { [weak self] in
-            guard var data1 = $0 as? Dictionary<String, Any>,
-                  let data2 = $1 as? Dictionary<String, Any>,
-                  let data3 = $2 as? Dictionary<String, Any> else {
-                      return
-                  }
-            data1 += data2
-            data1 += data3
-            self?.data.accept(data1)
-        }, onError: {
-            print("Network Failed: \($0)")
-        }).disposed(by: disposeBag)
-    }
-}
-```
 
 ### MoyaPlugins
 This module is mainly based on moya package network related plugins
@@ -305,16 +114,214 @@ func request(_ count: Int) -> Driver<[CacheModel]> {
 }
 ```
 
-### CocoaPods Install
+### Usage
+Provide some test cases for reference.🚁
+
+- OO Example 1:
+
 ```
-Ex: Import Network Architecture API
-- pod 'RxNetworks/MoyaNetwork'
+class OOViewModel: NSObject {
+    struct Input {
+        let retry: Int
+    }
+    struct Output {
+        let items: Observable<String>
+    }
+    
+    func transform(input: Input) -> Output {
+        return Output(items: input.request())
+    }
+}
 
-Ex: Import Model Anslysis 
-- pod 'RxNetworks/HandyJSON'
+extension OOViewModel.Input {
+    func request() -> Observable<String> {
+        var api = NetworkAPIOO.init()
+        api.cdy_ip = NetworkConfig.baseURL
+        api.cdy_path = "/ip"
+        api.cdy_method = APIMethod.get
+        api.cdy_plugins = [NetworkLoadingPlugin()]
+        api.cdy_retry = self.retry
+        
+        return api.cdy_HTTPRequest()
+            .asObservable()
+            .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
+            .catchAndReturn("")
+            .observe(on: MainScheduler.instance)
+    }
+}
+```
 
-Ex: Import loading animation plugin
-- pod 'RxNetworks/MoyaPlugins/Loading'
+- MVP Example 2:
+
+```
+enum LoadingAPI {
+    case test2(String)
+}
+
+extension LoadingAPI: NetworkAPI {
+    var ip: APIHost {
+        return NetworkConfig.baseURL
+    }
+    
+    var path: String {
+        return "/post"
+    }
+    
+    var parameters: APIParameters? {
+        switch self {
+        case .test2(let string): return ["key": string]
+        }
+    }
+}
+
+
+class LoadingViewModel: NSObject {
+    let disposeBag = DisposeBag()
+    let data = PublishRelay<NSDictionary>()
+    
+    /// Configure the loading animation plugin
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        let loading = NetworkLoadingPlugin.init()
+        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
+    }()
+    
+    func loadData() {
+        APIProvider.rx.request(api: LoadingAPI.test2("666"))
+            .asObservable()
+            .subscribe { [weak self] (event) in
+                if let dict = event.element as? NSDictionary {
+                    self?.data.accept(dict)
+                }
+            }.disposed(by: disposeBag)
+    }
+}
+```
+
+- MVVM Example 3:
+
+```
+class CacheViewModel: NSObject {
+    struct Input {
+        let count: Int
+    }
+    struct Output {
+        let items: Observable<[CacheModel]>
+    }
+    
+    func transform(input: Input) -> Output {
+        let items = request(input.count).asObservable()
+        
+        return Output(items: items)
+    }
+}
+
+extension CacheViewModel {
+    
+    func request(_ count: Int) -> Observable<[CacheModel]> {
+        CacheAPI.cache(count).request()
+            .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+            .compactMap { $0.data }
+            .observe(on: MainScheduler.instance) // the result is returned on the main thread
+            .catchAndReturn([]) // return null on error
+    }
+}
+```
+
+- Chain Example 4:
+
+```
+class ChainViewModel: NSObject {
+    let disposeBag = DisposeBag()
+    let data = PublishRelay<NSDictionary>()
+    
+    func chainLoad() {
+        requestIP()
+            .flatMapLatest(requestData)
+            .subscribe(onNext: { [weak self] data in
+                self?.data.accept(data)
+            }, onError: {
+                print("Network Failed: \($0)")
+            }).disposed(by: disposeBag)
+    }
+}
+
+extension ChainViewModel {
+    func requestIP() -> Observable<String> {
+        return ChainAPI.test.request()
+            .asObservable()
+            .map { ($0 as! NSDictionary)["origin"] as! String }
+            .catchAndReturn("") // Exception thrown
+    }
+    
+    func requestData(_ ip: String) -> Observable<NSDictionary> {
+        return ChainAPI.test2(ip).request()
+            .asObservable()
+            .map { ($0 as! NSDictionary) }
+            .catchAndReturn(["data": "nil"])
+    }
+}
+```
+
+- Batch Example 5:
+
+```
+class BatchViewModel: NSObject {
+    let disposeBag = DisposeBag()
+    let data = PublishRelay<NSDictionary>()
+    
+    /// Configure loading animation plugin
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        let loading = NetworkLoadingPlugin.init()
+        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
+    }()
+    
+    func batchLoad() {
+        Observable.zip(
+            APIProvider.rx.request(api: BatchAPI.test).asObservable(),
+            APIProvider.rx.request(api: BatchAPI.test2("666")).asObservable(),
+            APIProvider.rx.request(api: BatchAPI.test3).asObservable()
+        ).subscribe(onNext: { [weak self] in
+            guard var data1 = $0 as? Dictionary<String, Any>,
+                  let data2 = $1 as? Dictionary<String, Any>,
+                  let data3 = $2 as? Dictionary<String, Any> else {
+                      return
+                  }
+            data1 += data2
+            data1 += data3
+            self?.data.accept(data1)
+        }, onError: {
+            print("Network Failed: \($0)")
+        }).disposed(by: disposeBag)
+    }
+}
+```
+
+### CocoaPods
+
+In your Podfile:
+
+```
+pod 'RxNetworks'
+```
+
+You should define your minimum deployment target explicitly, like: 
+
+```
+platform :ios, '10.0'
+```
+
+If you only want import loading animation plugin:
+
+```
+pod 'RxNetworks/MoyaPlugins/Loading'
 ```
 
 ### Remarks
