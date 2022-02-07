@@ -33,6 +33,9 @@ public struct NetworkConfig {
     public static var addDebugging: Bool = false
     /// Whether to add the Indicator plugin by default
     public static var addIndicator: Bool = false
+    /// Plugins that require default injection, generally not recommended
+    /// However, you can inject this kind of global unified general plugin, such as secret key plugin, certificate plugin, etc.
+    public static var injectionPlugins: [PluginSubType]?
     /// Set the request timeout, the default is 30 seconds
     public static var timeoutIntervalForRequest: TimeInterval = 30
     

@@ -13,6 +13,9 @@ internal struct NetworkUtil {
     
     static func defaultPlugin(_ plugins: inout APIPlugins, api: NetworkAPI) {
         var temp = plugins
+        if let injection = NetworkConfig.injectionPlugins, !injection.isEmpty {
+            temp += injection
+        }
         if NetworkConfig.addIndicator {
             #if RxNetworks_MoyaPlugins_Indicator
             if !temp.contains(where: { $0 is NetworkIndicatorPlugin}) {
