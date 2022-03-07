@@ -287,6 +287,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 66T6NB6T4J;
 						LastSwiftMigration = 0900;
 					};
 				};
@@ -540,6 +541,7 @@
 			baseConfigurationReference = F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 66T6NB6T4J;
 				INFOPLIST_FILE = RxNetworks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -556,6 +558,7 @@
 			baseConfigurationReference = 728016062553DB205A17A393 /* Pods-RxNetworks_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 66T6NB6T4J;
 				INFOPLIST_FILE = RxNetworks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -23,8 +23,8 @@ public enum NetworkCacheType {
     /** 先从网络获取数据，如果没有在从缓存获取，此处的没有可以理解为访问网络失败，再从缓存读取 */
     /** Get data from the network first, if not from the cache */
     case networkElseCache
-    /** 先从缓存读取数据，然后在从网络获取并且缓存，缓存数据通过闭包丢出去 */
-    /** First read the data from the cache, then get it from the network and cache it, the cached data is thrown out through the closure */
+    /** 先从缓存读取数据，然后在从网络获取并且缓存，可能会获取到两次数据 */
+    /** Data is first read from the cache, then retrieved from the network and cached, Maybe get `twice` data */
     case cacheThenNetwork
 }
 

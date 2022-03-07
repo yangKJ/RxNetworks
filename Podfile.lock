@@ -6,36 +6,36 @@ PODS:
     - Moya/Core (= 15.0.0)
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
-  - RxNetworks (0.1.10):
-    - RxNetworks/HandyJSON (= 0.1.10)
-    - RxNetworks/MoyaNetwork (= 0.1.10)
-    - RxNetworks/MoyaPlugins (= 0.1.10)
-  - RxNetworks/HandyJSON (0.1.10):
+  - RxNetworks (0.1.11):
+    - RxNetworks/HandyJSON (= 0.1.11)
+    - RxNetworks/MoyaNetwork (= 0.1.11)
+    - RxNetworks/MoyaPlugins (= 0.1.11)
+  - RxNetworks/HandyJSON (0.1.11):
     - HandyJSON
     - RxSwift
-  - RxNetworks/MoyaNetwork (0.1.10):
+  - RxNetworks/MoyaNetwork (0.1.11):
     - Moya
     - RxSwift
-  - RxNetworks/MoyaPlugins (0.1.10):
-    - RxNetworks/MoyaPlugins/Cache (= 0.1.10)
-    - RxNetworks/MoyaPlugins/Debugging (= 0.1.10)
-    - RxNetworks/MoyaPlugins/GZip (= 0.1.10)
-    - RxNetworks/MoyaPlugins/Indicator (= 0.1.10)
-    - RxNetworks/MoyaPlugins/Loading (= 0.1.10)
-    - RxNetworks/MoyaPlugins/Warning (= 0.1.10)
-  - RxNetworks/MoyaPlugins/Cache (0.1.10):
+  - RxNetworks/MoyaPlugins (0.1.11):
+    - RxNetworks/MoyaPlugins/Cache (= 0.1.11)
+    - RxNetworks/MoyaPlugins/Debugging (= 0.1.11)
+    - RxNetworks/MoyaPlugins/GZip (= 0.1.11)
+    - RxNetworks/MoyaPlugins/Indicator (= 0.1.11)
+    - RxNetworks/MoyaPlugins/Loading (= 0.1.11)
+    - RxNetworks/MoyaPlugins/Warning (= 0.1.11)
+  - RxNetworks/MoyaPlugins/Cache (0.1.11):
     - RxNetworks/MoyaNetwork
     - YYCache
-  - RxNetworks/MoyaPlugins/Debugging (0.1.10):
+  - RxNetworks/MoyaPlugins/Debugging (0.1.11):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/GZip (0.1.10):
+  - RxNetworks/MoyaPlugins/GZip (0.1.11):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Indicator (0.1.10):
+  - RxNetworks/MoyaPlugins/Indicator (0.1.11):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Loading (0.1.10):
+  - RxNetworks/MoyaPlugins/Loading (0.1.11):
     - MBProgressHUD
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Warning (0.1.10):
+  - RxNetworks/MoyaPlugins/Warning (0.1.11):
     - RxNetworks/MoyaNetwork
     - Toast-Swift
   - RxSwift (6.5.0)
@@ -64,7 +64,7 @@ SPEC CHECKSUMS:
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
-  RxNetworks: 8a194bed2ddb9950daa2206ea058ce3c2368ef30
+  RxNetworks: 3a574f07050c694fb5885ecd0a73bac4151d60b1
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
