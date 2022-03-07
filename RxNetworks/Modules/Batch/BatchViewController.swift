@@ -20,8 +20,27 @@ class BatchViewController: BaseViewController<BatchViewModel> {
         return view
     }()
     
+    lazy var button: UIButton = {
+        let button = UIButton.init(type: .custom)
+        button.frame = CGRect(x: 0, y: textView.frame.maxY + 50, width: 200, height: 200)
+        button.center = CGPoint(x: textView.center.x, y: button.center.y)
+        button.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+        button.layer.cornerRadius = 100
+        button.layer.masksToBounds = true
+        button.setTitle("Many zip data", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.addTarget(self, action: #selector(thouch(_:)), for: UIControl.Event.touchUpInside)
+        return button
+    }()
+    
+    @objc func thouch(_ sender: UIButton) {
+        viewModel.testZipData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(button)
         
         self.setupBindings()
     }

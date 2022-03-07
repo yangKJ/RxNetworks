@@ -35,3 +35,42 @@ class BatchViewModel: NSObject {
         }).disposed(by: disposeBag)
     }
 }
+
+extension BatchViewModel {
+    
+    func testZipData() {
+        let subject1 = PublishSubject<String>()
+        let subject2 = PublishSubject<String>()
+        
+        // 序列最多支持8个
+        // 都收到新元素，才会发出
+        Observable.zip(subject1, subject2)
+            .map { "zip: " + $0 + " - " + $1 }
+            .subscribe(onNext: { print($0) })
+            .disposed(by: disposeBag)
+        
+        // 任何一个 Observable 发出一个元素，都会发出
+        Observable.combineLatest(subject1, subject2)
+            .map { "combineLatest: " + $0 + " - " + $1 }
+            .subscribe(onNext: { print($0) })
+            .disposed(by: disposeBag)
+        
+        // 某一个 Observable 发出一个元素时，就会将这个元素发出
+        // 上下刷新会使用到此功能点
+        Observable.of(subject1, subject2)
+            .merge()
+            .subscribe(onNext: { print("merge: " + $0) })
+            .disposed(by: disposeBag)
+        
+        subject1.onNext("1")
+        subject2.onNext("A")
+        
+        subject2.onNext("B")
+        
+        print("\n--- After a second ---")
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+            subject1.onNext("3")
+            subject2.onNext("C")
+        }
+    }
+}
