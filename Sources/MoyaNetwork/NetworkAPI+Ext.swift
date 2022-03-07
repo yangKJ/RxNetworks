@@ -87,7 +87,10 @@ extension NetworkAPI {
     }
     
     public var headers: [String : String]? {
-        return ["Content-type": "application/json"]
+        if NetworkConfig.baseHeaders.isEmpty {
+            return ["Content-type": "application/json"]
+        }
+        return NetworkConfig.baseHeaders
     }
     
     public var task: Moya.Task {

@@ -45,6 +45,8 @@ public struct NetworkConfig {
     public private(set) static var baseParameters: APIParameters = [:]
     /// Default request type, default `post`
     public private(set) static var baseMethod: APIMethod = APIMethod.post
+    /// Default Header argument
+    public static var baseHeaders: [String:String] = [:]
     
     /// Configuration information
     /// - Parameters:

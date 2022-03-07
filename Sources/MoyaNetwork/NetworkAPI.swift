@@ -27,11 +27,11 @@ public protocol NetworkAPI: Moya.TargetType {
     ///
     ///     func request(_ count: Int) -> Driver<[CacheModel]> {
     ///         CacheAPI.cache(count).request()
-    ///                 .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
-    ///                 .compactMap { $0.data }
-    ///                 .observe(on: MainScheduler.instance) // The result is returned on the main thread
-    ///                 .delay(.seconds(1), scheduler: MainScheduler.instance) // Delay 1 second to return
-    ///                 .asDriver(onErrorJustReturn: []) // return null at the moment of error
+    ///             .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+    ///             .compactMap { $0.data }
+    ///             .observe(on: MainScheduler.instance) // The result is returned on the main thread
+    ///             .delay(.seconds(1), scheduler: MainScheduler.instance) // Delay 1 second to return
+    ///             .asDriver(onErrorJustReturn: []) // return null at the moment of error
     ///     }
     ///
     /// - Returns: Observable sequence JSON object. May be thrown twice.
