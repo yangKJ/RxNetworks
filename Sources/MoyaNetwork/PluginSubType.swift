@@ -19,6 +19,9 @@ public typealias LastNeverTuple = (result: MoyaResult, againRequest: Bool, mapRe
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol
 public protocol PluginSubType: PluginType {
     
+    /// 插件名
+    var pluginName: String { get }
+    
     /// 设置网络配置信息之后，开始准备请求之前，
     /// 该方法可以用于本地缓存存在时直接抛出数据而不用再执行后序网络请求等场景
     /// - Parameters:

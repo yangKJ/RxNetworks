@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import Moya
-import RxSwift
 
 internal struct NetworkUtil {
     
@@ -33,31 +31,6 @@ internal struct NetworkUtil {
             #endif
         }
         plugins = temp
-    }
-    
-    static func transformAPIObservableJSON(_ result: MoyaResult?) -> APIObservableJSON {
-        return APIObservableJSON.create { (observer) in
-            if let result = result {
-                switch result {
-                case let .success(response):
-                    do {
-                        let response = try response.filterSuccessfulStatusCodes()
-                        let jsonObject = try response.mapJSON()
-                        observer.onNext(jsonObject)
-                        observer.onCompleted()
-                    } catch MoyaError.jsonMapping(let response) {
-                        observer.onError(MoyaError.jsonMapping(response))
-                    } catch MoyaError.statusCode(let response) {
-                        observer.onError(MoyaError.statusCode(response))
-                    } catch {
-                        observer.onError(error)
-                    }
-                case let .failure(error):
-                    observer.onError(error)
-                }
-            }
-            return Disposables.create { }
-        }
     }
     
     static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> ConfigurationTuple {

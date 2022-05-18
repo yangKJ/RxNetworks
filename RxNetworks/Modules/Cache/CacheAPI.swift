@@ -50,7 +50,7 @@ struct LocalData {
             "id": 7,
             "title": "Network Framework",
             "image": "https://upload-images.jianshu.io/upload_images/1933747-4bc58b5a94713f99.jpeg",
-            "url": "https://github.com/yangKJ/RxNetworks"
+            "github": "https://github.com/yangKJ/RxNetworks"
         ]
         var array: [[String : Any]] = []
         for idx in 0...number {

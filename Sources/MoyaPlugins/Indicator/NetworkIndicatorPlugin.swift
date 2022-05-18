@@ -26,6 +26,10 @@ public final class NetworkIndicatorPlugin {
 
 extension NetworkIndicatorPlugin: PluginSubType {
     
+    public var pluginName: String {
+        return "Indicator"
+    }
+    
     public func willSend(_ request: RequestType, target: TargetType) {
         NetworkIndicatorPlugin.numberOfRequests += 1
     }

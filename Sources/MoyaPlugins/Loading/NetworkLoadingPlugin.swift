@@ -60,6 +60,10 @@ public final class NetworkLoadingPlugin {
 
 extension NetworkLoadingPlugin: PluginSubType {
     
+    public var pluginName: String {
+        return "Loading"
+    }
+    
     public func willSend(_ request: RequestType, target: TargetType) {
         
         self.showText(displayLoadText, window: displayInWindow, delay: 0)

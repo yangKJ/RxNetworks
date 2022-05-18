@@ -23,6 +23,10 @@ public final class NetworkDebuggingPlugin {
 
 extension NetworkDebuggingPlugin: PluginSubType {
     
+    public var pluginName: String {
+        return "Debugging"
+    }
+    
     public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
         #if DEBUG
         NetworkDebuggingPlugin.DebuggingRequest(target, plugins: plugins)
@@ -77,27 +81,21 @@ extension NetworkDebuggingPlugin {
                   """)
         } else {
             print("""
-              ------- 🎈 Request 🎈 -------
-              Time: \(date)
-              Method: \(target.method.rawValue)
-              Host: \(target.baseURL.absoluteString)
-              Path: \(target.path)
-              BaseParameters: \(NetworkConfig.baseParameters)
-              Plugins: \(pluginString(plugins))
-              LinkURL: \(requestFullLink(with: target))
-              
-              """)
+                  ------- 🎈 Request 🎈 -------
+                  Time: \(date)
+                  Method: \(target.method.rawValue)
+                  Host: \(target.baseURL.absoluteString)
+                  Path: \(target.path)
+                  BaseParameters: \(NetworkConfig.baseParameters)
+                  Plugins: \(pluginString(plugins))
+                  LinkURL: \(requestFullLink(with: target))
+                  
+                  """)
         }
     }
     
     private static func pluginString(_ plugins: APIPlugins) -> String {
-        var string = ""
-        plugins.forEach { plugin in
-            let clazz = String(describing: plugin)
-            let name = String(clazz.split(separator: ".").last ?? "")
-            string.append(name + ", ")
-        }
-        return string
+        return plugins.reduce("") { $0 + $1.pluginName + " " }
     }
     
     private static func requestFullLink(with target: TargetType) -> String {

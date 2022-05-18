@@ -7,43 +7,10 @@
 
 import Foundation
 import Alamofire
-import RxSwift
 import Moya
 
 /// 协议默认实现方案
 /// Protocol default implementation scheme
-extension NetworkAPI {
-    
-    public func request() -> APIObservableJSON {
-        return request(callbackQueue: nil)
-    }
-    
-    public func request(callbackQueue: DispatchQueue?) -> APIObservableJSON {
-        var tempPlugins: APIPlugins = self.plugins
-        NetworkUtil.defaultPlugin(&tempPlugins, api: self)
-        
-        let target = MultiTarget.target(self)
-
-        let tuple = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
-        if tuple.endRequest == true {
-            return NetworkUtil.transformAPIObservableJSON(tuple.result)
-        }
-        var session: Moya.Session
-        if let _session = tuple.session {
-            session = _session
-        } else {
-            let configuration = URLSessionConfiguration.af.default
-            configuration.headers = Alamofire.HTTPHeaders.default
-            configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
-            session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        }
-        let provider = MoyaProvider<MultiTarget>(stubClosure: { _ in
-            return stubBehavior
-        }, session: session, plugins: tempPlugins)
-        return provider.rx.request(api: self, callbackQueue: callbackQueue, result: tuple.result)
-    }
-}
-
 extension NetworkAPI {
     public var ip: APIHost {
         return NetworkConfig.baseURL

@@ -46,6 +46,10 @@ public final class NetworkWarningPlugin {
 
 extension NetworkWarningPlugin: PluginSubType {
     
+    public var pluginName: String {
+        return "Warning"
+    }
+    
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
         if case .failure(let error) = result {
             self.showText(error.localizedDescription)

@@ -17,6 +17,10 @@ public final class NetworkGZipPlugin {
 
 extension NetworkGZipPlugin: PluginSubType {
     
+    public var pluginName: String {
+        return "GZip"
+    }
+    
     public func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
         if case .success(let response) = result {
             // Can only unpack GZip compressed data

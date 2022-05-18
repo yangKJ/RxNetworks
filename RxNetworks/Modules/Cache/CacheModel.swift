@@ -13,6 +13,14 @@ struct CacheModel: HandyJSON {
     
     var id : Int?
     var title : String?
-    var image : String?
+    var imageURL : String?
     var url : String?
+    
+    /// 转换映射key
+    mutating func mapping(mapper: HelpingMapper) {
+        mapper <<<
+            url <-- "github"
+        mapper <<<
+            imageURL <-- "image"
+    }
 }

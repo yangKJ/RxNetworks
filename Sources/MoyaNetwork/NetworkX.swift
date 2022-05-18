@@ -26,7 +26,8 @@ public func += <K,V> (left: inout Dictionary<K,V>, right: Dictionary<K,V>?) {
 }
 
 public struct X {
-    struct View {  }
+    struct View { }
+    struct RxSwift { }
 }
 
 extension X {

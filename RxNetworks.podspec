@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint RxNetworks.podspec' to ensure this is a
+# Be sure to run 'pod lib lint RxNetworks.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.1.11'
+  s.version          = '0.1.12'
   s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
@@ -38,8 +38,13 @@ Pod::Spec.new do |s|
   
   s.subspec 'MoyaNetwork' do |xx|
     xx.source_files = 'Sources/MoyaNetwork/*.swift'
-    xx.dependency 'RxSwift'
     xx.dependency 'Moya'
+  end
+  
+  s.subspec 'RxSwift' do |xx|
+    xx.source_files = 'Sources/RxSwift/*.swift'
+    xx.dependency 'RxSwift'
+    xx.dependency 'RxNetworks/MoyaNetwork'
   end
   
   s.subspec 'HandyJSON' do |xx|
