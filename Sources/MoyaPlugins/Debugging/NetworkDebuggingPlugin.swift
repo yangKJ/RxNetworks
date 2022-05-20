@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RxSwift
 import Moya
 
 /// 网络打印，DEBUG模式内置插件
