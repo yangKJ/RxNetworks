@@ -11,6 +11,10 @@ import Moya
 
 public typealias APIObservableJSON = RxSwift.Observable<Any>
 
+extension X {
+    struct RxSwift { }
+}
+
 extension X.RxSwift {
     
     static func transformAPIObservableJSON(_ result: MoyaResult?) -> APIObservableJSON {

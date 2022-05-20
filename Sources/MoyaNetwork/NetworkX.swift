@@ -6,28 +6,10 @@
 //
 
 import Foundation
-
-/// 字典拼接 `+=
-/// Example
-///
-///     var dict1 = ["key": "1"]
-///     let dict2 = ["key": "cdy", "Condy": "ykj310@126.com"]
-///
-///     dict1 += dict2
-///
-///     print("\(dict1)")
-///     // Prints "["key": "cdy", "Condy": "ykj310@126.com"]"
-///
-public func += <K,V> (left: inout Dictionary<K,V>, right: Dictionary<K,V>?) {
-    guard let right = right else { return }
-    right.forEach { key, value in
-        left.updateValue(value, forKey: key)
-    }
-}
+import UIKit
 
 public struct X {
     struct View { }
-    struct RxSwift { }
 }
 
 extension X {
@@ -58,7 +40,7 @@ extension X {
 
 extension X.View {
     
-    static var keyWindow: UIWindow? {
+    public static var keyWindow: UIWindow? {
         if #available(iOS 13.0, *) {
             return UIApplication.shared.connectedScenes
                 .filter { $0.activationState == .foregroundActive }
@@ -70,7 +52,7 @@ extension X.View {
         }
     }
     
-    static var topViewController: UIViewController? {
+    public static var topViewController: UIViewController? {
         var vc = keyWindow?.rootViewController
         if let presentedController = vc as? UITabBarController {
             vc = presentedController.selectedViewController
