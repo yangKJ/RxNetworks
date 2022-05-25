@@ -20,13 +20,15 @@ class BatchViewModel: NSObject {
             BatchAPI.test.request(),
             BatchAPI.test2("666").request(),
             BatchAPI.test3.request()
-        ).subscribe(onNext: { [weak self] in
+        )
+        .observe(on: MainScheduler.instance)
+        .subscribe(onNext: { [weak self] in
             NetworkLoadingPlugin.hideMBProgressHUD()
             guard var data1 = $0 as? Dictionary<String, Any>,
                   let data2 = $1 as? Dictionary<String, Any>,
                   let data3 = $2 as? Dictionary<String, Any> else {
-                      return
-                  }
+                return
+            }
             data1 += data2
             data1 += data3
             self?.data.onNext(data1)

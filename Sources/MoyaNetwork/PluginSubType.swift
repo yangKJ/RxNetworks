@@ -17,7 +17,7 @@ public typealias LastNeverTuple = (result: MoyaResult, againRequest: Bool, mapRe
 
 /// 继承Moya插件协议，方便后序扩展，所有插件方法都必须实现该协议
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol
-public protocol PluginSubType: PluginType {
+public protocol PluginSubType: Moya.PluginType {
     
     /// 插件名
     var pluginName: String { get }

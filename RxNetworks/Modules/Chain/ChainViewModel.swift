@@ -33,11 +33,13 @@ extension ChainViewModel {
             .asObservable()
             .map { ($0 as! NSDictionary)["origin"] as! String }
             .catchAndReturn("") // 异常抛出
+            .observe(on: MainScheduler.instance)
     }
     
     func requestData(_ ip: String) -> Observable<NSDictionary> {
         return ChainAPI.test2(ip).request()
             .map { ($0 as! NSDictionary) }
             .catchAndReturn(["data": "nil"])
+            .observe(on: MainScheduler.instance)
     }
 }

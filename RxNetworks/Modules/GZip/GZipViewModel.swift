@@ -20,6 +20,7 @@ class GZipViewModel: NSObject {
             .asObservable()
             .mapHandyJSON(HandyDataModel<CacheModel>.self)
             .map { ($0.data?.url)! }
+            .observe(on: MainScheduler.instance)
             .catchAndReturn("")
             .subscribe(data)
             .disposed(by: disposeBag)
