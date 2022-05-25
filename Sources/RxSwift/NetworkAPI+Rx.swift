@@ -39,6 +39,7 @@ extension NetworkAPI {
         if tuple.endRequest == true {
             return X.RxSwift.transformAPIObservableJSON(tuple.result)
         }
+        
         var session: Moya.Session
         if let _session = tuple.session {
             session = _session
@@ -48,9 +49,11 @@ extension NetworkAPI {
             configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
             session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
         }
+        
         let provider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
-        }, session: session, plugins: tempPlugins)
+        }, callbackQueue: DispatchQueue.global(), session: session, plugins: tempPlugins)
+        
         return provider.rx.request(api: self, callbackQueue: callbackQueue, result: tuple.result)
     }
 }
