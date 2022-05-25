@@ -18,6 +18,7 @@ class WarningViewModel: NSObject {
     func loadData() {
         WarningAPI.warning.request()
             .asObservable()
+            .observe(on: MainScheduler.instance)
             .map { $0 as! String }
             .catchAndReturn("catch and return.")
             .subscribe(data)

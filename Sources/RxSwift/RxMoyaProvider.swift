@@ -9,7 +9,7 @@
 /// https://github.com/Moya/Moya/tree/master/Sources/RxMoya
 
 @_exported import RxSwift
-@_exported import Moya
+import Moya
 
 extension MoyaProvider: ReactiveCompatible { }
 
@@ -30,10 +30,10 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
                 observer.onNext(jsonObject)
             }
             // And then process network data
-            let token = self.beginRequest(api, queue: callbackQueue, successed: {
+            let token = NetworkUtil.beginRequest(api, base: base, queue: callbackQueue, success: {
                 observer.onNext($0)
                 observer.onCompleted()
-            }, failed: { error in
+            }, failure: { error in
                 observer.onError(error)
             })
             return Disposables.create {
@@ -44,55 +44,5 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
             single = single.retry(api.retry) // Number of retries after failed.
         }
         return single.share(replay: 1, scope: .forever)
-    }
-    
-    @discardableResult
-    private func beginRequest(_ api: NetworkAPI,
-                              queue: DispatchQueue?,
-                              successed: @escaping (_ json: Any) -> Void,
-                              failed: @escaping (_ error: Swift.Error) -> Void,
-                              progress: ProgressBlock? = nil) -> Cancellable {
-        let target = MultiTarget.target(api)
-        let tempPlugins = base.plugins
-        return base.request(target, callbackQueue: queue, progress: progress, completion: { result in
-            var _result = result
-            var _mapResult: MapJSONResult?
-            if let plugins = tempPlugins as? [PluginSubType] {
-                // last never handy data, last chance
-                let tuple = NetworkUtil.handyLastNeverPlugin(plugins, result: _result, target: target)
-                if tuple.againRequest == true {
-                    beginRequest(api, queue: queue, successed: successed, failed: failed, progress: progress)
-                    return
-                }
-                _result = tuple.result
-                _mapResult = tuple.mapResult
-            }
-            
-            if let _mapResult = _mapResult {
-                switch _mapResult {
-                case let .success(json):
-                    successed(json)
-                case let .failure(error):
-                    failed(error)
-                }
-            } else {
-                switch _result {
-                case let .success(response):
-                    do {
-                        let response = try response.filterSuccessfulStatusCodes()
-                        let json = try response.mapJSON()
-                        successed(json)
-                    } catch MoyaError.statusCode(let response) {
-                        failed(MoyaError.statusCode(response))
-                    } catch MoyaError.jsonMapping(let response) {
-                        failed(MoyaError.jsonMapping(response))
-                    } catch {
-                        failed(error)
-                    }
-                case let .failure(error):
-                    failed(error)
-                }
-            }
-        })
     }
 }

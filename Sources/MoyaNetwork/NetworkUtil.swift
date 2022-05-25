@@ -51,4 +51,55 @@ internal struct NetworkUtil {
         plugins.forEach { tuple = $0.lastNever(tuple, target: target) }
         return tuple
     }
+    
+    @discardableResult
+    static func beginRequest(_ api: NetworkAPI,
+                             base: MoyaProvider<MultiTarget>,
+                             queue: DispatchQueue?,
+                             success: @escaping (_ json: Any) -> Void,
+                             failure: @escaping (_ error: Swift.Error) -> Void,
+                             progress: ProgressBlock? = nil) -> Cancellable {
+        let target = MultiTarget.target(api)
+        let tempPlugins = base.plugins
+        return base.request(target, callbackQueue: queue, progress: progress, completion: { result in
+            var _result = result
+            var _mapResult: MapJSONResult?
+            if let plugins = tempPlugins as? [PluginSubType] {
+                // last never handy data, last chance
+                let tuple = NetworkUtil.handyLastNeverPlugin(plugins, result: _result, target: target)
+                if tuple.againRequest == true {
+                    beginRequest(api, base: base, queue: queue, success: success, failure: failure, progress: progress)
+                    return
+                }
+                _result = tuple.result
+                _mapResult = tuple.mapResult
+            }
+            
+            if let _mapResult = _mapResult {
+                switch _mapResult {
+                case let .success(json):
+                    success(json)
+                case let .failure(error):
+                    failure(error)
+                }
+            } else {
+                switch _result {
+                case let .success(response):
+                    do {
+                        let response = try response.filterSuccessfulStatusCodes()
+                        let json = try response.mapJSON()
+                        success(json)
+                    } catch MoyaError.statusCode(let response) {
+                        failure(MoyaError.statusCode(response))
+                    } catch MoyaError.jsonMapping(let response) {
+                        failure(MoyaError.jsonMapping(response))
+                    } catch {
+                        failure(error)
+                    }
+                case let .failure(error):
+                    failure(error)
+                }
+            }
+        })
+    }
 }

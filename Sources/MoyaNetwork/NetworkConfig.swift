@@ -11,9 +11,8 @@
 ///`SwiftyJSON`文档
 /// https://github.com/SwiftyJSON/SwiftyJSON
 
-import Foundation
-import Alamofire
-import Moya
+@_exported import Alamofire
+@_exported import Moya
 
 public typealias APIHost = String
 public typealias APIPath = String
