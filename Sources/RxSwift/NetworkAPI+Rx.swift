@@ -50,9 +50,11 @@ extension NetworkAPI {
             session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
         }
         
+        // 自定义后台运行级别并行队列
+        let queue = DispatchQueue(label: "condy.rx.network.queue", qos: .background, attributes: [.concurrent])
         let provider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
-        }, callbackQueue: DispatchQueue.global(), session: session, plugins: tempPlugins)
+        }, callbackQueue: queue, session: session, plugins: tempPlugins)
         
         return provider.rx.request(api: self, callbackQueue: callbackQueue, result: tuple.result)
     }
