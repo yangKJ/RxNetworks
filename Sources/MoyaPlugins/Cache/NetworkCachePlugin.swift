@@ -76,8 +76,9 @@ extension NetworkCachePlugin: PluginSubType {
     public func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
         if self.cacheType == NetworkCacheType.networkElseCache {
             switch result {
-            case .success(_): return result
-            case .failure(_):
+            case .success:
+                return result
+            case .failure:
                 if let cacheResponse = self.readCacheResponse(target) {
                     return .success(cacheResponse)
                 }
@@ -111,7 +112,7 @@ extension NetworkCachePlugin {
             "data": response.data,
             "statusCode": response.statusCode
         ]
-        DispatchQueue.global().async {
+        DispatchQueue(label: "condy.cache.network.queue", attributes: .concurrent).async {
             CacheManager.saveCacheWithDictionary(storage, key: key)
         }
     }

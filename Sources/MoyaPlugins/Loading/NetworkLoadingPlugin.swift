@@ -21,7 +21,7 @@ public final class NetworkLoadingPlugin {
     /// Do you need to display an error message, the default is empty
     let displayLoadText: String
     /// Delay hidden, the default is zero seconds
-    let delayHideHUD: TimeInterval
+    let delayHideHUD: Double
     
     /// 是否需要自动隐藏Loading，可用于链式请求时刻
     /// 最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading
@@ -35,7 +35,7 @@ public final class NetworkLoadingPlugin {
     
     public init(in window: Bool = true,
                 text: String = "",
-                delay hideHUD: TimeInterval = 0.0,
+                delay hideHUD: Double = 0.0,
                 autoHide loading: Bool = true) {
         self.displayInWindow = window
         self.displayLoadText = text
@@ -72,12 +72,15 @@ extension NetworkLoadingPlugin: PluginSubType {
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
         if autoHideLoading == false {
             switch result {
-            case .success(_): return
-            case .failure(_): break
+            case .success:
+                return
+            case .failure:
+                break
             }
         }
         if delayHideHUD > 0 {
-            DispatchQueue.global().asyncAfter(deadline: .now() + delayHideHUD) {
+            let concurrentQueue = DispatchQueue(label: "condy.loading.network.queue", attributes: .concurrent)
+            concurrentQueue.asyncAfter(deadline: .now() + delayHideHUD) {
                 NetworkLoadingPlugin.hideMBProgressHUD()
             }
         } else {
@@ -93,7 +96,7 @@ extension NetworkLoadingPlugin {
     ///   - text: display content
     ///   - window: whether to display in the window
     ///   - delay: delay hiding time
-    private func showText(_ text: String, window: Bool, delay: TimeInterval) {
+    private func showText(_ text: String, window: Bool, delay: Double) {
         DispatchQueue.main.async {
             guard let view = window ? RxNetworks.X.View.keyWindow :
                     RxNetworks.X.View.topViewController?.view else { return }
