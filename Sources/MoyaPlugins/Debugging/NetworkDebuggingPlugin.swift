@@ -13,9 +13,9 @@ import Moya
 public final class NetworkDebuggingPlugin {
     
     /// Enable print request information.
-    public static var openDebugRequest: Bool = true
+    public var openDebugRequest: Bool = true
     /// Turn on printing the response result.
-    public static var openDebugResponse: Bool = true
+    public var openDebugResponse: Bool = true
     
     public init() { }
 }
@@ -28,9 +28,9 @@ extension NetworkDebuggingPlugin: PluginSubType {
     
     public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
         #if DEBUG
-        NetworkDebuggingPlugin.DebuggingRequest(target, plugins: plugins)
+        printRequest(target, plugins: plugins)
         if let result = tuple.result {
-            NetworkDebuggingPlugin.ansysisResult(result, local: true)
+            ansysisResult(result, local: true)
         }
         #endif
         return tuple
@@ -41,12 +41,12 @@ extension NetworkDebuggingPlugin: PluginSubType {
         if let map = tuple.mapResult {
             switch map {
             case .success(let json):
-                NetworkDebuggingPlugin.DebuggingResponse(json, false, true)
+                printResponse(json, false, true)
             case .failure(let error):
-                NetworkDebuggingPlugin.DebuggingResponse(error.localizedDescription, false, false)
+                printResponse(error.localizedDescription, false, false)
             }
         } else {
-            NetworkDebuggingPlugin.ansysisResult(tuple.result, local: false)
+            ansysisResult(tuple.result, local: false)
         }
         #endif
         return tuple
@@ -55,7 +55,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
 
 extension NetworkDebuggingPlugin {
     
-    static func DebuggingRequest(_ target: TargetType, plugins: APIPlugins) {
+    private func printRequest(_ target: TargetType, plugins: APIPlugins) {
         guard openDebugRequest else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
@@ -93,11 +93,11 @@ extension NetworkDebuggingPlugin {
         }
     }
     
-    private static func pluginString(_ plugins: APIPlugins) -> String {
+    private func pluginString(_ plugins: APIPlugins) -> String {
         return plugins.reduce("") { $0 + $1.pluginName + " " }
     }
     
-    private static func requestFullLink(with target: TargetType) -> String {
+    private func requestFullLink(with target: TargetType) -> String {
         var parameters: APIParameters? = nil
         if case .requestParameters(let parame, _) = target.task {
             parameters = parame
@@ -117,27 +117,28 @@ extension NetworkDebuggingPlugin {
 
 extension NetworkDebuggingPlugin {
     
-    static func ansysisResult(_ result: Result<Moya.Response, MoyaError>, local: Bool) {
+    private func ansysisResult(_ result: Result<Moya.Response, MoyaError>, local: Bool) {
         switch result {
         case let .success(response):
             do {
                 let response = try response.filterSuccessfulStatusCodes()
                 let json = try response.mapJSON()
-                NetworkDebuggingPlugin.DebuggingResponse(json, local, true)
+                printResponse(json, local, true)
             } catch MoyaError.jsonMapping(let response) {
                 let error = MoyaError.jsonMapping(response)
-                NetworkDebuggingPlugin.DebuggingResponse(error.localizedDescription, local, false)
+                printResponse(error.localizedDescription, local, false)
             } catch MoyaError.statusCode(let response) {
                 let error = MoyaError.statusCode(response)
-                NetworkDebuggingPlugin.DebuggingResponse(error.localizedDescription, local, false)
+                printResponse(error.localizedDescription, local, false)
             } catch {
-                NetworkDebuggingPlugin.DebuggingResponse(error.localizedDescription, local, false)
+                printResponse(error.localizedDescription, local, false)
             }
         case let .failure(error):
-            NetworkDebuggingPlugin.DebuggingResponse(error.localizedDescription, local, false)
+            printResponse(error.localizedDescription, local, false)
         }
     }
-    static func DebuggingResponse(_ json: Any, _ local: Bool, _ success: Bool) {
+    
+    private func printResponse(_ json: Any, _ local: Bool, _ success: Bool) {
         guard openDebugResponse else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
