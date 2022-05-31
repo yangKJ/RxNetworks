@@ -56,8 +56,8 @@ internal struct NetworkUtil {
     static func beginRequest(_ api: NetworkAPI,
                              base: MoyaProvider<MultiTarget>,
                              queue: DispatchQueue?,
-                             success: @escaping (_ json: Any) -> Void,
-                             failure: @escaping (_ error: Swift.Error) -> Void,
+                             success: @escaping APISuccess,
+                             failure: @escaping APIFailure,
                              progress: ProgressBlock? = nil) -> Cancellable {
         let target = MultiTarget.target(api)
         let tempPlugins = base.plugins

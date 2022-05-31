@@ -5,22 +5,7 @@
 //  Created by Condy on 2021/10/5.
 //  https://github.com/yangKJ/RxNetworks
 
-///`Moya`文档
-/// https://github.com/Moya/Moya
-///
-///`SwiftyJSON`文档
-/// https://github.com/SwiftyJSON/SwiftyJSON
-
-@_exported import Alamofire
-@_exported import Moya
-
-public typealias APIHost = String
-public typealias APIPath = String
-public typealias APINumber = Int
-public typealias APIMethod = Moya.Method
-public typealias APIParameters = Alamofire.Parameters
-public typealias APIPlugins = [RxNetworks.PluginSubType]
-public typealias APIStubBehavior = Moya.StubBehavior
+import Foundation
 
 /// 网络配置信息，只需要在程序开启的时刻配置一次
 /// Network configuration information, only need to be configured once when the program is started
@@ -34,7 +19,7 @@ public struct NetworkConfig {
     /// However, you can inject this kind of global unified general plugin, such as secret key plugin, certificate plugin, etc.
     public static var injectionPlugins: [PluginSubType]?
     /// Set the request timeout, the default is 30 seconds
-    public static var timeoutIntervalForRequest: TimeInterval = 30
+    public static var timeoutIntervalForRequest: Double = 30
     
     /// Root path address
     public private(set) static var baseURL: APIHost = ""
