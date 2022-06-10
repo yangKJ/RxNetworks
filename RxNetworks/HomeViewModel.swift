@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 
 enum ViewControllerType: String {
+    case Closure = "Network request in closure mode"
     case OO = "OO Basic Network"
     case Chain = "Chained Serial Network"
     case Batch = "Batch Parallel Network"
@@ -20,6 +21,7 @@ enum ViewControllerType: String {
     
     func viewController() -> UIViewController {
         switch self {
+        case .Closure: return ClosureViewController()
         case .OO: return OOViewController()
         case .Chain: return ChainViewController()
         case .Batch: return BatchViewController()
@@ -35,6 +37,7 @@ struct HomeViewModel {
 
     lazy var datas: [ViewControllerType] = {
         return [
+            .Closure,
             .OO,
             .Chain,
             .Batch,

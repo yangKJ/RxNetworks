@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.2.2'
+  s.version          = '0.2.3'
   s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.

@@ -39,6 +39,9 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		6817A39627A022AC0034F283 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6817A39527A022AC0034F283 /* Color.xcassets */; };
+		8787A2762852DEB900655CEA /* ClosureAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2752852DEB900655CEA /* ClosureAPI.swift */; };
+		8787A2782852DEC200655CEA /* ClosureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2772852DEC200655CEA /* ClosureViewController.swift */; };
+		8787A27A2852DF4300655CEA /* ClosureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2792852DF4200655CEA /* ClosureViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +79,9 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		6817A39527A022AC0034F283 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		728016062553DB205A17A393 /* Pods-RxNetworks_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.release.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.release.xcconfig"; sourceTree = "<group>"; };
+		8787A2752852DEB900655CEA /* ClosureAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureAPI.swift; sourceTree = "<group>"; };
+		8787A2772852DEC200655CEA /* ClosureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewController.swift; sourceTree = "<group>"; };
+		8787A2792852DF4200655CEA /* ClosureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewModel.swift; sourceTree = "<group>"; };
 		98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworks_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.debug.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -177,6 +183,7 @@
 				04C04F2C2792A69400E85B6B /* Batch */,
 				04233501278E61DE00547494 /* Cache */,
 				0442C89B2791E9E500AB04DB /* Chain */,
+				8787A2742852DE8400655CEA /* Closure */,
 				04F0A883279A465C008534D8 /* GZip */,
 				04233506278E61DE00547494 /* Loading */,
 				0423350A278E61DE00547494 /* OO */,
@@ -243,6 +250,16 @@
 				607FACD41AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8787A2742852DE8400655CEA /* Closure */ = {
+			isa = PBXGroup;
+			children = (
+				8787A2752852DEB900655CEA /* ClosureAPI.swift */,
+				8787A2772852DEC200655CEA /* ClosureViewController.swift */,
+				8787A2792852DF4200655CEA /* ClosureViewModel.swift */,
+			);
+			path = Closure;
 			sourceTree = "<group>";
 		};
 		E129E8638C1FF7EC7778E501 /* Frameworks */ = {
@@ -387,6 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8787A2782852DEC200655CEA /* ClosureViewController.swift in Sources */,
 				04233512278E61DE00547494 /* LoadingAPI.swift in Sources */,
 				04233511278E61DE00547494 /* CacheModel.swift in Sources */,
 				04F0A887279A465C008534D8 /* GZipViewModel.swift in Sources */,
@@ -396,6 +414,7 @@
 				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
 				0423350F278E61DE00547494 /* CacheViewController.swift in Sources */,
 				0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */,
+				8787A27A2852DF4300655CEA /* ClosureViewModel.swift in Sources */,
 				04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */,
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
 				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,
@@ -403,6 +422,7 @@
 				0423350E278E61DE00547494 /* CacheViewModel.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
 				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
+				8787A2762852DEB900655CEA /* ClosureAPI.swift in Sources */,
 				04BB29B6279911DD0056F94A /* WarningViewController.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
 				04233516278E61DE00547494 /* OOViewController.swift in Sources */,

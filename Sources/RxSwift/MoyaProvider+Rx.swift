@@ -26,8 +26,8 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
             if let result = result,
                let response = try? result.get(),
                let response = try? response.filterSuccessfulStatusCodes(),
-               let jsonObject = try? response.mapJSON() {
-                observer.onNext(jsonObject)
+               let jsonobjc = try? response.mapJSON() {
+                observer.onNext(jsonobjc)
             }
             // And then process network data
             let token = NetworkUtil.beginRequest(api, base: base, queue: callbackQueue, success: {
