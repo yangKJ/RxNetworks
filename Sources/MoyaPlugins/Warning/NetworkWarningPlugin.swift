@@ -61,9 +61,9 @@ extension NetworkWarningPlugin {
     
     private func showText(_ text: String) {
         DispatchQueue.main.async {
-            guard let view = self.displayInWindow ? RxNetworks.X.View.keyWindow :
-                    RxNetworks.X.View.topViewController?.view else { return }
-            
+            guard let view = self.displayInWindow ? X.View.keyWindow : X.View.topViewController?.view else {
+                return
+            }
             if self.coverLastToast {
                 view.hideToast()
             }

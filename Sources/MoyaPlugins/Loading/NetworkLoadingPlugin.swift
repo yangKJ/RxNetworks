@@ -70,13 +70,8 @@ extension NetworkLoadingPlugin: PluginSubType {
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        if autoHideLoading == false {
-            switch result {
-            case .success:
-                return
-            case .failure:
-                break
-            }
+        if autoHideLoading == false, case .success = result {
+            return
         }
         if delayHideHUD > 0 {
             let concurrentQueue = DispatchQueue(label: "condy.loading.network.queue", attributes: .concurrent)
@@ -98,8 +93,9 @@ extension NetworkLoadingPlugin {
     ///   - delay: delay hiding time
     private func showText(_ text: String, window: Bool, delay: Double) {
         DispatchQueue.main.async {
-            guard let view = window ? RxNetworks.X.View.keyWindow :
-                    RxNetworks.X.View.topViewController?.view else { return }
+            guard let view = window ? X.View.keyWindow : X.View.topViewController?.view else {
+                return
+            }
             if let _ = MBProgressHUD.forView(view) {
                 return
             }

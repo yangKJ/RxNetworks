@@ -61,6 +61,15 @@ internal struct NetworkUtil {
                              progress: ProgressBlock? = nil) -> Cancellable {
         let target = MultiTarget.target(api)
         let tempPlugins = base.plugins
+        
+        let handleSuccess = { (json: Any) -> Void in
+            success(json)
+        }
+        
+        let handleFailure = { (error: Swift.Error) -> Void in
+            failure(error)
+        }
+        
         return base.request(target, callbackQueue: queue, progress: progress, completion: { result in
             var _result = result
             var _mapResult: MapJSONResult?
@@ -78,9 +87,9 @@ internal struct NetworkUtil {
             if let _mapResult = _mapResult {
                 switch _mapResult {
                 case let .success(json):
-                    success(json)
+                    handleSuccess(json)
                 case let .failure(error):
-                    failure(error)
+                    handleFailure(error)
                 }
             } else {
                 switch _result {
@@ -88,16 +97,16 @@ internal struct NetworkUtil {
                     do {
                         let response = try response.filterSuccessfulStatusCodes()
                         let json = try response.mapJSON()
-                        success(json)
+                        handleSuccess(json)
                     } catch MoyaError.statusCode(let response) {
-                        failure(MoyaError.statusCode(response))
+                        handleFailure(MoyaError.statusCode(response))
                     } catch MoyaError.jsonMapping(let response) {
-                        failure(MoyaError.jsonMapping(response))
+                        handleFailure(MoyaError.jsonMapping(response))
                     } catch {
-                        failure(error)
+                        handleFailure(error)
                     }
                 case let .failure(error):
-                    failure(error)
+                    handleFailure(error)
                 }
             }
         })
