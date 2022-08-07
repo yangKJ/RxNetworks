@@ -67,10 +67,7 @@ extension AuthPlugin: PluginSubType {
                 return
             }
         }
-        guard self.token?.isEmpty ?? true else {
-            onNext(tuple)
-            return
-        }
+        // 处理401问题
         lock.lock()
         defer {
             lock.unlock()
