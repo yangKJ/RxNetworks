@@ -58,6 +58,12 @@ extension AuthPlugin: PluginSubType {
         target: TargetType,
         onNext: @escaping (LastNeverTuple) -> Void)
     {
+        #if DEBUG
+        guard self.token?.isEmpty ?? true else {
+            onNext(tuple)
+            return
+        }
+        #else
         switch tuple.result {
         case .success:
             return onNext(tuple)
@@ -67,11 +73,13 @@ extension AuthPlugin: PluginSubType {
                 return
             }
         }
+        #endif
         // 处理401问题
         lock.lock()
         defer {
             lock.unlock()
         }
+        
         _ = NotificationCenter.default.rx
             .notification(AuthPlugin.NTF_Authed)
             .take(1)
@@ -89,6 +97,7 @@ extension AuthPlugin: PluginSubType {
                     __tuple.againRequest = false
                 }
                 onNext(__tuple)
+                NotificationCenter.default.removeObserver(self, name: Self.NTF_Authed, object: nil)
             })
         NotificationCenter.default.post(name: Self.NTF_Req_Login, object: nil)
     }
