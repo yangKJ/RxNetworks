@@ -12,7 +12,7 @@ target 'RxNetworks_Example' do
 #  pod 'RxNetworks/MoyaPlugins/Indicator', :path => './'
   
   pod 'RxNetworks', :path => './'
-  
+  pod 'RxCocoa'
 end
 
 post_install do |installer|

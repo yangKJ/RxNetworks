@@ -36,7 +36,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
         return tuple
     }
     
-    public func lastNever(_ tuple: LastNeverTuple, target: TargetType) -> LastNeverTuple {
+    public func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping (LastNeverTuple)-> Void) {
         #if DEBUG
         if let map = tuple.mapResult {
             switch map {
@@ -49,7 +49,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
             ansysisResult(tuple.result, local: false)
         }
         #endif
-        return tuple
+        onNext(tuple)
     }
 }
 

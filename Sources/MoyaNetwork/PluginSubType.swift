@@ -52,8 +52,9 @@ public protocol PluginSubType: Moya.PluginType {
     /// - Parameters:
     ///   - tuple: Auto-repeat tuple containing the data source and whether auto-last network request.
     ///   - target: The protocol used to define the specifications necessary for a `MoyaProvider`.
+    ///   - onNext: 给插件异步处理任务, 提供回调.
     /// - Returns: A tuple containing the data source and whether to start the last network request again.
-    func lastNever(_ tuple: LastNeverTuple, target: TargetType) -> LastNeverTuple
+    func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping (LastNeverTuple)-> Void)
 }
 
 public extension PluginSubType {
@@ -62,7 +63,7 @@ public extension PluginSubType {
         return tuple
     }
     
-    func lastNever(_ tuple: LastNeverTuple, target: TargetType) -> LastNeverTuple {
-        return tuple
+    func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping (LastNeverTuple)-> Void) {
+        onNext(tuple)
     }
 }

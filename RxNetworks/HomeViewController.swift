@@ -45,6 +45,7 @@ class HomeViewController: UIViewController {
         )
         NetworkConfig.addDebugging = true
         NetworkConfig.addIndicator = true
+        NetworkConfig.injectionPlugins = [AuthPlugin.shared]
     }
     
     func setupUI() {
