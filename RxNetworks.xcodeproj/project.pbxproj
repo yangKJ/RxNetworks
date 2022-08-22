@@ -33,13 +33,13 @@
 		04F0A888279A465C008534D8 /* GZipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A885279A465C008534D8 /* GZipViewController.swift */; };
 		04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A886279A465C008534D8 /* GZipAPI.swift */; };
 		36ADE5ADE90CB24F23D9B8B5 /* Pods_RxNetworks_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */; };
-		42AC285528A0BDD3003A01E8 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AC285428A0BDD3003A01E8 /* AuthPlugin.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* HomeViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		6817A39627A022AC0034F283 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6817A39527A022AC0034F283 /* Color.xcassets */; };
+		8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8759D02928B328E500C22107 /* AuthPlugin.swift */; };
 		8787A2762852DEB900655CEA /* ClosureAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2752852DEB900655CEA /* ClosureAPI.swift */; };
 		8787A2782852DEC200655CEA /* ClosureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2772852DEC200655CEA /* ClosureViewController.swift */; };
 		8787A27A2852DF4300655CEA /* ClosureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2792852DF4200655CEA /* ClosureViewModel.swift */; };
@@ -71,7 +71,6 @@
 		04F0A884279A465C008534D8 /* GZipViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewModel.swift; sourceTree = "<group>"; };
 		04F0A885279A465C008534D8 /* GZipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewController.swift; sourceTree = "<group>"; };
 		04F0A886279A465C008534D8 /* GZipAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipAPI.swift; sourceTree = "<group>"; };
-		42AC285428A0BDD3003A01E8 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* RxNetworks_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxNetworks_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +80,7 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		6817A39527A022AC0034F283 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		728016062553DB205A17A393 /* Pods-RxNetworks_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.release.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.release.xcconfig"; sourceTree = "<group>"; };
+		8759D02928B328E500C22107 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		8787A2752852DEB900655CEA /* ClosureAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureAPI.swift; sourceTree = "<group>"; };
 		8787A2772852DEC200655CEA /* ClosureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewController.swift; sourceTree = "<group>"; };
 		8787A2792852DF4200655CEA /* ClosureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewModel.swift; sourceTree = "<group>"; };
@@ -205,14 +205,6 @@
 			path = Modules/GZip;
 			sourceTree = "<group>";
 		};
-		42AC285328A0BDD3003A01E8 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				42AC285428A0BDD3003A01E8 /* AuthPlugin.swift */,
-			);
-			path = Auth;
-			sourceTree = "<group>";
-		};
 		52E8D0F8A548010FC369397B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,7 +240,7 @@
 				607FACD71AFB9204008FA782 /* HomeViewController.swift */,
 				04C05416278D66F0008BCC42 /* HomeViewModel.swift */,
 				04C053FE278D5D07008BCC42 /* Modules */,
-				8759D02628B3243400C22107 /* Plugins */,
+				8759D02728B328E500C22107 /* Plugins */,
 				04C053FD278D5705008BCC42 /* Resources */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
@@ -263,12 +255,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8759D02628B3243400C22107 /* Plugins */ = {
+		8759D02728B328E500C22107 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				42AC285328A0BDD3003A01E8 /* Auth */,
+				8759D02828B328E500C22107 /* Auth */,
 			);
-			name = Plugins;
+			path = Plugins;
+			sourceTree = "<group>";
+		};
+		8759D02828B328E500C22107 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				8759D02928B328E500C22107 /* AuthPlugin.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		8787A2742852DE8400655CEA /* Closure */ = {
@@ -433,7 +433,7 @@
 				04F0A887279A465C008534D8 /* GZipViewModel.swift in Sources */,
 				607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */,
 				04F0A888279A465C008534D8 /* GZipViewController.swift in Sources */,
-				42AC285528A0BDD3003A01E8 /* AuthPlugin.swift in Sources */,
+				8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */,
 				04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */,
 				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
 				0423350F278E61DE00547494 /* CacheViewController.swift in Sources */,
