@@ -30,23 +30,23 @@ extension NetworkDebuggingPlugin: PluginSubType {
         #if DEBUG
         printRequest(target, plugins: plugins)
         if let result = tuple.result {
-            ansysisResult(result, local: true)
+            ansysisResult(target, result, local: true)
         }
         #endif
         return tuple
     }
     
-    public func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping (LastNeverTuple)-> Void) {
+    public func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback) {
         #if DEBUG
         if let map = tuple.mapResult {
             switch map {
             case .success(let json):
-                printResponse(json, false, true)
+                printResponse(target, json, false, true)
             case .failure(let error):
-                printResponse(error.localizedDescription, false, false)
+                printResponse(target, error.localizedDescription, false, false)
             }
         } else {
-            ansysisResult(tuple.result, local: false)
+            ansysisResult(target, tuple.result, local: false)
         }
         #endif
         onNext(tuple)
@@ -67,28 +67,21 @@ extension NetworkDebuggingPlugin {
         }
         if let param = parameters, param.isEmpty == false {
             print("""
-                  ------- 🎈 Request 🎈 -------
-                  Time: \(date)
-                  Method: \(target.method.rawValue)
-                  Host: \(target.baseURL.absoluteString)
-                  Path: \(target.path)
-                  Parameters: \(param)
-                  BaseParameters: \(NetworkConfig.baseParameters)
-                  Plugins: \(pluginString(plugins))
-                  LinkURL: \(requestFullLink(with: target))
-                  
+                  ╔═══════════ 🎈 Request 🎈 ═══════════
+                  ║ Time: \(date)
+                  ║ URL: {{\(requestFullLink(with: target))}}
+                  ║-------------------------------------
+                  ║ Plugins: \(pluginString(plugins))
+                  ╚═══════════════════════════════════════
                   """)
         } else {
             print("""
-                  ------- 🎈 Request 🎈 -------
-                  Time: \(date)
-                  Method: \(target.method.rawValue)
-                  Host: \(target.baseURL.absoluteString)
-                  Path: \(target.path)
-                  BaseParameters: \(NetworkConfig.baseParameters)
-                  Plugins: \(pluginString(plugins))
-                  LinkURL: \(requestFullLink(with: target))
-                  
+                  ╔═══════════ 🎈 Request 🎈 ═══════════
+                  ║ Time: \(date) \(requestFullLink(with: target))
+                  ║ URL: {{\(requestFullLink(with: target))}}
+                  ║-------------------------------------
+                  ║ Plugins: \(pluginString(plugins))
+                  ╚═══════════════════════════════════════
                   """)
         }
     }
@@ -117,40 +110,70 @@ extension NetworkDebuggingPlugin {
 
 extension NetworkDebuggingPlugin {
     
-    private func ansysisResult(_ result: Result<Moya.Response, MoyaError>, local: Bool) {
+    private func ansysisResult(_ target: TargetType, _ result: Result<Moya.Response, MoyaError>, local: Bool) {
         switch result {
         case let .success(response):
             do {
                 let response = try response.filterSuccessfulStatusCodes()
                 let json = try response.mapJSON()
-                printResponse(json, local, true)
+                printResponse(target, json, local, true)
             } catch MoyaError.jsonMapping(let response) {
                 let error = MoyaError.jsonMapping(response)
-                printResponse(error.localizedDescription, local, false)
+                printResponse(target, error.localizedDescription, local, false)
             } catch MoyaError.statusCode(let response) {
                 let error = MoyaError.statusCode(response)
-                printResponse(error.localizedDescription, local, false)
+                printResponse(target, error.localizedDescription, local, false)
             } catch {
-                printResponse(error.localizedDescription, local, false)
+                printResponse(target, error.localizedDescription, local, false)
             }
         case let .failure(error):
-            printResponse(error.localizedDescription, local, false)
+            printResponse(target, error.localizedDescription, local, false)
         }
     }
     
-    private func printResponse(_ json: Any, _ local: Bool, _ success: Bool) {
+    private func printResponse(_ target: TargetType, _ json: Any, _ local: Bool, _ success: Bool) {
         guard openDebugResponse else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
         formatter.locale = Locale.current
         let date = formatter.string(from: Date())
-        print("""
-              ------- 🎈 Response 🎈 -------
-              Time: \(date)
-              Result: \(success ? "Successed." : "Failed.")
-              DataType: \(local ? "Local data." : "Remote data.")
-              Response: \(json)
-              
-              """)
+        var parameters: APIParameters? = nil
+        if case .requestParameters(let parame, _) = target.task {
+            parameters = parame
+        }
+        if let param = parameters, param.isEmpty == false {
+            print("""
+                  ╔═══════════ 🎈 Request 🎈 ═══════════
+                  ║ Time: \(date)
+                  ║ URL: {{\(requestFullLink(with: target))}}
+                  ║-------------------------------------
+                  ║ Method: \(target.method.rawValue)
+                  ║ Host: \(target.baseURL.absoluteString)
+                  ║ Path: \(target.path)
+                  ║ Parameters: \(param)
+                  ║ BaseParameters: \(NetworkConfig.baseParameters)
+                  ║---------- 🎈 Response 🎈 ----------
+                  ║ Result: \(success ? "Successed." : "Failed.")
+                  ║ DataType: \(local ? "Local data." : "Remote data.")
+                  ║ Response: \(json)
+                  ╚═══════════════════════════════════════
+                  """)
+        } else {
+            print("""
+                  ╔═══════════ 🎈 Request 🎈 ═══════════
+                  ║ Time: \(date)
+                  ║ URL: {{\(requestFullLink(with: target))}}
+                  ║-------------------------------------
+                  ║ Method: \(target.method.rawValue)
+                  ║ Host: \(target.baseURL.absoluteString)
+                  ║ Path: \(target.path)
+                  ║ BaseParameters: \(NetworkConfig.baseParameters)
+                  ║---------- 🎈 Response 🎈 ----------
+                  ║ Result: \(success ? "Successed." : "Failed.")
+                  ║ DataType: \(local ? "Local data." : "Remote data.")
+                  ║ Response: \(json)
+                  ╚═══════════════════════════════════════
+                  """)
+        }
     }
 }

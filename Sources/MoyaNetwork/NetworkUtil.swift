@@ -43,12 +43,10 @@ internal struct NetworkUtil {
         return tuple
     }
     
-    static func handyLastNeverPlugin(
-        _ plugins: APIPlugins,
-        result: MoyaResult,
-        target: TargetType,
-        onNext: @escaping (LastNeverTuple)-> Void
-    ) {
+    static func handyLastNeverPlugin(_ plugins: APIPlugins,
+                                     result: MoyaResult,
+                                     target: TargetType,
+                                     onNext: @escaping (LastNeverTuple)-> Void) {
         var tuple: LastNeverTuple
         tuple.result = result
         tuple.againRequest = false
@@ -80,10 +78,7 @@ internal struct NetworkUtil {
             guard let plugins = base.plugins as? [PluginSubType] else {
                 // 主线程回调
                 DispatchQueue.main.async {
-                    NetworkUtil.handleResult(
-                        result, nil,
-                        onSuccess: success,
-                        onFailure: failure)
+                    NetworkUtil.handleResult(result, nil, onSuccess: success, onFailure: failure)
                 }
                 return
             }
@@ -95,11 +90,7 @@ internal struct NetworkUtil {
                 }
                 // 主线程回调
                 DispatchQueue.main.async {
-                    NetworkUtil.handleResult(
-                        tuple.result,
-                        tuple.mapResult,
-                        onSuccess: success,
-                        onFailure: failure)
+                    NetworkUtil.handleResult(tuple.result, tuple.mapResult, onSuccess: success, onFailure: failure)
                 }
             }
         })

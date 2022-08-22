@@ -14,6 +14,7 @@ public typealias MapJSONResult = Result<Any, MoyaError>
 public typealias MoyaResult = Result<Moya.Response, MoyaError>
 public typealias ConfigurationTuple = (result: MoyaResult?, endRequest: Bool, session: Moya.Session?)
 public typealias LastNeverTuple = (result: MoyaResult, againRequest: Bool, mapResult: MapJSONResult?)
+public typealias LastNeverCallback = ((LastNeverTuple) -> Void)
 
 /// 继承Moya插件协议，方便后序扩展，所有插件方法都必须实现该协议
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol
@@ -44,17 +45,15 @@ public protocol PluginSubType: Moya.PluginType {
     /// - Parameters:
     ///   - tuple: 自动再次元组，其中包含数据源和是否自动上次网络请求
     ///   - target: 参数协议
-    ///   - againRequest: 是否再次网络
-    /// - Returns: 包涵数据源和是否再次开启上次网络请求的元组
+    ///   - onNext: 给插件异步处理任务，回调包含数据源和是否再次开启上次网络请求的元组
     ///
     /// The last time the last network response is returned,
     /// This method can be used in scenarios such as key invalidation to obtain the key again and then automatically request the network again.
     /// - Parameters:
     ///   - tuple: Auto-repeat tuple containing the data source and whether auto-last network request.
     ///   - target: The protocol used to define the specifications necessary for a `MoyaProvider`.
-    ///   - onNext: 给插件异步处理任务, 提供回调.
-    /// - Returns: A tuple containing the data source and whether to start the last network request again.
-    func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping (LastNeverTuple)-> Void)
+    ///   - onNext: Provide callbacks for the plug-in to process tasks asynchronously.
+    func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback)
 }
 
 public extension PluginSubType {
@@ -63,7 +62,7 @@ public extension PluginSubType {
         return tuple
     }
     
-    func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping (LastNeverTuple)-> Void) {
+    func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback) {
         onNext(tuple)
     }
 }

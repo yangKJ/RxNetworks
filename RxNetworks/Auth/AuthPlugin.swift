@@ -53,11 +53,7 @@ extension AuthPlugin: PluginSubType {
         return request
     }
     
-    public func lastNever(
-        _ tuple: LastNeverTuple,
-        target: TargetType,
-        onNext: @escaping (LastNeverTuple) -> Void)
-    {
+    public func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback) {
         #if DEBUG
         guard self.token?.isEmpty ?? true else {
             onNext(tuple)

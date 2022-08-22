@@ -182,7 +182,6 @@
 		04C053FE278D5D07008BCC42 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				42AC285328A0BDD3003A01E8 /* Auth */,
 				04C04F2C2792A69400E85B6B /* Batch */,
 				04233501278E61DE00547494 /* Cache */,
 				0442C89B2791E9E500AB04DB /* Chain */,
@@ -211,8 +210,7 @@
 			children = (
 				42AC285428A0BDD3003A01E8 /* AuthPlugin.swift */,
 			);
-			name = Auth;
-			path = Modules/Auth;
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		52E8D0F8A548010FC369397B /* Pods */ = {
@@ -250,6 +248,7 @@
 				607FACD71AFB9204008FA782 /* HomeViewController.swift */,
 				04C05416278D66F0008BCC42 /* HomeViewModel.swift */,
 				04C053FE278D5D07008BCC42 /* Modules */,
+				8759D02628B3243400C22107 /* Plugins */,
 				04C053FD278D5705008BCC42 /* Resources */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
@@ -262,6 +261,14 @@
 				607FACD41AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8759D02628B3243400C22107 /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				42AC285328A0BDD3003A01E8 /* Auth */,
+			);
+			name = Plugins;
 			sourceTree = "<group>";
 		};
 		8787A2742852DE8400655CEA /* Closure */ = {
