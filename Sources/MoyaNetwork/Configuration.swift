@@ -22,26 +22,13 @@ public struct NetworkConfig {
     public static var timeoutIntervalForRequest: Double = 30
     
     /// Root path address
-    public private(set) static var baseURL: APIHost = ""
+    public static var baseURL: APIHost = ""
     /// Default basic parameters, similar to: userID, token, etc.
-    public private(set) static var baseParameters: APIParameters = [:]
+    public static var baseParameters: APIParameters = [:]
     /// Default request type, default `post`
-    public private(set) static var baseMethod: APIMethod = APIMethod.post
+    public static var baseMethod: APIMethod = APIMethod.post
     /// Default Header argument
     public static var baseHeaders: [String:String] = [:]
-    
-    /// Configuration information
-    /// - Parameters:
-    ///   - host: Root path address.
-    ///   - parameters: Default basic parameters, similar to: userID, token, etc.
-    ///   - method: Default request type, default `post`
-    public static func setupDefault(host: APIHost = "",
-                                    parameters: APIParameters = [:],
-                                    method: APIMethod = APIMethod.post) {
-        self.baseURL = host
-        self.baseParameters = parameters
-        self.baseMethod = method
-    }
     
     /// Update the default basic parameter data, which is generally used for what operation the user has switched.
     /// - Parameters:

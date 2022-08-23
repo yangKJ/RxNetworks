@@ -39,10 +39,8 @@ class HomeViewController: UIViewController {
     }
     
     func setupDefault() {
-        NetworkConfig.setupDefault(
-            host: "https://www.httpbin.org",
-            parameters: ["key": "RxNetworks"]
-        )
+        NetworkConfig.baseURL = "https://www.httpbin.org"
+        NetworkConfig.baseParameters = ["key": "RxNetworks"]
         NetworkConfig.addDebugging = true
         NetworkConfig.addIndicator = true
         NetworkConfig.injectionPlugins = [AuthPlugin.shared]
