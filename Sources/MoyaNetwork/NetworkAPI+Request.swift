@@ -80,12 +80,10 @@ extension NetworkAPI {
             DispatchQueue.main.async { success(jsonobjc) }
         }
         // 再处理网络数据
-        let token = NetworkUtil.beginRequest(self, base: provider, queue: queue, success: { json in
+        return NetworkUtil.beginRequest(self, base: provider, queue: queue, success: { json in
             DispatchQueue.main.async { success(json) }
         }, failure: { error in
             DispatchQueue.main.async { failure(error) }
         }, progress: progress)
-        
-        return token
     }
 }
