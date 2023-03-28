@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.2.5'
+  s.version          = '0.2.6'
   s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.homepage         = 'https://github.com/yangKJ/RxNetworks'
   s.description      = 'https://github.com/yangKJ/RxNetworks/blob/master/README.md'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'yangkejun' => 'ykj310@126.com' }
+  s.author           = { 'yangkejun' => 'yangkj310@gmail.com' }
   s.source           = { :git => 'https://github.com/yangKJ/RxNetworks.git', :tag => "#{s.version}" }
   s.social_media_url = 'https://juejin.cn/user/1987535102554472/posts'
   
@@ -51,6 +51,10 @@ Pod::Spec.new do |s|
     xx.source_files = 'Sources/HandyJSON/*.swift'
     xx.dependency 'HandyJSON'
     xx.dependency 'RxSwift'
+  end
+  
+  s.subspec 'Cached' do |xx|
+    xx.source_files = 'Sources/Cached/*.swift'
   end
   
   ################## -- 插件系列 -- ##################
@@ -84,7 +88,7 @@ Pod::Spec.new do |s|
     xx.subspec 'Cache' do |xxx|
       xxx.source_files = 'Sources/MoyaPlugins/Cache/*.swift'
       xxx.dependency 'RxNetworks/MoyaNetwork'
-      xxx.dependency 'YYCache'
+      xxx.dependency 'RxNetworks/Cached'
     end
     xx.subspec 'GZip' do |xxx|
       xxx.source_files = 'Sources/MoyaPlugins/GZip/*.swift'

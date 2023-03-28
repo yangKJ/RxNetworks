@@ -7,7 +7,6 @@
 
 import Foundation
 import Moya
-import CommonCrypto
 
 /// Network cache plugin type
 public enum NetworkCacheType {
@@ -35,6 +34,9 @@ public final class NetworkCachePlugin {
     /// Network cache plugin type
     let cacheType: NetworkCacheType
     
+    /// Encryption type, default md5
+    var cryptoType: CryptoType = .md5
+    
     /// Initialize
     /// - Parameters:
     ///   - cacheType: Network cache type
@@ -51,8 +53,7 @@ extension NetworkCachePlugin: PluginSubType {
     }
     
     public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
-        if (cacheType == .cacheElseNetwork || cacheType == .cacheThenNetwork),
-           let response = self.readCacheResponse(target) {
+        if (cacheType == .cacheElseNetwork || cacheType == .cacheThenNetwork), let response = self.readCacheResponse(target) {
             if cacheType == .cacheElseNetwork {
                 return (.success(response), true, tuple.session)
             } else {
@@ -74,15 +75,18 @@ extension NetworkCachePlugin: PluginSubType {
     }
     
     public func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
-        if self.cacheType == NetworkCacheType.networkElseCache {
+        switch cacheType {
+        case .networkElseCache:
             switch result {
             case .success:
                 return result
             case .failure:
-                if let cacheResponse = self.readCacheResponse(target) {
-                    return .success(cacheResponse)
+                if let response = self.readCacheResponse(target) {
+                    return .success(response)
                 }
             }
+        default:
+            break
         }
         return result
     }
@@ -91,54 +95,44 @@ extension NetworkCachePlugin: PluginSubType {
 extension NetworkCachePlugin {
     
     private func readCacheResponse(_ target: TargetType) -> Moya.Response? {
-        let link = requestFullLink(with: target)
-        let key = NetworkCachePlugin.MD5(link)
-        guard let dict = CacheManager.fetchCachedWithKey(key),
-              let statusCode = dict.value(forKey: "statusCode") as? Int,
-              let data = dict.value(forKey: "data") as? Data else {
-                  return nil
-              }
-        let response = Response(statusCode: statusCode, data: data)
-        
-        return response
+        let key = cryptoType.encryptedString(with: requestLink(with: target))
+        guard let model = CacheManager.default.fetchCached(forKey: key),
+              let statusCode = model.statusCode,
+              let data = model.data else {
+            return nil
+        }
+        return Response(statusCode: statusCode, data: data)
     }
     
     private func saveCacheResponse(_ response: Moya.Response?, target: TargetType) {
         guard let response = response else { return }
-        
-        let link = requestFullLink(with: target)
-        let key = NetworkCachePlugin.MD5(link)
-        let storage: NSDictionary = [
-            "data": response.data,
-            "statusCode": response.statusCode
-        ]
-        DispatchQueue(label: "condy.cache.network.queue", attributes: .concurrent).async {
-            CacheManager.saveCacheWithDictionary(storage, key: key)
-        }
+        let key = cryptoType.encryptedString(with: requestLink(with: target))
+        var model = CacheModel()
+        model.data = response.data
+        model.statusCode = response.statusCode
+        CacheManager.default.saveCached(model, forKey: key)
     }
     
-    private func requestFullLink(with target: TargetType) -> String {
+    private func requestLink(with target: TargetType) -> String {
         var parameters: APIParameters? = nil
         if case .requestParameters(let parame, _) = target.task {
             parameters = parame
         }
-        guard let parameters = parameters, !parameters.isEmpty else {
-            return target.baseURL.absoluteString + target.path
-        }
-        let sortedParameters = parameters.sorted(by: { $0.key > $1.key })
-        var paramString = "?"
-        for index in sortedParameters.indices {
-            paramString.append("\(sortedParameters[index].key)=\(sortedParameters[index].value)")
-            if index != sortedParameters.count - 1 { paramString.append("&") }
-        }
+        let paramString = sort(parameters: parameters)
         return target.baseURL.absoluteString + target.path + "\(paramString)"
     }
     
-    /// MD5
-    private static func MD5(_ string: String) -> String {
-        let ccharArray = string.cString(using: String.Encoding.utf8)
-        var uint8Array = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
-        CC_MD5(ccharArray, CC_LONG(ccharArray!.count - 1), &uint8Array)
-        return uint8Array.reduce("") { $0 + String(format: "%02X", $1) }
+    /// 参数排序生成字符串
+    private func sort(parameters: [String: Any]?) -> String {
+        guard let params = parameters, !params.isEmpty else {
+            return ""
+        }
+        var paramString = "?"
+        let sorteds = params.sorted(by: { $0.key > $1.key })
+        for index in sorteds.indices {
+            paramString.append("\(sorteds[index].key)=\(sorteds[index].value)")
+            if index != sorteds.count - 1 { paramString.append("&") }
+        }
+        return paramString
     }
 }
