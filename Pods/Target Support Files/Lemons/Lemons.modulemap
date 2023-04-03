@@ -1,0 +1,6 @@
+framework module Lemons {
+  umbrella header "Lemons-umbrella.h"
+
+  export *
+  module * { export * }
+}

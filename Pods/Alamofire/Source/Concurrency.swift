@@ -22,7 +22,7 @@
 //  THE SOFTWARE.
 //
 
-#if compiler(>=5.5.2) && canImport(_Concurrency)
+#if compiler(>=5.6.0) && canImport(_Concurrency)
 
 import Foundation
 
@@ -118,9 +118,9 @@ public struct DataTask<Value> {
         get async {
             if shouldAutomaticallyCancel {
                 return await withTaskCancellationHandler {
-                    self.cancel()
-                } operation: {
                     await task.value
+                } onCancel: {
+                    self.cancel()
                 }
             } else {
                 return await task.value
@@ -287,13 +287,13 @@ extension DataRequest {
         -> DataTask<Value> {
         let task = Task {
             await withTaskCancellationHandler {
-                self.cancel()
-            } operation: {
                 await withCheckedContinuation { continuation in
                     onResponse {
                         continuation.resume(returning: $0)
                     }
                 }
+            } onCancel: {
+                self.cancel()
             }
         }
 
@@ -311,9 +311,9 @@ public struct DownloadTask<Value> {
         get async {
             if shouldAutomaticallyCancel {
                 return await withTaskCancellationHandler {
-                    self.cancel()
-                } operation: {
                     await task.value
+                } onCancel: {
+                    self.cancel()
                 }
             } else {
                 return await task.value
@@ -413,9 +413,15 @@ extension DownloadRequest {
 
     /// Creates a `DownloadTask` to `await` serialization of the downloaded file's `URL` on disk.
     ///
+    /// - Parameters:
+    ///   - shouldAutomaticallyCancel: `Bool` determining whether or not the request should be cancelled when the
+    ///                                enclosing async context is cancelled. Only applies to `DownloadTask`'s async
+    ///                                properties. `false` by default.
+    ///
     /// - Returns: The `DownloadTask`.
-    public func serializingDownloadedFileURL() -> DownloadTask<URL> {
-        serializingDownload(using: URLResponseSerializer())
+    public func serializingDownloadedFileURL(automaticallyCancelling shouldAutomaticallyCancel: Bool = false) -> DownloadTask<URL> {
+        serializingDownload(using: URLResponseSerializer(),
+                            automaticallyCancelling: shouldAutomaticallyCancel)
     }
 
     /// Creates a `DownloadTask` to `await` serialization of a `String` value.
@@ -490,13 +496,13 @@ extension DownloadRequest {
         -> DownloadTask<Value> {
         let task = Task {
             await withTaskCancellationHandler {
-                self.cancel()
-            } operation: {
                 await withCheckedContinuation { continuation in
                     onResponse {
                         continuation.resume(returning: $0)
                     }
                 }
+            } onCancel: {
+                self.cancel()
             }
         }
 

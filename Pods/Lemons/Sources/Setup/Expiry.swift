@@ -1,13 +1,11 @@
 //
 //  Expiry.swift
-//  RxNetworks
+//  Lemons
 //
 //  Created by Condy on 2023/3/23.
 //  
 
 import Foundation
-
-public typealias TimeInterval = Foundation.TimeInterval
 
 /// Helper enum to set the expiration date.
 public enum Expiry {
@@ -15,6 +13,15 @@ public enum Expiry {
     case never
     /// Cache will be expired in the specified amount of seconds.
     case seconds(TimeInterval)
+    
+    /// The data expires after an day.
+    public static let day = Expiry.seconds(60 * 60 * 24)
+    
+    /// The data expires after an week.
+    public static let week = Expiry.seconds(60 * 60 * 24 * 7)
+    
+    /// The data expires after an year.
+    public static let year = Expiry.seconds(60 * 60 * 24 * 365)
 }
 
 extension Expiry {

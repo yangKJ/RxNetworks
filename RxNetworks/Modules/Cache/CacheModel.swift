@@ -18,9 +18,7 @@ struct CacheModel: HandyJSON {
     
     /// 转换映射key
     mutating func mapping(mapper: HelpingMapper) {
-        mapper <<<
-            url <-- "github"
-        mapper <<<
-            imageURL <-- "image"
+        mapper <<< url <-- "github"
+        mapper <<< imageURL <-- "image"
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "RxNetworks",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "summary": "Network Architecture API RxSwift + Moya + HandyJSON + Plugins.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/yangKJ/RxNetworks.git",
-    "tag": "0.2.6"
+    "tag": "0.2.7"
   },
   "social_media_url": "https://juejin.cn/user/1987535102554472/posts",
   "platforms": {
@@ -63,10 +63,6 @@
 
         ]
       }
-    },
-    {
-      "name": "Cached",
-      "source_files": "Sources/Cached/*.swift"
     },
     {
       "name": "MoyaPlugins",
@@ -128,7 +124,7 @@
             "RxNetworks/MoyaNetwork": [
 
             ],
-            "RxNetworks/Cached": [
+            "Lemons": [
 
             ]
           }

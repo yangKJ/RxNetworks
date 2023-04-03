@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import Lemons
 
 /// Network cache plugin type
 public enum NetworkCacheType {
@@ -35,7 +36,10 @@ public final class NetworkCachePlugin {
     let cacheType: NetworkCacheType
     
     /// Encryption type, default md5
-    var cryptoType: CryptoType = .md5
+    public var cryptoType: Lemons.CryptoType = .md5
+    
+    /// Storage type, default disk and memory.
+    public var cachedOptions: Lemons.CachedOptions = .all
     
     /// Initialize
     /// - Parameters:
@@ -96,7 +100,7 @@ extension NetworkCachePlugin {
     
     private func readCacheResponse(_ target: TargetType) -> Moya.Response? {
         let key = cryptoType.encryptedString(with: requestLink(with: target))
-        guard let model = CacheManager.default.fetchCached(forKey: key),
+        guard let model = CacheManager.default.storage.fetchCached(forKey: key, options: cachedOptions),
               let statusCode = model.statusCode,
               let data = model.data else {
             return nil
@@ -107,10 +111,8 @@ extension NetworkCachePlugin {
     private func saveCacheResponse(_ response: Moya.Response?, target: TargetType) {
         guard let response = response else { return }
         let key = cryptoType.encryptedString(with: requestLink(with: target))
-        var model = CacheModel()
-        model.data = response.data
-        model.statusCode = response.statusCode
-        CacheManager.default.saveCached(model, forKey: key)
+        let model = CacheModel(data: response.data, statusCode: response.statusCode)
+        CacheManager.default.storage.storeCached(model, forKey: key, options: cachedOptions)
     }
     
     private func requestLink(with target: TargetType) -> String {

@@ -10,21 +10,25 @@
 
 import Foundation
 import CoreFoundation
+import Lemons
 
 public struct CacheManager {
     
-    public static var `default` = CacheManager()
+    public static let `default` = CacheManager()
     
-    let storage: Cached<CacheModel>
+    public let storage: Storage<CacheModel>
     
     private init() {
         self.named = "RxNetworksCached"
         self.expiry = .seconds(60 * 60 * 24 * 7)
-        self.storage = Cached<CacheModel>()
-        self.storage.disk.named = named
-        self.storage.disk.expiry = expiry
-        self.storage.disk.maxCostLimit = 0
-        Memory.maxCountLimit = 0
+        self.maxCostLimit = 0
+        self.maxCountLimit = 20 * 1024
+        let background = DispatchQueue(label: "com.condy.rx.networks.cached.queue", qos: .background, attributes: [.concurrent])
+        storage = Storage<CacheModel>.init(queue: background)
+        storage.disk.named = self.named
+        storage.disk.expiry = self.expiry
+        storage.disk.maxCountLimit = self.maxCountLimit
+        storage.memory.maxCostLimit = self.maxCostLimit
     }
     
     /// The name of disk storage, this will be used as folder name within directory.
@@ -36,64 +40,52 @@ public struct CacheManager {
     
     /// The longest time duration in second of the cache being stored in disk.
     /// Default is 1 week ``60 * 60 * 24 * 7 seconds``.
-    public var expiry: Expiry {
+    public var expiry: Lemons.Expiry {
         didSet {
             storage.disk.expiry = expiry
         }
     }
     
-    /// The largest disk size can be taken for the cache. It is the total allocated size of cached files in bytes. Default is no limit.
-    public var maxCostLimit: UInt = 0 {
+    /// The maximum total cost that the cache can hold before it starts evicting objects. default 20kb.
+    public var maxCountLimit: Lemons.Disk.Byte {
         didSet {
-            storage.disk.maxCostLimit = maxCostLimit
+            storage.disk.maxCountLimit = maxCountLimit
         }
     }
     
     /// The largest cache cost of memory cache. The total cost is pixel count of all cached images in memory.
     /// Default is unlimited. Memory cache will be purged automatically when a memory warning notification is received.
-    public var maxCountLimit: UInt = 0 {
+    public var maxCostLimit: UInt = 0 {
         didSet {
-            Memory.maxCountLimit = maxCountLimit
+            storage.memory.maxCostLimit = maxCostLimit
         }
     }
     
     /// Get the disk cache size.
     public var totalCost: UInt64 {
         mutating get {
-            return storage.disk.totalCost
+            return UInt64(storage.disk.totalCost)
         }
     }
     
     /// Clear all caches.
-    public mutating func removeAllCache(completion: ((_ isSuccess: Bool) -> ())? = nil) {
-        Memory.removeAllMemoryCache()
-        storage.disk.removeAllDiskCache(completion: completion)
+    public func removeAllCache(completion: ((_ isSuccess: Bool) -> ())? = nil) {
+        storage.removedDiskAndMemoryCached(completion: completion)
     }
     
     /// Clear the cache according to key value.
-    @discardableResult public mutating func removeObjectCache(_ key: String) -> Bool {
-        storage.disk.removeObjectCache(key)
+    @discardableResult public func removeObjectCache(_ key: String) -> Bool {
+        let _ = storage.memory.removeCache(key: key)
+        return storage.disk.removeCache(key: key)
     }
     
     /// Read disk data or memory data.
-    public mutating func read(key: String) -> Data? {
-        storage.read(key: key)
+    public func read(key: String) -> Data? {
+        storage.read(key: key, options: .all)
     }
     
     /// Storage data asynchronously to disk and memory.
-    public mutating func store(key: String, value: Data) {
-        storage.store(key: key, value: value)
-    }
-}
-
-extension CacheManager {
-    /// Asynchronous cached.
-    mutating func saveCached(_ object: CacheModel, forKey key: String) {
-        storage.storeCached(object, forKey: key)
-    }
-    
-    /// Read cached object.
-    mutating func fetchCached(forKey key: String) -> CacheModel? {
-        storage.fetchCached(forKey: key)
+    public func store(key: String, value: Data) {
+        storage.write(key: key, value: value, options: .all)
     }
 }
