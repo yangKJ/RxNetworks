@@ -18,7 +18,7 @@ public protocol Lemonsable {
     func store(key: String, value: Data)
     
     /// Clear the cache according to key value.
-    func removeCache(key: String) -> Bool
+    @discardableResult func removeCache(key: String) -> Bool
     
     /// Clear the cache.
     func removedAllCached()

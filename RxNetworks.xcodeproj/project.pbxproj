@@ -39,7 +39,11 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		6817A39627A022AC0034F283 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6817A39527A022AC0034F283 /* Color.xcassets */; };
+		8707F02C29EE8FC80060C94B /* AnimatedLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707F02929EE8FC70060C94B /* AnimatedLoadingViewController.swift */; };
+		8707F02D29EE8FC80060C94B /* AnimatedLoadingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707F02A29EE8FC70060C94B /* AnimatedLoadingAPI.swift */; };
+		8707F02E29EE8FC80060C94B /* AnimatedLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707F02B29EE8FC70060C94B /* AnimatedLoadingViewModel.swift */; };
 		8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8759D02928B328E500C22107 /* AuthPlugin.swift */; };
+		876E046729EE35F500A7CF1C /* testLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 876E046629EE35F500A7CF1C /* testLoading.json */; };
 		8787A2762852DEB900655CEA /* ClosureAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2752852DEB900655CEA /* ClosureAPI.swift */; };
 		8787A2782852DEC200655CEA /* ClosureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2772852DEC200655CEA /* ClosureViewController.swift */; };
 		8787A27A2852DF4300655CEA /* ClosureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2792852DF4200655CEA /* ClosureViewModel.swift */; };
@@ -80,7 +84,11 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		6817A39527A022AC0034F283 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		728016062553DB205A17A393 /* Pods-RxNetworks_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.release.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.release.xcconfig"; sourceTree = "<group>"; };
+		8707F02929EE8FC70060C94B /* AnimatedLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedLoadingViewController.swift; sourceTree = "<group>"; };
+		8707F02A29EE8FC70060C94B /* AnimatedLoadingAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedLoadingAPI.swift; sourceTree = "<group>"; };
+		8707F02B29EE8FC70060C94B /* AnimatedLoadingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedLoadingViewModel.swift; sourceTree = "<group>"; };
 		8759D02928B328E500C22107 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
+		876E046629EE35F500A7CF1C /* testLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testLoading.json; sourceTree = "<group>"; };
 		8787A2752852DEB900655CEA /* ClosureAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureAPI.swift; sourceTree = "<group>"; };
 		8787A2772852DEC200655CEA /* ClosureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewController.swift; sourceTree = "<group>"; };
 		8787A2792852DF4200655CEA /* ClosureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewModel.swift; sourceTree = "<group>"; };
@@ -169,6 +177,7 @@
 		04C053FD278D5705008BCC42 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				876E046629EE35F500A7CF1C /* testLoading.json */,
 				6817A39527A022AC0034F283 /* Color.xcassets */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -182,6 +191,7 @@
 		04C053FE278D5D07008BCC42 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8707F02829EE8FC70060C94B /* AnimatedLoading */,
 				04C04F2C2792A69400E85B6B /* Batch */,
 				04233501278E61DE00547494 /* Cache */,
 				0442C89B2791E9E500AB04DB /* Chain */,
@@ -255,6 +265,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		8707F02829EE8FC70060C94B /* AnimatedLoading */ = {
+			isa = PBXGroup;
+			children = (
+				8707F02A29EE8FC70060C94B /* AnimatedLoadingAPI.swift */,
+				8707F02929EE8FC70060C94B /* AnimatedLoadingViewController.swift */,
+				8707F02B29EE8FC70060C94B /* AnimatedLoadingViewModel.swift */,
+			);
+			name = AnimatedLoading;
+			path = Modules/AnimatedLoading;
+			sourceTree = "<group>";
+		};
 		8759D02728B328E500C22107 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,7 +344,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 66T6NB6T4J;
+						DevelopmentTeam = AAHMKJNWLX;
 						LastSwiftMigration = 0900;
 					};
 				};
@@ -356,6 +377,7 @@
 				04233519278E620D00547494 /* README_CN.md in Resources */,
 				0423351B278E622400547494 /* README.md in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				876E046729EE35F500A7CF1C /* testLoading.json in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				6817A39627A022AC0034F283 /* Color.xcassets in Resources */,
 			);
@@ -401,6 +423,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -412,6 +435,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -431,6 +455,7 @@
 				04F0A887279A465C008534D8 /* GZipViewModel.swift in Sources */,
 				607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */,
 				04F0A888279A465C008534D8 /* GZipViewController.swift in Sources */,
+				8707F02E29EE8FC80060C94B /* AnimatedLoadingViewModel.swift in Sources */,
 				8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */,
 				04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */,
 				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
@@ -441,10 +466,12 @@
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
 				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,
 				04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */,
+				8707F02C29EE8FC80060C94B /* AnimatedLoadingViewController.swift in Sources */,
 				0423350E278E61DE00547494 /* CacheViewModel.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
 				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
 				8787A2762852DEB900655CEA /* ClosureAPI.swift in Sources */,
+				8707F02D29EE8FC80060C94B /* AnimatedLoadingAPI.swift in Sources */,
 				04BB29B6279911DD0056F94A /* WarningViewController.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
 				04233516278E61DE00547494 /* OOViewController.swift in Sources */,
@@ -583,12 +610,12 @@
 			baseConfigurationReference = F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 66T6NB6T4J;
+				DEVELOPMENT_TEAM = AAHMKJNWLX;
 				INFOPLIST_FILE = RxNetworks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = condy.network.001;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -601,12 +628,12 @@
 			baseConfigurationReference = 728016062553DB205A17A393 /* Pods-RxNetworks_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 66T6NB6T4J;
+				DEVELOPMENT_TEAM = AAHMKJNWLX;
 				INFOPLIST_FILE = RxNetworks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = condy.network.001;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;

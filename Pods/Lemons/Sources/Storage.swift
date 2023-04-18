@@ -68,6 +68,17 @@ public final class Storage<T: Codable> {
         }
     }
     
+    /// Remove the specified data.
+    public func removed(forKey key: String, options: CachedOptions) {
+        switch options {
+        case.all:
+            self.memory.removeCache(key: key)
+            self.disk.removeCache(key: key)
+        default:
+            self.lemoner(options)?.removeCache(key: key)
+        }
+    }
+    
     /// Remove disk cache and memory cache.
     public func removedDiskAndMemoryCached(completion: SuccessComplete? = nil) {
         backgroundQueue.async {

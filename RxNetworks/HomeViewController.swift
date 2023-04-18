@@ -10,7 +10,7 @@ import UIKit
 import RxNetworks
 
 class HomeViewController: UIViewController {
-
+    
     private static let identifier = "homeCellIdentifier"
     private var viewModel: HomeViewModel = HomeViewModel()
     
@@ -40,10 +40,11 @@ class HomeViewController: UIViewController {
     
     func setupDefault() {
         NetworkConfig.baseURL = "https://www.httpbin.org"
-        NetworkConfig.baseParameters = ["key": "RxNetworks"]
+        NetworkConfig.baseParameters = ["github": "RxNetworks"]
         NetworkConfig.addDebugging = true
         NetworkConfig.addIndicator = true
         NetworkConfig.injectionPlugins = [AuthPlugin.shared]
+        NetworkConfig.animatedJSON = "testLoading"
     }
     
     func setupUI() {
@@ -60,6 +61,7 @@ class HomeViewController: UIViewController {
 
 // MARK: - UITableViewDataSource,UITableViewDelegate
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

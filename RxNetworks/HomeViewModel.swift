@@ -18,23 +18,34 @@ enum ViewControllerType: String {
     case Cache = "Cache Network Plugin"
     case Warning = "Failed Prompting Plugin"
     case GZip = "GZip UnCompression Plugin"
+    case AnimatedLoading = "Lottie Animated Loading Plugin"
     
     func viewController() -> UIViewController {
         switch self {
-        case .Closure: return ClosureViewController()
-        case .OO: return OOViewController()
-        case .Chain: return ChainViewController()
-        case .Batch: return BatchViewController()
-        case .Loading: return LoadingViewController()
-        case .Cache: return CacheViewController()
-        case .Warning: return WarningViewController()
-        case .GZip: return GZipViewController()
+        case .Closure:
+            return ClosureViewController()
+        case .OO:
+            return OOViewController()
+        case .Chain:
+            return ChainViewController()
+        case .Batch:
+            return BatchViewController()
+        case .Loading:
+            return LoadingViewController()
+        case .Cache:
+            return CacheViewController()
+        case .Warning:
+            return WarningViewController()
+        case .GZip:
+            return GZipViewController()
+        case .AnimatedLoading:
+            return AnimatedLoadingViewController()
         }
     }
 }
 
 struct HomeViewModel {
-
+    
     lazy var datas: [ViewControllerType] = {
         return [
             .Closure,
@@ -42,6 +53,7 @@ struct HomeViewModel {
             .Chain,
             .Batch,
             .Loading,
+            .AnimatedLoading,
             .Cache,
             .Warning,
             .GZip,

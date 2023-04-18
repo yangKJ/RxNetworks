@@ -27,7 +27,7 @@ public final class NetworkLoadingPlugin {
     /// 最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading
     /// Whether you need to automatically hide Loading, it can be used for chain request.
     /// The first network request starts loading, and the last network request ends and then removes the loading
-    public private(set) var autoHideLoading: Bool = true
+    public let autoHideLoading: Bool
     
     /// 更改`hud`相关配置闭包
     /// Change `hud` related configuration closures.

@@ -1,7 +1,8 @@
 PODS:
   - Alamofire (5.6.4)
   - HandyJSON (5.0.2)
-  - Lemons (0.0.4)
+  - Lemons (0.0.6)
+  - lottie-ios (3.2.3)
   - MBProgressHUD (1.2.0)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
@@ -10,39 +11,43 @@ PODS:
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
-  - RxNetworks (0.2.7):
-    - RxNetworks/HandyJSON (= 0.2.7)
-    - RxNetworks/MoyaNetwork (= 0.2.7)
-    - RxNetworks/MoyaPlugins (= 0.2.7)
-    - RxNetworks/RxSwift (= 0.2.7)
-  - RxNetworks/HandyJSON (0.2.7):
+  - RxNetworks (0.2.8):
+    - RxNetworks/HandyJSON (= 0.2.8)
+    - RxNetworks/MoyaNetwork (= 0.2.8)
+    - RxNetworks/MoyaPlugins (= 0.2.8)
+    - RxNetworks/RxSwift (= 0.2.8)
+  - RxNetworks/HandyJSON (0.2.8):
     - HandyJSON
     - RxSwift
-  - RxNetworks/MoyaNetwork (0.2.7):
+  - RxNetworks/MoyaNetwork (0.2.8):
     - Moya
-  - RxNetworks/MoyaPlugins (0.2.7):
-    - RxNetworks/MoyaPlugins/Cache (= 0.2.7)
-    - RxNetworks/MoyaPlugins/Debugging (= 0.2.7)
-    - RxNetworks/MoyaPlugins/GZip (= 0.2.7)
-    - RxNetworks/MoyaPlugins/Indicator (= 0.2.7)
-    - RxNetworks/MoyaPlugins/Loading (= 0.2.7)
-    - RxNetworks/MoyaPlugins/Warning (= 0.2.7)
-  - RxNetworks/MoyaPlugins/Cache (0.2.7):
+  - RxNetworks/MoyaPlugins (0.2.8):
+    - RxNetworks/MoyaPlugins/AnimatedLoading (= 0.2.8)
+    - RxNetworks/MoyaPlugins/Cache (= 0.2.8)
+    - RxNetworks/MoyaPlugins/Debugging (= 0.2.8)
+    - RxNetworks/MoyaPlugins/GZip (= 0.2.8)
+    - RxNetworks/MoyaPlugins/Indicator (= 0.2.8)
+    - RxNetworks/MoyaPlugins/Loading (= 0.2.8)
+    - RxNetworks/MoyaPlugins/Warning (= 0.2.8)
+  - RxNetworks/MoyaPlugins/AnimatedLoading (0.2.8):
+    - lottie-ios
+    - RxNetworks/MoyaNetwork
+  - RxNetworks/MoyaPlugins/Cache (0.2.8):
     - Lemons
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Debugging (0.2.7):
+  - RxNetworks/MoyaPlugins/Debugging (0.2.8):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/GZip (0.2.7):
+  - RxNetworks/MoyaPlugins/GZip (0.2.8):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Indicator (0.2.7):
+  - RxNetworks/MoyaPlugins/Indicator (0.2.8):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Loading (0.2.7):
+  - RxNetworks/MoyaPlugins/Loading (0.2.8):
     - MBProgressHUD
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Warning (0.2.7):
+  - RxNetworks/MoyaPlugins/Warning (0.2.8):
     - RxNetworks/MoyaNetwork
     - Toast-Swift
-  - RxNetworks/RxSwift (0.2.7):
+  - RxNetworks/RxSwift (0.2.8):
     - RxNetworks/MoyaNetwork
     - RxSwift
   - RxRelay (6.5.0):
@@ -59,6 +64,7 @@ SPEC REPOS:
     - Alamofire
     - HandyJSON
     - Lemons
+    - lottie-ios
     - MBProgressHUD
     - Moya
     - RxCocoa
@@ -73,11 +79,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  Lemons: df26ddb4b7bc75717eca7a40b02e855765fa3752
+  Lemons: 9c705456576bb5bd415e82be9542076362b914ee
+  lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
-  RxNetworks: 9055a4c55472080924e37499714d3c0975388113
+  RxNetworks: e22c46f8d91ac4fe18e0e8b844c15d819453c720
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711

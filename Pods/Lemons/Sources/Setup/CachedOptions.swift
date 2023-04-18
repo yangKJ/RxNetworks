@@ -25,3 +25,23 @@ public struct CachedOptions: OptionSet, Hashable {
     /// Use memory and disk cache at the same time to read memory first.
     public static let all: CachedOptions = [.memory, .disk]
 }
+
+@objc public enum OCCachedOptions: Int {
+    case none = 0
+    case memory
+    case disk
+    case all
+    
+    var options: CachedOptions {
+        switch self {
+        case .none:
+            return .none
+        case .memory:
+            return .memory
+        case .disk:
+            return .disk
+        case .all:
+            return .all
+        }
+    }
+}

@@ -51,7 +51,7 @@ extension Disk: Lemonsable {
         Disk.disk.createFile(atPath: cachePath, contents: value, attributes: nil)
     }
     
-    public func removeCache(key: String) -> Bool {
+    @discardableResult public func removeCache(key: String) -> Bool {
         guard let filePath = diskCachePath(key: key) else {
             return false
         }

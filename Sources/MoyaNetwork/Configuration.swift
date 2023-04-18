@@ -30,6 +30,9 @@ public struct NetworkConfig {
     /// Default Header argument
     public static var baseHeaders: [String:String] = [:]
     
+    /// Loading animation JSON, for `AnimatedLoadingPlugin` used.
+    public static var animatedJSON: String?
+    
     /// Update the default basic parameter data, which is generally used for what operation the user has switched.
     /// - Parameters:
     ///   - value: Update value

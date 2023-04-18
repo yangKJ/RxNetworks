@@ -7,6 +7,8 @@
 
 import Foundation
 
+public typealias TimeInterval = Foundation.TimeInterval
+
 /// Helper enum to set the expiration date.
 public enum Expiry {
     /// Cache will be expired in the nearest future.
