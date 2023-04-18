@@ -17,7 +17,7 @@ internal struct NetworkUtil {
         }
         #if RxNetworks_MoyaPlugins_Indicator
         if NetworkConfig.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
-            let Indicator = NetworkIndicatorPlugin.init()
+            let Indicator = NetworkIndicatorPlugin.shared
             plugins_.insert(Indicator, at: 0)
         }
         #endif

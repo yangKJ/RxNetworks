@@ -12,7 +12,9 @@ import Moya
 /// Indicator plug-in, the plug-in has been set for global use
 public final class NetworkIndicatorPlugin {
     
-    private static var numberOfRequests: Int = 0 {
+    public static let shared = NetworkIndicatorPlugin()
+    
+    private var numberOfRequests: Int = 0 {
         didSet {
             if numberOfRequests > 1 { return }
             DispatchQueue.main.async {
@@ -21,7 +23,7 @@ public final class NetworkIndicatorPlugin {
         }
     }
     
-    public init() { }
+    private init() { }
 }
 
 extension NetworkIndicatorPlugin: PluginSubType {
@@ -31,10 +33,10 @@ extension NetworkIndicatorPlugin: PluginSubType {
     }
     
     public func willSend(_ request: RequestType, target: TargetType) {
-        NetworkIndicatorPlugin.numberOfRequests += 1
+        NetworkIndicatorPlugin.shared.numberOfRequests += 1
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        NetworkIndicatorPlugin.numberOfRequests -= 1
+        NetworkIndicatorPlugin.shared.numberOfRequests -= 1
     }
 }
