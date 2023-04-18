@@ -29,7 +29,7 @@ public final class NetworkWarningPlugin {
     /// If the last error display is still there, whether the new error display needs to overwrite the last one
     let coverLastToast: Bool
     
-    public private(set) var toastStyle: ToastStyle? = nil
+    public let toastStyle: ToastStyle?
     
     public init(in window: Bool = true,
                 duration: TimeInterval = 1,
@@ -68,17 +68,17 @@ extension NetworkWarningPlugin {
                 view.hideToast()
             }
             
-            var style = self.toastStyle
-            if style == nil {
-                style = ToastStyle()
-                style!.messageColor = UIColor.white
-            }
+            let style = self.toastStyle ?? {
+                var style = ToastStyle()
+                style.messageColor = UIColor.white
+                return style
+            }()
             
-            view.makeToast(text, duration: self.duration, position: self.position, style: style!)
+            view.makeToast(text, duration: self.duration, position: self.position, style: style)
             
             // or perhaps you want to use this style for all toasts going forward?
             // just set the shared style and there's no need to provide the style again
-            ToastManager.shared.style = style!
+            ToastManager.shared.style = style
             
             // toggle "tap to dismiss" functionality
             ToastManager.shared.isTapToDismissEnabled = true

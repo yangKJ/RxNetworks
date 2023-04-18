@@ -13,14 +13,14 @@ import Moya
 
 extension MoyaProvider: ReactiveCompatible { }
 
-public extension Reactive where Base: MoyaProvider<MultiTarget> {
+extension Reactive where Base: MoyaProvider<MultiTarget> {
     
     /// Designated request-making method.
     /// - Parameters:
     ///   - api: Request body
     ///   - callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Observable sequence JSON object. May be thrown twice.
-    func request(api: NetworkAPI, callbackQueue: DispatchQueue? = nil, result: MoyaResult? = nil) -> APIObservableJSON {
+    public func request(api: NetworkAPI, callbackQueue: DispatchQueue? = nil, result: MoyaResult? = nil) -> APIObservableJSON {
         var single: APIObservableJSON = APIObservableJSON.create { (observer) in
             // First process local data
             if let result = result,

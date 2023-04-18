@@ -23,7 +23,7 @@ public struct CacheManager {
         self.expiry = .seconds(60 * 60 * 24 * 7)
         self.maxCostLimit = 0
         self.maxCountLimit = 20 * 1024
-        let background = DispatchQueue(label: "com.condy.rx.networks.cached.queue", qos: .background, attributes: [.concurrent])
+        let background = DispatchQueue(label: "com.condy.rx.networks.cached.queue", attributes: [.concurrent])
         storage = Storage<CacheModel>.init(queue: background)
         storage.disk.named = self.named
         storage.disk.expiry = self.expiry

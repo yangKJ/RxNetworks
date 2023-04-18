@@ -56,13 +56,13 @@ public protocol PluginSubType: Moya.PluginType {
     func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback)
 }
 
-public extension PluginSubType {
+extension PluginSubType {
     
-    func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
+    public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
         return tuple
     }
     
-    func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback) {
         onNext(tuple)
     }
 }
