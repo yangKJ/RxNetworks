@@ -11,10 +11,10 @@
 import RxSwift
 @_exported import HandyJSON
 
-public extension Observable where Element: Any {
+extension Observable where Element: Any {
     
     @discardableResult
-    func mapHandyJSON<H: HandyJSON>(_ type: H.Type) -> Observable<H> {
+    public func mapHandyJSON<H: HandyJSON>(_ type: H.Type) -> Observable<H> {
         return self.map { element -> H in
             if let model = HandyJSON2Model(type, element: element) {
                 return model
@@ -24,7 +24,7 @@ public extension Observable where Element: Any {
     }
     
     @discardableResult
-    func mapHandyJSON2Model<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<H> {
+    public func mapHandyJSON2Model<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<H> {
         return self.map { element -> H in
             if let string = element as? String, let model = HandyJSON2Model(type, element: string) {
                 return model
@@ -44,7 +44,7 @@ public extension Observable where Element: Any {
     }
     
     @discardableResult
-    func mapHandyJSON2Array<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<[H]> {
+    public func mapHandyJSON2Array<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<[H]> {
         return self.map { element -> [H] in
             if let keyPath = keyPath, let dictionary = element as? NSDictionary {
                 let value = dictionary.value(forKeyPath: keyPath)
@@ -60,20 +60,20 @@ public extension Observable where Element: Any {
     }
 }
 
-public extension PrimitiveSequence where Trait == SingleTrait, Element == Any {
+extension PrimitiveSequence where Trait == SingleTrait, Element == Any {
 
     @discardableResult
-    func mapHandyJSON<H: HandyJSON>(_ type: H.Type) -> Observable<H> {
+    public func mapHandyJSON<H: HandyJSON>(_ type: H.Type) -> Observable<H> {
         return self.asObservable().mapHandyJSON(H.self)
     }
     
     @discardableResult
-    func mapHandyJSON2Model<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<H> {
+    public func mapHandyJSON2Model<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<H> {
         return self.asObservable().mapHandyJSON2Model(H.self, atKeyPath: keyPath)
     }
     
     @discardableResult
-    func mapHandyJSON2Array<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<[H]> {
+    public func mapHandyJSON2Array<H: HandyJSON>(_ type: H.Type, atKeyPath keyPath: String? = nil) -> Observable<[H]> {
         return self.asObservable().mapHandyJSON2Array(H.self, atKeyPath: keyPath)
     }
 }

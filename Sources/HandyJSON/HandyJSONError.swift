@@ -8,21 +8,13 @@
 import Foundation
 
 @frozen public enum HandyJSONError: Swift.Error {
-    case mapModel, mapArray
+    case mapModel
+    case mapArray
     case mapCode(Int)
 }
 
-extension HandyJSONError {
-    internal var underlyingError: Swift.Error? {
-        switch self {
-        case .mapModel: return nil
-        case .mapArray: return nil
-        case .mapCode: return nil
-        }
-    }
-}
-
 extension HandyJSONError: LocalizedError {
+    
     public var errorDescription: String? {
         switch self {
         case .mapModel:
@@ -33,10 +25,20 @@ extension HandyJSONError: LocalizedError {
             return "Failed to map HandyJSON with code (\(code))."
         }
     }
+    
+    var underlyingError: Swift.Error? {
+        switch self {
+        case .mapModel:
+            return nil
+        case .mapArray:
+            return nil
+        case .mapCode:
+            return nil
+        }
+    }
 }
 
 // MARK: - Error User Info
-
 extension HandyJSONError: CustomNSError {
     public var errorUserInfo: [String: Any] {
         var userInfo: [String: Any] = [:]
