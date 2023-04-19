@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 public struct X {
-    struct View { }
+    public struct View { }
 }
 
 extension X {
