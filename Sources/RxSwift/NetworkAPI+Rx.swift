@@ -6,9 +6,10 @@
 //  https://github.com/yangKJ/RxNetworks
 
 import Foundation
-import Alamofire
-import RxSwift
+@_exported import RxSwift
 import Moya
+
+public typealias APIObservableJSON = RxSwift.Observable<Any>
 
 /// 追加订阅网络方案
 /// Append the subscription network scheme.
@@ -30,32 +31,20 @@ extension NetworkAPI {
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Observable sequence JSON object. May be thrown twice.
     public func request(callbackQueue: DispatchQueue? = nil) -> APIObservableJSON {
-        var tempPlugins: APIPlugins = self.plugins
-        NetworkUtil.defaultPlugin(&tempPlugins, api: self)
-        
-        let target = MultiTarget.target(self)
-        
-        let tuple = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
-        if tuple.endRequest == true {
-            return X.RxSwift.transformAPIObservableJSON(tuple.result)
+        var single: APIObservableJSON = APIObservableJSON.create { (observer) in
+            let token = HTTPRequest(success: { json in
+                observer.onNext(json)
+                observer.onCompleted()
+            }, failure: { error in
+                observer.onError(error)
+            }, queue: callbackQueue)
+            return Disposables.create {
+                token?.cancel()
+            }
         }
-        
-        var session: Moya.Session
-        if let _session = tuple.session {
-            session = _session
-        } else {
-            let configuration = URLSessionConfiguration.af.default
-            configuration.headers = Alamofire.HTTPHeaders.default
-            configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
-            session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        if self.retry > 0 {
+            single = single.retry(self.retry) // Number of retries after failed.
         }
-        
-        // 自定义并行队列
-        let queue = DispatchQueue(label: "condy.rx.network.queue", attributes: [.concurrent])
-        let provider = MoyaProvider<MultiTarget>(stubClosure: { _ in
-            return stubBehavior
-        }, callbackQueue: queue, session: session, plugins: tempPlugins)
-        
-        return provider.rx.request(api: self, callbackQueue: callbackQueue, result: tuple.result)
+        return single.share(replay: 1, scope: .forever)
     }
 }

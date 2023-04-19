@@ -15,23 +15,15 @@ class LoadingViewModel: NSObject {
     
     let data = PublishSubject<NSDictionary>()
     
-    /// 配置加载动画插件
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let loading = NetworkLoadingPlugin.init()
-        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
-    }()
-    
     func loadData() {
-        APIProvider.rx.request(api: LoadingAPI.test2("666"))
+        LoadingAPI.test2("666").request()
             .asObservable()
-            .subscribe { [weak self] (event) in
-                if let dict = event.element as? NSDictionary {
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                if let dict = $0 as? NSDictionary {
                     self?.data.onNext(dict)
                 }
-            }.disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
 }
