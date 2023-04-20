@@ -33,7 +33,8 @@ extension AnimatedLoadingAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let loading = AnimatedLoadingPlugin(text: "正在加载...", delay: 1.2)
+        let options = AnimatedLoadingPlugin.Options(text: "正在加载...", delay: 1.2)
+        let loading = AnimatedLoadingPlugin(options: options)
         loading.autoHideLoading = false
         return [loading]
     }

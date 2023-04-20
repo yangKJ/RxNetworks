@@ -7,12 +7,9 @@
 
 import Foundation
 import UIKit
+import Moya
 
 public struct X {
-    public struct View { }
-}
-
-extension X {
     
     public static func toJSON(form value: Any, prettyPrint: Bool = false) -> String? {
         guard JSONSerialization.isValidJSONObject(value) else {
@@ -32,38 +29,118 @@ extension X {
         guard let jsonData = json.data(using: .utf8),
               let object = try? JSONSerialization.jsonObject(with: jsonData, options: []),
               let result = object as? [String : Any] else {
-                  return nil
-              }
+            return nil
+        }
         return result
     }
 }
 
-extension X.View {
-    
-    public static var keyWindow: UIWindow? {
-        if #available(iOS 13.0, *) {
-            return UIApplication.shared.connectedScenes
-                .filter { $0.activationState == .foregroundActive }
-                .first(where: { $0 is UIWindowScene })
-                .flatMap({ $0 as? UIWindowScene })?.windows
-                .first(where: \.isKeyWindow)
-        } else {
-            return UIApplication.shared.keyWindow
+// MARK: - internal tool methods
+extension X {
+    internal static func defaultPlugin(_ plugins: inout APIPlugins, api: NetworkAPI) {
+        var plugins_ = plugins
+        if let others = NetworkConfig.injectionPlugins {
+            plugins_ += others
         }
+        #if RxNetworks_MoyaPlugins_Indicator
+        if NetworkConfig.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
+            let Indicator = NetworkIndicatorPlugin.shared
+            plugins_.insert(Indicator, at: 0)
+        }
+        #endif
+        #if DEBUG && RxNetworks_MoyaPlugins_Debugging
+        if NetworkConfig.addDebugging, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
+            let Debugging = NetworkDebuggingPlugin.init()
+            plugins_.append(Debugging)
+        }
+        #endif
+        plugins = plugins_
     }
     
-    public static var topViewController: UIViewController? {
-        var vc = keyWindow?.rootViewController
-        if let presentedController = vc as? UITabBarController {
-            vc = presentedController.selectedViewController
-        }
-        while let presentedController = vc?.presentedViewController {
-            if let presentedController = presentedController as? UITabBarController {
-                vc = presentedController.selectedViewController
-            } else {
-                vc = presentedController
+    static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> ConfigurationTuple {
+        var tuple: ConfigurationTuple
+        tuple.result = nil // Empty data, convenient for subsequent plugin operations
+        tuple.endRequest = false
+        tuple.session = nil
+        plugins.forEach { tuple = $0.configuration(tuple, target: target, plugins: plugins) }
+        return tuple
+    }
+    
+    static func handyLastNeverPlugin(_ plugins: APIPlugins,
+                                     result: MoyaResult,
+                                     target: TargetType,
+                                     onNext: @escaping (LastNeverTuple)-> Void) {
+        var tuple: LastNeverTuple
+        tuple.result = result
+        tuple.againRequest = false
+        tuple.mapResult = nil
+        var iterator = plugins.makeIterator()
+        func handleLastNever(_ plugin: RxNetworks.PluginSubType?) {
+            guard let _plugin = plugin else {
+                onNext(tuple)
+                return
+            }
+            _plugin.lastNever(tuple, target: target) { __tuple in
+                tuple = __tuple
+                handleLastNever(iterator.next())
             }
         }
-        return vc
+        handleLastNever(iterator.next())
     }
+    
+    @discardableResult
+    static func beginRequest(_ api: NetworkAPI,
+                             base: MoyaProvider<MultiTarget>,
+                             queue: DispatchQueue?,
+                             success: @escaping APISuccess,
+                             failure: @escaping APIFailure,
+                             progress: ProgressBlock? = nil) -> Cancellable {
+        // 处理结果数据
+        func handleResult(_ result: MoyaResult, jsonResult: MapJSONResult?) {
+            if let _jsonResult = jsonResult {
+                switch _jsonResult {
+                case let .success(json):
+                    success(json)
+                case let .failure(error):
+                    failure(error)
+                }
+            } else {
+                switch result {
+                case let .success(response):
+                    do {
+                        let response = try response.filterSuccessfulStatusCodes()
+                        let json = try response.mapJSON()
+                        success(json)
+                    } catch MoyaError.statusCode(let response) {
+                        failure(MoyaError.statusCode(response))
+                    } catch MoyaError.jsonMapping(let response) {
+                        failure(MoyaError.jsonMapping(response))
+                    } catch {
+                        failure(error)
+                    }
+                case let .failure(error):
+                    failure(error)
+                }
+            }
+        }
+        
+        let target = MultiTarget.target(api)
+        return base.request(target, callbackQueue: queue, progress: progress, completion: { result in
+            guard let plugins = base.plugins as? [PluginSubType] else {
+                DispatchQueue.main.async { handleResult(result, jsonResult: nil) }
+                return
+            }
+            
+            X.handyLastNeverPlugin(plugins, result: result, target: target) { tuple in
+                if tuple.againRequest {
+                    beginRequest(api, base: base, queue: queue, success: success, failure: failure, progress: progress)
+                    return
+                }
+                DispatchQueue.main.async {
+                    handleResult(tuple.result, jsonResult: tuple.mapResult)
+                }
+            }
+        })
+    }
+
 }

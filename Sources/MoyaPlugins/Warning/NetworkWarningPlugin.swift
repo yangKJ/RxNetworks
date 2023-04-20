@@ -16,31 +16,53 @@ import Toast_Swift
 /// Warning plugin, based on Toast package
 public final class NetworkWarningPlugin {
     
-    /// Sets the default position. Used for the `makeToast` and `showToast` methods that don't require an explicit position.
-    let position: ToastPosition
-    /// Whether to display the Window again, the default is YES
-    let displayInWindow: Bool
-    /// The default duration. Used for the `makeToast` and `showToast` methods that don't require an explicit duration.
-    let duration: TimeInterval
+    public let options: Options
     
-    /// 是否会覆盖上次的错误展示，
-    /// 如果上次错误展示还在，新的错误展示是否需要覆盖上次
-    /// Whether it will overwrite the last error display,
-    /// If the last error display is still there, whether the new error display needs to overwrite the last one
-    let coverLastToast: Bool
+    public init(options: Options = .keyWindow) {
+        self.options = options
+    }
     
-    public let toastStyle: ToastStyle?
-    
-    public init(in window: Bool = true,
-                duration: TimeInterval = 1,
-                cover: Bool = true,
-                position: ToastPosition = .bottom,
-                toastStyle: ToastStyle? = nil) {
-        self.position = position
-        self.displayInWindow = window
-        self.duration = duration
-        self.coverLastToast = cover
-        self.toastStyle = toastStyle
+    public convenience init(in window: Bool = true,
+                            duration: TimeInterval = 1,
+                            cover: Bool = true,
+                            position: ToastPosition = .bottom,
+                            toastStyle: ToastStyle? = nil) {
+        let dp = window ? DisplayPosition.keyWindow : DisplayPosition.topView
+        let options = Options(in: dp, duration: duration, cover: cover, position: position, toastStyle: toastStyle)
+        self.init(options: options)
+    }
+}
+
+extension NetworkWarningPlugin {
+    public struct Options {
+        /// Display in the window position.
+        public static let keyWindow: Options = .init(in: .keyWindow)
+        
+        /// Sets the default position. Used for the `makeToast` and `showToast` methods that don't require an explicit position.
+        let position: ToastPosition
+        /// The default duration. Used for the `makeToast` and `showToast` methods that don't require an explicit duration.
+        let duration: TimeInterval
+        /// Display super view.
+        let displayView: UIView?
+        
+        /// 是否会覆盖上次的错误展示，如果上次错误展示还在，新的错误展示是否需要覆盖上次。
+        /// Whether it will overwrite the last error display,
+        /// If the last error display is still there, whether the new error display needs to overwrite the last one.
+        let coverLastToast: Bool
+        
+        let toastStyle: ToastStyle?
+        
+        public init(in type: DisplayPosition = .keyWindow,
+                    duration: TimeInterval = 1.0,
+                    cover: Bool = true,
+                    position: ToastPosition = .bottom,
+                    toastStyle: ToastStyle? = nil) {
+            self.position = position
+            self.displayView = type.displayView
+            self.duration = duration
+            self.coverLastToast = cover
+            self.toastStyle = toastStyle
+        }
     }
 }
 
@@ -61,20 +83,20 @@ extension NetworkWarningPlugin {
     
     private func showText(_ text: String) {
         DispatchQueue.main.async {
-            guard let view = self.displayInWindow ? X.View.keyWindow : X.View.topViewController?.view else {
+            guard let view = self.options.displayView else {
                 return
             }
-            if self.coverLastToast {
+            if self.options.coverLastToast {
                 view.hideToast()
             }
             
-            let style = self.toastStyle ?? {
+            let style = self.options.toastStyle ?? {
                 var style = ToastStyle()
                 style.messageColor = UIColor.white
                 return style
             }()
             
-            view.makeToast(text, duration: self.duration, position: self.position, style: style)
+            view.makeToast(text, duration: self.options.duration, position: self.options.position, style: style)
             
             // or perhaps you want to use this style for all toasts going forward?
             // just set the shared style and there's no need to provide the style again
@@ -84,7 +106,7 @@ extension NetworkWarningPlugin {
             ToastManager.shared.isTapToDismissEnabled = true
             
             // toggle queueing behavior
-            ToastManager.shared.isQueueEnabled = !self.coverLastToast
+            ToastManager.shared.isQueueEnabled = !self.options.coverLastToast
         }
     }
 }

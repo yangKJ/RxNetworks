@@ -12,12 +12,57 @@ import Moya
 /// Network printing, DEBUG mode built in plugin.
 public final class NetworkDebuggingPlugin {
     
-    /// Enable print request information.
-    public var openDebugRequest: Bool = true
-    /// Turn on printing the response result.
-    public var openDebugResponse: Bool = true
+    public let options: Options
     
-    public init() { }
+    public init(options: Options = .default) {
+        self.options = options
+    }
+}
+
+extension NetworkDebuggingPlugin {
+    public struct Options {
+        
+        public static let `default`: Options = .init(logOptions: .default)
+        
+        let logOptions: LogOptions
+        
+        public init(logOptions: LogOptions) {
+            self.logOptions = logOptions
+        }
+    }
+    
+    /// Enable print request information.
+    var openDebugRequest: Bool {
+        switch options.logOptions {
+        case .request, .`default`:
+            return true
+        default:
+            return false
+        }
+    }
+    /// Turn on printing the response result.
+    var openDebugResponse: Bool {
+        switch options.logOptions {
+        case .response, .`default`:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension NetworkDebuggingPlugin.Options {
+    public struct LogOptions: OptionSet {
+        public let rawValue: Int
+        public init(rawValue: Int) { self.rawValue = rawValue }
+        
+        /// Enable print request information.
+        public static let request: LogOptions = LogOptions(rawValue: 1 << 0)
+        /// Turn on printing the response result.
+        public static let response: LogOptions = LogOptions(rawValue: 1 << 1)
+        /// Open the request log and response log at the same time.
+        public static let `default`: LogOptions = [request, response]
+    }
 }
 
 extension NetworkDebuggingPlugin: PluginSubType {

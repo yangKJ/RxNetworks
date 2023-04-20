@@ -27,4 +27,9 @@ extension LoadingAPI: NetworkAPI {
         case .test2(let string): return ["key": string]
         }
     }
+    
+    var plugins: APIPlugins {
+        let loading = NetworkLoadingPlugin()
+        return [loading]
+    }
 }

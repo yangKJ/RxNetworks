@@ -20,3 +20,13 @@ public protocol NetworkAPI: Moya.TargetType {
     /// Failed retry count, the default is zero
     var retry: APINumber { get }
 }
+
+extension NetworkAPI {
+    /// 获取到指定插件
+    public func givenPlugin<T: RxNetworks.PluginSubType>(type: T.Type) -> T? {
+        for plugin in plugins where plugin is T {
+            return plugin as? T
+        }
+        return nil
+    }
+}

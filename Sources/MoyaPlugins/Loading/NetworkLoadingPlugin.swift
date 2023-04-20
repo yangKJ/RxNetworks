@@ -23,8 +23,7 @@ public final class NetworkLoadingPlugin {
     /// Delay hidden, the default is zero seconds
     let delayHideHUD: Double
     
-    /// 是否需要自动隐藏Loading，可用于链式请求时刻
-    /// 最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading
+    /// 是否需要自动隐藏Loading，可用于链式请求时刻，最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading。
     /// Whether you need to automatically hide Loading, it can be used for chain request.
     /// The first network request starts loading, and the last network request ends and then removes the loading
     public let autoHideLoading: Bool
@@ -48,10 +47,10 @@ public final class NetworkLoadingPlugin {
     /// If it fails, the plug-in will help you close it. If it is successful, please close it yourself.
     public static func hideMBProgressHUD() {
         DispatchQueue.main.async {
-            if let view = RxNetworks.X.View.keyWindow {
+            if let view = DisplayPosition.keyWindow() {
                 MBProgressHUD.hide(for: view, animated: true)
             }
-            if let vc = RxNetworks.X.View.topViewController, let view = vc.view {
+            if let vc = DisplayPosition.topViewController(), let view = vc.view {
                 MBProgressHUD.hide(for: view, animated: true)
             }
         }
@@ -93,7 +92,7 @@ extension NetworkLoadingPlugin {
     ///   - delay: delay hiding time
     private func showText(_ text: String, window: Bool, delay: Double) {
         DispatchQueue.main.async {
-            guard let view = window ? X.View.keyWindow : X.View.topViewController?.view else {
+            guard let view = DisplayPosition.keyWindowOrTopView(window) else {
                 return
             }
             if let _ = MBProgressHUD.forView(view) {

@@ -32,9 +32,9 @@ extension NetworkAPI {
                                                progress: ProgressBlock? = nil,
                                                queue: DispatchQueue? = nil) -> Cancellable? {
         var plugins_: APIPlugins = self.plugins
-        NetworkUtil.defaultPlugin(&plugins_, api: self)
+        RxNetworks.X.defaultPlugin(&plugins_, api: self)
         
-        let tuple = NetworkUtil.handyConfigurationPlugin(plugins_, target: MultiTarget.target(self))
+        let tuple = RxNetworks.X.handyConfigurationPlugin(plugins_, target: MultiTarget.target(self))
         if tuple.endRequest == true, let result = tuple.result {
             switch result {
             case let .success(response):
@@ -83,7 +83,7 @@ extension NetworkAPI {
             break
         }
         // 再处理网络数据
-        return NetworkUtil.beginRequest(self, base: provider, queue: queue, success: { json in
+        return RxNetworks.X.beginRequest(self, base: provider, queue: queue, success: { json in
             DispatchQueue.main.async { success(json) }
         }, failure: { error in
             DispatchQueue.main.async { failure(error) }
