@@ -35,7 +35,7 @@ extension OOViewModel.Input {
         
         return api.cdy_HTTPRequest()
             .asObservable()
-            .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
+            .compactMap{ (($0 as? NSDictionary)?["origin"] as? String) }
             .catchAndReturn("")
             .observe(on: MainScheduler.instance)
     }

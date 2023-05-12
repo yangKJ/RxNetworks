@@ -6,10 +6,35 @@
 //  https://github.com/yangKJ/RxNetworks
 
 import Foundation
-import UIKit
 import Moya
 
 public struct X {
+    
+    /// Maps data received from the signal into a JSON object.
+    public static func mapJSON<T>(_ type: T.Type, named: String, forResource: String = "RxNetworks") -> T? {
+        guard let data = jsonData(named, forResource: forResource) else {
+            return nil
+        }
+        let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
+        return json as? T
+    }
+    
+    /// Read json data
+    public static func jsonData(_ named: String, forResource: String = "RxNetworks") -> Data? {
+        let bundle: Bundle?
+        if let bundlePath = Bundle.main.path(forResource: forResource, ofType: "bundle") {
+            bundle = Bundle.init(path: bundlePath)
+        } else {
+            bundle = Bundle.main
+        }
+        guard let path = ["json", "JSON", "Json"].compactMap({
+            bundle?.path(forResource: named, ofType: $0)
+        }).first else {
+            return nil
+        }
+        let contentURL = URL(fileURLWithPath: path)
+        return try? Data(contentsOf: contentURL)
+    }
     
     public static func toJSON(form value: Any, prettyPrint: Bool = false) -> String? {
         guard JSONSerialization.isValidJSONObject(value) else {
@@ -34,6 +59,7 @@ public struct X {
         return result
     }
 }
+
 
 // MARK: - internal tool methods
 extension X {
@@ -142,5 +168,4 @@ extension X {
             }
         })
     }
-
 }

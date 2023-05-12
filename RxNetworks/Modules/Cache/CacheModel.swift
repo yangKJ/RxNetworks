@@ -8,17 +8,23 @@
 
 import Foundation
 import HandyJSON
+import RxNetworks
 
 struct CacheModel: HandyJSON {
     
-    var id : Int?
-    var title : String?
-    var imageURL : String?
-    var url : String?
+    var id: Int?
+    var title: String?
+    var imageURL: String?
+    var url: String?
+    var amount: NSDecimalNumber?
     
     /// 转换映射key
     mutating func mapping(mapper: HelpingMapper) {
-        mapper <<< url <-- "github"
-        mapper <<< imageURL <-- "image"
+        mapper <<<
+            url <-- "github"
+        mapper <<<
+            imageURL <-- "image"
+        mapper <<<
+            amount <-- DecimalNumberTransform()
     }
 }

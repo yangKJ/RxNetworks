@@ -8,12 +8,12 @@
 import Foundation
 import HandyJSON
 
-public final class HandyDataModel<T>: HandyJSON {
+public struct HandyDataModel<T>: HandyJSON {
     public var code: String?
     public var message: String?
     public var data: T?
 
-    public required init() { }
+    public init() { }
 }
 
 extension HandyDataModel {

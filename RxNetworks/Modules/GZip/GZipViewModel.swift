@@ -8,6 +8,7 @@
 
 import Foundation
 import RxNetworks
+import RxCocoa
 
 class GZipViewModel: NSObject {
     

@@ -24,9 +24,9 @@ public protocol NetworkAPI: Moya.TargetType {
 extension NetworkAPI {
     /// 获取到指定插件
     public func givenPlugin<T: RxNetworks.PluginSubType>(type: T.Type) -> T? {
-        for plugin in plugins where plugin is T {
-            return plugin as? T
+        guard let plugin = plugins.first(where: { $0 is T }) as? T else {
+            return nil
         }
-        return nil
+        return plugin
     }
 }

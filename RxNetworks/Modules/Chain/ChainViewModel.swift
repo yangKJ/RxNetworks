@@ -11,35 +11,39 @@ import RxNetworks
 
 class ChainViewModel: NSObject {
     
-    let disposeBag = DisposeBag()
+    struct Input { }
     
-    let data = PublishSubject<NSDictionary>()
+    struct Output {
+        let data: Observable<NSDictionary>
+    }
     
-    func chainLoad() {
-        requestIP()
-            .flatMapLatest(requestData)
-            .subscribe(onNext: { [weak self] (data) in
-                self?.data.onNext(data)
-            }, onError: {
-                print("Network Failed: \($0)")
-            }).disposed(by: disposeBag)
+    func transform(input: Input) -> Output {
+        let data = chain().asObservable()
+        
+        return Output(data: data)
+    }
+    
+    func chain() -> Observable<NSDictionary> {
+        Observable.from(optional: "begin")
+            .flatMapLatest(requestIP)
+            .flatMapLatest(requestData(ip:))
+            .catchAndReturn([:])
     }
 }
 
 extension ChainViewModel {
     
-    func requestIP() -> Observable<String> {
+    func requestIP(_ stirng: String) -> Observable<String> {
         return ChainAPI.test.request()
             .asObservable()
-            .map { ($0 as! NSDictionary)["origin"] as! String }
-            .catchAndReturn("") // 异常抛出
+            .map { (($0 as? NSDictionary)?["origin"] as? String) ?? stirng }
             .observe(on: MainScheduler.instance)
     }
     
-    func requestData(_ ip: String) -> Observable<NSDictionary> {
+    func requestData(ip: String) -> Observable<NSDictionary> {
         return ChainAPI.test2(ip).request()
             .map { ($0 as! NSDictionary) }
-            .catchAndReturn(["data": "nil"])
+            .catchAndReturn(["data": "nil"]) // 异常抛出
             .observe(on: MainScheduler.instance)
     }
 }

@@ -36,7 +36,8 @@ extension BatchAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let loading = NetworkLoadingPlugin(autoHide: false)
+        let loading = AnimatedLoadingPlugin.init()
+        loading.autoHideLoading = false
         return [loading]
     }
     

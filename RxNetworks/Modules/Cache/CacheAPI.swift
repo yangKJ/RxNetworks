@@ -35,33 +35,8 @@ enum CacheAPI: NetworkAPI {
     
     var sampleData: Data {
         switch self {
-        case .cache(let count):
-            let number = Int(arc4random_uniform(UInt32(count)))
-            let local = LocalData.init()
-            return local[number]
+        case .cache:
+            return X.jsonData("AMList")!
         }
-    }
-}
-
-struct LocalData {
-    
-    subscript(number: Int) -> Data {
-        var data: [String : Any] = [
-            "id": 7,
-            "title": "Network Framework",
-            "image": "https://upload-images.jianshu.io/upload_images/1933747-4bc58b5a94713f99.jpeg",
-            "github": "https://github.com/yangKJ/RxNetworks"
-        ]
-        var array: [[String : Any]] = []
-        for idx in 0...number {
-            data["id"] = "\(idx)"
-            array.append(data)
-        }
-        let dict: [String : Any] = [
-            "data": array,
-            "code": 200,
-            "message": "successed."
-        ]
-        return X.toJSON(form: dict)!.data(using: String.Encoding.utf8)!
     }
 }
