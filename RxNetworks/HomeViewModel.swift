@@ -19,6 +19,7 @@ enum ViewControllerType: String {
     case Warning = "Failed Prompting Plugin"
     case GZip = "GZip UnCompression Plugin"
     case AnimatedLoading = "Lottie Animated Loading Plugin"
+    case Token = "Simulation Token Plugin"
     
     func viewController() -> UIViewController {
         switch self {
@@ -40,6 +41,8 @@ enum ViewControllerType: String {
             return GZipViewController()
         case .AnimatedLoading:
             return AnimatedLoadingViewController()
+        case .Token:
+            return TokenViewController()
         }
     }
 }
@@ -57,6 +60,7 @@ struct HomeViewModel {
             .Cache,
             .Warning,
             .GZip,
+            .Token,
         ]
     }()
 }

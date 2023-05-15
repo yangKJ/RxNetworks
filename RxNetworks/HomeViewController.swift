@@ -43,7 +43,7 @@ class HomeViewController: UIViewController {
         NetworkConfig.baseParameters = ["github": "RxNetworks"]
         NetworkConfig.addDebugging = true
         NetworkConfig.addIndicator = true
-        NetworkConfig.injectionPlugins = [AuthPlugin.shared]
+        //NetworkConfig.injectionPlugins = [AuthPlugin.shared]
         NetworkConfig.animatedJSON = "testLoading"
     }
     

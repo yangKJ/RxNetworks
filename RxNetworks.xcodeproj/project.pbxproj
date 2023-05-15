@@ -43,11 +43,16 @@
 		8707F02D29EE8FC80060C94B /* AnimatedLoadingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707F02A29EE8FC70060C94B /* AnimatedLoadingAPI.swift */; };
 		8707F02E29EE8FC80060C94B /* AnimatedLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707F02B29EE8FC70060C94B /* AnimatedLoadingViewModel.swift */; };
 		871E4E0C2A0CCB760061BE14 /* AMList.json in Resources */ = {isa = PBXBuildFile; fileRef = 871E4E0B2A0CCB760061BE14 /* AMList.json */; };
+		874BB9CE2A121A2700C9DA33 /* TokenPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */; };
+		874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */; };
+		874BB9DB2A12248600C9DA33 /* ClosureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9D82A12248600C9DA33 /* ClosureViewController.swift */; };
+		874BB9DC2A12248600C9DA33 /* ClosureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9D92A12248600C9DA33 /* ClosureViewModel.swift */; };
+		874BB9DD2A12248600C9DA33 /* ClosureAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9DA2A12248600C9DA33 /* ClosureAPI.swift */; };
+		874BB9E12A12249900C9DA33 /* TokenAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9DE2A12249900C9DA33 /* TokenAPI.swift */; };
+		874BB9E22A12249900C9DA33 /* TokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9DF2A12249900C9DA33 /* TokenViewController.swift */; };
+		874BB9E32A12249900C9DA33 /* TokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9E02A12249900C9DA33 /* TokenViewModel.swift */; };
 		8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8759D02928B328E500C22107 /* AuthPlugin.swift */; };
 		876E046729EE35F500A7CF1C /* testLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 876E046629EE35F500A7CF1C /* testLoading.json */; };
-		8787A2762852DEB900655CEA /* ClosureAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2752852DEB900655CEA /* ClosureAPI.swift */; };
-		8787A2782852DEC200655CEA /* ClosureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2772852DEC200655CEA /* ClosureViewController.swift */; };
-		8787A27A2852DF4300655CEA /* ClosureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8787A2792852DF4200655CEA /* ClosureViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,11 +94,16 @@
 		8707F02A29EE8FC70060C94B /* AnimatedLoadingAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedLoadingAPI.swift; sourceTree = "<group>"; };
 		8707F02B29EE8FC70060C94B /* AnimatedLoadingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedLoadingViewModel.swift; sourceTree = "<group>"; };
 		871E4E0B2A0CCB760061BE14 /* AMList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AMList.json; sourceTree = "<group>"; };
+		874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPlugin.swift; sourceTree = "<group>"; };
+		874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		874BB9D82A12248600C9DA33 /* ClosureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClosureViewController.swift; path = RxNetworks/Modules/Closure/ClosureViewController.swift; sourceTree = SOURCE_ROOT; };
+		874BB9D92A12248600C9DA33 /* ClosureViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClosureViewModel.swift; path = RxNetworks/Modules/Closure/ClosureViewModel.swift; sourceTree = SOURCE_ROOT; };
+		874BB9DA2A12248600C9DA33 /* ClosureAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClosureAPI.swift; path = RxNetworks/Modules/Closure/ClosureAPI.swift; sourceTree = SOURCE_ROOT; };
+		874BB9DE2A12249900C9DA33 /* TokenAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenAPI.swift; path = RxNetworks/Modules/Token/TokenAPI.swift; sourceTree = SOURCE_ROOT; };
+		874BB9DF2A12249900C9DA33 /* TokenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenViewController.swift; path = RxNetworks/Modules/Token/TokenViewController.swift; sourceTree = SOURCE_ROOT; };
+		874BB9E02A12249900C9DA33 /* TokenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenViewModel.swift; path = RxNetworks/Modules/Token/TokenViewModel.swift; sourceTree = SOURCE_ROOT; };
 		8759D02928B328E500C22107 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		876E046629EE35F500A7CF1C /* testLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testLoading.json; sourceTree = "<group>"; };
-		8787A2752852DEB900655CEA /* ClosureAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureAPI.swift; sourceTree = "<group>"; };
-		8787A2772852DEC200655CEA /* ClosureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewController.swift; sourceTree = "<group>"; };
-		8787A2792852DF4200655CEA /* ClosureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureViewModel.swift; sourceTree = "<group>"; };
 		98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworks_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.debug.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -202,6 +212,7 @@
 				04F0A883279A465C008534D8 /* GZip */,
 				04233506278E61DE00547494 /* Loading */,
 				0423350A278E61DE00547494 /* OO */,
+				874BB9C52A1209E800C9DA33 /* Token */,
 				04BB29B0279911DC0056F94A /* Warning */,
 			);
 			name = Modules;
@@ -279,10 +290,30 @@
 			path = Modules/AnimatedLoading;
 			sourceTree = "<group>";
 		};
+		874BB9C52A1209E800C9DA33 /* Token */ = {
+			isa = PBXGroup;
+			children = (
+				874BB9DE2A12249900C9DA33 /* TokenAPI.swift */,
+				874BB9DF2A12249900C9DA33 /* TokenViewController.swift */,
+				874BB9E02A12249900C9DA33 /* TokenViewModel.swift */,
+			);
+			path = Token;
+			sourceTree = "<group>";
+		};
+		874BB9CC2A121A0C00C9DA33 /* Token */ = {
+			isa = PBXGroup;
+			children = (
+				874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */,
+				874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */,
+			);
+			path = Token;
+			sourceTree = "<group>";
+		};
 		8759D02728B328E500C22107 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
 				8759D02828B328E500C22107 /* Auth */,
+				874BB9CC2A121A0C00C9DA33 /* Token */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -298,9 +329,9 @@
 		8787A2742852DE8400655CEA /* Closure */ = {
 			isa = PBXGroup;
 			children = (
-				8787A2752852DEB900655CEA /* ClosureAPI.swift */,
-				8787A2772852DEC200655CEA /* ClosureViewController.swift */,
-				8787A2792852DF4200655CEA /* ClosureViewModel.swift */,
+				874BB9DA2A12248600C9DA33 /* ClosureAPI.swift */,
+				874BB9D82A12248600C9DA33 /* ClosureViewController.swift */,
+				874BB9D92A12248600C9DA33 /* ClosureViewModel.swift */,
 			);
 			path = Closure;
 			sourceTree = "<group>";
@@ -453,7 +484,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8787A2782852DEC200655CEA /* ClosureViewController.swift in Sources */,
+				874BB9E22A12249900C9DA33 /* TokenViewController.swift in Sources */,
 				04233512278E61DE00547494 /* LoadingAPI.swift in Sources */,
 				04233511278E61DE00547494 /* CacheModel.swift in Sources */,
 				04F0A887279A465C008534D8 /* GZipViewModel.swift in Sources */,
@@ -462,19 +493,23 @@
 				8707F02E29EE8FC80060C94B /* AnimatedLoadingViewModel.swift in Sources */,
 				8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */,
 				04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */,
+				874BB9DD2A12248600C9DA33 /* ClosureAPI.swift in Sources */,
 				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
 				0423350F278E61DE00547494 /* CacheViewController.swift in Sources */,
 				0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */,
-				8787A27A2852DF4300655CEA /* ClosureViewModel.swift in Sources */,
 				04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */,
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
+				874BB9CE2A121A2700C9DA33 /* TokenPlugin.swift in Sources */,
 				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,
+				874BB9E12A12249900C9DA33 /* TokenAPI.swift in Sources */,
 				04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */,
+				874BB9DC2A12248600C9DA33 /* ClosureViewModel.swift in Sources */,
 				8707F02C29EE8FC80060C94B /* AnimatedLoadingViewController.swift in Sources */,
 				0423350E278E61DE00547494 /* CacheViewModel.swift in Sources */,
+				874BB9DB2A12248600C9DA33 /* ClosureViewController.swift in Sources */,
+				874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
 				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
-				8787A2762852DEB900655CEA /* ClosureAPI.swift in Sources */,
 				8707F02D29EE8FC80060C94B /* AnimatedLoadingAPI.swift in Sources */,
 				04BB29B6279911DD0056F94A /* WarningViewController.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
@@ -482,6 +517,7 @@
 				04233514278E61DE00547494 /* LoadingViewController.swift in Sources */,
 				04C04F302792A69400E85B6B /* BatchAPI.swift in Sources */,
 				04233510278E61DE00547494 /* CacheAPI.swift in Sources */,
+				874BB9E32A12249900C9DA33 /* TokenViewModel.swift in Sources */,
 				04BB29B5279911DD0056F94A /* WarningViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				04BB29B4279911DD0056F94A /* WarningAPI.swift in Sources */,
