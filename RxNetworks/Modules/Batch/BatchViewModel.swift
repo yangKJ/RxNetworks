@@ -32,7 +32,7 @@ class BatchViewModel: NSObject {
         )
         .observe(on: MainScheduler.instance)
         .map({
-            NetworkLoadingPlugin.hideMBProgressHUD()
+            AnimatedLoadingPlugin.hideLoadingHUD(view: nil)
             guard let data1 = $0 as? [String: Any],
                   let data2 = $1 as? [String: Any],
                   let data3 = $2 as? Dictionary<String, Any> else {

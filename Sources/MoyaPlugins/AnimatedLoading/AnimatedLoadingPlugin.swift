@@ -22,21 +22,43 @@ public final class AnimatedLoadingPlugin {
     ///         plugin.hideLoadingHUD()
     ///     }
     ///
+    ///     or
+    ///
+    ///     AnimatedLoadingPlugin.hideLoadingHUD(view: nil)
+    ///
     /// Whether you need to automatically hide Loading, it can be used for chain request.
     /// The first network request starts loading, and the last network request ends and then remove the loading hud.
     public var autoHideLoading: Bool = true
     
     public let options: Options
     
-    public init(options: Options = Options()) {
+    public init(options: Options = Options.inTopView) {
         self.options = options
     }
     
     /// Hide the loading hud.
     public func hideLoadingHUD() {
         DispatchQueue.main.async {
-            if let view = self.options.displayView {
+            let view = self.options.displayView
+            AnimatedLoadingPlugin.Options.hideBackView(view)
+            view?.hideHUD()
+        }
+    }
+    
+    /// 如果设置过`autoHideLoading`请记得自己来关闭加载动画，倘若失败插件会帮你关闭，倘若均成功请自己来关闭
+    /// If you have set `autoHideLoading = false`, please remember to close the loading animation yourself.
+    /// If it fails, the plug-in will help you close it. If it is successful, please close it yourself.
+    public static func hideLoadingHUD(view: UIView?) {
+        DispatchQueue.main.async {
+            if let view = view {
+                Options.hideBackView(view)
                 view.hideHUD()
+                return
+            }
+            let _ = [true, false].map {
+                let view = DisplayPosition.keyWindowOrTopView($0)
+                Options.hideBackView(view)
+                view?.hideHUD()
             }
         }
     }
@@ -44,6 +66,11 @@ public final class AnimatedLoadingPlugin {
 
 extension AnimatedLoadingPlugin {
     public struct Options {
+        /// Displayed in the current view.
+        public static let inTopView = Options.init(in: .topView)
+        
+        public static let backViewTag = 9993698
+        
         /// Do you need to display an error message, the default is empty
         let displayLoadText: String
         /// Delay hidden, the default is zero seconds
@@ -55,13 +82,24 @@ extension AnimatedLoadingPlugin {
         let animatedJSON: String?
         
         public init(text: String = "正在加载...",
-                    in type: DisplayPosition = .keyWindow,
+                    in type: DisplayPosition = .topView,
                     delay: Double = 0.0,
                     animatedJSON: String? = nil) {
             self.displayLoadText = text
             self.delayHideHUD = delay
             self.displayView = type.displayView
             self.animatedJSON = animatedJSON
+            let backView = UIView()
+            backView.tag = Options.backViewTag
+            backView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+            backView.frame = self.displayView?.bounds ?? .zero
+            self.displayView?.addSubview(backView)
+        }
+        
+        static func hideBackView(_ view: UIView?) {
+            for view in view?.subviews ?? [] where view.tag == backViewTag {
+                view.removeFromSuperview()
+            }
         }
     }
 }
@@ -88,9 +126,9 @@ extension AnimatedLoadingPlugin: PluginSubType {
         }
         self.queue.asyncAfter(deadline: .now() + options.delayHideHUD) {
             DispatchQueue.main.async {
-                if let view = self.options.displayView {
-                    view.hideHUD()
-                }
+                let view = self.options.displayView
+                AnimatedLoadingPlugin.Options.hideBackView(view)
+                view?.hideHUD()
             }
         }
     }
