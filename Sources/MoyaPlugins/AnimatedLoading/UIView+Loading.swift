@@ -143,7 +143,7 @@ final class LoadingHud: UIView {
     func show(in view: UIView) {
         view.addSubview(self)
         view.bringSubviewToFront(self)
-        animatedView.play(fromProgress: 0, toProgress: 1, loopMode: .loop)
+        animatedView.play(fromProgress: 0, toProgress: 1, loopMode: LottieLoopMode.loop)
     }
     
     func hide() {
