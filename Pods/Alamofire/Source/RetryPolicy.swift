@@ -56,7 +56,7 @@ open class RetryPolicy: RequestInterceptor {
     ]
 
     /// The default URL error codes to retry.
-    public static let defaultRetryableURLErrorCodes: Set<URLError.Code> = [// [Security] App Transport Security disallowed a connection because there is no secure network connection.
+    public static let defaultRetryableURLErrorCodes: Set<URLError.Code> = [ // [Security] App Transport Security disallowed a connection because there is no secure network connection.
         //   - [Disabled] ATS settings do not change at runtime.
         // .appTransportSecurityRequiresSecureConnection,
 
@@ -339,7 +339,6 @@ open class RetryPolicy: RequestInterceptor {
     }
 }
 
-#if swift(>=5.5)
 extension RequestInterceptor where Self == RetryPolicy {
     /// Provides a default `RetryPolicy` instance.
     public static var retryPolicy: RetryPolicy { RetryPolicy() }
@@ -372,7 +371,6 @@ extension RequestInterceptor where Self == RetryPolicy {
                     retryableURLErrorCodes: retryableURLErrorCodes)
     }
 }
-#endif
 
 // MARK: -
 
@@ -404,7 +402,6 @@ open class ConnectionLostRetryPolicy: RetryPolicy {
     }
 }
 
-#if swift(>=5.5)
 extension RequestInterceptor where Self == ConnectionLostRetryPolicy {
     /// Provides a default `ConnectionLostRetryPolicy` instance.
     public static var connectionLostRetryPolicy: ConnectionLostRetryPolicy { ConnectionLostRetryPolicy() }
@@ -431,4 +428,3 @@ extension RequestInterceptor where Self == ConnectionLostRetryPolicy {
                                   retryableHTTPMethods: retryableHTTPMethods)
     }
 }
-#endif

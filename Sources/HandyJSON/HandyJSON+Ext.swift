@@ -33,4 +33,22 @@ extension HandyJSON {
         let result = T.deserialize(from: dict)
         return result ?? (self as! T)
     }
+    
+    /// 不同对象映射后者非空数据
+    /// Different objects map the latter's non-empty data.
+    /// - Parameters:
+    ///   - type: self corresponding type class.
+    ///   - infomation: Data source to be mapped.
+    /// - Returns: Mapped data.
+    public func mappingLatterNotNil<T: HandyJSON, U: HandyJSON>(type: U.Type, latter infomation: T?) -> U {
+        guard let infoDict = infomation?.toJSON() else {
+            return self as! U
+        }
+        let maps = self.toJSON()?.compactMap { key, value in
+            (key, infoDict[key] ?? value)
+        } ?? []
+        let dict = Dictionary.init(maps, uniquingKeysWith: { _, old in old })
+        let result = U.deserialize(from: dict)
+        return result ?? (self as! U)
+    }
 }

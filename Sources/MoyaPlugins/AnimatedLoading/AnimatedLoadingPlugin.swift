@@ -38,11 +38,7 @@ public final class AnimatedLoadingPlugin {
     
     /// Hide the loading hud.
     public func hideLoadingHUD() {
-        DispatchQueue.main.async {
-            let view = self.options.displayView
-            AnimatedLoadingPlugin.Options.hideBackView(view)
-            view?.hideHUD()
-        }
+        AnimatedLoadingPlugin.hideLoadingHUD(view: self.options.displayView)
     }
     
     /// 如果设置过`autoHideLoading`请记得自己来关闭加载动画，倘若失败插件会帮你关闭，倘若均成功请自己来关闭
@@ -51,13 +47,13 @@ public final class AnimatedLoadingPlugin {
     public static func hideLoadingHUD(view: UIView?) {
         DispatchQueue.main.async {
             if let view = view {
-                Options.hideBackView(view)
+                view.hideBackView()
                 view.hideHUD()
                 return
             }
             let _ = [true, false].map {
                 let view = DisplayPosition.keyWindowOrTopView($0)
-                Options.hideBackView(view)
+                view?.hideBackView()
                 view?.hideHUD()
             }
         }
@@ -68,8 +64,6 @@ extension AnimatedLoadingPlugin {
     public struct Options {
         /// Displayed in the current view.
         public static let inTopView = Options.init(in: .topView)
-        
-        public static let backViewTag = 9993698
         
         /// Do you need to display an error message, the default is empty
         let displayLoadText: String
@@ -89,17 +83,6 @@ extension AnimatedLoadingPlugin {
             self.delayHideHUD = delay
             self.displayView = type.displayView
             self.animatedJSON = animatedJSON
-            let backView = UIView()
-            backView.tag = Options.backViewTag
-            backView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-            backView.frame = self.displayView?.bounds ?? .zero
-            self.displayView?.addSubview(backView)
-        }
-        
-        static func hideBackView(_ view: UIView?) {
-            for view in view?.subviews ?? [] where view.tag == backViewTag {
-                view.removeFromSuperview()
-            }
         }
     }
 }
@@ -113,9 +96,10 @@ extension AnimatedLoadingPlugin: PluginSubType {
     public func willSend(_ request: RequestType, target: TargetType) {
         DispatchQueue.main.async {
             if let view = self.options.displayView {
+                view.showHudBackView()
                 let animatedNamed = self.options.animatedJSON ?? NetworkConfig.animatedJSON
-                let hud = view.showLoadingHUD(animatedNamed)
-                hud.textLabel.text = self.options.displayLoadText
+                view.showLoadingHUD(animatedNamed)
+                view.animatedLoadingHud?.textLabel.text = self.options.displayLoadText
             }
         }
     }
@@ -125,11 +109,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
             return
         }
         self.queue.asyncAfter(deadline: .now() + options.delayHideHUD) {
-            DispatchQueue.main.async {
-                let view = self.options.displayView
-                AnimatedLoadingPlugin.Options.hideBackView(view)
-                view?.hideHUD()
-            }
+            self.hideLoadingHUD()
         }
     }
 }
