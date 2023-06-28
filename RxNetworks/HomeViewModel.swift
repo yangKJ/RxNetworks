@@ -20,6 +20,7 @@ enum ViewControllerType: String {
     case GZip = "GZip UnCompression Plugin"
     case AnimatedLoading = "Lottie Animated Loading Plugin"
     case Token = "Simulation Token Plugin"
+    case Shared = "Shared Network Plugin"
     
     func viewController() -> UIViewController {
         switch self {
@@ -43,6 +44,8 @@ enum ViewControllerType: String {
             return AnimatedLoadingViewController()
         case .Token:
             return TokenViewController()
+        case .Shared:
+            return SharedViewController()
         }
     }
 }
@@ -61,6 +64,7 @@ struct HomeViewModel {
             .Warning,
             .GZip,
             .Token,
+            .Shared,
         ]
     }()
 }

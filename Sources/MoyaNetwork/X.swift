@@ -60,27 +60,22 @@ public struct X {
     }
 }
 
-
 // MARK: - internal tool methods
-extension X {
-    internal static func defaultPlugin(_ plugins: inout APIPlugins, api: NetworkAPI) {
-        var plugins_ = plugins
-        if let others = NetworkConfig.injectionPlugins {
-            plugins_ += others
+
+extension RxNetworks.X {
+    
+    /// 参数排序生成字符串
+    static func sort(parameters: [String: Any]?) -> String {
+        guard let params = parameters, !params.isEmpty else {
+            return ""
         }
-        #if RxNetworks_MoyaPlugins_Indicator
-        if NetworkConfig.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
-            let Indicator = NetworkIndicatorPlugin.shared
-            plugins_.insert(Indicator, at: 0)
+        var paramString = "?"
+        let sorteds = params.sorted(by: { $0.key > $1.key })
+        for index in sorteds.indices {
+            paramString.append("\(sorteds[index].key)=\(sorteds[index].value)")
+            if index != sorteds.count - 1 { paramString.append("&") }
         }
-        #endif
-        #if DEBUG && RxNetworks_MoyaPlugins_Debugging
-        if NetworkConfig.addDebugging, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
-            let Debugging = NetworkDebuggingPlugin.init()
-            plugins_.append(Debugging)
-        }
-        #endif
-        plugins = plugins_
+        return paramString
     }
     
     static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> ConfigurationTuple {
@@ -90,6 +85,30 @@ extension X {
         tuple.session = nil
         plugins.forEach { tuple = $0.configuration(tuple, target: target, plugins: plugins) }
         return tuple
+    }
+    
+    static func handyResult(_ result: Result<Moya.Response, MoyaError>,
+                            success: @escaping APISuccess,
+                            failure: @escaping APIFailure,
+                            progress: ProgressBlock?) {
+        switch result {
+        case let .success(response):
+            do {
+                let response = try response.filterSuccessfulStatusCodes()
+                let jsonObject = try response.mapJSON()
+                DispatchQueue.main.async { success(jsonObject) }
+                // 直接进度拉满
+                progress?(ProgressResponse(response: response))
+            } catch MoyaError.jsonMapping(let response) {
+                DispatchQueue.main.async { failure(MoyaError.jsonMapping(response)) }
+            } catch MoyaError.statusCode(let response) {
+                DispatchQueue.main.async { failure(MoyaError.statusCode(response)) }
+            } catch {
+                DispatchQueue.main.async { failure(error) }
+            }
+        case let .failure(error):
+            DispatchQueue.main.async { failure(error) }
+        }
     }
     
     static func handyLastNeverPlugin(_ plugins: APIPlugins,

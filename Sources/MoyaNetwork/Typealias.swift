@@ -22,9 +22,11 @@ public typealias APIMethod = Moya.Method
 public typealias APIParameters = Alamofire.Parameters
 public typealias APIPlugins = [RxNetworks.PluginSubType]
 public typealias APIStubBehavior = Moya.StubBehavior
+public typealias APISuccessJSON = Any
+public typealias APIFailureError = Swift.Error
 
-public typealias APISuccess = (_ json: Any) -> Void
-public typealias APIFailure = (_ error: Swift.Error) -> Void
+public typealias APISuccess = (_ json: APISuccessJSON) -> Void
+public typealias APIFailure = (_ error: APIFailureError) -> Void
 
 // 解决重复解析问题，如果某款插件已经对数据进行解析成`Any`之后
 // Solve the problem of repeated parsing, if a plugin has parsed the data into `Any`

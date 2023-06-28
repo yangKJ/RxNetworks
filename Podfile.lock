@@ -28,6 +28,7 @@ PODS:
     - RxNetworks/MoyaPlugins/GZip (= 0.4.1)
     - RxNetworks/MoyaPlugins/Indicator (= 0.4.1)
     - RxNetworks/MoyaPlugins/Loading (= 0.4.1)
+    - RxNetworks/MoyaPlugins/Shared (= 0.4.1)
     - RxNetworks/MoyaPlugins/Warning (= 0.4.1)
   - RxNetworks/MoyaPlugins/AnimatedLoading (0.4.1):
     - lottie-ios
@@ -43,6 +44,8 @@ PODS:
     - RxNetworks/MoyaNetwork
   - RxNetworks/MoyaPlugins/Loading (0.4.1):
     - MBProgressHUD
+    - RxNetworks/MoyaNetwork
+  - RxNetworks/MoyaPlugins/Shared (0.4.1):
     - RxNetworks/MoyaNetwork
   - RxNetworks/MoyaPlugins/Warning (0.4.1):
     - RxNetworks/MoyaNetwork
@@ -87,7 +90,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
-  RxNetworks: 49dda104e514b94de221b50280e1f8d10142fa25
+  RxNetworks: 789ca02b983511eecacf23156bfcd2118048c98e
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711

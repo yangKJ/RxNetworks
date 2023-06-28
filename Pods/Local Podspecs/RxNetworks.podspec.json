@@ -149,6 +149,19 @@
 
             ]
           }
+        },
+        {
+          "name": "Shared",
+          "source_files": "Sources/MoyaPlugins/Shared/*.swift",
+          "dependencies": {
+            "RxNetworks/MoyaNetwork": [
+
+            ]
+          },
+          "pod_target_xcconfig": {
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RxNetworks_MoyaPlugins_Shared",
+            "GCC_PREPROCESSOR_DEFINITIONS": "RxNetworks_MoyaPlugins_Shared=1"
+          }
         }
       ]
     }

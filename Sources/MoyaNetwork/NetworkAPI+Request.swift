@@ -31,33 +31,18 @@ extension NetworkAPI {
                                                failure: @escaping APIFailure,
                                                progress: ProgressBlock? = nil,
                                                queue: DispatchQueue? = nil) -> Cancellable? {
-        var plugins_: APIPlugins = self.plugins
-        RxNetworks.X.defaultPlugin(&plugins_, api: self)
+        var plugins__ = self.plugins
+        RxNetworks.X.defaultPlugin(&plugins__, api: self)
         
-        let tuple = RxNetworks.X.handyConfigurationPlugin(plugins_, target: MultiTarget.target(self))
-        if tuple.endRequest == true, let result = tuple.result {
-            switch result {
-            case let .success(response):
-                do {
-                    let response = try response.filterSuccessfulStatusCodes()
-                    let jsonObject = try response.mapJSON()
-                    DispatchQueue.main.async { success(jsonObject) }
-                    // 直接进度拉满
-                    progress?(ProgressResponse(response: response))
-                } catch MoyaError.jsonMapping(let response) {
-                    DispatchQueue.main.async { failure(MoyaError.jsonMapping(response)) }
-                } catch MoyaError.statusCode(let response) {
-                    DispatchQueue.main.async { failure(MoyaError.statusCode(response)) }
-                } catch {
-                    DispatchQueue.main.async { failure(error) }
-                }
-            case let .failure(error):
-                DispatchQueue.main.async { failure(error) }
-            }
+        let target = MultiTarget.target(self)
+        
+        let (result__, endRequest, session__) = RxNetworks.X.handyConfigurationPlugin(plugins__, target: target)
+        if endRequest, let result = result__ {
+            RxNetworks.X.handyResult(result, success: success, failure: failure, progress: progress)
             return nil
         }
         
-        let session = tuple.session ?? {
+        let session = session__ ?? {
             let configuration = URLSessionConfiguration.af.default
             configuration.headers = Alamofire.HTTPHeaders.default
             configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
@@ -70,10 +55,10 @@ extension NetworkAPI {
         }()
         let provider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
-        }, callbackQueue: queue, session: session, plugins: plugins_)
+        }, callbackQueue: queue, session: session, plugins: plugins__)
         
         // 先抛出本地数据
-        switch tuple.result {
+        switch result__ {
         case .success(let response) where (try? response.filterSuccessfulStatusCodes()) != nil:
             if let jsonobjc = try? response.mapJSON() {
                 DispatchQueue.main.async { success(jsonobjc) }
@@ -81,6 +66,27 @@ extension NetworkAPI {
             break
         default:
             break
+        }
+        
+        // 共享网络插件处理
+        if RxNetworks.X.hasNetworkSharedPlugin(plugins__) {
+            let key = SharedNetworked.shared.requestLink(with: target)
+            if let task = SharedNetworked.shared.readTask(key: key) {
+                SharedNetworked.shared.cacheBlocks(key: key, success: success, failure: failure)
+                return task
+            }
+            let task = RxNetworks.X.beginRequest(self, base: provider, queue: queue, success: { json in
+                DispatchQueue.main.async {
+                    SharedNetworked.shared.result(.success(json), key: key)
+                }
+            }, failure: { error in
+                DispatchQueue.main.async {
+                    SharedNetworked.shared.result(.failure(error), key: key)
+                }
+            }, progress: progress)
+            SharedNetworked.shared.cacheTask(key: key, task: task)
+            SharedNetworked.shared.cacheBlocks(key: key, success: success, failure: failure)
+            return task
         }
         // 再处理网络数据
         return RxNetworks.X.beginRequest(self, base: provider, queue: queue, success: { json in

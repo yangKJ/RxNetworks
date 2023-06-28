@@ -150,21 +150,7 @@ extension NetworkCachePlugin {
         if case .requestParameters(let parame, _) = target.task {
             parameters = parame
         }
-        let paramString = sort(parameters: parameters)
+        let paramString = RxNetworks.X.sort(parameters: parameters)
         return target.baseURL.absoluteString + target.path + "\(paramString)"
-    }
-    
-    /// 参数排序生成字符串
-    private func sort(parameters: [String: Any]?) -> String {
-        guard let params = parameters, !params.isEmpty else {
-            return ""
-        }
-        var paramString = "?"
-        let sorteds = params.sorted(by: { $0.key > $1.key })
-        for index in sorteds.indices {
-            paramString.append("\(sorteds[index].key)=\(sorteds[index].value)")
-            if index != sorteds.count - 1 { paramString.append("&") }
-        }
-        return paramString
     }
 }

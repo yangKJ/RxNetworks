@@ -48,6 +48,9 @@
 		87124A8D2A1324470049CAC6 /* TokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87124A8A2A1324470049CAC6 /* TokenViewModel.swift */; };
 		87124A8E2A1324470049CAC6 /* TokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87124A8B2A1324470049CAC6 /* TokenViewController.swift */; };
 		87124A8F2A1324470049CAC6 /* TokenAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87124A8C2A1324470049CAC6 /* TokenAPI.swift */; };
+		871870A52A4C17A0008FFE6B /* SharedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871870A22A4C17A0008FFE6B /* SharedViewController.swift */; };
+		871870A62A4C17A0008FFE6B /* SharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871870A32A4C17A0008FFE6B /* SharedViewModel.swift */; };
+		871870A72A4C17A0008FFE6B /* SharedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871870A42A4C17A0008FFE6B /* SharedAPI.swift */; };
 		871E4E0C2A0CCB760061BE14 /* AMList.json in Resources */ = {isa = PBXBuildFile; fileRef = 871E4E0B2A0CCB760061BE14 /* AMList.json */; };
 		874BB9CE2A121A2700C9DA33 /* TokenPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */; };
 		874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */; };
@@ -99,6 +102,9 @@
 		87124A8A2A1324470049CAC6 /* TokenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenViewModel.swift; sourceTree = "<group>"; };
 		87124A8B2A1324470049CAC6 /* TokenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenViewController.swift; sourceTree = "<group>"; };
 		87124A8C2A1324470049CAC6 /* TokenAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenAPI.swift; sourceTree = "<group>"; };
+		871870A22A4C17A0008FFE6B /* SharedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedViewController.swift; sourceTree = "<group>"; };
+		871870A32A4C17A0008FFE6B /* SharedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedViewModel.swift; sourceTree = "<group>"; };
+		871870A42A4C17A0008FFE6B /* SharedAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedAPI.swift; sourceTree = "<group>"; };
 		871E4E0B2A0CCB760061BE14 /* AMList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AMList.json; sourceTree = "<group>"; };
 		874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPlugin.swift; sourceTree = "<group>"; };
 		874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
@@ -212,6 +218,7 @@
 				04F0A883279A465C008534D8 /* GZip */,
 				04233506278E61DE00547494 /* Loading */,
 				0423350A278E61DE00547494 /* OO */,
+				871870A12A4C17A0008FFE6B /* Shared */,
 				87124A892A1324470049CAC6 /* Token */,
 				04BB29B0279911DC0056F94A /* Warning */,
 			);
@@ -310,6 +317,17 @@
 			);
 			name = Token;
 			path = Modules/Token;
+			sourceTree = "<group>";
+		};
+		871870A12A4C17A0008FFE6B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				871870A42A4C17A0008FFE6B /* SharedAPI.swift */,
+				871870A22A4C17A0008FFE6B /* SharedViewController.swift */,
+				871870A32A4C17A0008FFE6B /* SharedViewModel.swift */,
+			);
+			name = Shared;
+			path = Modules/Shared;
 			sourceTree = "<group>";
 		};
 		874BB9CC2A121A0C00C9DA33 /* Token */ = {
@@ -501,6 +519,7 @@
 				0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */,
 				04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */,
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
+				871870A52A4C17A0008FFE6B /* SharedViewController.swift in Sources */,
 				87124A8D2A1324470049CAC6 /* TokenViewModel.swift in Sources */,
 				874BB9CE2A121A2700C9DA33 /* TokenPlugin.swift in Sources */,
 				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,
@@ -512,10 +531,12 @@
 				874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */,
 				87124A8F2A1324470049CAC6 /* TokenAPI.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
+				871870A72A4C17A0008FFE6B /* SharedAPI.swift in Sources */,
 				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
 				8707F02D29EE8FC80060C94B /* AnimatedLoadingAPI.swift in Sources */,
 				04BB29B6279911DD0056F94A /* WarningViewController.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
+				871870A62A4C17A0008FFE6B /* SharedViewModel.swift in Sources */,
 				04233516278E61DE00547494 /* OOViewController.swift in Sources */,
 				04233514278E61DE00547494 /* LoadingViewController.swift in Sources */,
 				04C04F302792A69400E85B6B /* BatchAPI.swift in Sources */,

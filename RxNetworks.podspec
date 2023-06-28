@@ -96,6 +96,14 @@ Pod::Spec.new do |s|
       xxx.source_files = 'Sources/MoyaPlugins/GZip/*.swift'
       xxx.dependency 'RxNetworks/MoyaNetwork'
     end
+    xx.subspec 'Shared' do |xxx|
+      xxx.source_files = 'Sources/MoyaPlugins/Shared/*.swift'
+      xxx.dependency 'RxNetworks/MoyaNetwork'
+      xxx.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Shared',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Shared=1'
+      }
+    end
   end
   
 end
