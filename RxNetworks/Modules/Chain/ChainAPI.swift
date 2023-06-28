@@ -45,7 +45,7 @@ extension ChainAPI: NetworkAPI {
     var plugins: APIPlugins {
         switch self {
         case .test:
-            let loading = NetworkLoadingPlugin(autoHide: false)
+            let loading = NetworkLoadingPlugin(options: .dontAutoHide)
             return [loading]
         case .test2(_):
             let loading = NetworkLoadingPlugin()

@@ -32,7 +32,7 @@ class ChainViewController: BaseViewController<ChainViewModel> {
         button.layer.cornerRadius = 100
         button.layer.masksToBounds = true
         button.setTitle("debounce & throttle", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22)
         button.addTarget(self, action: #selector(debounceTest), for: UIControl.Event.touchUpInside)
         return button
     }()

@@ -25,7 +25,7 @@ enum CacheAPI: NetworkAPI {
     
     var plugins: APIPlugins {
         let cache = NetworkCachePlugin.init(options: .cacheElseNetwork)
-        let loading = NetworkLoadingPlugin.init(delay: 0.5)
+        let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
         return [loading, cache]
     }
     

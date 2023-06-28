@@ -10,25 +10,8 @@ import Moya
 
 /// 动画加载插件，基于Lottie封装
 /// Animation loading plug-in, based on Lottie package.
-public final class AnimatedLoadingPlugin {
+public struct AnimatedLoadingPlugin {
     let queue = DispatchQueue(label: "condy.animted.loading.network.queue", attributes: .concurrent)
-    
-    /// 是否需要自动隐藏Loading，可用于链式请求时刻，最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading。
-    ///
-    /// 如果设置过`autoHideLoading = false`请记得自己来关闭加载动画，倘若失败插件会帮你关闭，倘若均成功请自己来关闭。
-    /// 参考用法：https://github.com/yangKJ/RxNetworks/blob/master/RxNetworks/Modules/AnimatedLoading/AnimatedLoadingViewModel.swift
-    ///
-    ///     if let plugin = loadingApi.givenPlugin(type: AnimatedLoadingPlugin.self) {
-    ///         plugin.hideLoadingHUD()
-    ///     }
-    ///
-    ///     or
-    ///
-    ///     AnimatedLoadingPlugin.hideLoadingHUD(view: nil)
-    ///
-    /// Whether you need to automatically hide Loading, it can be used for chain request.
-    /// The first network request starts loading, and the last network request ends and then remove the loading hud.
-    public var autoHideLoading: Bool = true
     
     public let options: Options
     
@@ -51,7 +34,7 @@ public final class AnimatedLoadingPlugin {
                 view.hideHUD()
                 return
             }
-            let _ = [true, false].map {
+            [true, false].forEach {
                 let view = DisplayPosition.keyWindowOrTopView($0)
                 view?.hideBackView()
                 view?.hideHUD()
@@ -65,6 +48,9 @@ extension AnimatedLoadingPlugin {
         /// Displayed in the current view.
         public static let inTopView = Options.init(in: .topView)
         
+        /// Loading will not be automatically hidden and display window.
+        public static let dontAutoHide: Options = .init(autoHide: false)
+        
         /// Do you need to display an error message, the default is empty
         let displayLoadText: String
         /// Delay hidden, the default is zero seconds
@@ -72,17 +58,36 @@ extension AnimatedLoadingPlugin {
         /// Loading display super view.
         let displayView: UIView?
         
+        /// 是否需要自动隐藏Loading，可用于链式请求时刻，最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading。
+        ///
+        /// 如果设置过`autoHideLoading = false`请记得自己来关闭加载动画，倘若失败插件会帮你关闭，倘若均成功请自己来关闭。
+        /// 参考用法：https://github.com/yangKJ/RxNetworks/blob/master/RxNetworks/Modules/AnimatedLoading/AnimatedLoadingViewModel.swift
+        ///
+        ///     if let plugin = loadingApi.givenPlugin(type: AnimatedLoadingPlugin.self) {
+        ///         plugin.hideLoadingHUD()
+        ///     }
+        ///
+        ///     or
+        ///
+        ///     AnimatedLoadingPlugin.hideLoadingHUD(view: nil)
+        ///
+        /// Whether you need to automatically hide Loading, it can be used for chain request.
+        /// The first network request starts loading, and the last network request ends and then remove the loading hud.
+        public let autoHideLoading: Bool
+        
         /// Set up this loading animated JSON file named.
         let animatedJSON: String?
         
         public init(text: String = "正在加载...",
                     in type: DisplayPosition = .topView,
                     delay: Double = 0.0,
+                    autoHide: Bool = true,
                     animatedJSON: String? = nil) {
             self.displayLoadText = text
             self.delayHideHUD = delay
             self.displayView = type.displayView
             self.animatedJSON = animatedJSON
+            self.autoHideLoading = autoHide
         }
     }
 }
@@ -105,7 +110,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        if autoHideLoading == false, case .success = result {
+        if options.autoHideLoading == false, case .success = result {
             return
         }
         self.queue.asyncAfter(deadline: .now() + options.delayHideHUD) {

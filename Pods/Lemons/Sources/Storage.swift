@@ -43,39 +43,34 @@ public final class Storage<T: Codable> {
     
     /// Read disk data or memory data.
     public func read(key: String, options: CachedOptions) -> Data? {
-        switch options {
-        case .all:
-            if let data = memory.read(key: key) {
-                return data
-            } else {
-                return disk.read(key: key)
-            }
-        default:
-            return lemoner(options)?.read(key: key)
+        if options ~= .memory, let data = memory.read(key: key) {
+            return data
         }
+        if options ~= .disk, let data = disk.read(key: key) {
+            return data
+        }
+        return nil
     }
     
     /// Write data asynchronously to disk and memory.
     public func write(key: String, value: Data, options: CachedOptions) {
         backgroundQueue.async {
-            switch options {
-            case .all:
-                self.memory.store(key: key, value: value)
+            if options ~= .disk {
                 self.disk.store(key: key, value: value)
-            default:
-                self.lemoner(options)?.store(key: key, value: value)
+            }
+            if options ~= .memory {
+                self.memory.store(key: key, value: value)
             }
         }
     }
     
     /// Remove the specified data.
     public func removed(forKey key: String, options: CachedOptions) {
-        switch options {
-        case.all:
-            self.memory.removeCache(key: key)
+        if options ~= .disk {
             self.disk.removeCache(key: key)
-        default:
-            self.lemoner(options)?.removeCache(key: key)
+        }
+        if options ~= .memory {
+            self.memory.removeCache(key: key)
         }
     }
     
@@ -86,20 +81,6 @@ public final class Storage<T: Codable> {
                 DispatchQueue.main.async { completion?(isSuccess) }
             }
             self.memory.removedAllCached()
-        }
-    }
-}
-
-extension Storage {
-    
-    private func lemoner(_ options: CachedOptions) -> Lemonsable? {
-        switch options {
-        case .disk:
-            return disk
-        case .memory:
-            return memory
-        default:
-            return nil
         }
     }
 }

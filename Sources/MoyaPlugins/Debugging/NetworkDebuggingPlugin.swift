@@ -10,7 +10,7 @@ import Moya
 
 /// 网络打印，DEBUG模式内置插件
 /// Network printing, DEBUG mode built in plugin.
-public final class NetworkDebuggingPlugin {
+public struct NetworkDebuggingPlugin {
     
     public let options: Options
     

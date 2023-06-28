@@ -14,32 +14,12 @@ import MBProgressHUD
 
 /// 加载插件，基于MBProgressHUD封装
 /// Loading plugin, based on MBProgressHUD package
-public final class NetworkLoadingPlugin {
+public struct NetworkLoadingPlugin {
     
-    /// Whether to display the Window again, the default is YES
-    let displayInWindow: Bool
-    /// Do you need to display an error message, the default is empty
-    let displayLoadText: String
-    /// Delay hidden, the default is zero seconds
-    let delayHideHUD: Double
+    public let options: Options
     
-    /// 是否需要自动隐藏Loading，可用于链式请求时刻，最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading。
-    /// Whether you need to automatically hide Loading, it can be used for chain request.
-    /// The first network request starts loading, and the last network request ends and then removes the loading
-    public let autoHideLoading: Bool
-    
-    /// 更改`hud`相关配置闭包
-    /// Change `hud` related configuration closures.
-    public var changeHudCallback: ((_ hud: MBProgressHUD) -> Void)? = nil
-    
-    public init(in window: Bool = true,
-                text: String = "",
-                delay hideHUD: Double = 0.0,
-                autoHide loading: Bool = true) {
-        self.displayInWindow = window
-        self.displayLoadText = text
-        self.delayHideHUD = hideHUD
-        self.autoHideLoading = loading
+    public init(options: Options = .keyWindow) {
+        self.options = options
     }
     
     /// 如果设置过`autoHide`请记得自己来关闭加载动画，倘若失败插件会帮你关闭，倘若均成功请自己来关闭
@@ -57,6 +37,42 @@ public final class NetworkLoadingPlugin {
     }
 }
 
+extension NetworkLoadingPlugin {
+    public struct Options {
+        /// Display in the window position.
+        public static let keyWindow: Options = .init(in: .keyWindow)
+        
+        /// Loading will not be automatically hidden and display window.
+        public static let dontAutoHide: Options = .init(autoHide: false)
+        
+        /// Display super view.
+        let displayView: UIView?
+        /// Do you need to display an error message, the default is empty
+        let displayLoadText: String
+        /// Delay hidden, the default is zero seconds
+        let delayHideHUD: Double
+        
+        /// 是否需要自动隐藏Loading，可用于链式请求时刻，最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading。
+        /// Whether you need to automatically hide Loading, it can be used for chain request.
+        /// The first network request starts loading, and the last network request ends and then removes the loading
+        public let autoHideLoading: Bool
+        
+        public init(in type: DisplayPosition = .keyWindow, text: String = "", delay: Double = 0.0, autoHide: Bool = true) {
+            self.displayView = type.displayView
+            self.displayLoadText = text
+            self.delayHideHUD = delay
+            self.autoHideLoading = autoHide
+        }
+        
+        var hudCallback: ((_ hud: MBProgressHUD) -> Void)?
+        /// 更改`hud`相关配置闭包
+        /// Change `hud` related configuration closures.
+        public mutating func setChangeHudParameters(block: @escaping (_ hud: MBProgressHUD) -> Void) {
+            self.hudCallback = block
+        }
+    }
+}
+
 extension NetworkLoadingPlugin: PluginSubType {
     
     public var pluginName: String {
@@ -64,17 +80,16 @@ extension NetworkLoadingPlugin: PluginSubType {
     }
     
     public func willSend(_ request: RequestType, target: TargetType) {
-        
-        self.showText(displayLoadText, window: displayInWindow, delay: 0)
+        self.showText(options.displayLoadText)
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        if autoHideLoading == false, case .success = result {
+        if options.autoHideLoading == false, case .success = result {
             return
         }
-        if delayHideHUD > 0 {
+        if options.delayHideHUD > 0 {
             let concurrentQueue = DispatchQueue(label: "condy.loading.network.queue", attributes: .concurrent)
-            concurrentQueue.asyncAfter(deadline: .now() + delayHideHUD) {
+            concurrentQueue.asyncAfter(deadline: .now() + options.delayHideHUD) {
                 NetworkLoadingPlugin.hideMBProgressHUD()
             }
         } else {
@@ -90,9 +105,9 @@ extension NetworkLoadingPlugin {
     ///   - text: display content
     ///   - window: whether to display in the window
     ///   - delay: delay hiding time
-    private func showText(_ text: String, window: Bool, delay: Double) {
+    private func showText(_ text: String) {
         DispatchQueue.main.async {
-            guard let view = DisplayPosition.keyWindowOrTopView(window) else {
+            guard let view = self.options.displayView else {
                 return
             }
             if let _ = MBProgressHUD.forView(view) {
@@ -113,12 +128,9 @@ extension NetworkLoadingPlugin {
             hud.detailsLabel.font = UIFont.systemFont(ofSize: 16)
             hud.detailsLabel.numberOfLines = 0
             hud.detailsLabel.textColor = UIColor.white
-            if (delay > 0) {
-                hud.hide(animated: true, afterDelay: delay)
-            }
-            if let changeHud = self.changeHudCallback {
-                changeHud(hud)
-            }
+            
+            // User defined the hud configuration.
+            self.options.hudCallback?(hud)
         }
     }
 }

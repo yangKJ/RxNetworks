@@ -14,22 +14,12 @@ import Toast_Swift
 
 /// 自动提示插件，基于Toast封装
 /// Warning plugin, based on Toast package
-public final class NetworkWarningPlugin {
+public struct NetworkWarningPlugin {
     
     public let options: Options
     
     public init(options: Options = .keyWindow) {
         self.options = options
-    }
-    
-    public convenience init(in window: Bool = true,
-                            duration: TimeInterval = 1,
-                            cover: Bool = true,
-                            position: ToastPosition = .bottom,
-                            toastStyle: ToastStyle? = nil) {
-        let dp = window ? DisplayPosition.keyWindow : DisplayPosition.topView
-        let options = Options(in: dp, duration: duration, cover: cover, position: position, toastStyle: toastStyle)
-        self.init(options: options)
     }
 }
 
@@ -82,7 +72,7 @@ extension NetworkWarningPlugin: PluginSubType {
 extension NetworkWarningPlugin {
     
     private func showText(_ text: String) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             guard let view = self.options.displayView else {
                 return
             }

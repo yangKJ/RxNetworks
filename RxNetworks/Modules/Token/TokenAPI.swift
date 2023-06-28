@@ -23,7 +23,7 @@ extension TokenAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let loading = NetworkLoadingPlugin(autoHide: false)
+        let loading = NetworkLoadingPlugin(options: .dontAutoHide)
         let token = TokenPlugin.shared
         return [token, loading]
     }

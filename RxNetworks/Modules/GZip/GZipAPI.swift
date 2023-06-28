@@ -28,7 +28,7 @@ extension GZipAPI: NetworkAPI {
     
     var plugins: APIPlugins {
         let gzip = NetworkGZipPlugin.init()
-        let loading = NetworkLoadingPlugin.init(text: "UnGZiping..")
+        let loading = NetworkLoadingPlugin.init(options: .init(text: "UnGZiping.."))
         return [loading, gzip]
     }
     
@@ -49,6 +49,7 @@ extension GZipAPI: NetworkAPI {
             "message": "successed."
         ]
         let jsonData = X.toJSON(form: dict)!.data(using: String.Encoding.utf8)!
-        return GZipManager.gzipCompress(jsonData)
+        let zipData = NetworkGZipPlugin.gzipCompress(jsonData)
+        return zipData
     }
 }

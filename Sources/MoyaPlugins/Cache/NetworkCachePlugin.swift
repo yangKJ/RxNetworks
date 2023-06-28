@@ -30,7 +30,7 @@ public enum NetworkCacheType {
 
 /// 缓存插件，基于`YYCache`封装使用
 /// Cache plugin, based on `YYCache` package use
-public final class NetworkCachePlugin {
+public struct NetworkCachePlugin {
     
     public let options: Options
     
@@ -38,7 +38,7 @@ public final class NetworkCachePlugin {
         self.options = options
     }
     
-    public convenience init(cacheType: NetworkCacheType = .ignoreCache) {
+    public init(cacheType: NetworkCacheType = .ignoreCache) {
         let options = Options(cacheType: cacheType)
         self.init(options: options)
     }
@@ -53,9 +53,7 @@ extension NetworkCachePlugin {
         /// Storage type, default disk and memory.
         let cachedOptions: Lemons.CachedOptions
         
-        public init(cacheType: NetworkCacheType,
-                    cryptoType: Lemons.CryptoType = .md5,
-                    cachedOptions: Lemons.CachedOptions = .all) {
+        public init(cacheType: NetworkCacheType, cryptoType: CryptoType = .md5, cachedOptions: CachedOptions = .diskAndMemory) {
             self.cacheType = cacheType
             self.cryptoType = cryptoType
             self.cachedOptions = cachedOptions
