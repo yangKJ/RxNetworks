@@ -18,13 +18,13 @@ extension RxNetworks.X {
         if let others = NetworkConfig.injectionPlugins {
             plugins_ += others
         }
-        #if RxNetworks_MoyaPlugins_Indicator
+        #if RXNETWORKS_PLUGINGS_INDICATOR
         if NetworkConfig.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
             let Indicator = NetworkIndicatorPlugin.shared
             plugins_.insert(Indicator, at: 0)
         }
         #endif
-        #if DEBUG && RxNetworks_MoyaPlugins_Debugging
+        #if DEBUG && RXNETWORKS_PLUGINGS_DEBUGGING
         if NetworkConfig.addDebugging, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
             let Debugging = NetworkDebuggingPlugin.init()
             plugins_.append(Debugging)
@@ -35,7 +35,7 @@ extension RxNetworks.X {
     
     /// 是否存在共享网络插件
     static func hasNetworkSharedPlugin(_ plugins: APIPlugins) -> Bool {
-        #if RxNetworks_MoyaPlugins_Shared
+        #if RXNETWORKS_PLUGINGS_SHARED
         return plugins.contains(where: { $0 is NetworkSharedPlugin })
         #else
         return false

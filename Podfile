@@ -12,11 +12,12 @@ target 'RxNetworks_Example' do
   
   pod 'RxCocoa'
   
+#  pod 'RxNetworks/Core', :path => './'
+#  pod 'RxNetworks/RxSwift', :path => './'
 #  pod 'RxNetworks/HandyJSON', :path => './'
-#  pod 'RxNetworks/MoyaNetwork', :path => './'
-#  pod 'RxNetworks/MoyaPlugins/Cache', :path => './'
-#  pod 'RxNetworks/MoyaPlugins/Loading', :path => './'
-#  pod 'RxNetworks/MoyaPlugins/Indicator', :path => './'
+#  pod 'RxNetworks/Plugins/Cache', :path => './'
+#  pod 'RxNetworks/Plugins/Loading', :path => './'
+#  pod 'RxNetworks/Plugins/Indicator', :path => './'
   
   pod 'RxNetworks', :path => './'
   

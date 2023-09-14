@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.4.2'
+  s.version          = '0.4.3'
   s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
@@ -30,15 +30,15 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.module_name      = 'RxNetworks'
   s.ios.source_files = 'Sources/RxNetworks.h'
-  #s.default_subspec  = "MoyaNetwork"
+  #s.default_subspec  = "Core"
   
   s.pod_target_xcconfig = {
     'SWIFT_WHOLE_MODULE_OPTIMIZATION' => 'YES',
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  s.subspec 'MoyaNetwork' do |xx|
-    xx.source_files = 'Sources/MoyaNetwork/*.swift'
+  s.subspec 'Core' do |xx|
+    xx.source_files = 'Sources/Core/*.swift'
     xx.dependency 'Moya'
   end
   
@@ -47,7 +47,7 @@ Pod::Spec.new do |s|
       s.subspec 'RxSwift' do |xx|
         xx.source_files = 'Sources/RxSwift/*.swift'
         xx.dependency 'RxSwift'
-        xx.dependency 'RxNetworks/MoyaNetwork'
+        xx.dependency 'RxNetworks/Core'
       end
     end
     
@@ -60,68 +60,68 @@ Pod::Spec.new do |s|
     end
     
     ################## -- 插件系列 -- ##################
-    s.subspec 'MoyaPlugins' do |xx|
+    s.subspec 'Plugins' do |xx|
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"INDICATOR"
         xx.subspec 'Indicator' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/Indicator/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/Indicator/*.swift'
+          xxx.dependency 'RxNetworks/Core'
           xxx.pod_target_xcconfig = {
-            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Indicator',
-            'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Indicator=1'
+            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_INDICATOR',
+            'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_INDICATOR=1'
           }
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"DEBUGGING"
         xx.subspec 'Debugging' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/Debugging/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/Debugging/*.swift'
+          xxx.dependency 'RxNetworks/Core'
           xxx.pod_target_xcconfig = {
-            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Debugging',
-            'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Debugging=1'
+            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_DEBUGGING',
+            'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_DEBUGGING=1'
           }
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"LOADING"
         xx.subspec 'Loading' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/Loading/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/Loading/*.swift'
+          xxx.dependency 'RxNetworks/Core'
           xxx.ios.dependency 'MBProgressHUD'
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"ANIMATEDLOADING"
         xx.subspec 'AnimatedLoading' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/AnimatedLoading/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/AnimatedLoading/*.swift'
+          xxx.dependency 'RxNetworks/Core'
           xxx.dependency 'lottie-ios'#, '~> 4.2.0'
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"WARNING"
         xx.subspec 'Warning' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/Warning/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/Warning/*.swift'
+          xxx.dependency 'RxNetworks/Core'
           xxx.ios.dependency 'Toast-Swift'
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"CACHE"
         xx.subspec 'Cache' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/Cache/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/Cache/*.swift'
+          xxx.dependency 'RxNetworks/Core'
           xxx.dependency 'Lemons'
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"GZIP"
         xx.subspec 'GZip' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/GZip/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/GZip/*.swift'
+          xxx.dependency 'RxNetworks/Core'
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"SHARED"
         xx.subspec 'Shared' do |xxx|
-          xxx.source_files = 'Sources/MoyaPlugins/Shared/*.swift'
-          xxx.dependency 'RxNetworks/MoyaNetwork'
+          xxx.source_files = 'Sources/Plugins/Shared/*.swift'
+          xxx.dependency 'RxNetworks/Core'
           xxx.pod_target_xcconfig = {
-            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Shared',
-            'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Shared=1'
+            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_SHARED',
+            'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_SHARED=1'
           }
         end
       end
@@ -130,7 +130,7 @@ Pod::Spec.new do |s|
     s.subspec 'RxSwift' do |xx|
       xx.source_files = 'Sources/RxSwift/*.swift'
       xx.dependency 'RxSwift'
-      xx.dependency 'RxNetworks/MoyaNetwork'
+      xx.dependency 'RxNetworks/Core'
     end
     
     s.subspec 'HandyJSON' do |xx|
@@ -140,53 +140,53 @@ Pod::Spec.new do |s|
     end
     
     ################## -- 插件系列 -- ##################
-    s.subspec 'MoyaPlugins' do |xx|
+    s.subspec 'Plugins' do |xx|
       xx.subspec 'Indicator' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/Indicator/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/Indicator/*.swift'
+        xxx.dependency 'RxNetworks/Core'
         xxx.pod_target_xcconfig = {
-          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Indicator',
-          'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Indicator=1'
+          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_INDICATOR',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_INDICATOR=1'
         }
       end
       xx.subspec 'Debugging' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/Debugging/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/Debugging/*.swift'
+        xxx.dependency 'RxNetworks/Core'
         xxx.pod_target_xcconfig = {
-          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Debugging',
-          'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Debugging=1'
+          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_DEBUGGING',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_DEBUGGING=1'
         }
       end
       xx.subspec 'Loading' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/Loading/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/Loading/*.swift'
+        xxx.dependency 'RxNetworks/Core'
         xxx.ios.dependency 'MBProgressHUD'
       end
       xx.subspec 'AnimatedLoading' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/AnimatedLoading/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/AnimatedLoading/*.swift'
+        xxx.dependency 'RxNetworks/Core'
         xxx.dependency 'lottie-ios'#, '~> 4.2.0'
       end
       xx.subspec 'Warning' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/Warning/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/Warning/*.swift'
+        xxx.dependency 'RxNetworks/Core'
         xxx.ios.dependency 'Toast-Swift'
       end
       xx.subspec 'Cache' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/Cache/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/Cache/*.swift'
+        xxx.dependency 'RxNetworks/Core'
         xxx.dependency 'Lemons'
       end
       xx.subspec 'GZip' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/GZip/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/GZip/*.swift'
+        xxx.dependency 'RxNetworks/Core'
       end
       xx.subspec 'Shared' do |xxx|
-        xxx.source_files = 'Sources/MoyaPlugins/Shared/*.swift'
-        xxx.dependency 'RxNetworks/MoyaNetwork'
+        xxx.source_files = 'Sources/Plugins/Shared/*.swift'
+        xxx.dependency 'RxNetworks/Core'
         xxx.pod_target_xcconfig = {
-          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Shared',
-          'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Shared=1'
+          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_SHARED',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_SHARED=1'
         }
       end
     end

@@ -1,6 +1,6 @@
 {
   "name": "RxNetworks",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "summary": "Network Architecture API RxSwift + Moya + HandyJSON + Plugins.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/yangKJ/RxNetworks.git",
-    "tag": "0.4.1"
+    "tag": "0.4.3"
   },
   "social_media_url": "https://juejin.cn/user/1987535102554472/posts",
   "platforms": {
@@ -32,8 +32,8 @@
   },
   "subspecs": [
     {
-      "name": "MoyaNetwork",
-      "source_files": "Sources/MoyaNetwork/*.swift",
+      "name": "Core",
+      "source_files": "Sources/Core/*.swift",
       "dependencies": {
         "Moya": [
 
@@ -47,7 +47,7 @@
         "RxSwift": [
 
         ],
-        "RxNetworks/MoyaNetwork": [
+        "RxNetworks/Core": [
 
         ]
       }
@@ -65,26 +65,26 @@
       }
     },
     {
-      "name": "MoyaPlugins",
+      "name": "Plugins",
       "subspecs": [
         {
           "name": "Debugging",
-          "source_files": "Sources/MoyaPlugins/Debugging/*.swift",
+          "source_files": "Sources/Plugins/Debugging/*.swift",
           "dependencies": {
-            "RxNetworks/MoyaNetwork": [
+            "RxNetworks/Core": [
 
             ]
           },
           "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RxNetworks_MoyaPlugins_Debugging",
-            "GCC_PREPROCESSOR_DEFINITIONS": "RxNetworks_MoyaPlugins_Debugging=1"
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RXNETWORKS_PLUGINGS_DEBUGGING",
+            "GCC_PREPROCESSOR_DEFINITIONS": "RXNETWORKS_PLUGINGS_DEBUGGING=1"
           }
         },
         {
           "name": "Loading",
-          "source_files": "Sources/MoyaPlugins/Loading/*.swift",
+          "source_files": "Sources/Plugins/Loading/*.swift",
           "dependencies": {
-            "RxNetworks/MoyaNetwork": [
+            "RxNetworks/Core": [
 
             ]
           },
@@ -98,9 +98,9 @@
         },
         {
           "name": "AnimatedLoading",
-          "source_files": "Sources/MoyaPlugins/AnimatedLoading/*.swift",
+          "source_files": "Sources/Plugins/AnimatedLoading/*.swift",
           "dependencies": {
-            "RxNetworks/MoyaNetwork": [
+            "RxNetworks/Core": [
 
             ],
             "lottie-ios": [
@@ -110,9 +110,9 @@
         },
         {
           "name": "Warning",
-          "source_files": "Sources/MoyaPlugins/Warning/*.swift",
+          "source_files": "Sources/Plugins/Warning/*.swift",
           "dependencies": {
-            "RxNetworks/MoyaNetwork": [
+            "RxNetworks/Core": [
 
             ]
           },
@@ -126,9 +126,9 @@
         },
         {
           "name": "Cache",
-          "source_files": "Sources/MoyaPlugins/Cache/*.swift",
+          "source_files": "Sources/Plugins/Cache/*.swift",
           "dependencies": {
-            "RxNetworks/MoyaNetwork": [
+            "RxNetworks/Core": [
 
             ],
             "Lemons": [
@@ -138,24 +138,24 @@
         },
         {
           "name": "GZip",
-          "source_files": "Sources/MoyaPlugins/GZip/*.swift",
+          "source_files": "Sources/Plugins/GZip/*.swift",
           "dependencies": {
-            "RxNetworks/MoyaNetwork": [
+            "RxNetworks/Core": [
 
             ]
           }
         },
         {
           "name": "Shared",
-          "source_files": "Sources/MoyaPlugins/Shared/*.swift",
+          "source_files": "Sources/Plugins/Shared/*.swift",
           "dependencies": {
-            "RxNetworks/MoyaNetwork": [
+            "RxNetworks/Core": [
 
             ]
           },
           "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RxNetworks_MoyaPlugins_Shared",
-            "GCC_PREPROCESSOR_DEFINITIONS": "RxNetworks_MoyaPlugins_Shared=1"
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RXNETWORKS_PLUGINGS_SHARED",
+            "GCC_PREPROCESSOR_DEFINITIONS": "RXNETWORKS_PLUGINGS_SHARED=1"
           }
         }
       ]
