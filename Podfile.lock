@@ -1,7 +1,7 @@
 PODS:
-  - Alamofire (5.7.1)
+  - Alamofire (5.8.0)
   - HandyJSON (5.0.2)
-  - Lemons (0.0.7)
+  - Lemons (0.0.8)
   - lottie-ios (4.2.0)
   - MBProgressHUD (1.2.0)
   - Moya (15.0.0):
@@ -26,7 +26,6 @@ PODS:
     - RxNetworks/MoyaPlugins/Cache (= 0.4.1)
     - RxNetworks/MoyaPlugins/Debugging (= 0.4.1)
     - RxNetworks/MoyaPlugins/GZip (= 0.4.1)
-    - RxNetworks/MoyaPlugins/Indicator (= 0.4.1)
     - RxNetworks/MoyaPlugins/Loading (= 0.4.1)
     - RxNetworks/MoyaPlugins/Shared (= 0.4.1)
     - RxNetworks/MoyaPlugins/Warning (= 0.4.1)
@@ -39,8 +38,6 @@ PODS:
   - RxNetworks/MoyaPlugins/Debugging (0.4.1):
     - RxNetworks/MoyaNetwork
   - RxNetworks/MoyaPlugins/GZip (0.4.1):
-    - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Indicator (0.4.1):
     - RxNetworks/MoyaNetwork
   - RxNetworks/MoyaPlugins/Loading (0.4.1):
     - MBProgressHUD
@@ -61,9 +58,6 @@ PODS:
 DEPENDENCIES:
   - RxCocoa
   - RxNetworks (from `./`)
-  - RxNetworks/HandyJSON (from `./`)
-  - RxNetworks/MoyaPlugins (from `./`)
-  - RxNetworks/RxSwift (from `./`)
 
 SPEC REPOS:
   trunk:
@@ -83,18 +77,18 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  Lemons: c7d7a9171f510b0cddee4d836bbc43cb9d783224
+  Lemons: 6b7cc5ad1eeb2d5b635f01c0c8bbbbb309502bfa
   lottie-ios: 809ecf2d460ed650a6aed7aa88b2ec45fab4779c
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
-  RxNetworks: 789ca02b983511eecacf23156bfcd2118048c98e
+  RxNetworks: 8a7db3c66ba7cfe4c429ca6ce3ce65549a908853
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 2ddb8fd4d3a2b924e147d87abb58956c969633fa
+PODFILE CHECKSUM: ee0b24243485a767242b3a76dfe27b49d09904fa
 
 COCOAPODS: 1.12.1

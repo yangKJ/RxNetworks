@@ -22,7 +22,7 @@
 //  THE SOFTWARE.
 //
 
-#if !(os(watchOS) || os(Linux) || os(Windows))
+#if canImport(SystemConfiguration)
 
 import Foundation
 import SystemConfiguration
@@ -194,7 +194,8 @@ open class NetworkReachabilityManager {
                 let description = weakManager.manager?.flags?.readableDescription ?? "nil"
 
                 return Unmanaged.passRetained(description as CFString)
-            })
+            }
+        )
         let callback: SCNetworkReachabilityCallBack = { _, flags, info in
             guard let info = info else { return }
 
@@ -266,10 +267,18 @@ extension SCNetworkReachabilityFlags {
     var canConnectWithoutUserInteraction: Bool { canConnectAutomatically && !contains(.interventionRequired) }
     var isActuallyReachable: Bool { isReachable && (!isConnectionRequired || canConnectWithoutUserInteraction) }
     var isCellular: Bool {
+        #if swift(>=5.9)
+        #if os(iOS) || os(tvOS) || os(visionOS)
+        return contains(.isWWAN)
+        #else
+        return false
+        #endif
+        #else
         #if os(iOS) || os(tvOS)
         return contains(.isWWAN)
         #else
         return false
+        #endif
         #endif
     }
 

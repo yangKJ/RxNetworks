@@ -66,7 +66,7 @@ extension TokenPlugin: PluginSubType {
             return request
         }
         var request = request
-        request.addValue("Token: " + token, forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
     

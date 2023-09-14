@@ -3,6 +3,11 @@ inhibit_all_warnings!
 
 #platform :ios, '10.0'
 
+# 在Podfile上添加环境变量
+# See: https://stackoverflow.com/questions/58795893/possibility-of-adding-environment-variables-on-podfile
+
+ENV["RXNETWORKS_PLUGINGS_EXCLUDE"] = "INDICATOR"
+
 target 'RxNetworks_Example' do
   
   pod 'RxCocoa'
@@ -14,9 +19,7 @@ target 'RxNetworks_Example' do
 #  pod 'RxNetworks/MoyaPlugins/Indicator', :path => './'
   
   pod 'RxNetworks', :path => './'
-  pod 'RxNetworks/HandyJSON', :path => './'
-  pod 'RxNetworks/RxSwift', :path => './'
-  pod 'RxNetworks/MoyaPlugins', :path => './'
+  
 end
 
 post_install do |installer|

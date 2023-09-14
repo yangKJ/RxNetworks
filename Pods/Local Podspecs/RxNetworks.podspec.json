@@ -68,19 +68,6 @@
       "name": "MoyaPlugins",
       "subspecs": [
         {
-          "name": "Indicator",
-          "source_files": "Sources/MoyaPlugins/Indicator/*.swift",
-          "dependencies": {
-            "RxNetworks/MoyaNetwork": [
-
-            ]
-          },
-          "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RxNetworks_MoyaPlugins_Indicator",
-            "GCC_PREPROCESSOR_DEFINITIONS": "RxNetworks_MoyaPlugins_Indicator=1"
-          }
-        },
-        {
           "name": "Debugging",
           "source_files": "Sources/MoyaPlugins/Debugging/*.swift",
           "dependencies": {
@@ -99,10 +86,14 @@
           "dependencies": {
             "RxNetworks/MoyaNetwork": [
 
-            ],
-            "MBProgressHUD": [
-
             ]
+          },
+          "ios": {
+            "dependencies": {
+              "MBProgressHUD": [
+
+              ]
+            }
           }
         },
         {
@@ -123,10 +114,14 @@
           "dependencies": {
             "RxNetworks/MoyaNetwork": [
 
-            ],
-            "Toast-Swift": [
-
             ]
+          },
+          "ios": {
+            "dependencies": {
+              "Toast-Swift": [
+
+              ]
+            }
           }
         },
         {

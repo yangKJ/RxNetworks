@@ -416,7 +416,9 @@ public class Request {
     func didCancel() {
         dispatchPrecondition(condition: .onQueue(underlyingQueue))
 
-        error = error ?? AFError.explicitlyCancelled
+        $mutableState.write { mutableState in
+            mutableState.error = mutableState.error ?? AFError.explicitlyCancelled
+        }
 
         eventMonitor?.requestDidCancel(self)
     }
@@ -863,13 +865,7 @@ public class Request {
     /// - Returns:           The instance.
     @discardableResult
     public func cURLDescription(calling handler: @escaping (String) -> Void) -> Self {
-        $mutableState.write { mutableState in
-            if mutableState.requests.last != nil {
-                underlyingQueue.async { handler(self.cURLDescription()) }
-            } else {
-                mutableState.cURLHandler = (underlyingQueue, handler)
-            }
-        }
+        cURLDescription(on: underlyingQueue, calling: handler)
 
         return self
     }
@@ -935,11 +931,29 @@ public class Request {
 
     /// Final cleanup step executed when the instance finishes response serialization.
     func cleanup() {
-        delegate?.cleanup(after: self)
         let handlers = $mutableState.finishHandlers
         handlers.forEach { $0() }
         $mutableState.write { state in
             state.finishHandlers.removeAll()
+        }
+
+        delegate?.cleanup(after: self)
+    }
+}
+
+extension Request {
+    /// Type indicating how a `DataRequest` or `DataStreamRequest` should proceed after receiving an `HTTPURLResponse`.
+    public enum ResponseDisposition {
+        /// Allow the request to continue normally.
+        case allow
+        /// Cancel the request, similar to calling `cancel()`.
+        case cancel
+
+        var sessionDisposition: URLSession.ResponseDisposition {
+            switch self {
+            case .allow: return .allow
+            case .cancel: return .cancel
+            }
         }
     }
 }
@@ -1085,11 +1099,17 @@ public class DataRequest: Request {
     /// `URLRequestConvertible` value used to create `URLRequest`s for this instance.
     public let convertible: URLRequestConvertible
     /// `Data` read from the server so far.
-    public var data: Data? { mutableData }
+    public var data: Data? { $dataMutableState.data }
 
-    /// Protected storage for the `Data` read by the instance.
+    private struct DataMutableState {
+        var data: Data?
+        var httpResponseHandler: (queue: DispatchQueue,
+                                  handler: (_ response: HTTPURLResponse,
+                                            _ completionHandler: @escaping (ResponseDisposition) -> Void) -> Void)?
+    }
+
     @Protected
-    private var mutableData: Data? = nil
+    private var dataMutableState = DataMutableState()
 
     /// Creates a `DataRequest` using the provided parameters.
     ///
@@ -1122,7 +1142,9 @@ public class DataRequest: Request {
     override func reset() {
         super.reset()
 
-        mutableData = nil
+        $dataMutableState.write { mutableState in
+            mutableState.data = nil
+        }
     }
 
     /// Called when `Data` is received by this instance.
@@ -1131,13 +1153,39 @@ public class DataRequest: Request {
     ///
     /// - Parameter data: The `Data` received.
     func didReceive(data: Data) {
-        if self.data == nil {
-            mutableData = data
-        } else {
-            $mutableData.write { $0?.append(data) }
+        $dataMutableState.write { mutableState in
+            if mutableState.data == nil {
+                mutableState.data = data
+            } else {
+                mutableState.data?.append(data)
+            }
         }
 
         updateDownloadProgress()
+    }
+
+    func didReceiveResponse(_ response: HTTPURLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        $dataMutableState.read { dataMutableState in
+            guard let httpResponseHandler = dataMutableState.httpResponseHandler else {
+                underlyingQueue.async { completionHandler(.allow) }
+                return
+            }
+
+            httpResponseHandler.queue.async {
+                httpResponseHandler.handler(response) { disposition in
+                    if disposition == .cancel {
+                        self.$mutableState.write { mutableState in
+                            mutableState.state = .cancelled
+                            mutableState.error = mutableState.error ?? AFError.explicitlyCancelled
+                        }
+                    }
+
+                    self.underlyingQueue.async {
+                        completionHandler(disposition.sessionDisposition)
+                    }
+                }
+            }
+        }
     }
 
     override func task(for request: URLRequest, using session: URLSession) -> URLSessionTask {
@@ -1180,6 +1228,47 @@ public class DataRequest: Request {
         }
 
         $validators.write { $0.append(validator) }
+
+        return self
+    }
+
+    /// Sets a closure called whenever the `DataRequest` produces an `HTTPURLResponse` and providing a completion
+    /// handler to return a `ResponseDisposition` value.
+    ///
+    /// - Parameters:
+    ///   - queue:   `DispatchQueue` on which the closure will be called. `.main` by default.
+    ///   - handler: Closure called when the instance produces an `HTTPURLResponse`. The `completionHandler` provided
+    ///              MUST be called, otherwise the request will never complete.
+    ///
+    /// - Returns:   The instance.
+    @_disfavoredOverload
+    @discardableResult
+    public func onHTTPResponse(
+        on queue: DispatchQueue = .main,
+        perform handler: @escaping (_ response: HTTPURLResponse,
+                                    _ completionHandler: @escaping (ResponseDisposition) -> Void) -> Void
+    ) -> Self {
+        $dataMutableState.write { mutableState in
+            mutableState.httpResponseHandler = (queue, handler)
+        }
+
+        return self
+    }
+
+    /// Sets a closure called whenever the `DataRequest` produces an `HTTPURLResponse`.
+    ///
+    /// - Parameters:
+    ///   - queue:   `DispatchQueue` on which the closure will be called. `.main` by default.
+    ///   - handler: Closure called when the instance produces an `HTTPURLResponse`.
+    ///
+    /// - Returns:   The instance.
+    @discardableResult
+    public func onHTTPResponse(on queue: DispatchQueue = .main,
+                               perform handler: @escaping (HTTPURLResponse) -> Void) -> Self {
+        onHTTPResponse(on: queue) { response, completionHandler in
+            handler(response)
+            completionHandler(.allow)
+        }
 
         return self
     }
@@ -1259,6 +1348,10 @@ public final class DataStreamRequest: Request {
         var numberOfExecutingStreams = 0
         /// Completion calls enqueued while streams are still executing.
         var enqueuedCompletionEvents: [() -> Void] = []
+        /// Handler for any `HTTPURLResponse`s received.
+        var httpResponseHandler: (queue: DispatchQueue,
+                                  handler: (_ response: HTTPURLResponse,
+                                            _ completionHandler: @escaping (ResponseDisposition) -> Void) -> Void)?
     }
 
     @Protected
@@ -1315,7 +1408,7 @@ public final class DataStreamRequest: Request {
 
     func didReceive(data: Data) {
         $streamMutableState.write { state in
-            #if !(os(Linux) || os(Windows))
+            #if !canImport(FoundationNetworking) // If we not using swift-corelibs-foundation.
             if let stream = state.outputStream {
                 underlyingQueue.async {
                     var bytes = Array(data)
@@ -1326,6 +1419,30 @@ public final class DataStreamRequest: Request {
             state.numberOfExecutingStreams += state.streams.count
             let localState = state
             underlyingQueue.async { localState.streams.forEach { $0(data) } }
+        }
+    }
+
+    func didReceiveResponse(_ response: HTTPURLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        $streamMutableState.read { dataMutableState in
+            guard let httpResponseHandler = dataMutableState.httpResponseHandler else {
+                underlyingQueue.async { completionHandler(.allow) }
+                return
+            }
+
+            httpResponseHandler.queue.async {
+                httpResponseHandler.handler(response) { disposition in
+                    if disposition == .cancel {
+                        self.$mutableState.write { mutableState in
+                            mutableState.state = .cancelled
+                            mutableState.error = mutableState.error ?? AFError.explicitlyCancelled
+                        }
+                    }
+
+                    self.underlyingQueue.async {
+                        completionHandler(disposition.sessionDisposition)
+                    }
+                }
+            }
         }
     }
 
@@ -1356,7 +1473,7 @@ public final class DataStreamRequest: Request {
         return self
     }
 
-    #if !(os(Linux) || os(Windows))
+    #if !canImport(FoundationNetworking) // If we not using swift-corelibs-foundation.
     /// Produces an `InputStream` that receives the `Data` received by the instance.
     ///
     /// - Note: The `InputStream` produced by this method must have `open()` called before being able to read `Data`.
@@ -1380,6 +1497,47 @@ public final class DataStreamRequest: Request {
         return inputStream
     }
     #endif
+
+    /// Sets a closure called whenever the `DataRequest` produces an `HTTPURLResponse` and providing a completion
+    /// handler to return a `ResponseDisposition` value.
+    ///
+    /// - Parameters:
+    ///   - queue:   `DispatchQueue` on which the closure will be called. `.main` by default.
+    ///   - handler: Closure called when the instance produces an `HTTPURLResponse`. The `completionHandler` provided
+    ///              MUST be called, otherwise the request will never complete.
+    ///
+    /// - Returns:   The instance.
+    @_disfavoredOverload
+    @discardableResult
+    public func onHTTPResponse(
+        on queue: DispatchQueue = .main,
+        perform handler: @escaping (_ response: HTTPURLResponse,
+                                    _ completionHandler: @escaping (ResponseDisposition) -> Void) -> Void
+    ) -> Self {
+        $streamMutableState.write { mutableState in
+            mutableState.httpResponseHandler = (queue, handler)
+        }
+
+        return self
+    }
+
+    /// Sets a closure called whenever the `DataRequest` produces an `HTTPURLResponse`.
+    ///
+    /// - Parameters:
+    ///   - queue:   `DispatchQueue` on which the closure will be called. `.main` by default.
+    ///   - handler: Closure called when the instance produces an `HTTPURLResponse`.
+    ///
+    /// - Returns:   The instance.
+    @discardableResult
+    public func onHTTPResponse(on queue: DispatchQueue = .main,
+                               perform handler: @escaping (HTTPURLResponse) -> Void) -> Self {
+        onHTTPResponse(on: queue) { response, completionHandler in
+            handler(response)
+            completionHandler(.allow)
+        }
+
+        return self
+    }
 
     func capturingError(from closure: () throws -> Void) {
         do {
@@ -1554,7 +1712,7 @@ public class DownloadRequest: Request {
     ///
     /// - Note: For more information about `resumeData`, see [Apple's documentation](https://developer.apple.com/documentation/foundation/urlsessiondownloadtask/1411634-cancel).
     public var resumeData: Data? {
-        #if !(os(Linux) || os(Windows))
+        #if !canImport(FoundationNetworking) // If we not using swift-corelibs-foundation.
         return $mutableDownloadState.resumeData ?? error?.downloadResumeData
         #else
         return $mutableDownloadState.resumeData
