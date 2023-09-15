@@ -10,7 +10,7 @@ import Moya
 
 /// 网络打印，DEBUG模式内置插件
 /// Network printing, DEBUG mode built in plugin.
-public struct NetworkDebuggingPlugin: Propertiesable {
+public struct NetworkDebuggingPlugin: PluginPropertiesable {
     
     public var plugins: APIPlugins = []
     

@@ -85,7 +85,7 @@ extension RxNetworks.X {
     
     static func handyPlugins(_ plugins: APIPlugins) -> APIPlugins {
         return plugins.map({
-            if var plugin = $0 as? Propertiesable {
+            if var plugin = $0 as? PluginPropertiesable {
                 plugin.plugins = plugins
                 return plugin
             }

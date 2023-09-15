@@ -8,7 +8,7 @@
 import Foundation
 import Moya
 
-public protocol Propertiesable: PluginSubType {
+public protocol PluginPropertiesable: PluginSubType {
     var plugins: APIPlugins { get set }
 }
 
