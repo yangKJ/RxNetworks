@@ -13,45 +13,59 @@
 
 基于 **RxSwift + Moya** 搭建响应式数据绑定网络API架构
 
-### MoyaNetwork
-该模块是基于Moya封装的网络API架构
+### 内置插件
+该模块主要就是基于moya封装网络相关插件
 
-- 主要分为8部分：
-    - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift)：在程序最开始处设置配置信息，全局通用
-        - **addDebugging**：是否默认引入调试模式插件
-        - **baseURL**：根路径地址
-        - **baseParameters**：默认基本参数，类似：userID，token等
-        - **baseMethod**：默认请求类型
-        - **updateBaseParametersWithValue**：更新默认基本参数数据
-    - [RxMoyaProvider](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/RxMoyaProvider.swift)：对网络请求添加响应式，返回`Single`序列
-    - [NetworkUtil](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkUtil.swift)：网络相关函数
-        - **defaultPlugin**：添加默认插件
-        - **transformAPIObservableJSON**：转换成可观察序列JSON对象
-        - **handyConfigurationPlugin**：处理配置插件
-        - **handyLastNeverPlugin**：最后的插件处理
-    - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift)：继承替换Moya插件协议，方便后序扩展
-        - **configuration**：设置网络配置信息之后，开始准备请求之前，该方法可以用于本地缓存存在时直接抛出数据而不用再执行后序网络请求等场景
-        - **lastNever**：最后的最后网络响应返回时刻，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
-    - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift)：在`TargetType`基础上增加协议属性和封装基础网络请求
-        - **ip**：根路径地址
-        - **parameters**：请求参数
-        - **plugins**：插件
-        - **stubBehavior**：是否走测试数据
-        - **retry**：网络请求失败重试次数
-        - **request**：网络请求方法，返回可观察序列JSON对象
-    - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI+Ext.swift): 协议默认实现方案
-    - [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift)：面向对象转换器，面向协议模式转面向对象，方便习惯OC思维的小伙伴
-        - **cdy_ip**：根路径地址
-        - **cdy_path**：请求路径
-        - **cdy_parameters**：请求参数
-        - **cdy_plugins**：插件
-        - **cdy_testJSON**：测试数据
-        - **cdy_testTime**：测试数据返回时间，默认半秒
-        - **cdy_HTTPRequest**：网络请求方法
-    - [NetworkX](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkX.swift)：扩展函数方法等
-        - **toJSON**：对象转JSON字符串
-        - **toDictionary**：JSON字符串转字典
-        - **+=**：字典拼接
+- 目前已封装8款插件供您使用：
+    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
+    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
+    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
+    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
+    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
+    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/GZip/NetworkGZipPlugin.swift): 解压缩插件
+    - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Shared/NetworkSharedPlugin.swift): 网络共享插件
+    - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
+    
+简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
+
+```
+var plugins: APIPlugins {
+    let cache = NetworkCachePlugin.init(options: .cacheThenNetwork)
+    let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
+    let warning = NetworkWarningPlugin.init()
+    let shared = NetworkSharedPlugin.init()
+    let gzip = NetworkGZipPlugin.init()
+    return [loading, cache, warning, shared, gzip]
+}
+```
+
+### HandyJSON
+该模块是基于`HandyJSON`封装网络数据解析
+
+- 大致分为以下3个部分：
+    - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift)：网络外层数据模型
+    - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift)：解析错误相关
+    - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift)：HandyJSON数据解析，目前提供两种解析方案
+        - **方案1** - 结合`HandyDataModel`模型使用解析出`data`数据
+        - **方案2** - 根据`keyPath`解析出指定key的数据，前提条件数据源必须字典形式
+
+🎷 - 结合网络部分使用示例：
+
+```
+func request(_ count: Int) -> Driver<[CacheModel]> {
+    CacheAPI.cache(count).request()
+        .asObservable()
+        .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+        .compactMap { $0.data }
+        .observe(on: MainScheduler.instance) // 结果在主线程返回
+        .delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回
+        .asDriver(onErrorJustReturn: []) // 错误时刻返回空
+}
+```
+
+### 如何使用
+
+这边提供多种多样的使用方案供您选择，怎么选择就看你心情；
 
 🎷 - 面向对象使用示例1:
 
@@ -237,55 +251,6 @@ class BatchViewModel: NSObject {
 }
 ```
 
-### MoyaPlugins
-该模块主要就是基于moya封装网络相关插件
-
-- 目前已封装6款插件供您使用：
-    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
-    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
-    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
-    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
-    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
-    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/GZip/NetworkGZipPlugin.swift): 解压缩插件
-    
-🏠 - 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
-
-```
-var plugins: APIPlugins {
-    let cache = NetworkCachePlugin(cacheType: .networkElseCache)
-    let loading = NetworkLoadingPlugin.init(delay: 0.5)
-    let warning = NetworkWarningPlugin.init()
-    warning.changeHud = { (hud) in
-        hud.detailsLabel.textColor = UIColor.yellow
-    }
-    return [loading, cache, warning]
-}
-```
-
-### HandyJSON
-该模块是基于`HandyJSON`封装网络数据解析
-
-- 大致分为以下3个部分：
-    - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift)：网络外层数据模型
-    - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift)：解析错误相关
-    - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift)：HandyJSON数据解析，目前提供两种解析方案
-        - **方案1** - 结合`HandyDataModel`模型使用解析出`data`数据
-        - **方案2** - 根据`keyPath`解析出指定key的数据，前提条件数据源必须字典形式
-
-🎷 - 结合网络部分使用示例：
-
-```
-func request(_ count: Int) -> Driver<[CacheModel]> {
-    CacheAPI.cache(count).request()
-        .asObservable()
-        .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
-        .compactMap { $0.data }
-        .observe(on: MainScheduler.instance) // 结果在主线程返回
-        .delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回
-        .asDriver(onErrorJustReturn: []) // 错误时刻返回空
-}
-```
-
 ### CocoaPods Install
 ```
 Ex: 导入网络架构API
@@ -295,15 +260,27 @@ Ex: 导入数据解析
 - pod 'RxNetworks/HandyJSON'
 
 Ex: 导入加载动画插件
-- pod 'RxNetworks/MoyaPlugins/Loading'
+- pod 'RxNetworks/Plugins/Loading'
 ```
 
------
+### 关于作者
+- 🎷 **邮箱地址：[ykj310@126.com](ykj310@126.com) 🎷**
+- 🎸 **GitHub地址：[yangKJ](https://github.com/yangKJ) 🎸**
+- 🎺 **掘金地址：[茶底世界之下](https://juejin.cn/user/1987535102554472/posts) 🎺**
+- 🚴🏻 **简书地址：[77___](https://www.jianshu.com/u/c84c00476ab6) 🚴🏻**
 
-> <font color=red>**觉得有帮助的老哥们，请帮忙点个星 ⭐..**</font>
+----
+
+当然如果您这边觉得好用对你有所帮助，请给作者一点辛苦的打赏吧。再次感谢感谢！！！  
+有空我也会一直更新维护优化 😁😁😁
+
+<p align="left">
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bfb6d859b345472aa3a4bf224dee5969~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=828&h=828&s=112330&e=jpg&b=59be6d" width=30% hspace="1px">
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f4bb3a1b49d427fbe0405edc6b7f7ee~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1200&h=1200&s=185343&e=jpg&b=3977f5" width=30% hspace="15px">
+</p>
 
 **救救孩子吧，谢谢各位老板。**
 
-🥺 - [**传送门**](https://github.com/yangKJ/RxNetworks)
+🥺
 
 -----
