@@ -10,7 +10,9 @@ import Moya
 
 /// 网络打印，DEBUG模式内置插件
 /// Network printing, DEBUG mode built in plugin.
-public struct NetworkDebuggingPlugin {
+public struct NetworkDebuggingPlugin: Propertiesable {
+    
+    public var plugins: APIPlugins = []
     
     public let options: Options
     
@@ -71,19 +73,19 @@ extension NetworkDebuggingPlugin: PluginSubType {
         return "Debugging"
     }
     
-    public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
+    public func configuration(_ request: HeadstreamRequest, target: TargetType) -> HeadstreamRequest {
         #if DEBUG
         printRequest(target, plugins: plugins)
-        if let result = tuple.result {
+        if let result = request.result {
             ansysisResult(target, result, local: true)
         }
         #endif
-        return tuple
+        return request
     }
     
-    public func lastNever(_ tuple: LastNeverTuple, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func lastNever(_ result: LastNeverResult, target: TargetType, onNext: @escaping LastNeverCallback) {
         #if DEBUG
-        if let map = tuple.mapResult {
+        if let map = result.mapResult {
             switch map {
             case .success(let json):
                 printResponse(target, json, false, true)
@@ -91,10 +93,10 @@ extension NetworkDebuggingPlugin: PluginSubType {
                 printResponse(target, error.localizedDescription, false, false)
             }
         } else {
-            ansysisResult(target, tuple.result, local: false)
+            ansysisResult(target, result.result, local: false)
         }
         #endif
-        onNext(tuple)
+        onNext(result)
     }
 }
 

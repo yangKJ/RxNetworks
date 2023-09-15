@@ -14,9 +14,11 @@ import MBProgressHUD
 
 /// 加载插件，基于MBProgressHUD封装
 /// Loading plugin, based on MBProgressHUD package
-public struct NetworkLoadingPlugin {
+public struct NetworkLoadingPlugin: Propertiesable {
     
-    public let options: Options
+    public var plugins: APIPlugins = []
+    
+    public var options: Options
     
     public init(options: Options = .keyWindow) {
         self.options = options
@@ -43,7 +45,11 @@ extension NetworkLoadingPlugin {
         public static let keyWindow: Options = .init(in: .keyWindow)
         
         /// Loading will not be automatically hidden and display window.
-        public static let dontAutoHide: Options = .init(autoHide: false)
+        public static let dontAutoHide: Options = {
+            var options = Options.init()
+            options.autoHideLoading = false
+            return options
+        }()
         
         /// Display super view.
         let displayView: UIView?
@@ -52,21 +58,25 @@ extension NetworkLoadingPlugin {
         /// Delay hidden, the default is zero seconds
         let delayHideHUD: Double
         
-        /// 是否需要自动隐藏Loading，可用于链式请求时刻，最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading。
+        /// 是否需要自动隐藏菊花，可用于链式请求时刻，最开始的网络请求开启菊花，最末尾网络请求结束再移除菊花
         /// Whether you need to automatically hide Loading, it can be used for chain request.
         /// The first network request starts loading, and the last network request ends and then removes the loading
-        public let autoHideLoading: Bool
+        public var autoHideLoading: Bool = true
         
-        public init(in type: DisplayPosition = .keyWindow, text: String = "", delay: Double = 0.0, autoHide: Bool = true) {
+        /// 错误不自动隐藏菊花，主要作用于令牌失效再去自动获取令牌中间加载菊花不间断
+        /// The error does not automatically hide the loading.
+        /// Which mainly affects the failure of the token and then automatically obtains the intermediate loading without interruption.
+        public var failedNotAutoHide: Bool = false
+        
+        public init(in type: DisplayPosition = .keyWindow, text: String = "", delay: Double = 0.0) {
             self.displayView = type.displayView
             self.displayLoadText = text
             self.delayHideHUD = delay
-            self.autoHideLoading = autoHide
         }
         
         var hudCallback: ((_ hud: MBProgressHUD) -> Void)?
-        /// 更改`hud`相关配置闭包
-        /// Change `hud` related configuration closures.
+        
+        /// Change hud related configuration closures.
         public mutating func setChangeHudParameters(block: @escaping (_ hud: MBProgressHUD) -> Void) {
             self.hudCallback = block
         }
@@ -87,6 +97,15 @@ extension NetworkLoadingPlugin: PluginSubType {
         if options.autoHideLoading == false, case .success = result {
             return
         }
+        if case .failure = result {
+            if self.options.failedNotAutoHide {
+                return
+            }
+            if X.hasNetworkWarningPlugin(plugins) {
+                // 使用错误提示插件，则不需要自动隐藏
+                return
+            }
+        }
         if options.delayHideHUD > 0 {
             let concurrentQueue = DispatchQueue(label: "condy.loading.network.queue", attributes: .concurrent)
             concurrentQueue.asyncAfter(deadline: .now() + options.delayHideHUD) {
@@ -101,10 +120,6 @@ extension NetworkLoadingPlugin: PluginSubType {
 extension NetworkLoadingPlugin {
     
     /// Display the prompt text
-    /// - Parameters:
-    ///   - text: display content
-    ///   - window: whether to display in the window
-    ///   - delay: delay hiding time
     private func showText(_ text: String) {
         DispatchQueue.main.async {
             guard let view = self.options.displayView else {

@@ -34,15 +34,22 @@ extension NetworkAPI {
         var plugins__ = self.plugins
         RxNetworks.X.defaultPlugin(&plugins__, api: self)
         
+        plugins__ = RxNetworks.X.handyPlugins(plugins__)
+        
         let target = MultiTarget.target(self)
         
-        let (result__, endRequest, session__) = RxNetworks.X.handyConfigurationPlugin(plugins__, target: target)
-        if endRequest, let result = result__ {
-            RxNetworks.X.handyResult(result, success: success, failure: failure, progress: progress)
+        let request = RxNetworks.X.handyConfigurationPlugin(plugins__, target: target)
+        if request.endRequest, let result = request.result {
+            let lastResult = LastNeverResult(result: result)
+            lastResult.handy(success: { json in
+                DispatchQueue.main.async { success(json) }
+            }, failure: { error in
+                DispatchQueue.main.async { failure(error) }
+            }, progress: progress)
             return nil
         }
         
-        let session = session__ ?? {
+        let session = request.session ?? {
             let configuration = URLSessionConfiguration.af.default
             configuration.headers = Alamofire.HTTPHeaders.default
             configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
@@ -58,14 +65,8 @@ extension NetworkAPI {
         }, callbackQueue: queue, session: session, plugins: plugins__)
         
         // 先抛出本地数据
-        switch result__ {
-        case .success(let response) where (try? response.filterSuccessfulStatusCodes()) != nil:
-            if let jsonobjc = try? response.mapJSON() {
-                DispatchQueue.main.async { success(jsonobjc) }
-            }
-            break
-        default:
-            break
+        if case .success(let response) = request.result, let json = try? X.toJSON(with: response) {
+            DispatchQueue.main.async { success(json) }
         }
         
         // 共享网络插件处理
@@ -75,7 +76,7 @@ extension NetworkAPI {
                 SharedNetworked.shared.cacheBlocks(key: key, success: success, failure: failure)
                 return task
             }
-            let task = RxNetworks.X.beginRequest(self, base: provider, queue: queue, success: { json in
+            let task = RxNetworks.X.request(target: target, provider: provider, queue: queue, success: { json in
                 DispatchQueue.main.async {
                     SharedNetworked.shared.result(.success(json), key: key)
                 }
@@ -89,7 +90,7 @@ extension NetworkAPI {
             return task
         }
         // 再处理网络数据
-        return RxNetworks.X.beginRequest(self, base: provider, queue: queue, success: { json in
+        return RxNetworks.X.request(target: target, provider: provider, queue: queue, success: { json in
             DispatchQueue.main.async { success(json) }
         }, failure: { error in
             DispatchQueue.main.async { failure(error) }

@@ -78,112 +78,64 @@ extension RxNetworks.X {
         return paramString
     }
     
-    static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> ConfigurationTuple {
-        var tuple: ConfigurationTuple
-        tuple.result = nil // Empty data, convenient for subsequent plugin operations
-        tuple.endRequest = false
-        tuple.session = nil
-        plugins.forEach { tuple = $0.configuration(tuple, target: target, plugins: plugins) }
-        return tuple
+    static func toJSON(with response: Moya.Response) throws -> APISuccessJSON {
+        let response = try response.filterSuccessfulStatusCodes()
+        return try response.mapJSON()
     }
     
-    static func handyResult(_ result: Result<Moya.Response, MoyaError>,
-                            success: @escaping APISuccess,
-                            failure: @escaping APIFailure,
-                            progress: ProgressBlock?) {
-        switch result {
-        case let .success(response):
-            do {
-                let response = try response.filterSuccessfulStatusCodes()
-                let jsonObject = try response.mapJSON()
-                DispatchQueue.main.async { success(jsonObject) }
-                // 直接进度拉满
-                progress?(ProgressResponse(response: response))
-            } catch MoyaError.jsonMapping(let response) {
-                DispatchQueue.main.async { failure(MoyaError.jsonMapping(response)) }
-            } catch MoyaError.statusCode(let response) {
-                DispatchQueue.main.async { failure(MoyaError.statusCode(response)) }
-            } catch {
-                DispatchQueue.main.async { failure(error) }
+    static func handyPlugins(_ plugins: APIPlugins) -> APIPlugins {
+        return plugins.map({
+            if var plugin = $0 as? Propertiesable {
+                plugin.plugins = plugins
+                return plugin
             }
-        case let .failure(error):
-            DispatchQueue.main.async { failure(error) }
-        }
+            return $0
+        })
+    }
+    
+    static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> HeadstreamRequest {
+        var request = HeadstreamRequest()
+        plugins.forEach { request = $0.configuration(request, target: target) }
+        return request
     }
     
     static func handyLastNeverPlugin(_ plugins: APIPlugins,
-                                     result: MoyaResult,
+                                     result: Result<Moya.Response, MoyaError>,
                                      target: TargetType,
-                                     onNext: @escaping (LastNeverTuple)-> Void) {
-        var tuple: LastNeverTuple
-        tuple.result = result
-        tuple.againRequest = false
-        tuple.mapResult = nil
+                                     onNext: @escaping (LastNeverResult)-> Void) {
+        var lastResult = LastNeverResult.init(result: result)
         var iterator = plugins.makeIterator()
         func handleLastNever(_ plugin: RxNetworks.PluginSubType?) {
-            guard let _plugin = plugin else {
-                onNext(tuple)
+            guard let plugin = plugin else {
+                onNext(lastResult)
                 return
             }
-            _plugin.lastNever(tuple, target: target) { __tuple in
-                tuple = __tuple
+            plugin.lastNever(lastResult, target: target) {
+                lastResult = $0
                 handleLastNever(iterator.next())
             }
         }
         handleLastNever(iterator.next())
     }
     
-    @discardableResult
-    static func beginRequest(_ api: NetworkAPI,
-                             base: MoyaProvider<MultiTarget>,
-                             queue: DispatchQueue?,
-                             success: @escaping APISuccess,
-                             failure: @escaping APIFailure,
-                             progress: ProgressBlock? = nil) -> Cancellable {
-        // 处理结果数据
-        func handleResult(_ result: MoyaResult, jsonResult: MapJSONResult?) {
-            if let _jsonResult = jsonResult {
-                switch _jsonResult {
-                case let .success(json):
-                    success(json)
-                case let .failure(error):
-                    failure(error)
-                }
-            } else {
-                switch result {
-                case let .success(response):
-                    do {
-                        let response = try response.filterSuccessfulStatusCodes()
-                        let json = try response.mapJSON()
-                        success(json)
-                    } catch MoyaError.statusCode(let response) {
-                        failure(MoyaError.statusCode(response))
-                    } catch MoyaError.jsonMapping(let response) {
-                        failure(MoyaError.jsonMapping(response))
-                    } catch {
-                        failure(error)
-                    }
-                case let .failure(error):
-                    failure(error)
-                }
-            }
-        }
-        
-        let target = MultiTarget.target(api)
-        return base.request(target, callbackQueue: queue, progress: progress, completion: { result in
-            guard let plugins = base.plugins as? [PluginSubType] else {
-                DispatchQueue.main.async { handleResult(result, jsonResult: nil) }
+    @discardableResult static func request(target: MultiTarget,
+                                           provider: MoyaProvider<MultiTarget>,
+                                           queue: DispatchQueue?,
+                                           success: @escaping APISuccess,
+                                           failure: @escaping APIFailure,
+                                           progress: ProgressBlock? = nil) -> Cancellable {
+        return provider.request(target, callbackQueue: queue, progress: progress, completion: { result in
+            guard let plugins = provider.plugins as? [PluginSubType] else {
+                let lastResult = LastNeverResult(result: result)
+                lastResult.handy(success: success, failure: failure)
                 return
             }
-            
-            X.handyLastNeverPlugin(plugins, result: result, target: target) { tuple in
-                if tuple.againRequest {
-                    beginRequest(api, base: base, queue: queue, success: success, failure: failure, progress: progress)
+            handyLastNeverPlugin(plugins, result: result, target: target) { lastResult in
+                if lastResult.againRequest {
+                    request(target: target, provider: provider, queue: queue, success: success, failure: failure, progress: progress)
                     return
                 }
-                DispatchQueue.main.async {
-                    handleResult(tuple.result, jsonResult: tuple.mapResult)
-                }
+                lastResult.handy(success: success, failure: failure)
             }
         })
     }

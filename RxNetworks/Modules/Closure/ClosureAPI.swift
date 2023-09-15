@@ -30,7 +30,7 @@ extension ClosureAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let loading = NetworkLoadingPlugin.init(options: .init(text: "Loading..", delay: 0.5))
+        let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
         return [loading]
     }
 }

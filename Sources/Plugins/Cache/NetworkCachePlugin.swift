@@ -85,16 +85,19 @@ extension NetworkCachePlugin: PluginSubType {
         return "Cache"
     }
     
-    public func configuration(_ tuple: ConfigurationTuple, target: TargetType, plugins: APIPlugins) -> ConfigurationTuple {
-        if (options.cacheType == .cacheElseNetwork || options.cacheType == .cacheThenNetwork),
-           let response = self.readCacheResponse(target) {
-            if options.cacheType == .cacheElseNetwork {
-                return (.success(response), true, tuple.session)
-            } else {
-                return (.success(response), false, tuple.session)
+    public func configuration(_ request: HeadstreamRequest, target: TargetType) -> HeadstreamRequest {
+        switch options.cacheType {
+        case .cacheElseNetwork, .cacheThenNetwork:
+            if let response = self.readCacheResponse(target) {
+                request.result = .success(response)
             }
+            if options.cacheType == .cacheElseNetwork {
+                request.endRequest = true
+            }
+        default:
+            break
         }
-        return tuple
+        return request
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {

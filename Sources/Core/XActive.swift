@@ -41,4 +41,16 @@ extension RxNetworks.X {
         return false
         #endif
     }
+    
+    /// 是否存在失败提示插件
+    static func hasNetworkWarningPlugin(_ plugins: APIPlugins?) -> Bool {
+        guard let plugins = plugins else {
+            return false
+        }
+        #if RXNETWORKS_PLUGINGS_WARNING
+        return plugins.contains(where: { $0 is NetworkWarningPlugin })
+        #else
+        return false
+        #endif
+    }
 }

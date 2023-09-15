@@ -29,7 +29,9 @@ extension LoadingAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let loading = NetworkLoadingPlugin()
+        var options = NetworkLoadingPlugin.Options.init()
+        options.failedNotAutoHide = true
+        let loading = NetworkLoadingPlugin(options: options)
         return [loading]
     }
 }

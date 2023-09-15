@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.4.3'
+  s.version          = '0.4.4'
   s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
@@ -99,7 +99,11 @@ Pod::Spec.new do |s|
         xx.subspec 'Warning' do |xxx|
           xxx.source_files = 'Sources/Plugins/Warning/*.swift'
           xxx.dependency 'RxNetworks/Core'
-          xxx.ios.dependency 'Toast-Swift'
+          xxx.ios.dependency 'MBProgressHUD'
+          xxx.pod_target_xcconfig = {
+            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_WARNING',
+            'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_WARNING=1'
+          }
         end
       end
       unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"CACHE"
@@ -170,7 +174,11 @@ Pod::Spec.new do |s|
       xx.subspec 'Warning' do |xxx|
         xxx.source_files = 'Sources/Plugins/Warning/*.swift'
         xxx.dependency 'RxNetworks/Core'
-        xxx.ios.dependency 'Toast-Swift'
+        xxx.ios.dependency 'MBProgressHUD'
+        xxx.pod_target_xcconfig = {
+          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_WARNING',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_WARNING=1'
+        }
       end
       xx.subspec 'Cache' do |xxx|
         xxx.source_files = 'Sources/Plugins/Cache/*.swift'
