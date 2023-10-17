@@ -50,5 +50,21 @@ extension NetworkAPI {
         }
         return plugin
     }
+    
+    /// 移除HUD
+    public func removeHUD() {
+        SharedDriver.shared.readHUD(prefix: keyPrefix).forEach {
+            X.removeHUD(key: $0.key)
+            $0.close()
+        }
+    }
+    
+    /// 移除加载Loading
+    public func removeLoading() {
+        let vcs = SharedDriver.shared.readHUD(prefix: keyPrefix)
+        for vc in vcs where X.loadingSuffix(key: vc.key) {
+            X.removeHUD(key: vc.key)
+            vc.close()
+        }
+    }
 }
-

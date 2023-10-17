@@ -132,7 +132,7 @@ extension NetworkCachePlugin: PluginSubType {
 extension NetworkCachePlugin {
     
     private func readCacheResponse(_ target: TargetType) -> Moya.Response? {
-        let key = options.cryptoType.encryptedString(with: requestLink(with: target))
+        let key = options.cryptoType.encryptedString(with: X.requestLink(with: target))
         guard let model = CacheManager.default.storage.fetchCached(forKey: key, options: options.cachedOptions),
               let statusCode = model.statusCode,
               let data = model.data else {
@@ -143,17 +143,8 @@ extension NetworkCachePlugin {
     
     private func saveCacheResponse(_ response: Moya.Response?, target: TargetType) {
         guard let response = response else { return }
-        let key = options.cryptoType.encryptedString(with: requestLink(with: target))
+        let key = options.cryptoType.encryptedString(with: X.requestLink(with: target))
         let model = CacheModel(data: response.data, statusCode: response.statusCode)
         CacheManager.default.storage.storeCached(model, forKey: key, options: options.cachedOptions)
-    }
-    
-    private func requestLink(with target: TargetType) -> String {
-        var parameters: APIParameters? = nil
-        if case .requestParameters(let parame, _) = target.task {
-            parameters = parame
-        }
-        let paramString = RxNetworks.X.sort(parameters: parameters)
-        return target.baseURL.absoluteString + target.path + "\(paramString)"
     }
 }

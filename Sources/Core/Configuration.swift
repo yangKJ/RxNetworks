@@ -6,6 +6,7 @@
 //  https://github.com/yangKJ/RxNetworks
 
 import Foundation
+import Alamofire
 
 /// 网络配置信息，只需要在程序开启的时刻配置一次
 /// Network configuration information, only need to be configured once when the program is started
@@ -32,6 +33,10 @@ public struct NetworkConfig {
     
     /// Loading animation JSON, for `AnimatedLoadingPlugin` used.
     public static var animatedJSON: String?
+    /// Loading the plugin name, to remove the loading plugin from level status bar window.
+    public static var loadingPluginNames: [String] = ["Loading", "AnimatedLoading"]
+    /// Auto close all loading after the end of the last network requesting.
+    public static var lastCompleteAndCloseLoadingHUDs: Bool = true
     
     /// Update the default basic parameter data, which is generally used for what operation the user has switched.
     /// - Parameters:

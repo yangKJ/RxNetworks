@@ -32,10 +32,9 @@ class BatchViewModel: NSObject {
         )
         .observe(on: MainScheduler.instance)
         .map({
-            AnimatedLoadingPlugin.hideLoadingHUD(view: nil)
             guard let data1 = $0 as? [String: Any],
                   let data2 = $1 as? [String: Any],
-                  let data3 = $2 as? Dictionary<String, Any> else {
+                  let data3 = $2 as? [String: Any] else {
                 return [:]
             }
             let dict = data1 +== data2 +== data3

@@ -8,9 +8,20 @@
 import Foundation
 import Alamofire
 import Moya
+import CommonCrypto
 
 /// 如果未使用`rx`也可以直接使用该方法
 extension NetworkAPI {
+    /// 标识前缀
+    var keyPrefix: String {
+        let target = MultiTarget.target(self)
+        let string = X.requestLink(with: target)
+        // md5
+        let ccharArray = string.cString(using: String.Encoding.utf8)
+        var uint8Array = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
+        CC_MD5(ccharArray, CC_LONG(ccharArray!.count - 1), &uint8Array)
+        return uint8Array.reduce("") { $0 + String(format: "%02X", $1) }
+    }
     
     /// Network request
     /// Example:
@@ -34,16 +45,20 @@ extension NetworkAPI {
         var plugins__ = self.plugins
         RxNetworks.X.defaultPlugin(&plugins__, api: self)
         
-        plugins__ = RxNetworks.X.handyPlugins(plugins__)
+        let key = self.keyPrefix
+        plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: plugins__)
         
+        SharedDriver.shared.addedRequestingAPI(self, key: key, plugins: plugins__)
         let target = MultiTarget.target(self)
         
         let request = RxNetworks.X.handyConfigurationPlugin(plugins__, target: target)
         if request.endRequest, let result = request.result {
             let lastResult = LastNeverResult(result: result)
             lastResult.handy(success: { json in
+                SharedDriver.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async { success(json) }
             }, failure: { error in
+                SharedDriver.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async { failure(error) }
             }, progress: progress)
             return nil
@@ -71,28 +86,31 @@ extension NetworkAPI {
         
         // 共享网络插件处理
         if RxNetworks.X.hasNetworkSharedPlugin(plugins__) {
-            let key = SharedNetworked.shared.requestLink(with: target)
-            if let task = SharedNetworked.shared.readTask(key: key) {
-                SharedNetworked.shared.cacheBlocks(key: key, success: success, failure: failure)
+            if let task = SharedDriver.shared.readTask(key: key) {
+                SharedDriver.shared.cacheBlocks(key: key, success: success, failure: failure)
                 return task
             }
             let task = RxNetworks.X.request(target: target, provider: provider, queue: queue, success: { json in
+                SharedDriver.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async {
-                    SharedNetworked.shared.result(.success(json), key: key)
+                    SharedDriver.shared.result(.success(json), key: key)
                 }
             }, failure: { error in
+                SharedDriver.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async {
-                    SharedNetworked.shared.result(.failure(error), key: key)
+                    SharedDriver.shared.result(.failure(error), key: key)
                 }
             }, progress: progress)
-            SharedNetworked.shared.cacheTask(key: key, task: task)
-            SharedNetworked.shared.cacheBlocks(key: key, success: success, failure: failure)
+            SharedDriver.shared.cacheTask(key: key, task: task)
+            SharedDriver.shared.cacheBlocks(key: key, success: success, failure: failure)
             return task
         }
         // 再处理网络数据
         return RxNetworks.X.request(target: target, provider: provider, queue: queue, success: { json in
+            SharedDriver.shared.removeRequestingAPI(key)
             DispatchQueue.main.async { success(json) }
         }, failure: { error in
+            SharedDriver.shared.removeRequestingAPI(key)
             DispatchQueue.main.async { failure(error) }
         }, progress: progress)
     }

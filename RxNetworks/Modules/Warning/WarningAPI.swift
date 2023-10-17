@@ -27,13 +27,13 @@ extension WarningAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let warning = NetworkWarningPlugin.init(options: .init(duration: 2))
-        var options = NetworkLoadingPlugin.Options.init(delay: 0.5)
+        var options = NetworkWarningPlugin.Options.init(duration: 2)
         options.setChangeHudParameters { hud in
-            hud.detailsLabel.text = "Loading"
-            hud.detailsLabel.textColor = UIColor.yellow
+            guard let superview = hud.superview else { return }
+            hud.center = CGPoint(x: superview.center.x, y: superview.frame.height - 100)
         }
-        let loading = NetworkLoadingPlugin.init(options: options)
+        let warning = NetworkWarningPlugin.init(options: options)
+        let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
         return [loading, warning]
     }
 }

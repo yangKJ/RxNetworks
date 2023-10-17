@@ -8,6 +8,7 @@
 
 import Foundation
 import RxNetworks
+import RxCocoa
 
 class AnimatedLoadingViewModel: NSObject {
     
@@ -16,16 +17,11 @@ class AnimatedLoadingViewModel: NSObject {
     let data = PublishSubject<String?>()
     
     func loadData() {
-        let loadingApi = AnimatedLoadingAPI.loading("Condy")
-        loadingApi.request()
+        AnimatedLoadingAPI.loading("Condy").request()
             .asObservable()
             .observe(on: MainScheduler.instance)
             .map { ($0 as? NSDictionary)?["data"] as? String }
-            .subscribe(onNext: { [weak self] in
-                self?.data.onNext($0)
-                if let plugin = loadingApi.givenPlugin(type: AnimatedLoadingPlugin.self) {
-                    plugin.hideLoadingHUD()
-                }
-            }).disposed(by: disposeBag)
+            .bind(to: self.data)
+            .disposed(by: disposeBag)
     }
 }

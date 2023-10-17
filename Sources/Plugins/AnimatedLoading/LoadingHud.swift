@@ -1,70 +1,12 @@
 //
-//  UIView+Loading.swift
+//  LoadingHud.swift
 //  RxNetworks
 //
 //  Created by Condy on 2023/4/12.
 //
 
 import Foundation
-import ObjectiveC
 import Lottie
-
-extension UIView {
-    private struct AnimatedLoadingExtensionKey {
-        static var loadingHud: Void?
-        static var backViewTag: Void?
-    }
-    
-    var animatedLoadingHud: LoadingHud? {
-        set {
-            objc_setAssociatedObject(self, &AnimatedLoadingExtensionKey.loadingHud, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            return objc_getAssociatedObject(self, &AnimatedLoadingExtensionKey.loadingHud) as? LoadingHud
-        }
-    }
-    
-    var hudBackView: UIView? {
-        set {
-            objc_setAssociatedObject(self, &AnimatedLoadingExtensionKey.backViewTag, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            return objc_getAssociatedObject(self, &AnimatedLoadingExtensionKey.backViewTag) as? UIView
-        }
-    }
-    
-    func showLoadingHUD(_ animatedNamed: String?) {
-        if self.animatedLoadingHud != nil {
-            return
-        }
-        self.hideHUD()
-        self.animatedLoadingHud = LoadingHud(frame: .zero, animatedNamed: animatedNamed)
-        self.animatedLoadingHud?.show(in: self)
-    }
-    
-    func hideHUD() {
-        self.animatedLoadingHud?.hide()
-        self.animatedLoadingHud = nil
-    }
-    
-    func showHudBackView() {
-        if self.hudBackView != nil {
-            return
-        }
-        self.hideBackView()
-        let backView = UIView.init(frame: self.bounds)
-        backView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        self.addSubview(backView)
-        self.hudBackView = backView
-    }
-    
-    func hideBackView() {
-        self.hudBackView?.removeFromSuperview()
-        self.hudBackView = nil
-    }
-}
-
-// MARK: - LoadingHud view
 
 final class LoadingHud: UIView {
     
@@ -139,24 +81,45 @@ final class LoadingHud: UIView {
             ])
         }
     }
+}
+
+extension LoadingHud: LevelStatusBarWindowShowUpable {
     
-    func show(in view: UIView) {
-        view.addSubview(self)
-        view.bringSubviewToFront(self)
-        animatedView.play(fromProgress: 0, toProgress: 1, loopMode: LottieLoopMode.loop)
+    func makeOpenedStatusConstraint(superview: UIView) {
+        let size = CGSize(width: 100, height: 100)
+        let origin = CGPoint(x: superview.center.x - 50, y: superview.center.y - 50)
+        self.frame = CGRect(origin: origin, size: size)
     }
     
-    func hide() {
-        animatedView.stop()
-        removeFromSuperview()
+    func refreshBeforeShow() {
+        
     }
     
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        if superview != nil {
-            let size = CGSize(width: 100, height: 100)
-            let origin = CGPoint(x: superview!.center.x - 50, y: superview!.center.y - 50)
-            self.frame = CGRect(origin: origin, size: size)
+    func show(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?) {
+        self.animatedView.play(fromProgress: 0, toProgress: 1, loopMode: LottieLoopMode.loop)
+        DispatchQueue.main.async {
+            if animated {
+                UIView.animate(withDuration: 0.2, animations: {
+                    animation?()
+                }, completion: completion)
+            } else {
+                animation?()
+                completion?(true)
+            }
+        }
+    }
+    
+    func close(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?) {
+        self.animatedView.stop()
+        DispatchQueue.main.async {
+            if animated {
+                UIView.animate(withDuration: 0.2, animations: {
+                    animation?()
+                }, completion: completion)
+            } else {
+                animation?()
+                completion?(true)
+            }
         }
     }
 }

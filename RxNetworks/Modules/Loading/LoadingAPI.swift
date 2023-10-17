@@ -24,14 +24,18 @@ extension LoadingAPI: NetworkAPI {
     
     var parameters: APIParameters? {
         switch self {
-        case .test2(let string): return ["key": string]
+        case .test2(let string):
+            return ["key": string]
         }
     }
     
     var plugins: APIPlugins {
-        var options = NetworkLoadingPlugin.Options.init()
-        options.failedNotAutoHide = true
-        let loading = NetworkLoadingPlugin(options: options)
+        var options = NetworkLoadingPlugin.Options.init(delay: 2)
+        options.setChangeHudParameters { hud in
+            hud.detailsLabel.text = "Loading"
+            hud.detailsLabel.textColor = UIColor.yellow
+        }
+        let loading = NetworkLoadingPlugin.init(options: options)
         return [loading]
     }
 }

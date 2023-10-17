@@ -14,6 +14,8 @@ public struct NetworkDebuggingPlugin: PluginPropertiesable {
     
     public var plugins: APIPlugins = []
     
+    public var key: String?
+    
     public let options: Options
     
     public init(options: Options = .default) {

@@ -60,83 +60,69 @@ public struct X {
     }
 }
 
-// MARK: - internal tool methods
+extension X {
+    
+    public static func keyWindow() -> UIWindow? {
+        if #available(iOS 13.0, *) {
+            return UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first(where: { $0 is UIWindowScene })
+                .flatMap({ $0 as? UIWindowScene })?.windows
+                .first(where: \.isKeyWindow)
+        } else {
+            return UIApplication.shared.keyWindow
+        }
+    }
+    
+    public static func topViewController() -> UIViewController? {
+        let window = UIApplication.shared.delegate?.window
+        guard window != nil, let rootViewController = window?!.rootViewController else {
+            return nil
+        }
+        return self.getTopViewController(controller: rootViewController)
+    }
+    
+    public static func getTopViewController(controller: UIViewController) -> UIViewController {
+        if let presentedViewController = controller.presentedViewController {
+            return self.getTopViewController(controller: presentedViewController)
+        } else if let navigationController = controller as? UINavigationController {
+            if let topViewController = navigationController.topViewController {
+                return self.getTopViewController(controller: topViewController)
+            }
+            return navigationController
+        } else if let tabbarController = controller as? UITabBarController {
+            if let selectedViewController = tabbarController.selectedViewController {
+                return self.getTopViewController(controller: selectedViewController)
+            }
+            return tabbarController
+        } else {
+            return controller
+        }
+    }
+}
 
-extension RxNetworks.X {
-    
-    /// 参数排序生成字符串
-    static func sort(parameters: [String: Any]?) -> String {
-        guard let params = parameters, !params.isEmpty else {
-            return ""
-        }
-        var paramString = "?"
-        let sorteds = params.sorted(by: { $0.key > $1.key })
-        for index in sorteds.indices {
-            paramString.append("\(sorteds[index].key)=\(sorteds[index].value)")
-            if index != sorteds.count - 1 { paramString.append("&") }
-        }
-        return paramString
+// MARK: - HUD
+extension X {
+    /// 移除窗口所有HUD
+    public static func removeAllAtLevelStatusBarWindow() {
+        SharedDriver.shared.removeAllAtLevelStatusBarWindow()
     }
     
-    static func toJSON(with response: Moya.Response) throws -> APISuccessJSON {
-        let response = try response.filterSuccessfulStatusCodes()
-        return try response.mapJSON()
+    /// 移除所有加载HUD
+    public static func removeLoadingHUDs() {
+        SharedDriver.shared.removeLoadingHUDs()
     }
     
-    static func handyPlugins(_ plugins: APIPlugins) -> APIPlugins {
-        return plugins.map({
-            if var plugin = $0 as? PluginPropertiesable {
-                plugin.plugins = plugins
-                return plugin
-            }
-            return $0
-        })
+    public static func readHUD(key: String) -> LevelStatusBarWindowController? {
+        SharedDriver.shared.readHUD(key: key)
     }
     
-    static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> HeadstreamRequest {
-        var request = HeadstreamRequest()
-        plugins.forEach { request = $0.configuration(request, target: target) }
-        return request
+    public static func saveHUD(key: String, window vc: LevelStatusBarWindowController) {
+        SharedDriver.shared.saveHUD(key: key, window: vc)
     }
     
-    static func handyLastNeverPlugin(_ plugins: APIPlugins,
-                                     result: Result<Moya.Response, MoyaError>,
-                                     target: TargetType,
-                                     onNext: @escaping (LastNeverResult)-> Void) {
-        var lastResult = LastNeverResult.init(result: result)
-        var iterator = plugins.makeIterator()
-        func handleLastNever(_ plugin: RxNetworks.PluginSubType?) {
-            guard let plugin = plugin else {
-                onNext(lastResult)
-                return
-            }
-            plugin.lastNever(lastResult, target: target) {
-                lastResult = $0
-                handleLastNever(iterator.next())
-            }
-        }
-        handleLastNever(iterator.next())
-    }
-    
-    @discardableResult static func request(target: MultiTarget,
-                                           provider: MoyaProvider<MultiTarget>,
-                                           queue: DispatchQueue?,
-                                           success: @escaping APISuccess,
-                                           failure: @escaping APIFailure,
-                                           progress: ProgressBlock? = nil) -> Cancellable {
-        return provider.request(target, callbackQueue: queue, progress: progress, completion: { result in
-            guard let plugins = provider.plugins as? [PluginSubType] else {
-                let lastResult = LastNeverResult(result: result)
-                lastResult.handy(success: success, failure: failure)
-                return
-            }
-            handyLastNeverPlugin(plugins, result: result, target: target) { lastResult in
-                if lastResult.againRequest {
-                    request(target: target, provider: provider, queue: queue, success: success, failure: failure, progress: progress)
-                    return
-                }
-                lastResult.handy(success: success, failure: failure)
-            }
-        })
+    @discardableResult
+    public static func removeHUD(key: String?) -> LevelStatusBarWindowController? {
+        SharedDriver.shared.removeHUD(key: key)
     }
 }

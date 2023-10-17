@@ -10,6 +10,17 @@ import Moya
 
 public protocol PluginPropertiesable: PluginSubType {
     var plugins: APIPlugins { get set }
+    
+    var key: String? { get set }
+    
+    /// Loading HUD delay hide time.
+    var delay: Double { get }
+}
+
+extension PluginPropertiesable {
+    public var delay: Double {
+        return 0
+    }
 }
 
 /// 继承Moya插件协议，方便后序扩展，所有插件方法都必须实现该协议
