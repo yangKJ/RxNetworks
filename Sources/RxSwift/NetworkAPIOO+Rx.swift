@@ -18,7 +18,7 @@ extension NetworkAPIOO {
     ///     api.cdy_path = "/ip"
     ///     api.cdy_method = APIMethod.get
     ///     api.cdy_plugins = [NetworkLoadingPlugin.init()]
-    ///     api.cdy_testJSON = "{\"Condy\":\"ykj310@126.com\"}"
+    ///     api.cdy_testJSON = "{\"Condy\":\"yangkj310@gmail.com\"}"
     ///
     ///     api.cdy_HTTPRequest()
     ///         .asObservable()

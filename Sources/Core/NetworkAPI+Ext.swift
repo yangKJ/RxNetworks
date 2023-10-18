@@ -50,21 +50,18 @@ extension NetworkAPI {
     }
     
     public var sampleData: Data {
-        return "{\"Condy\":\"ykj310@126.com\"}".data(using: String.Encoding.utf8)!
+        return "{\"Condy\":\"yangkj310@gmail.com\"}".data(using: String.Encoding.utf8)!
     }
     
     public var headers: [String : String]? {
-        if NetworkConfig.baseHeaders.isEmpty {
-            return ["Content-type": "application/json"]
-        }
-        return NetworkConfig.baseHeaders
+        return X.hasNetworkHttpHeaderPlugin(plugins) ?? NetworkConfig.baseHeaders
     }
     
     public var task: Moya.Task {
         var param = NetworkConfig.baseParameters
-        if let parameters = parameters {
+        if let dict = parameters {
             // Merge the dictionaries and take the second value
-            param = NetworkConfig.baseParameters.merging(parameters) { $1 }
+            param = param.merging(dict) { $1 }
         }
         switch method {
         case APIMethod.get:

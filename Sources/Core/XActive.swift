@@ -12,9 +12,9 @@ import Moya
 extension RxNetworks.X {
     
     /// 注入默认插件
-    static func defaultPlugin(_ plugins: inout APIPlugins, api: NetworkAPI) {
+    static func defaultPlugin(_ plugins: inout APIPlugins) {
         var plugins_ = plugins
-        if let others = NetworkConfig.injectionPlugins {
+        if let others = NetworkConfig.basePlugins {
             plugins_ += others
         }
         #if RXNETWORKS_PLUGINGS_INDICATOR
@@ -51,6 +51,20 @@ extension RxNetworks.X {
         #else
         return false
         #endif
+    }
+    
+    /// 是否存在请求头插件
+    static func hasNetworkHttpHeaderPlugin(_ plugins: APIPlugins) -> [String: String]? {
+        #if RXNETWORKS_PLUGINGS_HTTPHEADER
+        var plugins = plugins
+        if let others = NetworkConfig.basePlugins {
+            plugins += others
+        }
+        if let p = plugins.first(where: { $0 is NetworkHttpHeaderPlugin }) {
+            return (p as? NetworkHttpHeaderPlugin)?.dictionary
+        }
+        #endif
+        return nil
     }
 }
 

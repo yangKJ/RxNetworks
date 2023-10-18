@@ -129,6 +129,16 @@ Pod::Spec.new do |s|
           }
         end
       end
+      unless ENV['RXNETWORKS_PLUGINGS_EXCLUDE'].include?"HTTPHEADER"
+        xx.subspec 'Header' do |xxx|
+          xxx.source_files = 'Sources/Plugins/Header/*.swift'
+          xxx.dependency 'RxNetworks/Core'
+          xxx.pod_target_xcconfig = {
+            'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_HTTPHEADER',
+            'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_HTTPHEADER=1'
+          }
+        end
+      end
     end
   else
     s.subspec 'RxSwift' do |xx|
@@ -195,6 +205,14 @@ Pod::Spec.new do |s|
         xxx.pod_target_xcconfig = {
           'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_SHARED',
           'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_SHARED=1'
+        }
+      end
+      xx.subspec 'Header' do |xxx|
+        xxx.source_files = 'Sources/Plugins/Header/*.swift'
+        xxx.dependency 'RxNetworks/Core'
+        xxx.pod_target_xcconfig = {
+          'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_HTTPHEADER',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_HTTPHEADER=1'
         }
       end
     end

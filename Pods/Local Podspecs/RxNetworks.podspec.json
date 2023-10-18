@@ -161,6 +161,19 @@
             "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RXNETWORKS_PLUGINGS_SHARED",
             "GCC_PREPROCESSOR_DEFINITIONS": "RXNETWORKS_PLUGINGS_SHARED=1"
           }
+        },
+        {
+          "name": "Header",
+          "source_files": "Sources/Plugins/Header/*.swift",
+          "dependencies": {
+            "RxNetworks/Core": [
+
+            ]
+          },
+          "pod_target_xcconfig": {
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RXNETWORKS_PLUGINGS_HTTPHEADER",
+            "GCC_PREPROCESSOR_DEFINITIONS": "RXNETWORKS_PLUGINGS_HTTPHEADER=1"
+          }
         }
       ]
     }

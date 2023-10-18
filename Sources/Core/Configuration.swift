@@ -16,20 +16,20 @@ public struct NetworkConfig {
     public static var addDebugging: Bool = false
     /// Whether to add the Indicator plugin by default
     public static var addIndicator: Bool = false
-    /// Plugins that require default injection, generally not recommended
-    /// However, you can inject this kind of global unified general plugin, such as secret key plugin, certificate plugin, etc.
-    public static var injectionPlugins: [PluginSubType]?
     /// Set the request timeout, the default is 30 seconds
     public static var timeoutIntervalForRequest: Double = 30
     
     /// Root path address
     public static var baseURL: APIHost = ""
-    /// Default basic parameters, similar to: userID, token, etc.
-    public static var baseParameters: APIParameters = [:]
     /// Default request type, default `post`
     public static var baseMethod: APIMethod = APIMethod.post
-    /// Default Header argument
-    public static var baseHeaders: [String:String] = [:]
+    /// Default basic parameters, similar to: userID, token, etc.
+    public static var baseParameters: APIParameters = [:]
+    /// Default Header argument, 相同数据时该数据会被`NetworkHttpHeaderPlugin`插件覆盖.
+    public static var baseHeaders: [String: String] = [:]
+    /// Plugins that require default injection, generally not recommended
+    /// However, you can inject this kind of global unified general plugin, such as secret key plugin, certificate plugin, etc.
+    public static var basePlugins: [PluginSubType]?
     
     /// Loading animation JSON, for `AnimatedLoadingPlugin` used.
     public static var animatedJSON: String?

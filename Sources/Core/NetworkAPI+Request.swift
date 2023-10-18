@@ -43,7 +43,7 @@ extension NetworkAPI {
                                                progress: ProgressBlock? = nil,
                                                queue: DispatchQueue? = nil) -> Cancellable? {
         var plugins__ = self.plugins
-        RxNetworks.X.defaultPlugin(&plugins__, api: self)
+        RxNetworks.X.defaultPlugin(&plugins__)
         
         let key = self.keyPrefix
         plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: plugins__)
@@ -66,7 +66,6 @@ extension NetworkAPI {
         
         let session = request.session ?? {
             let configuration = URLSessionConfiguration.af.default
-            configuration.headers = Alamofire.HTTPHeaders.default
             configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
             return Moya.Session(configuration: configuration, startRequestsImmediately: false)
         }()

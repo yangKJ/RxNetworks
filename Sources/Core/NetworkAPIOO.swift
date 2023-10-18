@@ -76,6 +76,6 @@ internal struct NetworkObjectAPI: NetworkAPI {
         if let json = cdy_test {
             return json.data(using: String.Encoding.utf8)!
         }
-        return "{\"Condy\":\"ykj310@126.com\"}".data(using: String.Encoding.utf8)!
+        return "{\"Condy\":\"yangkj310@gmail.com\"}".data(using: String.Encoding.utf8)!
     }
 }
