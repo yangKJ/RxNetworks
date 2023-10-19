@@ -34,6 +34,8 @@ public protocol LevelStatusBarWindowShowUpable {
 open class LevelStatusBarWindowController: UIViewController {
     private var isCalledClose = false
     private var canNotBeCanceled = false
+    private var loadingCount: Int = 0
+    private lazy var lock = NSLock()
     
     private lazy var overlay: UIView = {
         let view = UIView(frame: self.view.bounds)
@@ -57,6 +59,19 @@ open class LevelStatusBarWindowController: UIViewController {
         didSet {
             self.overlay.backgroundColor = overlayBackgroundColor
         }
+    }
+    
+    public func addedLoadingCount() {
+        self.lock.lock()
+        self.loadingCount += 1
+        self.lock.unlock()
+    }
+    
+    public func subtractLoadingCount() -> Int {
+        self.lock.lock()
+        defer { self.lock.unlock() }
+        self.loadingCount -= 1
+        return self.loadingCount
     }
     
     open override var prefersStatusBarHidden: Bool {

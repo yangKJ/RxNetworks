@@ -22,7 +22,7 @@ public struct AnimatedLoadingPlugin: PluginPropertiesable {
     
     public let options: Options
     
-    public init(options: Options = .init()) {
+    public init(options: Options = .`default`) {
         self.options = options
     }
     
@@ -36,22 +36,19 @@ public struct AnimatedLoadingPlugin: PluginPropertiesable {
 extension AnimatedLoadingPlugin {
     public struct Options {
         /// Loading will not be automatically hidden and display window.
-        public static let dontAutoHide: Options = .init(autoHide: false)
+        public static let `default`: Options = .init(text: "")
         
         /// Do you need to display an error message, the default is empty
         let displayLoadText: String
         /// Delay hidden, the default is zero seconds
         let delayHideHUD: Double
-        /// Do you need to automatically hide the loading hud.
-        let autoHideLoading: Bool
         /// Set up this loading animated JSON file named.
         let animatedJSON: String?
         
-        public init(text: String = "正在加载...", delay: Double = 0.0, autoHide: Bool = true, animatedJSON: String? = nil) {
+        public init(text: String = "正在加载...", delay: Double = 0.0, animatedJSON: String? = nil) {
             self.displayLoadText = text
             self.delayHideHUD = delay
             self.animatedJSON = animatedJSON
-            self.autoHideLoading = autoHide
         }
     }
 }
@@ -69,11 +66,13 @@ extension AnimatedLoadingPlugin: PluginSubType {
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        if options.autoHideLoading == false, case .success = result {
+        guard let key = self.key, let vc = X.readHUD(key: key) else {
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
-            self.hideLoadingHUD()
+        if vc.subtractLoadingCount() <= 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
+                self.hideLoadingHUD()
+            }
         }
     }
 }
@@ -85,15 +84,16 @@ extension AnimatedLoadingPlugin {
             return
         }
         if let vc = X.readHUD(key: key) {
-            vc.show()
+            vc.addedLoadingCount()
         } else {
             let animatedNamed = self.options.animatedJSON ?? NetworkConfig.animatedJSON
             let hud = LoadingHud(frame: .zero, animatedNamed: animatedNamed)
-            hud.textLabel.text = self.options.displayLoadText
+            hud.setupLoadingText(self.options.displayLoadText)
             let vc = LevelStatusBarWindowController()
             vc.key = key
             vc.showUpView = hud
             vc.show()
+            vc.addedLoadingCount()
             X.saveHUD(key: key, window: vc)
         }
     }

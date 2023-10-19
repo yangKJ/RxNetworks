@@ -12,7 +12,7 @@ final class LoadingHud: UIView {
     
     lazy var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         view.layer.cornerRadius = 15
         view.layer.masksToBounds = true
         view.layer.shouldRasterize = true
@@ -24,18 +24,20 @@ final class LoadingHud: UIView {
     lazy var animatedView: LottieAnimationView = {
         let view = LottieAnimationView()
         view.contentMode = .scaleAspectFit
+        view.layer.rasterizationScale = UIScreen.main.scale
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     lazy var textLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.black.withAlphaComponent(0.65)
+        label.textColor = UIColor.white
         label.font = .systemFont(ofSize: 14)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "loading.."
         label.numberOfLines = 0
+        label.layer.rasterizationScale = UIScreen.main.scale
         return label
     }()
     
@@ -55,7 +57,7 @@ final class LoadingHud: UIView {
         containerView.addSubview(textLabel)
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -80),
             containerView.widthAnchor.constraint(equalToConstant: 100),
             containerView.heightAnchor.constraint(equalToConstant: 100),
             animatedView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
@@ -65,7 +67,7 @@ final class LoadingHud: UIView {
             textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -10),
             textLabel.heightAnchor.constraint(equalToConstant: 15),
             textLabel.topAnchor.constraint(equalTo: animatedView.bottomAnchor, constant: 5),
-            textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
+            textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15),
         ])
     }
     
@@ -78,6 +80,17 @@ final class LoadingHud: UIView {
                 textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -10),
                 textLabel.heightAnchor.constraint(equalToConstant: 15),
                 textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            ])
+        }
+    }
+    
+    func setupLoadingText(_ text: String?) {
+        textLabel.text = text
+        if let text = text, !text.isEmpty { } else {
+            NSLayoutConstraint.activate([
+                animatedView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
+                animatedView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
+                animatedView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             ])
         }
     }
