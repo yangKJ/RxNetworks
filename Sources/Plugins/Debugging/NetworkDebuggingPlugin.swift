@@ -79,7 +79,8 @@ extension NetworkDebuggingPlugin: PluginSubType {
         #if DEBUG
         printRequest(target, plugins: plugins)
         if let result = request.result {
-            ansysisResult(target, result.map({ $0 as Moya.Response }), local: true)
+            let lastResult = LastNeverResult(result: result, plugins: plugins)
+            ansysisResult(lastResult, target: target, local: true)
         }
         #endif
         return request
@@ -87,16 +88,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
     
     public func lastNever(_ result: LastNeverResult, target: TargetType, onNext: @escaping LastNeverCallback) {
         #if DEBUG
-        if let map = result.mapResult {
-            switch map {
-            case .success(let json):
-                printResponse(target, json, false, true)
-            case .failure(let error):
-                printResponse(target, error.localizedDescription, false, false)
-            }
-        } else {
-            ansysisResult(target, result.result, local: false)
-        }
+        ansysisResult(result, target: target, local: false)
         #endif
         onNext(result)
     }
@@ -111,7 +103,7 @@ extension NetworkDebuggingPlugin {
         formatter.locale = Locale.current
         let date = formatter.string(from: Date())
         let parameters = (target as? NetworkAPI)?.parameters
-        let requestLink = X.requestLink(with: target, parameters: parameters)
+        let requestLink = RxNetworks.X.requestLink(with: target, parameters: parameters)
         if let param = parameters, param.isEmpty == false {
             print("""
                   ╔═══════════ 🎈 Request 🎈 ═══════════
@@ -140,8 +132,7 @@ extension NetworkDebuggingPlugin {
 
 extension NetworkDebuggingPlugin {
     
-    private func ansysisResult(_ target: TargetType, _ result: Result<Moya.Response, MoyaError>, local: Bool) {
-        let lastResult = LastNeverResult(result: result, plugins: plugins)
+    private func ansysisResult(_ lastResult: LastNeverResult, target: TargetType, local: Bool) {
         lastResult.mapResult(success: { response in
             printResponse(target, response, local, true)
         }, failure: { error in
@@ -156,7 +147,7 @@ extension NetworkDebuggingPlugin {
         formatter.locale = Locale.current
         let date = formatter.string(from: Date())
         let parameters = (target as? NetworkAPI)?.parameters
-        let requestLink = X.requestLink(with: target, parameters: parameters)
+        let requestLink = RxNetworks.X.requestLink(with: target, parameters: parameters)
         let prefix = """
                   ╔═══════════ 🎈 Request 🎈 ═══════════
                   ║ Time: \(date)

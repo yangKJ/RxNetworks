@@ -123,15 +123,3 @@ extension X {
         SharedDriver.shared.removeHUD(key: key)
     }
 }
-
-// MARK: - Network
-extension X {
-    
-    public static func setupTask(with api: NetworkAPI) -> Moya.Task? {
-        X.hasNetworkFilesPluginTask(api.keyPrefix)
-    }
-    
-    public static func setupHeaders(with api: NetworkAPI) -> [String : String] {
-        X.hasNetworkHttpHeaderPlugin(api.keyPrefix) ?? NetworkConfig.baseHeaders
-    }
-}

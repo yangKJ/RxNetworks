@@ -63,12 +63,13 @@ extension NetworkWarningPlugin: PluginSubType {
         return "Warning"
     }
     
-    public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        if case .failure(let error) = result {
+    public func lastNever(_ result: LastNeverResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+        result.mapResult(failure: { error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.showText(error.localizedDescription)
             }
-        }
+        })
+        onNext(result)
     }
 }
 

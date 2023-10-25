@@ -34,6 +34,9 @@ extension WarningAPI: NetworkAPI {
         }
         let warning = NetworkWarningPlugin.init(options: options)
         let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
-        return [loading, warning]
+        let header = NetworkHttpHeaderPlugin.init(headers: [
+            HTTPHeader.init(name: "test header", value: "Condy_77")
+        ])
+        return [loading, warning, header]
     }
 }

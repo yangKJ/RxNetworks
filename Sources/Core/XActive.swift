@@ -107,7 +107,7 @@ extension RxNetworks.X {
             return nil
         }()
         let paramString = sortParametersToString(parameters)
-        return target.baseURL.absoluteString + target.path + "\(paramString)"
+        return target.baseURL.absoluteString + target.path + paramString
     }
     
     static func toJSON(with response: Moya.Response) throws -> APISuccessJSON {

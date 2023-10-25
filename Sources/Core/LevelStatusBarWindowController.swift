@@ -75,14 +75,14 @@ open class LevelStatusBarWindowController: UIViewController {
     }
     
     open override var prefersStatusBarHidden: Bool {
-        if let controller = X.topViewController() {
+        if let controller = RxNetworks.X.topViewController() {
             return controller.prefersStatusBarHidden
         }
         return true
     }
     
     open override var preferredStatusBarStyle: UIStatusBarStyle {
-        if let controller = X.topViewController() {
+        if let controller = RxNetworks.X.topViewController() {
             return controller.preferredStatusBarStyle
         }
         return .default
@@ -115,7 +115,7 @@ open class LevelStatusBarWindowController: UIViewController {
         }
         self.showUpView?.refreshBeforeShow()
         if Self.lastKeyWindow != Self.window {
-            Self.lastKeyWindow = X.keyWindow()
+            Self.lastKeyWindow = RxNetworks.X.keyWindow()
         }
         Self.window.isHidden = false
         Self.window.windowLevel = UIWindow.Level.statusBar

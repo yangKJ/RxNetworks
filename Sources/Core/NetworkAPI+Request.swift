@@ -8,19 +8,8 @@
 import Foundation
 import Alamofire
 import Moya
-import CommonCrypto
 
-/// 如果未使用`rx`也可以直接使用该方法
 extension NetworkAPI {
-    /// 标识前缀，MD5
-    var keyPrefix: String {
-        let paramString = X.sortParametersToString(parameters)
-        let string = ip + path + "\(paramString)"
-        let ccharArray = string.cString(using: String.Encoding.utf8)
-        var uint8Array = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
-        CC_MD5(ccharArray, CC_LONG(ccharArray!.count - 1), &uint8Array)
-        return uint8Array.reduce("") { $0 + String(format: "%02X", $1) }
-    }
     
     /// Network request
     /// Example:
@@ -69,7 +58,21 @@ extension NetworkAPI {
             // 自定义并行队列
             DispatchQueue(label: "condy.request.network.queue", attributes: [.concurrent])
         }()
-        let provider = MoyaProvider<MultiTarget>(stubClosure: { _ in
+        
+        let target = MultiTarget.target(self)
+        let endpointTask = RxNetworks.X.hasNetworkFilesPluginTask(key) ?? self.task
+        var endpointHeaders = RxNetworks.X.hasNetworkHttpHeaderPlugin(key) ?? NetworkConfig.baseHeaders
+        if let dict = self.headers {
+            // Merge the dictionaries and take the second value.
+            endpointHeaders = endpointHeaders.merging(dict) { $1 }
+        }
+        let provider = MoyaProvider<MultiTarget>.init(endpointClosure: { _ in
+            return Endpoint.init(url: URL(target: target).absoluteString,
+                                 sampleResponseClosure: { .networkResponse(200, self.sampleData) },
+                                 method: self.method,
+                                 task: endpointTask,
+                                 httpHeaderFields: endpointHeaders)
+        }, stubClosure: { _ in
             return stubBehavior
         }, callbackQueue: queue, session: session, plugins: plugins__)
         
@@ -110,6 +113,7 @@ extension NetworkAPI {
     }
 }
 
+// MARK: - private methods
 extension NetworkAPI {
     
     /// 最开始配置插件信息
@@ -138,16 +142,16 @@ extension NetworkAPI {
         handleLastNever(iterator.next())
     }
     
-    @discardableResult private func request(_ plugins: APIPlugins,
-                                            provider: MoyaProvider<MultiTarget>,
-                                            success: @escaping APISuccess,
-                                            failure: @escaping APIFailure,
-                                            progress: ProgressBlock? = nil) -> Cancellable {
+    private func request(_ plugins: APIPlugins,
+                         provider: MoyaProvider<MultiTarget>,
+                         success: @escaping APISuccess,
+                         failure: @escaping APIFailure,
+                         progress: ProgressBlock? = nil) -> Cancellable {
         let target = MultiTarget.target(self)
         return provider.request(target, progress: progress, completion: { result in
             setupOutputResult(plugins: plugins, result: result) { lastResult in
                 if lastResult.againRequest {
-                    request(plugins, provider: provider, success: success, failure: failure, progress: progress)
+                    let _ = request(plugins, provider: provider, success: success, failure: failure, progress: progress)
                     return
                 }
                 lastResult.mapResult(success: success, failure: failure)

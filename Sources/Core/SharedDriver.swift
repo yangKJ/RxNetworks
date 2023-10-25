@@ -16,7 +16,7 @@ struct SharedDriver {
     
     private let lock = NSLock()
     private let tasklock = NSLock()
-    private let HUDLock = NSLock()
+    private let HUDsLock = NSLock()
     
     private var requestingAPIs = [Key: (api: NetworkAPI, plugins: APIPlugins)]()
     private var tasks = [Key: Moya.Cancellable]()
@@ -105,14 +105,14 @@ extension SharedDriver {
 extension SharedDriver {
     
     func readHUD(key: String) -> LevelStatusBarWindowController? {
-        self.HUDLock.lock()
-        defer { HUDLock.unlock() }
+        self.HUDsLock.lock()
+        defer { HUDsLock.unlock() }
         return self.cacheHUDs[key]
     }
     
     func readHUD(prefix: String) -> [LevelStatusBarWindowController] {
-        self.HUDLock.lock()
-        defer { HUDLock.unlock() }
+        self.HUDsLock.lock()
+        defer { HUDsLock.unlock() }
         return self.cacheHUDs.compactMap {
             if let prefix_ = $0.key.components(separatedBy: "_").first, prefix_ == prefix {
                 return $0.value
@@ -122,8 +122,8 @@ extension SharedDriver {
     }
     
     func readHUD(suffix: String) -> [LevelStatusBarWindowController] {
-        self.HUDLock.lock()
-        defer { HUDLock.unlock() }
+        self.HUDsLock.lock()
+        defer { HUDsLock.unlock() }
         return self.cacheHUDs.compactMap {
             if let suffix_ = $0.key.components(separatedBy: "_").last, suffix_ == suffix {
                 return $0.value
@@ -133,37 +133,37 @@ extension SharedDriver {
     }
     
     mutating func saveHUD(key: Key, window: LevelStatusBarWindowController) {
-        self.HUDLock.lock()
+        self.HUDsLock.lock()
         self.cacheHUDs[key] = window
-        self.HUDLock.unlock()
+        self.HUDsLock.unlock()
     }
     
     @discardableResult mutating func removeHUD(key: Key?) -> LevelStatusBarWindowController? {
         guard let key = key else {
             return nil
         }
-        self.HUDLock.lock()
+        self.HUDsLock.lock()
         let window = self.cacheHUDs[key]
         self.cacheHUDs.removeValue(forKey: key)
-        self.HUDLock.unlock()
+        self.HUDsLock.unlock()
         return window
     }
     
     mutating func removeAllAtLevelStatusBarWindow() {
-        self.HUDLock.lock()
+        self.HUDsLock.lock()
         self.cacheHUDs.forEach {
             $0.value.close()
         }
         self.cacheHUDs.removeAll()
-        self.HUDLock.unlock()
+        self.HUDsLock.unlock()
     }
     
     mutating func removeLoadingHUDs() {
-        self.HUDLock.lock()
+        self.HUDsLock.lock()
         for (key, hud) in self.cacheHUDs where X.loadingSuffix(key: key) {
             self.cacheHUDs.removeValue(forKey: key)
             hud.close()
         }
-        self.HUDLock.unlock()
+        self.HUDsLock.unlock()
     }
 }

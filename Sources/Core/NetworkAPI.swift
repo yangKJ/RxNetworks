@@ -41,31 +41,13 @@ public protocol NetworkAPI: Moya.TargetType {
     var stubBehavior: APIStubBehavior { get }
     /// Failed retry count, the default is zero
     var retry: APINumber { get }
-}
-
-extension NetworkAPI {
-    /// 获取到指定插件
-    public func givenPlugin<T: RxNetworks.PluginSubType>(type: T.Type) -> T? {
-        guard let plugin = plugins.first(where: { $0 is T }) as? T else {
-            return nil
-        }
-        return plugin
-    }
     
-    /// 移除HUD
-    public func removeHUD() {
-        SharedDriver.shared.readHUD(prefix: keyPrefix).forEach {
-            X.removeHUD(key: $0.key)
-            $0.close()
-        }
-    }
+    /// Identification key prefix, defaul MD5 request link.
+    var keyPrefix: String { get }
     
-    /// 移除加载Loading
-    public func removeLoading() {
-        let vcs = SharedDriver.shared.readHUD(prefix: keyPrefix)
-        for vc in vcs where X.loadingSuffix(key: vc.key) {
-            X.removeHUD(key: vc.key)
-            vc.close()
-        }
-    }
+    /// Remove all HUDs displayed to `LevelStatusBarWindowController`.
+    func removeHUD()
+    
+    /// Remove  displaying in the window`NetworkConfig.loadingPluginNames` loading.
+    func removeLoading()
 }

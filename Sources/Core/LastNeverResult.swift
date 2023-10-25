@@ -32,41 +32,50 @@ public final class LastNeverResult {
 
 extension LastNeverResult {
     
-    func mapResult(success: @escaping APISuccess, failure: @escaping APIFailure, progress: ProgressBlock? = nil) {
-        if let mapResult = mapResult {
-            switch mapResult {
-            case let .success(json):
-                success(json)
-            case let .failure(error):
-                failure(error)
-            }
-            return
-        }
+    func mapResult(success: APISuccess? = nil, failure: APIFailure? = nil, progress: ProgressBlock? = nil) {
         if let downloadURL = X.hasNetworkFilesPlugin(plugins) {
             switch result {
             case .success(let response):
-                success(downloadURL)
+                success?(downloadURL)
                 progress?(ProgressResponse(response: response))
             case .failure(let error):
-                failure(error)
+                failure?(error)
+            }
+            return
+        }
+        if let mapResult = mapResult {
+            switch mapResult {
+            case let .success(json):
+                success?(json)
+            case let .failure(error):
+                failure?(error)
             }
             return
         }
         switch result {
         case let .success(response):
             do {
-                let json = try X.toJSON(with: response)
-                success(json)
+                let json = try RxNetworks.X.toJSON(with: response)
+                self.mapResult = .success(json)
+                success?(json)
                 progress?(ProgressResponse(response: response))
             } catch MoyaError.statusCode(let response) {
-                failure(MoyaError.statusCode(response))
+                let error = MoyaError.statusCode(response)
+                self.mapResult = .failure(error)
+                failure?(error)
             } catch MoyaError.jsonMapping(let response) {
-                failure(MoyaError.jsonMapping(response))
+                let error = MoyaError.jsonMapping(response)
+                self.mapResult = .failure(error)
+                failure?(error)
             } catch {
-                failure(error)
+                if let error = error as? MoyaError {
+                    self.mapResult = .failure(error)
+                }
+                failure?(error)
             }
         case let .failure(error):
-            failure(error)
+            self.mapResult = .failure(error)
+            failure?(error)
         }
     }
 }
