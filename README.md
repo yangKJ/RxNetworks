@@ -23,8 +23,9 @@ At the moment, the most important features of RxNetworks can be summarized as fo
 - [x] Support data parsing with [HandyJSON](https://github.com/alibaba/HandyJSON).
 - [x] Support configuration of general request and path, general parameters, etc.
 - [x] Support simple customization of various network plugins for [Moya](https://github.com/Moya/Moya).
-- [x] Support for injecting default plugins.
-- [x] Support 8 plugins have been packaged for you to use.
+- [x] Support uploading and downloading files/resources and so on.
+- [x] Support for injecting default plugins with `NetworkConfig.basePlugins`.
+- [x] Support 10 plugins have been packaged for you to use.
 
 ### Usages
 How to use [USAGE](USAGE.md).
@@ -40,7 +41,8 @@ SharedAPI.loading("Condy").HTTPRequest(success: { _ in
 ### Plugins
 This module is mainly based on moya package network related plugins.
 
-- At present, 8 plugins have been packaged for you to use:
+- At present, 10 plugins have been packaged for you to use:
+    - [HTTPHeader](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Header/NetworkHttpHeaderPlugin.swift): Network HTTP Header Plugin.
     - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin.
     - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin.
     - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin.
@@ -49,6 +51,7 @@ This module is mainly based on moya package network related plugins.
     - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/GZip/NetworkGZipPlugin.swift): Network data unzip plugin.
     - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Shared/NetworkSharedPlugin.swift): Network sharing plugin.
     - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
+    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Files/NetworkFilesPlugin.swift): Network Downloading Files And Uploading Resources Plugin.
 
 🏠 Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
 
@@ -118,14 +121,6 @@ If you only want import cache plugin:
 
 ```
 pod 'RxNetworks/Plugins/Cache'
-```
-
-OR can use exclusion method add module.
-
-Ex: You don't need indicator plugin, It can be added in Podfile.
-
-```
-ENV["RXNETWORKS_PLUGINGS_EXCLUDE"] = "INDICATOR"
 ```
 
 For other plugins and modules excluded, please read the [podspec](https://github.com/yangKJ/RxNetworks/blob/master/RxNetworks.podspec) file.

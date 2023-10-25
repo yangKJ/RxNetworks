@@ -12,11 +12,10 @@ import CommonCrypto
 
 /// 如果未使用`rx`也可以直接使用该方法
 extension NetworkAPI {
-    /// 标识前缀
+    /// 标识前缀，MD5
     var keyPrefix: String {
-        let target = MultiTarget.target(self)
-        let string = X.requestLink(with: target)
-        // md5
+        let paramString = X.sortParametersToString(parameters)
+        let string = ip + path + "\(paramString)"
         let ccharArray = string.cString(using: String.Encoding.utf8)
         var uint8Array = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
         CC_MD5(ccharArray, CC_LONG(ccharArray!.count - 1), &uint8Array)
@@ -42,19 +41,15 @@ extension NetworkAPI {
                                                failure: @escaping APIFailure,
                                                progress: ProgressBlock? = nil,
                                                queue: DispatchQueue? = nil) -> Cancellable? {
-        var plugins__ = self.plugins
-        RxNetworks.X.defaultPlugin(&plugins__)
-        
         let key = self.keyPrefix
-        plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: plugins__)
+        let plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: plugins)
         
         SharedDriver.shared.addedRequestingAPI(self, key: key, plugins: plugins__)
-        let target = MultiTarget.target(self)
         
-        let request = RxNetworks.X.handyConfigurationPlugin(plugins__, target: target)
+        let request = self.setupConfiguration(plugins: plugins__)
         if request.endRequest, let result = request.result {
-            let lastResult = LastNeverResult(result: result)
-            lastResult.handy(success: { json in
+            let lastResult = LastNeverResult(result: result, plugins: plugins__)
+            lastResult.mapResult(success: { json in
                 SharedDriver.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async { success(json) }
             }, failure: { error in
@@ -79,7 +74,7 @@ extension NetworkAPI {
         }, callbackQueue: queue, session: session, plugins: plugins__)
         
         // 先抛出本地数据
-        if case .success(let response) = request.result, let json = try? X.toJSON(with: response) {
+        if let json = try? request.toJSON() {
             DispatchQueue.main.async { success(json) }
         }
         
@@ -89,7 +84,7 @@ extension NetworkAPI {
                 SharedDriver.shared.cacheBlocks(key: key, success: success, failure: failure)
                 return task
             }
-            let task = RxNetworks.X.request(target: target, provider: provider, queue: queue, success: { json in
+            let task = self.request(plugins__, provider: provider, success: { json in
                 SharedDriver.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async {
                     SharedDriver.shared.result(.success(json), key: key)
@@ -105,12 +100,58 @@ extension NetworkAPI {
             return task
         }
         // 再处理网络数据
-        return RxNetworks.X.request(target: target, provider: provider, queue: queue, success: { json in
+        return self.request(plugins__, provider: provider, success: { json in
             SharedDriver.shared.removeRequestingAPI(key)
             DispatchQueue.main.async { success(json) }
         }, failure: { error in
             SharedDriver.shared.removeRequestingAPI(key)
             DispatchQueue.main.async { failure(error) }
         }, progress: progress)
+    }
+}
+
+extension NetworkAPI {
+    
+    /// 最开始配置插件信息
+    private func setupConfiguration(plugins: APIPlugins) -> HeadstreamRequest {
+        var request = HeadstreamRequest()
+        plugins.forEach {
+            request = $0.configuration(request, target: self)
+        }
+        return request
+    }
+    
+    /// 最后的输出结果，插件配置处理
+    private func setupOutputResult(plugins: APIPlugins, result: APIResponseResult, onNext: @escaping LastNeverCallback) {
+        var lastResult = LastNeverResult.init(result: result, plugins: plugins)
+        var iterator = plugins.makeIterator()
+        func handleLastNever(_ plugin: RxNetworks.PluginSubType?) {
+            guard let plugin = plugin else {
+                onNext(lastResult)
+                return
+            }
+            plugin.lastNever(lastResult, target: self) {
+                lastResult = $0
+                handleLastNever(iterator.next())
+            }
+        }
+        handleLastNever(iterator.next())
+    }
+    
+    @discardableResult private func request(_ plugins: APIPlugins,
+                                            provider: MoyaProvider<MultiTarget>,
+                                            success: @escaping APISuccess,
+                                            failure: @escaping APIFailure,
+                                            progress: ProgressBlock? = nil) -> Cancellable {
+        let target = MultiTarget.target(self)
+        return provider.request(target, progress: progress, completion: { result in
+            setupOutputResult(plugins: plugins, result: result) { lastResult in
+                if lastResult.againRequest {
+                    request(plugins, provider: provider, success: success, failure: failure, progress: progress)
+                    return
+                }
+                lastResult.mapResult(success: success, failure: failure)
+            }
+        })
     }
 }

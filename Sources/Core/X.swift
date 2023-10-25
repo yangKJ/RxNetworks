@@ -58,9 +58,6 @@ public struct X {
         }
         return result
     }
-}
-
-extension X {
     
     public static func keyWindow() -> UIWindow? {
         if #available(iOS 13.0, *) {
@@ -124,5 +121,17 @@ extension X {
     @discardableResult
     public static func removeHUD(key: String?) -> LevelStatusBarWindowController? {
         SharedDriver.shared.removeHUD(key: key)
+    }
+}
+
+// MARK: - Network
+extension X {
+    
+    public static func setupTask(with api: NetworkAPI) -> Moya.Task? {
+        X.hasNetworkFilesPluginTask(api.keyPrefix)
+    }
+    
+    public static func setupHeaders(with api: NetworkAPI) -> [String : String] {
+        X.hasNetworkHttpHeaderPlugin(api.keyPrefix) ?? NetworkConfig.baseHeaders
     }
 }

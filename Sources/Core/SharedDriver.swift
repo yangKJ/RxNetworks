@@ -18,7 +18,7 @@ struct SharedDriver {
     private let tasklock = NSLock()
     private let HUDLock = NSLock()
     
-    private var requestingAPIs = [Key: (api: NetworkAPI, maxDelay: Double)]()
+    private var requestingAPIs = [Key: (api: NetworkAPI, plugins: APIPlugins)]()
     private var tasks = [Key: Moya.Cancellable]()
     
     private var cacheBlocks = [(key: Key, success: APISuccess, failure: APIFailure)]()
@@ -35,12 +35,19 @@ extension SharedDriver {
         return self.requestingAPIs[key]?.api
     }
     
+    func readRequestPlugins(_ key: Key) -> APIPlugins {
+        self.lock.lock()
+        defer { lock.unlock() }
+        return self.requestingAPIs[key]?.plugins ?? []
+    }
+    
     mutating func removeRequestingAPI(_ key: Key) {
         self.lock.lock()
-        let maxTime = self.requestingAPIs[key]?.maxDelay ?? 0.0
+        let plugins = self.requestingAPIs[key]?.plugins
         self.requestingAPIs.removeValue(forKey: key)
         // 没有正在请求的网络，则移除全部加载Loading
-        if NetworkConfig.lastCompleteAndCloseLoadingHUDs, self.requestingAPIs.isEmpty {
+        if NetworkConfig.lastCompleteAndCloseLoadingHUDs, self.requestingAPIs.isEmpty, let p = plugins {
+            let maxTime = X.maxDelayTime(with: p)
             DispatchQueue.main.asyncAfter(deadline: .now() + maxTime) {
                 SharedDriver.shared.removeLoadingHUDs()
             }
@@ -50,17 +57,7 @@ extension SharedDriver {
     
     mutating func addedRequestingAPI(_ api: NetworkAPI, key: Key, plugins: APIPlugins) {
         self.lock.lock()
-        let times: [Double] = plugins.compactMap {
-            if let p = $0 as? PluginPropertiesable {
-                return p.delay
-            }
-            return nil
-        }
-        let maxTime = times.max() ?? 0.0
-        self.requestingAPIs[key] = (api, maxTime)
-        self.requestingAPIs = self.requestingAPIs.mapValues {
-            ($0, Swift.max($1, maxTime))
-        }
+        self.requestingAPIs[key] = (api, plugins)
         self.lock.unlock()
     }
 }

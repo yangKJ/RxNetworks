@@ -22,13 +22,17 @@ public final class LastNeverResult {
     /// 是否自动上次网络请求
     public var againRequest: Bool = false
     
-    public init(result: Result<Moya.Response, MoyaError>) {
+    private let plugins: APIPlugins
+    
+    public init(result: Result<Moya.Response, MoyaError>, plugins: APIPlugins) {
         self.result = result
+        self.plugins = plugins
     }
 }
 
 extension LastNeverResult {
-    func handy(success: @escaping APISuccess, failure: @escaping APIFailure, progress: ProgressBlock? = nil) {
+    
+    func mapResult(success: @escaping APISuccess, failure: @escaping APIFailure, progress: ProgressBlock? = nil) {
         if let mapResult = mapResult {
             switch mapResult {
             case let .success(json):
@@ -36,23 +40,33 @@ extension LastNeverResult {
             case let .failure(error):
                 failure(error)
             }
-        } else {
+            return
+        }
+        if let downloadURL = X.hasNetworkFilesPlugin(plugins) {
             switch result {
-            case let .success(response):
-                do {
-                    let json = try X.toJSON(with: response)
-                    success(json)
-                    progress?(ProgressResponse(response: response))
-                } catch MoyaError.statusCode(let response) {
-                    failure(MoyaError.statusCode(response))
-                } catch MoyaError.jsonMapping(let response) {
-                    failure(MoyaError.jsonMapping(response))
-                } catch {
-                    failure(error)
-                }
-            case let .failure(error):
+            case .success(let response):
+                success(downloadURL)
+                progress?(ProgressResponse(response: response))
+            case .failure(let error):
                 failure(error)
             }
+            return
+        }
+        switch result {
+        case let .success(response):
+            do {
+                let json = try X.toJSON(with: response)
+                success(json)
+                progress?(ProgressResponse(response: response))
+            } catch MoyaError.statusCode(let response) {
+                failure(MoyaError.statusCode(response))
+            } catch MoyaError.jsonMapping(let response) {
+                failure(MoyaError.jsonMapping(response))
+            } catch {
+                failure(error)
+            }
+        case let .failure(error):
+            failure(error)
         }
     }
 }

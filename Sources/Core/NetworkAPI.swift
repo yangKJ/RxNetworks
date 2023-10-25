@@ -24,6 +24,7 @@ public typealias APIPlugins = [RxNetworks.PluginSubType]
 public typealias APIStubBehavior = Moya.StubBehavior
 public typealias APISuccessJSON = Any
 public typealias APIFailureError = Swift.Error
+public typealias APIResponseResult = Result<Moya.Response, MoyaError>
 
 public typealias APISuccess = (_ json: APISuccessJSON) -> Void
 public typealias APIFailure = (_ error: APIFailureError) -> Void

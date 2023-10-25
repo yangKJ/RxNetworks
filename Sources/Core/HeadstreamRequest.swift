@@ -21,3 +21,22 @@ public final class HeadstreamRequest {
     
     public init() { }
 }
+
+extension HeadstreamRequest {
+    
+    func toJSON() throws -> Any {
+        guard let result = result else {
+            let userInfo = [
+                NSLocalizedDescriptionKey: "The result is empty."
+            ]
+            let error = NSError(domain: "com.condy.rx.network", code: 2004, userInfo: userInfo)
+            throw  error
+        }
+        switch result {
+        case .success(let response):
+            return try X.toJSON(with: response)
+        case .failure(let error):
+            throw error
+        }
+    }
+}

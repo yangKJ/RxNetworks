@@ -54,10 +54,13 @@ extension NetworkAPI {
     }
     
     public var headers: [String : String]? {
-        return X.hasNetworkHttpHeaderPlugin(plugins) ?? NetworkConfig.baseHeaders
+        return X.setupHeaders(with: self)
     }
     
     public var task: Moya.Task {
+        if let task_ = X.setupTask(with: self) {
+            return task_
+        }
         var param = NetworkConfig.baseParameters
         if let dict = parameters {
             // Merge the dictionaries and take the second value

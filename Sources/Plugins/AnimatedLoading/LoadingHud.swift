@@ -57,7 +57,7 @@ final class LoadingHud: UIView {
         containerView.addSubview(textLabel)
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -80),
+            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
             containerView.widthAnchor.constraint(equalToConstant: 100),
             containerView.heightAnchor.constraint(equalToConstant: 100),
             animatedView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
