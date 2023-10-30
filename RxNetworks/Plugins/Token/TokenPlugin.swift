@@ -18,7 +18,7 @@ public final class TokenPlugin {
     public let hasToken: PublishRelay<String> = PublishRelay()
     public let repLogin: PublishRelay<Void> = PublishRelay()
     
-    @UserDefault("condy_token", defaultValue: "")
+    @UserDefault_("condy_token", defaultValue: "")
     private(set) var token: String
     
     fileprivate let lock = NSLock()

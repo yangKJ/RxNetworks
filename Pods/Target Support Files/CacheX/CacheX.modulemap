@@ -1,0 +1,6 @@
+framework module CacheX {
+  umbrella header "CacheX-umbrella.h"
+
+  export *
+  module * { export * }
+}

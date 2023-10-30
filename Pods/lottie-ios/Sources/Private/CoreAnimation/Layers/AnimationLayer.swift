@@ -38,11 +38,14 @@ struct LayerAnimationContext {
   /// The logger that should be used for assertions and warnings
   let logger: LottieLogger
 
+  /// Mutable state related to log events, stored on the `CoreAnimationLayer`.
+  let loggingState: LoggingState
+
   /// The AnimationKeypath represented by the current layer
   var currentKeypath: AnimationKeypath
 
-  /// The `AnimationTextProvider`
-  var textProvider: AnimationTextProvider
+  /// The `AnimationKeypathTextProvider`
+  var textProvider: AnimationKeypathTextProvider
 
   /// Records the given animation keypath so it can be logged or collected into a list
   ///  - Used for `CoreAnimationLayer.logHierarchyKeypaths()` and `allHierarchyKeypaths()`
@@ -83,4 +86,20 @@ struct LayerAnimationContext {
     }
     return copy
   }
+}
+
+// MARK: - LoggingState
+
+/// Mutable state related to log events, stored on the `CoreAnimationLayer`.
+final class LoggingState {
+
+  // MARK: Lifecycle
+
+  init() { }
+
+  // MARK: Internal
+
+  /// Whether or not the warning about unsupported After Effects expressions
+  /// has been logged yet for this layer.
+  var hasLoggedAfterEffectsExpressionsWarning = false
 }

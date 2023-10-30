@@ -204,6 +204,7 @@
 		04C053FD278D5705008BCC42 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */,
 				876E046629EE35F500A7CF1C /* testLoading.json */,
 				6817A39527A022AC0034F283 /* Color.xcassets */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -355,7 +356,6 @@
 			isa = PBXGroup;
 			children = (
 				874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */,
-				874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */,
 			);
 			path = Token;
 			sourceTree = "<group>";

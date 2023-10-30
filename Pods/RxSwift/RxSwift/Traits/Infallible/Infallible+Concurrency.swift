@@ -6,7 +6,7 @@
 //  Copyright © 2021 Krunoslav Zaher. All rights reserved.
 //
 
-#if swift(>=5.5.2) && canImport(_Concurrency) && !os(Linux)
+#if swift(>=5.6) && canImport(_Concurrency) && !os(Linux)
 // MARK: - Infallible
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public extension InfallibleType {
@@ -24,12 +24,12 @@ public extension InfallibleType {
         AsyncStream<Element> { continuation in
             let disposable = subscribe(
                 onNext: { value in continuation.yield(value) },
-                onCompleted: { continuation.finish() },
-                onDisposed: { continuation.onTermination?(.cancelled) }
+                onCompleted: { continuation.finish() }
             )
-
-            continuation.onTermination = { @Sendable _ in
-                disposable.dispose()
+            continuation.onTermination = { @Sendable termination in
+                if termination == .cancelled {
+                    disposable.dispose()
+                }
             }
         }
     }

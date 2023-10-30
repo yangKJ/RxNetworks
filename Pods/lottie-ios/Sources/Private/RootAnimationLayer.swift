@@ -7,7 +7,7 @@ import QuartzCore
 
 /// A root `CALayer` responsible for playing a Lottie animation
 protocol RootAnimationLayer: CALayer {
-  var animationView: LottieAnimationView? { get set }
+  var lottieAnimationLayer: LottieAnimationLayer? { get set }
 
   var currentFrame: AnimationFrameTime { get set }
   var renderScale: CGFloat { get set }
@@ -15,7 +15,7 @@ protocol RootAnimationLayer: CALayer {
 
   var _animationLayers: [CALayer] { get }
   var imageProvider: AnimationImageProvider { get set }
-  var textProvider: AnimationTextProvider { get set }
+  var textProvider: AnimationKeypathTextProvider { get set }
   var fontProvider: AnimationFontProvider { get set }
 
   /// The `CAAnimation` key corresponding to the primary animation.

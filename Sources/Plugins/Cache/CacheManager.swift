@@ -5,12 +5,17 @@
 //  Created by Condy on 2021/10/6.
 //  https://github.com/yangKJ/RxNetworks
 
-///`Cache`文档
-/// https://github.com/hyperoslo/Cache
+///`CacheX`文档
+/// https://github.com/yangKJ/CacheX
 
 import Foundation
 import CoreFoundation
-import Lemons
+import CacheX
+
+public struct CacheModel: Codable {
+    let data: Data?
+    let statusCode: Int?
+}
 
 public struct CacheManager {
     
@@ -40,14 +45,14 @@ public struct CacheManager {
     
     /// The longest time duration in second of the cache being stored in disk.
     /// Default is 1 week ``60 * 60 * 24 * 7 seconds``.
-    public var expiry: Lemons.Expiry {
+    public var expiry: CacheX.Expiry {
         didSet {
             storage.disk.expiry = expiry
         }
     }
     
     /// The maximum total cost that the cache can hold before it starts evicting objects. default 20kb.
-    public var maxCountLimit: Lemons.Disk.Byte {
+    public var maxCountLimit: CacheX.Disk.Byte {
         didSet {
             storage.disk.maxCountLimit = maxCountLimit
         }

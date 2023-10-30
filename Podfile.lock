@@ -1,67 +1,67 @@
 PODS:
-  - Alamofire (5.8.0)
+  - Alamofire (5.8.1)
+  - CacheX (1.0.0)
   - HandyJSON (5.0.2)
-  - Lemons (0.0.8)
-  - lottie-ios (4.2.0)
+  - lottie-ios (4.3.3)
   - MBProgressHUD (1.2.0)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
-  - RxCocoa (6.5.0):
-    - RxRelay (= 6.5.0)
-    - RxSwift (= 6.5.0)
-  - RxNetworks (0.4.6):
-    - RxNetworks/Core (= 0.4.6)
-    - RxNetworks/HandyJSON (= 0.4.6)
-    - RxNetworks/Plugins (= 0.4.6)
-    - RxNetworks/RxSwift (= 0.4.6)
-  - RxNetworks/Core (0.4.6):
+  - RxCocoa (6.6.0):
+    - RxRelay (= 6.6.0)
+    - RxSwift (= 6.6.0)
+  - RxNetworks (0.4.7):
+    - RxNetworks/Core (= 0.4.7)
+    - RxNetworks/HandyJSON (= 0.4.7)
+    - RxNetworks/Plugins (= 0.4.7)
+    - RxNetworks/RxSwift (= 0.4.7)
+  - RxNetworks/Core (0.4.7):
     - Moya
-  - RxNetworks/HandyJSON (0.4.6):
+  - RxNetworks/HandyJSON (0.4.7):
     - HandyJSON
     - RxSwift
-  - RxNetworks/Plugins (0.4.6):
-    - RxNetworks/Plugins/AnimatedLoading (= 0.4.6)
-    - RxNetworks/Plugins/Cache (= 0.4.6)
-    - RxNetworks/Plugins/Debugging (= 0.4.6)
-    - RxNetworks/Plugins/Files (= 0.4.6)
-    - RxNetworks/Plugins/GZip (= 0.4.6)
-    - RxNetworks/Plugins/Header (= 0.4.6)
-    - RxNetworks/Plugins/Indicator (= 0.4.6)
-    - RxNetworks/Plugins/Loading (= 0.4.6)
-    - RxNetworks/Plugins/Shared (= 0.4.6)
-    - RxNetworks/Plugins/Warning (= 0.4.6)
-  - RxNetworks/Plugins/AnimatedLoading (0.4.6):
+  - RxNetworks/Plugins (0.4.7):
+    - RxNetworks/Plugins/AnimatedLoading (= 0.4.7)
+    - RxNetworks/Plugins/Cache (= 0.4.7)
+    - RxNetworks/Plugins/Debugging (= 0.4.7)
+    - RxNetworks/Plugins/Files (= 0.4.7)
+    - RxNetworks/Plugins/GZip (= 0.4.7)
+    - RxNetworks/Plugins/Header (= 0.4.7)
+    - RxNetworks/Plugins/Indicator (= 0.4.7)
+    - RxNetworks/Plugins/Loading (= 0.4.7)
+    - RxNetworks/Plugins/Shared (= 0.4.7)
+    - RxNetworks/Plugins/Warning (= 0.4.7)
+  - RxNetworks/Plugins/AnimatedLoading (0.4.7):
     - lottie-ios
     - RxNetworks/Core
-  - RxNetworks/Plugins/Cache (0.4.6):
-    - Lemons
+  - RxNetworks/Plugins/Cache (0.4.7):
+    - CacheX
     - RxNetworks/Core
-  - RxNetworks/Plugins/Debugging (0.4.6):
+  - RxNetworks/Plugins/Debugging (0.4.7):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Files (0.4.6):
+  - RxNetworks/Plugins/Files (0.4.7):
     - RxNetworks/Core
-  - RxNetworks/Plugins/GZip (0.4.6):
+  - RxNetworks/Plugins/GZip (0.4.7):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Header (0.4.6):
+  - RxNetworks/Plugins/Header (0.4.7):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Indicator (0.4.6):
+  - RxNetworks/Plugins/Indicator (0.4.7):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Loading (0.4.6):
+  - RxNetworks/Plugins/Loading (0.4.7):
     - MBProgressHUD
     - RxNetworks/Core
-  - RxNetworks/Plugins/Shared (0.4.6):
+  - RxNetworks/Plugins/Shared (0.4.7):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Warning (0.4.6):
+  - RxNetworks/Plugins/Warning (0.4.7):
     - MBProgressHUD
     - RxNetworks/Core
-  - RxNetworks/RxSwift (0.4.6):
+  - RxNetworks/RxSwift (0.4.7):
     - RxNetworks/Core
     - RxSwift
-  - RxRelay (6.5.0):
-    - RxSwift (= 6.5.0)
-  - RxSwift (6.5.0)
+  - RxRelay (6.6.0):
+    - RxSwift (= 6.6.0)
+  - RxSwift (6.6.0)
 
 DEPENDENCIES:
   - RxCocoa
@@ -70,8 +70,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - CacheX
     - HandyJSON
-    - Lemons
     - lottie-ios
     - MBProgressHUD
     - Moya
@@ -84,16 +84,16 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
+  Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
+  CacheX: 21b55a355c8806e3fde0df72ebb705245daa64b5
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  Lemons: 6b7cc5ad1eeb2d5b635f01c0c8bbbbb309502bfa
-  lottie-ios: 809ecf2d460ed650a6aed7aa88b2ec45fab4779c
+  lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
-  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
-  RxNetworks: 8983149ca568a3dc4b9c171bbd6fc8244aac7bb1
-  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
-  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
+  RxNetworks: 0bab0171d999cc7ecbd05bd681e361ddb3ccdc05
+  RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
+  RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
 
 PODFILE CHECKSUM: 985e47ddd45aee2443766be73567aec53a89df4b
 

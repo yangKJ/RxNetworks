@@ -7,7 +7,7 @@
 
 import Foundation
 import Moya
-import Lemons
+import CacheX
 
 /// Network cache plugin type
 public enum NetworkCacheType {
@@ -28,8 +28,8 @@ public enum NetworkCacheType {
     case cacheThenNetwork
 }
 
-/// 缓存插件，基于`YYCache`封装使用
-/// Cache plugin, based on `YYCache` package use
+/// 缓存插件，基于`CacheX`封装使用
+/// Cache plugin, based on `CacheX` package use
 public struct NetworkCachePlugin {
     
     public let options: Options
@@ -49,9 +49,9 @@ extension NetworkCachePlugin {
         /// Network cache plugin type
         let cacheType: NetworkCacheType
         /// Encryption type, default md5
-        let cryptoType: Lemons.CryptoType
+        let cryptoType: CacheX.CryptoType
         /// Storage type, default disk and memory.
-        let cachedOptions: Lemons.CachedOptions
+        let cachedOptions: CacheX.CachedOptions
         
         public init(cacheType: NetworkCacheType, cryptoType: CryptoType = .md5, cachedOptions: CachedOptions = .diskAndMemory) {
             self.cacheType = cacheType
