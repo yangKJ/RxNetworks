@@ -5,12 +5,11 @@
 //  Created by Condy on 2022/6/10.
 //  https://github.com/yangKJ/RxNetworks
 
-import Foundation
 import Alamofire
+import Foundation
 import Moya
 
-extension NetworkAPI {
-    
+public extension NetworkAPI {
     /// Network request
     /// Example:
     ///
@@ -25,13 +24,16 @@ extension NetworkAPI {
     ///   - failure: Failure description, return in the main thread.
     ///   - progress: Progress description
     ///   - queue: Callback queue. If nil - queue from provider initializer will be used.
+    ///   - plugins: Set the plug-ins required for this request separately，eg: cache first page data
     /// - Returns: a `Cancellable` token to cancel the request later.
-    @discardableResult public func HTTPRequest(success: @escaping APISuccess,
-                                               failure: @escaping APIFailure,
-                                               progress: ProgressBlock? = nil,
-                                               queue: DispatchQueue? = nil) -> Cancellable? {
+    @discardableResult func HTTPRequest(success: @escaping APISuccess,
+                                        failure: @escaping APIFailure,
+                                        progress: ProgressBlock? = nil,
+                                        queue: DispatchQueue? = nil,
+                                        plugins: APIPlugins = []) -> Cancellable?
+    {
         let key = self.keyPrefix
-        let plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: plugins)
+        let plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: self.plugins + plugins)
         
         SharedDriver.shared.addedRequestingAPI(self, key: key, plugins: plugins__)
         
@@ -67,14 +69,14 @@ extension NetworkAPI {
             endpointHeaders = endpointHeaders.merging(dict) { $1 }
         }
         let provider = MoyaProvider<MultiTarget>.init(endpointClosure: { _ in
-            return Endpoint.init(url: URL(target: target).absoluteString,
-                                 sampleResponseClosure: { .networkResponse(200, self.sampleData) },
-                                 method: self.method,
-                                 task: endpointTask,
-                                 httpHeaderFields: endpointHeaders)
-        }, stubClosure: { _ in
-            return stubBehavior
-        }, callbackQueue: queue, session: session, plugins: plugins__)
+            Endpoint(url: URL(target: target).absoluteString,
+                     sampleResponseClosure: { .networkResponse(200, self.sampleData) },
+                     method: self.method,
+                     task: endpointTask,
+                     httpHeaderFields: endpointHeaders)
+            }, stubClosure: { _ in
+                stubBehavior
+            }, callbackQueue: queue, session: session, plugins: plugins__)
         
         // 先抛出本地数据
         if let json = try? request.toJSON() {
@@ -114,8 +116,8 @@ extension NetworkAPI {
 }
 
 // MARK: - private methods
+
 extension NetworkAPI {
-    
     /// 最开始配置插件信息
     private func setupConfiguration(plugins: APIPlugins) -> HeadstreamRequest {
         var request = HeadstreamRequest()
@@ -127,7 +129,7 @@ extension NetworkAPI {
     
     /// 最后的输出结果，插件配置处理
     private func setupOutputResult(plugins: APIPlugins, result: APIResponseResult, onNext: @escaping LastNeverCallback) {
-        var lastResult = LastNeverResult.init(result: result, plugins: plugins)
+        var lastResult = LastNeverResult(result: result, plugins: plugins)
         var iterator = plugins.makeIterator()
         func handleLastNever(_ plugin: RxNetworks.PluginSubType?) {
             guard let plugin = plugin else {
@@ -146,12 +148,13 @@ extension NetworkAPI {
                          provider: MoyaProvider<MultiTarget>,
                          success: @escaping APISuccess,
                          failure: @escaping APIFailure,
-                         progress: ProgressBlock? = nil) -> Cancellable {
+                         progress: ProgressBlock? = nil) -> Cancellable
+    {
         let target = MultiTarget.target(self)
         return provider.request(target, progress: progress, completion: { result in
             setupOutputResult(plugins: plugins, result: result) { lastResult in
                 if lastResult.againRequest {
-                    let _ = request(plugins, provider: provider, success: success, failure: failure, progress: progress)
+                    _ = request(plugins, provider: provider, success: success, failure: failure, progress: progress)
                     return
                 }
                 lastResult.mapResult(success: success, failure: failure)
