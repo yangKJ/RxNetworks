@@ -6,15 +6,14 @@
 //  https://github.com/yangKJ/RxNetworks
 
 import Foundation
-@_exported import RxSwift
 import Moya
+@_exported import RxSwift
 
 public typealias APIObservableJSON = RxSwift.Observable<Any>
 
 /// 追加订阅网络方案
 /// Append the subscription network scheme.
-extension NetworkAPI {
-    
+public extension NetworkAPI {
     /// Network request.
     /// Protocol oriented network request, Indicator plugin are added by default
     /// Example:
@@ -30,14 +29,18 @@ extension NetworkAPI {
     ///
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Observable sequence JSON object. May be thrown twice.
-    public func request(callbackQueue: DispatchQueue? = nil) -> APIObservableJSON {
-        var single: APIObservableJSON = APIObservableJSON.create { (observer) in
+    func request(
+        callbackQueue: DispatchQueue? = nil,
+        plugins: APIPlugins = []
+    ) -> APIObservableJSON {
+        var single = APIObservableJSON.create { observer in
             let token = HTTPRequest(success: { json in
                 observer.onNext(json)
                 observer.onCompleted()
             }, failure: { error in
                 observer.onError(error)
-            }, queue: callbackQueue)
+            }, queue: callbackQueue,
+            plugins: plugins)
             return Disposables.create {
                 token?.cancel()
             }
