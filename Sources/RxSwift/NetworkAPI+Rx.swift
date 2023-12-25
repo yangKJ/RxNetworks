@@ -39,8 +39,7 @@ public extension NetworkAPI {
                 observer.onCompleted()
             }, failure: { error in
                 observer.onError(error)
-            }, queue: callbackQueue,
-            plugins: plugins)
+            }, queue: callbackQueue, plugins: plugins)
             return Disposables.create {
                 token?.cancel()
             }

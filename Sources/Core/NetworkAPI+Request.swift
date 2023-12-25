@@ -15,6 +15,7 @@ public extension NetworkAPI {
     ///
     ///     GitHubAPI.userInfo(name: "yangKJ").HTTPRequest(success: { json in
     ///         print(json)
+    ///         let model = Deserialized<Model>.toModel(with: json)
     ///     }, failure: { error in
     ///         print(error.localizedDescription)
     ///     })
@@ -24,14 +25,15 @@ public extension NetworkAPI {
     ///   - failure: Failure description, return in the main thread.
     ///   - progress: Progress description
     ///   - queue: Callback queue. If nil - queue from provider initializer will be used.
-    ///   - plugins: Set the plug-ins required for this request separately，eg: cache first page data
+    ///   - plugins: Set the plug-ins required for this request separately，eg: cache first page data.
     /// - Returns: a `Cancellable` token to cancel the request later.
-    @discardableResult func HTTPRequest(success: @escaping APISuccess,
-                                        failure: @escaping APIFailure,
-                                        progress: ProgressBlock? = nil,
-                                        queue: DispatchQueue? = nil,
-                                        plugins: APIPlugins = []) -> Cancellable?
-    {
+    @discardableResult func HTTPRequest(
+        success: @escaping APISuccess,
+        failure: @escaping APIFailure,
+        progress: ProgressBlock? = nil,
+        queue: DispatchQueue? = nil,
+        plugins: APIPlugins = []
+    ) -> Cancellable? {
         let key = self.keyPrefix
         let plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: self.plugins + plugins)
         
@@ -57,7 +59,6 @@ public extension NetworkAPI {
         }()
         
         let queue = queue ?? {
-            // 自定义并行队列
             DispatchQueue(label: "condy.request.network.queue", attributes: [.concurrent])
         }()
         
@@ -74,9 +75,9 @@ public extension NetworkAPI {
                      method: self.method,
                      task: endpointTask,
                      httpHeaderFields: endpointHeaders)
-            }, stubClosure: { _ in
-                stubBehavior
-            }, callbackQueue: queue, session: session, plugins: plugins__)
+        }, stubClosure: { _ in
+            stubBehavior
+        }, callbackQueue: queue, session: session, plugins: plugins__)
         
         // 先抛出本地数据
         if let json = try? request.toJSON() {
@@ -148,8 +149,7 @@ extension NetworkAPI {
                          provider: MoyaProvider<MultiTarget>,
                          success: @escaping APISuccess,
                          failure: @escaping APIFailure,
-                         progress: ProgressBlock? = nil) -> Cancellable
-    {
+                         progress: ProgressBlock? = nil) -> Cancellable {
         let target = MultiTarget.target(self)
         return provider.request(target, progress: progress, completion: { result in
             setupOutputResult(plugins: plugins, result: result) { lastResult in

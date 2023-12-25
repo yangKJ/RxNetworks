@@ -32,7 +32,10 @@ class SharedViewController: BaseViewController<SharedViewModel> {
     
     func setupBindings() {
         viewModel.data
-            .bind(to: self.textView.rx.text)
+            .subscribe(onNext: { [weak self] content in
+                self?.textView.text = (self?.textView.text ?? "") + "\n" + content
+            })
+            //.bind(to: self.textView.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.testImitateMoreNetwork()
