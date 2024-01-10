@@ -31,10 +31,11 @@ At the moment, the most important features of RxNetworks can be summarized as fo
 How to use [USAGE](USAGE.md).
 
 ```
-SharedAPI.loading("Condy").HTTPRequest(success: { _ in
+SharedAPI.userInfo(name: "yangKJ").HTTPRequest(success: { json in
     // do somthing..
-}, failure: { _ in
-    
+    let model = Deserialized<Model>.toModel(with: json)
+}, failure: { error in
+    print(error.localizedDescription)
 })
 ```
 

@@ -114,10 +114,18 @@ public extension NetworkAPI {
             DispatchQueue.main.async { failure(error) }
         }, progress: progress)
     }
+    
+    @discardableResult
+    func request(plugins: APIPlugins = [], complete: @escaping APIComplete) -> Cancellable? {
+        HTTPRequest(success: { json in
+            complete(.success(json))
+        }, failure: { error in
+            complete(.failure(error))
+        }, plugins: plugins)
+    }
 }
 
 // MARK: - private methods
-
 extension NetworkAPI {
     /// 最开始配置插件信息
     private func setupConfiguration(plugins: APIPlugins) -> HeadstreamRequest {

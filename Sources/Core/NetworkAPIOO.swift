@@ -10,7 +10,7 @@ import Moya
 
 /// 面向对象编程，方便OC小伙伴的使用习惯，备注下面数据必须配套使用。
 /// OOP, Convenient for the usage habits of OC partners
-public struct NetworkAPIOO {
+open class NetworkAPIOO {
     
     /// Request host
     public var cdy_ip: APIHost?
@@ -21,28 +21,27 @@ public struct NetworkAPIOO {
     /// Request type
     public var cdy_method: APIMethod?
     /// Plugin array
-    public var cdy_plugins: APIPlugins?
+    public var cdy_plugins: APIPlugins = []
     /// Failed retry count
     public var cdy_retry: APINumber = 0
     /// Test data, after setting the value of this property, only the test data is taken
     public var cdy_testJSON: String?
     /// Test data return time, the default is half a second
-    public var cdy_testTime: TimeInterval = 0.5
+    public var cdy_testTime: Double = 0.5
     
     public init() { }
+    
+    @discardableResult
+    open func cdy_request(complete: @escaping APIComplete, queue: DispatchQueue? = nil) -> Cancellable? {
+        HTTPRequest(success: { json in
+            complete(.success(json))
+        }, failure: { error in
+            complete(.failure(error))
+        }, queue: queue)
+    }
 }
 
-
-internal struct NetworkObjectAPI: NetworkAPI {
-    
-    var cdy_ip: APIHost?
-    var cdy_path: APIPath?
-    var cdy_parameters: APIParameters?
-    var cdy_method: APIMethod?
-    var cdy_plugins: APIPlugins?
-    var cdy_retry: APINumber?
-    var cdy_stubBehavior: APIStubBehavior?
-    var cdy_test: String?
+extension NetworkAPIOO: NetworkAPI {
     
     public var ip: APIHost {
         return cdy_ip ?? NetworkConfig.baseURL
@@ -61,19 +60,26 @@ internal struct NetworkObjectAPI: NetworkAPI {
     }
     
     public var plugins: APIPlugins {
-        return cdy_plugins ?? []
+        return cdy_plugins
     }
     
     public var retry: APINumber {
-        return cdy_retry ?? 0
+        return cdy_retry
     }
     
     public var stubBehavior: APIStubBehavior {
-        return cdy_stubBehavior ?? StubBehavior.never
+        guard let _ = cdy_testJSON else {
+            return .never
+        }
+        if cdy_testTime > 0 {
+            return .delayed(seconds: cdy_testTime)
+        } else {
+            return .immediate
+        }
     }
     
     public var sampleData: Data {
-        if let json = cdy_test {
+        if let json = cdy_testJSON {
             return json.data(using: String.Encoding.utf8)!
         }
         return "{\"Condy\":\"yangkj310@gmail.com\"}".data(using: String.Encoding.utf8)!

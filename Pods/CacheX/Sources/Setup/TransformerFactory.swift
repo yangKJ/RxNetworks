@@ -29,16 +29,4 @@ struct TransformerFactory<T> {
         }
         return TransformerFactory<T>(toData: toData, fromData: fromData)
     }
-    
-//    static func forTransformeable<T: Transformeable>(_ type: T.Type) -> Transformer<T> {
-//        let toData: (T) throws -> Data = { object in
-//
-//        }
-//
-//        let fromData: (Data) throws -> T = { data in
-//            let decoder = JSONDecoder()
-//            decoder.decode(<#T##type: Decodable.Protocol##Decodable.Protocol#>, from: data)
-//        }
-//        return Transformer<T>(toData: toData, fromData: fromData)
-//    }
 }

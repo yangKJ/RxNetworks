@@ -1,8 +1,8 @@
 PODS:
   - Alamofire (5.8.1)
-  - CacheX (1.0.0)
+  - CacheX (1.0.1)
   - HandyJSON (5.0.2)
-  - lottie-ios (4.3.3)
+  - lottie-ios (4.3.4)
   - MBProgressHUD (1.2.0)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
@@ -84,9 +84,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
-  CacheX: 21b55a355c8806e3fde0df72ebb705245daa64b5
+  CacheX: 916a589e95180513c095f04971dbf13260e41d21
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
+  lottie-ios: 3d98679b41fa6fd6aff2352b3953dbd3df8a397e
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
@@ -96,4 +96,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 985e47ddd45aee2443766be73567aec53a89df4b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.3

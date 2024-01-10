@@ -8,7 +8,7 @@
 import Foundation
 import ObjectiveC
 
-open class StorageModel: Codable { }
+struct StorageModel: Codable { }
 
 /// Compatible with OC to use this cache library.
 /// Some Swift methods, attributes, etc. Cannot be accessed in OC, so the bridge file is established.

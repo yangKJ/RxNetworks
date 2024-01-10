@@ -26,13 +26,12 @@ class OOViewModel: NSObject {
 
 extension OOViewModel.Input {
     func request() -> Observable<String> {
-        var api = NetworkAPIOO.init()
+        let api = NetworkAPIOO.init()
         api.cdy_ip = NetworkConfig.baseURL
         api.cdy_path = "/ip"
         api.cdy_method = APIMethod.get
         api.cdy_plugins = [NetworkLoadingPlugin()]
         api.cdy_retry = self.retry
-        
         return api.cdy_HTTPRequest()
             .asObservable()
             .compactMap{ (($0 as? NSDictionary)?["origin"] as? String) }
