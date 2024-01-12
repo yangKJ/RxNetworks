@@ -3,14 +3,14 @@
 //  RxNetworks
 //
 //  Created by Condy on 2023/10/5.
-//
+//  https://github.com/yangKJ/RxNetworks
 
 import Foundation
 
 public protocol LevelStatusBarWindowShowUpable {
     /// 打开状态
     /// - Parameter superview: 父视图
-    func makeOpenedStatusConstraint(superview: UIView)
+    func makeOpenedStatusConstraint(superview: BOOMINGView)
     
     /// 根据添加设置内容，刷新界面
     func refreshBeforeShow()
@@ -31,17 +31,17 @@ public protocol LevelStatusBarWindowShowUpable {
 }
 
 /// 状态窗口显示器
-open class LevelStatusBarWindowController: UIViewController {
+open class LevelStatusBarWindowController: BOOMINGViewController {
     private var isCalledClose = false
     private var canNotBeCanceled = false
     private var loadingCount: Int = 0
     private lazy var lock = NSLock()
     
-    private lazy var overlay: UIView = {
-        let view = UIView(frame: self.view.bounds)
-        view.backgroundColor = overlayBackgroundColor
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(overlayTap)))
-        view.isUserInteractionEnabled = true
+    private lazy var overlay: BOOMINGView = {
+        let view = BOOMINGView(frame: self.view.bounds)
+//        view.backgroundColor = overlayBackgroundColor
+//        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(overlayTap)))
+//        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -55,9 +55,9 @@ open class LevelStatusBarWindowController: UIViewController {
     /// 外界已经将`showUpView`添加到控制器
     public var addedShowUpView: Bool = false
     
-    public var overlayBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.2) {
+    public var overlayBackgroundColor: BOOMINGColor = .black.withAlphaComponent(0.2) {
         didSet {
-            self.overlay.backgroundColor = overlayBackgroundColor
+            //self.overlay.backgroundColor = overlayBackgroundColor
         }
     }
     
@@ -74,15 +74,21 @@ open class LevelStatusBarWindowController: UIViewController {
         return self.loadingCount
     }
     
+    private var overlayTapCloseBlock: ((LevelStatusBarWindowController) -> Void)?
+    public func setOverlayTapCloseBlock(block: @escaping (LevelStatusBarWindowController) -> Void) {
+        self.overlayTapCloseBlock = block
+    }
+    
+    #if os(iOS) || os(tvOS) || os(watchOS)
     open override var prefersStatusBarHidden: Bool {
-        if let controller = RxNetworks.X.topViewController() {
+        if let controller = X.topViewController() {
             return controller.prefersStatusBarHidden
         }
         return true
     }
     
     open override var preferredStatusBarStyle: UIStatusBarStyle {
-        if let controller = RxNetworks.X.topViewController() {
+        if let controller = X.topViewController() {
             return controller.preferredStatusBarStyle
         }
         return .default
@@ -102,11 +108,6 @@ open class LevelStatusBarWindowController: UIViewController {
         self.showUpView?.makeOpenedStatusConstraint(superview: self.view)
     }
     
-    private var overlayTapCloseBlock: ((LevelStatusBarWindowController) -> Void)?
-    public func setOverlayTapCloseBlock(block: @escaping (LevelStatusBarWindowController) -> Void) {
-        self.overlayTapCloseBlock = block
-    }
-    
     public func show(completion: ((Bool) -> Void)? = nil) {
         Self.controllers.removeAll { $0 == self }
         if let rootViewController = Self.window.rootViewController as? Self, !rootViewController.isCalledClose {
@@ -115,7 +116,7 @@ open class LevelStatusBarWindowController: UIViewController {
         }
         self.showUpView?.refreshBeforeShow()
         if Self.lastKeyWindow != Self.window {
-            Self.lastKeyWindow = RxNetworks.X.keyWindow()
+            Self.lastKeyWindow = X.keyWindow()
         }
         Self.window.isHidden = false
         Self.window.windowLevel = UIWindow.Level.statusBar
@@ -170,8 +171,21 @@ open class LevelStatusBarWindowController: UIViewController {
             overlayTapCloseBlock?(self)
         }
     }
+    #else
+    public func close(animated: Bool = true) {
+        self.isCalledClose = true
+        self.showUpView?.close(animated: animated, animation: { [weak self] in
+            //self?.overlay.alpha = 0
+        }, completion: self.closeCompleted)
+    }
+    
+    private func closeCompleted(_: Bool) {
+        
+    }
+    #endif
 }
 
+#if os(iOS) || os(tvOS) || os(watchOS)
 extension LevelStatusBarWindowController {
     private static let window = UIWindow(frame: UIScreen.main.bounds)
     private static var lastKeyWindow: UIWindow?
@@ -189,3 +203,4 @@ extension LevelStatusBarWindowController {
         cancelAllBackgroundControllersShow()
     }
 }
+#endif

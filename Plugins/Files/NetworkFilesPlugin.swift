@@ -18,7 +18,7 @@ public final class NetworkFilesPlugin {
     
     public enum OperateType {
         /// Upload pictures.
-        case uploadImags([UIImage])
+        case uploadImags([BOOMINGImage])
         /// Upload file.
         case uploadFile(URL)
         /// Upload multipart or form-data.

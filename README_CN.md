@@ -1,8 +1,8 @@
-# RxNetworks
+# Booming
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks)
-[![Releases Compatible](https://img.shields.io/github/release/yangKJ/RxNetworks.svg?style=flat&label=Releases&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks/releases)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/RxNetworks.svg?style=flat&label=CocoaPods&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
+[![Releases Compatible](https://img.shields.io/github/release/yangKJ/Booming.svg?style=flat&label=Releases&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks/releases)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Booming.svg?style=flat&label=CocoaPods&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
 [![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)](#installation)
 
 <font color=red>**🧚. RxSwift + Moya + HandyJSON + Plugins.👒👒👒**</font>
@@ -17,14 +17,14 @@
 该模块主要就是基于moya封装网络相关插件
 
 - 目前已封装8款插件供您使用：
-    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
-    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
-    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
-    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
-    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
-    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/GZip/NetworkGZipPlugin.swift): 解压缩插件
-    - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Shared/NetworkSharedPlugin.swift): 网络共享插件
-    - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
+    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
+    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
+    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
+    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
+    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
+    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/GZip/NetworkGZipPlugin.swift): 解压缩插件
+    - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Shared/NetworkSharedPlugin.swift): 网络共享插件
+    - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
     
 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
 
@@ -254,13 +254,18 @@ class BatchViewModel: NSObject {
 ### CocoaPods Install
 ```
 Ex: 导入网络架构API
-- pod 'RxNetworks/MoyaNetwork'
+- pod 'Booming'
+
+Ex: 导入加载动画插件
+- pod 'Booming'
+- pod 'Booming/Loading'
 
 Ex: 导入数据解析
 - pod 'RxNetworks/HandyJSON'
 
-Ex: 导入加载动画插件
-- pod 'RxNetworks/Plugins/Loading'
+Ex: 导入响应式模块
+- pod 'RxNetworks/RxSwift'
+
 ```
 
 ### 关于作者

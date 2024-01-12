@@ -32,7 +32,7 @@ public final class LastNeverResult {
 
 extension LastNeverResult {
     
-    func mapResult(success: APISuccess? = nil, failure: APIFailure? = nil, progress: ProgressBlock? = nil) {
+    public func mapResult(success: APISuccess? = nil, failure: APIFailure? = nil, progress: ProgressBlock? = nil) {
         if let downloadURL = X.hasNetworkFilesPlugin(plugins) {
             switch result {
             case .success(let response):
@@ -55,7 +55,7 @@ extension LastNeverResult {
         switch result {
         case let .success(response):
             do {
-                let json = try RxNetworks.X.toJSON(with: response)
+                let json = try X.toJSON(with: response)
                 self.mapResult = .success(json)
                 success?(json)
                 progress?(ProgressResponse(response: response))

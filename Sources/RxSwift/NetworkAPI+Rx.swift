@@ -7,7 +7,11 @@
 
 import Foundation
 import Moya
+@_exported import Booming
 @_exported import RxSwift
+//#if canImport(Plugins)
+//@_exported import Plugins
+//#endif
 
 public typealias APIObservableJSON = RxSwift.Observable<Any>
 

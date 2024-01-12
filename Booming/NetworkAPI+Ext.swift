@@ -34,7 +34,7 @@ extension NetworkAPI {
     }
     
     public var keyPrefix: String {
-        let paramString = RxNetworks.X.sortParametersToString(parameters)
+        let paramString = X.sortParametersToString(parameters)
         let string = ip + path + paramString
         let ccharArray = string.cString(using: String.Encoding.utf8)
         var uint8Array = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))

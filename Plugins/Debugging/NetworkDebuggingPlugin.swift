@@ -103,7 +103,7 @@ extension NetworkDebuggingPlugin {
         formatter.locale = Locale.current
         let date = formatter.string(from: Date())
         let parameters = (target as? NetworkAPI)?.parameters
-        let requestLink = RxNetworks.X.requestLink(with: target, parameters: parameters)
+        let requestLink = X.requestLink(with: target, parameters: parameters)
         if let param = parameters, param.isEmpty == false {
             print("""
                   ╔═══════════ 🎈 Request 🎈 ═══════════
@@ -147,7 +147,7 @@ extension NetworkDebuggingPlugin {
         formatter.locale = Locale.current
         let date = formatter.string(from: Date())
         let parameters = (target as? NetworkAPI)?.parameters
-        let requestLink = RxNetworks.X.requestLink(with: target, parameters: parameters)
+        let requestLink = X.requestLink(with: target, parameters: parameters)
         let prefix = """
                   ╔═══════════ 🎈 Request 🎈 ═══════════
                   ║ Time: \(date)

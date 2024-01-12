@@ -34,7 +34,7 @@ extension HeadstreamRequest {
         }
         switch result {
         case .success(let response):
-            return try RxNetworks.X.toJSON(with: response)
+            return try X.toJSON(with: response)
         case .failure(let error):
             throw error
         }

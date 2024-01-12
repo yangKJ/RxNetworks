@@ -35,7 +35,7 @@ public extension NetworkAPI {
         plugins: APIPlugins = []
     ) -> Cancellable? {
         let key = self.keyPrefix
-        let plugins__ = RxNetworks.X.setupPluginsAndKey(key, plugins: self.plugins + plugins)
+        let plugins__ = X.setupPluginsAndKey(key, plugins: self.plugins + plugins)
         
         SharedDriver.shared.addedRequestingAPI(self, key: key, plugins: plugins__)
         
@@ -63,8 +63,8 @@ public extension NetworkAPI {
         }()
         
         let target = MultiTarget.target(self)
-        let endpointTask = RxNetworks.X.hasNetworkFilesPluginTask(key) ?? self.task
-        var endpointHeaders = RxNetworks.X.hasNetworkHttpHeaderPlugin(key) ?? NetworkConfig.baseHeaders
+        let endpointTask = X.hasNetworkFilesPluginTask(key) ?? self.task
+        var endpointHeaders = X.hasNetworkHttpHeaderPlugin(key) ?? NetworkConfig.baseHeaders
         if let dict = self.headers {
             // Merge the dictionaries and take the second value.
             endpointHeaders = endpointHeaders.merging(dict) { $1 }
@@ -85,7 +85,7 @@ public extension NetworkAPI {
         }
         
         // 共享网络插件处理
-        if RxNetworks.X.hasNetworkSharedPlugin(plugins__) {
+        if X.hasNetworkSharedPlugin(plugins__) {
             if let task = SharedDriver.shared.readTask(key: key) {
                 SharedDriver.shared.cacheBlocks(key: key, success: success, failure: failure)
                 return task
@@ -140,7 +140,7 @@ extension NetworkAPI {
     private func setupOutputResult(plugins: APIPlugins, result: APIResponseResult, onNext: @escaping LastNeverCallback) {
         var lastResult = LastNeverResult(result: result, plugins: plugins)
         var iterator = plugins.makeIterator()
-        func handleLastNever(_ plugin: RxNetworks.PluginSubType?) {
+        func handleLastNever(_ plugin: PluginSubType?) {
             guard let plugin = plugin else {
                 onNext(lastResult)
                 return

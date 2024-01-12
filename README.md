@@ -1,11 +1,13 @@
-# RxNetworks
+# Booming
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks)
-[![Releases Compatible](https://img.shields.io/github/release/yangKJ/RxNetworks.svg?style=flat&label=Releases&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks/releases)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/RxNetworks.svg?style=flat&label=CocoaPods&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Booming.svg?style=flat&label=Booming&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/Booming)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/RxNetworks.svg?style=flat&label=RxNetworks&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
 ![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)
 
-**[RxNetworks](https://github.com/yangKJ/RxNetworks)** is a declarative and reactive networking library for Swift. Developed for Swift 5, it aims to make use of the latest language features. The framework's ultimate goal is to enable easy networking that makes it easy to write well-maintainable code.
+**[Booming](https://github.com/yangKJ/RxNetworks)** is a base network library for Swift. Developed for Swift 5, it aims to make use of the latest language features. The framework's ultimate goal is to enable easy networking that makes it easy to write well-maintainable code.
+
+**[RxNetworks](https://github.com/yangKJ/RxNetworks)** is a declarative and reactive networking library for Swift.
 
 <font color=red>**🧚. RxSwift + Moya + HandyJSON + Plugins.👒👒👒**</font>
 
@@ -16,7 +18,7 @@ English | [**简体中文**](README_CN.md)
 This is a network api set of infrastructure based on Moya, also support responsive network with RxSwift.
 
 ## Features
-At the moment, the most important features of RxNetworks can be summarized as follows:
+At the moment, the most important features of Booming can be summarized as follows:
 
 - [x] Support reactive network requests combined with [RxSwift](https://github.com/ReactiveX/RxSwift).
 - [x] Support for OOP also support POP network requests.
@@ -28,7 +30,7 @@ At the moment, the most important features of RxNetworks can be summarized as fo
 - [x] Support 10 plugins have been packaged for you to use.
 
 ### Usages
-How to use [USAGE](USAGE.md).
+How to use [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md).
 
 ```
 SharedAPI.userInfo(name: "yangKJ").HTTPRequest(success: { json in
@@ -43,16 +45,16 @@ SharedAPI.userInfo(name: "yangKJ").HTTPRequest(success: { json in
 This module is mainly based on moya package network related plugins.
 
 - At present, 10 plugins have been packaged for you to use:
-    - [HTTPHeader](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Header/NetworkHttpHeaderPlugin.swift): Network HTTP Header Plugin.
-    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin.
-    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin.
-    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin.
-    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin.
-    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Debugging/NetworkDebuggingPlugin.swift): Network printing, built in plugin.
-    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/GZip/NetworkGZipPlugin.swift): Network data unzip plugin.
-    - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Shared/NetworkSharedPlugin.swift): Network sharing plugin.
-    - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
-    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Plugins/Files/NetworkFilesPlugin.swift): Network Downloading Files And Uploading Resources Plugin.
+    - [HTTPHeader](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Header/NetworkHttpHeaderPlugin.swift): Network HTTP Header Plugin.
+    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin.
+    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin.
+    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin.
+    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin.
+    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Debugging/NetworkDebuggingPlugin.swift): Network printing, built in plugin.
+    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/GZip/NetworkGZipPlugin.swift): Network data unzip plugin.
+    - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Shared/NetworkSharedPlugin.swift): Network sharing plugin.
+    - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
+    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Files/NetworkFilesPlugin.swift): Network Downloading Files And Uploading Resources Plugin.
 
 🏠 Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
 
@@ -109,28 +111,35 @@ func request(_ count: Int) -> Driver<[CacheModel]> {
 [CocoaPods](https://cocoapods.org) is a dependency manager. For usage and installation instructions, visit their website. To integrate using CocoaPods, specify it in your Podfile:
 
 ```
-pod 'RxNetworks'
+pod 'Booming'
 ```
 
 You should define your minimum deployment target explicitly, like: 
 
 ```
-platform :ios, '10.0'
+platform :ios, '11.0'
 ```
 
-If you only want import cache plugin:
+If you want import cache plugin:
 
 ```
-pod 'RxNetworks/Plugins/Cache'
+pod 'Booming'
+pod 'Booming/Cache'
 ```
 
-For other plugins and modules excluded, please read the [podspec](https://github.com/yangKJ/RxNetworks/blob/master/RxNetworks.podspec) file.
+If responsive networking is required:
+
+```
+pod 'RxNetworks/RxSwift'
+```
+
+For other plugins and modules excluded, please read the [podspec](https://github.com/yangKJ/RxNetworks/blob/master/Booming.podspec) file.
 
 ### Remarks
 
 > The general process is almost like this, the Demo is also written in great detail, you can check it out for yourself.🎷
 >
-> [**RxNetworksDemo**](https://github.com/yangKJ/RxNetworks)
+> [**BoomingDemo**](https://github.com/yangKJ/RxNetworks)
 >
 > Tip: If you find it helpful, please help me with a star. If you have any questions or needs, you can also issue.
 >
@@ -156,6 +165,6 @@ Alipay or WeChat. Thanks.
 -----
 
 ### License
-RxNetworks is available under the [MIT](LICENSE) license. See the [LICENSE](LICENSE) file for more info.
+Booming is available under the [MIT](LICENSE) license. See the [LICENSE](LICENSE) file for more info.
 
 -----

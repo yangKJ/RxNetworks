@@ -27,14 +27,8 @@ class LoadingViewController: BaseViewController<LoadingViewModel> {
     }
     
     func setupBindings() {
-        viewModel.data
-            .asObservable()
-            .map { $0["data"] as? String }
-            .subscribe(onNext: { [weak self] in
-                self?.textView.text = $0
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.loadData()
+        viewModel.request { [weak self] text in
+            self?.textView.text = text
+        }
     }
 }

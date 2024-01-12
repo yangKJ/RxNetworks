@@ -1,0 +1,6 @@
+framework module Booming {
+  umbrella header "Booming-umbrella.h"
+
+  export *
+  module * { export * }
+}

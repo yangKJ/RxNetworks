@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.4.8'
-  s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
+  s.version          = '1.0.0'
+  s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Booming.'
   
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -38,14 +38,13 @@ Pod::Spec.new do |s|
   }
   
   s.subspec 'Core' do |xx|
-    xx.source_files = 'Sources/Core/*.swift'
-    xx.dependency 'Moya'
+    xx.dependency 'Booming'
   end
   
   s.subspec 'RxSwift' do |xx|
     xx.source_files = 'Sources/RxSwift/*.swift'
     xx.dependency 'RxSwift'
-    xx.dependency 'RxNetworks/Core'
+    xx.dependency 'Booming'
   end
   
   s.subspec 'HandyJSON' do |xx|
@@ -56,72 +55,34 @@ Pod::Spec.new do |s|
   ################## -- 插件系列 -- ##################
   s.subspec 'Plugins' do |xx|
     xx.subspec 'Indicator' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Indicator/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_INDICATOR',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_INDICATOR=1'
-      }
+      xxx.dependency 'Booming/Indicator'
     end
     xx.subspec 'Debugging' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Debugging/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_DEBUGGING',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_DEBUGGING=1'
-      }
+      xxx.dependency 'Booming/Debugging'
     end
     xx.subspec 'Loading' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Loading/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.ios.dependency 'MBProgressHUD'
+      xxx.dependency 'Booming/Loading'
     end
     xx.subspec 'AnimatedLoading' do |xxx|
-      xxx.source_files = 'Sources/Plugins/AnimatedLoading/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.dependency 'lottie-ios'#, '~> 4.2.0'
+      xxx.dependency 'Booming/AnimatedLoading'
     end
     xx.subspec 'Warning' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Warning/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.ios.dependency 'MBProgressHUD'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_WARNING',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_WARNING=1'
-      }
+      xxx.dependency 'Booming/Warning'
     end
     xx.subspec 'Cache' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Cache/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.dependency 'CacheX'
+      xxx.dependency 'Booming/Cache'
     end
     xx.subspec 'GZip' do |xxx|
-      xxx.source_files = 'Sources/Plugins/GZip/*.swift'
-      xxx.dependency 'RxNetworks/Core'
+      xxx.dependency 'Booming/GZip'
     end
     xx.subspec 'Shared' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Shared/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_SHARED',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_SHARED=1'
-      }
+      xxx.dependency 'Booming/Shared'
     end
     xx.subspec 'Header' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Header/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_HTTPHEADER',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_HTTPHEADER=1'
-      }
+      xxx.dependency 'Booming/Header'
     end
     xx.subspec 'Files' do |xxx|
-      xxx.source_files = 'Sources/Plugins/Files/*.swift'
-      xxx.dependency 'RxNetworks/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RXNETWORKS_PLUGINGS_DOWNLOAD_UPLOAD',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'RXNETWORKS_PLUGINGS_DOWNLOAD_UPLOAD=1'
-      }
+      xxx.dependency 'Booming/Files'
     end
   end
   

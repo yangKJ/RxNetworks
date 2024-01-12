@@ -12,14 +12,8 @@ target 'RxNetworks_Example' do
   
   pod 'RxCocoa'
   
-#  pod 'RxNetworks/Core', :path => './'
-#  pod 'RxNetworks/RxSwift', :path => './'
-#  pod 'RxNetworks/HandyJSON', :path => './'
-#  pod 'RxNetworks/Plugins/Cache', :path => './'
-#  pod 'RxNetworks/Plugins/Loading', :path => './'
-#  pod 'RxNetworks/Plugins/Indicator', :path => './'
-  
   pod 'RxNetworks', :path => './'
+  pod 'Booming', :path => './'
   
 end
 

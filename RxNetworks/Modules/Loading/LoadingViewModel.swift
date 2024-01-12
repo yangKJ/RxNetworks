@@ -7,23 +7,25 @@
 //
 
 import Foundation
+import Booming
 import RxNetworks
 
 class LoadingViewModel: NSObject {
     
-    let disposeBag = DisposeBag()
-    
-    let data = PublishSubject<NSDictionary>()
-    
-    func loadData() {
-        LoadingAPI.test2("666").request()
-            .asObservable()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                if let dict = $0 as? NSDictionary {
-                    self?.data.onNext(dict)
+    func request(block: @escaping (_ text: String?) -> Void) {
+        LoadingAPI.test2("666").request(complete: { result in
+            switch result {
+            case .success(let json):
+                if let model = Deserialized<LoadingModel>.toModel(with: json) {
+                    DispatchQueue.main.async {
+                        block(model.origin)
+                    }
                 }
-            })
-            .disposed(by: disposeBag)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    block(error.localizedDescription)
+                }
+            }
+        })
     }
 }

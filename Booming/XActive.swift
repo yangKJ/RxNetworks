@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - 模块宏定义
-extension RxNetworks.X {
+extension X {
     
     /// 注入默认插件
     static func setupBasePlugins(_ plugins: inout APIPlugins) {
@@ -16,13 +16,13 @@ extension RxNetworks.X {
         if let others = NetworkConfig.basePlugins {
             plugins_ += others
         }
-        #if RXNETWORKS_PLUGINGS_INDICATOR
+        #if BOOMING_PLUGINGS_INDICATOR
         if NetworkConfig.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
             let Indicator = NetworkIndicatorPlugin.shared
             plugins_.insert(Indicator, at: 0)
         }
         #endif
-        #if DEBUG && RXNETWORKS_PLUGINGS_DEBUGGING
+        #if DEBUG && BOOMING_PLUGINGS_DEBUGGING
         if NetworkConfig.addDebugging, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
             let Debugging = NetworkDebuggingPlugin.init()
             plugins_.append(Debugging)
@@ -33,7 +33,7 @@ extension RxNetworks.X {
     
     /// 是否存在共享网络插件
     static func hasNetworkSharedPlugin(_ plugins: APIPlugins) -> Bool {
-        #if RXNETWORKS_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_SHARED
         return plugins.contains(where: { $0 is NetworkSharedPlugin })
         #else
         return false
@@ -42,7 +42,7 @@ extension RxNetworks.X {
     
     /// 是否存在请求头插件
     static func hasNetworkHttpHeaderPlugin(_ key: String) -> [String: String]? {
-        #if RXNETWORKS_PLUGINGS_HTTPHEADER
+        #if BOOMING_PLUGINGS_HTTPHEADER
         let plugins = SharedDriver.shared.readRequestPlugins(key)
         if let p = plugins.first(where: { $0 is NetworkHttpHeaderPlugin }) {
             return (p as? NetworkHttpHeaderPlugin)?.dictionary
@@ -53,7 +53,7 @@ extension RxNetworks.X {
     
     /// 上传下载插件
     static func hasNetworkFilesPluginTask(_ key: String) -> Moya.Task? {
-        #if RXNETWORKS_PLUGINGS_DOWNLOAD_UPLOAD
+        #if BOOMING_PLUGINGS_DOWNLOAD_UPLOAD
         let plugins = SharedDriver.shared.readRequestPlugins(key)
         if let p = plugins.first(where: { $0 is NetworkFilesPlugin }) {
             return (p as? NetworkFilesPlugin)?.task
@@ -62,8 +62,8 @@ extension RxNetworks.X {
         return nil
     }
     
-    static func hasNetworkFilesPlugin(_ plugins: APIPlugins) -> URL? {
-        #if RXNETWORKS_PLUGINGS_DOWNLOAD_UPLOAD
+    public static func hasNetworkFilesPlugin(_ plugins: APIPlugins) -> URL? {
+        #if BOOMING_PLUGINGS_DOWNLOAD_UPLOAD
         if let p = plugins.first(where: { $0 is NetworkFilesPlugin }) {
             return (p as? NetworkFilesPlugin)?.downloadAssetURL
         }
@@ -73,7 +73,7 @@ extension RxNetworks.X {
 }
 
 // MARK: - 网络相关
-extension RxNetworks.X {
+extension X {
     
     static func maxDelayTime(with plugins: APIPlugins) -> Double {
         let times: [Double] = plugins.compactMap {
@@ -99,7 +99,7 @@ extension RxNetworks.X {
         return paramString
     }
     
-    static func requestLink(with target: TargetType, parameters: APIParameters? = nil) -> String {
+    public static func requestLink(with target: TargetType, parameters: APIParameters? = nil) -> String {
         let parameters: APIParameters? = parameters ?? {
             if case .requestParameters(let parame, _) = target.task {
                 return parame
@@ -125,7 +125,7 @@ extension RxNetworks.X {
     
     static func setupPluginsAndKey(_ key: String, plugins: APIPlugins) -> APIPlugins {
         var plugins = plugins
-        RxNetworks.X.setupBasePlugins(&plugins)
+        X.setupBasePlugins(&plugins)
         return plugins.map({
             if var plugin = $0 as? PluginPropertiesable {
                 plugin.plugins = plugins

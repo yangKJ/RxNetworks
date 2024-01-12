@@ -1,27 +1,27 @@
-# RxNetworks
+# Booming
 
 ### Core
 This module is based on the Moya encapsulated network API architecture.
 
 - Mainly divided into parts:
-    - [Configuration](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Core/Configuration.swift): Set the configuration information at the beginning of the program.
+    - [Configuration](https://github.com/yangKJ/RxNetworks/blob/master/Booming/Configuration.swift): Set the configuration information at the beginning of the program.
         - **addDebugging**：Whether to introduce the debug mode plugin by default.
         - **baseURL**: Root path address to base URL.
         - **baseParameters**: Default basic parameters, like: userID, token, etc.
         - **baseMethod**: Default request method type.
         - **updateBaseParametersWithValue**: Update default base parameter value.
-    - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Core/PluginSubType.swift): Inherit and replace the Moya plug-in protocol to facilitate subsequent expansion.
+    - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Booming/PluginSubType.swift): Inherit and replace the Moya plug-in protocol to facilitate subsequent expansion.
          - **configuration**: After setting the network configuration information, this method can be used in scenarios such as throwing data directly when the local cache exists without executing subsequent network requests.
          - **lastNever**: When the last network response is returned, this method can be used in scenarios such as key failure to re-obtain the key and then automatically re-request the network.
-    - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Core/NetworkAPI.swift): Add protocol attributes and encapsulate basic network requests based on TargetType.
+    - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Booming/NetworkAPI.swift): Add protocol attributes and encapsulate basic network requests based on TargetType.
         - **ip**: Root path address to base URL.
         - **parameters**: Request parameters.
         - **plugins**: Set network plugins.
         - **stubBehavior**: Whether to take the test data.
         - **retry**：Network request failure retries.
         - **request**: Network request method and return a Single sequence object.
-    - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Core/NetworkAPI+Ext.swift): Protocol default implementation scheme.
-    - [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Core/NetworkAPIOO.swift): OOP converter, MVP to OOP, convenient for friends who are used to OC thinking
+    - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Booming/NetworkAPI+Ext.swift): Protocol default implementation scheme.
+    - [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Booming/NetworkAPIOO.swift): OOP converter, MVP to OOP, convenient for friends who are used to OC thinking
         - **cdy_ip**: Root path address to base URL.
         - **cdy_path**: Request path.
         - **cdy_parameters**: Request parameters.
@@ -29,7 +29,7 @@ This module is based on the Moya encapsulated network API architecture.
         - **cdy_testJSON**: Network testing json string.
         - **cdy_testTime**: Network test data return time, the default is half a second.
         - **cdy_HTTPRequest**: Network request method and return a Single sequence object.
-    - [X](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Core/X.swift): extension function methods etc.
+    - [X](https://github.com/yangKJ/RxNetworks/blob/master/Booming/X.swift): extension function methods etc.
         - **defaultPlugin**: Add default plugin.
         - **transformAPIObservableJSON**: Transforms a `Observable` sequence JSON object.
         - **handyConfigurationPlugin**: Handles configuration plugins.
@@ -82,44 +82,51 @@ enum LoadingAPI {
 }
 
 extension LoadingAPI: NetworkAPI {
+    
     var ip: APIHost {
         return NetworkConfig.baseURL
     }
     
-    var path: String {
+    var path: APIPath {
         return "/post"
     }
     
     var parameters: APIParameters? {
         switch self {
-        case .test2(let string): return ["key": string]
+        case .test2(let string):
+            return ["key": string]
         }
+    }
+    
+    var plugins: APIPlugins {
+        var options = NetworkLoadingPlugin.Options.init(delay: 2)
+        options.setChangeHudParameters { hud in
+            hud.detailsLabel.text = "Loading"
+            hud.detailsLabel.textColor = UIColor.yellow
+        }
+        let loading = NetworkLoadingPlugin.init(options: options)
+        return [loading]
     }
 }
 
 
 class LoadingViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
     
-    /// Configure the loading animation plugin
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let loading = NetworkLoadingPlugin.init()
-        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
-    }()
-    
-    func loadData() {
-        APIProvider.rx.request(api: LoadingAPI.test2("666"))
-            .asObservable()
-            .subscribe { [weak self] (event) in
-                if let dict = event.element as? NSDictionary {
-                    self?.data.accept(dict)
+    func request(block: @escaping (_ text: String?) -> Void) {
+        LoadingAPI.test2("666").request(complete: { result in
+            switch result {
+            case .success(let json):
+                if let model = Deserialized<LoadingModel>.toModel(with: json) {
+                    DispatchQueue.main.async {
+                        block(model.origin)
+                    }
                 }
-            }.disposed(by: disposeBag)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    block(error.localizedDescription)
+                }
+            }
+        })
     }
 }
 ```
