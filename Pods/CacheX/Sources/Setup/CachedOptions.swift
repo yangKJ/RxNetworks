@@ -37,6 +37,17 @@ extension CachedOptions {
         }
         return nameds
     }
+    
+    func caches() -> [String: Cacheable] {
+        var caches = [String: Cacheable]()
+        if contains(.memory) {
+            caches[Memory.named] = Memory()
+        }
+        if contains(.disk) {
+            caches[Disk.named] = Disk()
+        }
+        return caches
+    }
 }
 
 @objc public enum OCCachedOptions: Int {

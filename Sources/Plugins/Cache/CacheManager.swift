@@ -29,17 +29,29 @@ public struct CacheManager {
         self.maxCostLimit = 0
         self.maxCountLimit = 20 * 1024
         let background = DispatchQueue(label: "com.condy.rx.networks.cached.queue", attributes: [.concurrent])
-        storage = Storage<CacheModel>.init(queue: background)
-        storage.disk.named = self.named
-        storage.disk.expiry = self.expiry
-        storage.disk.maxCountLimit = self.maxCountLimit
-        storage.memory.maxCostLimit = self.maxCostLimit
+        storage = Storage<CacheModel>.init(queue: background, caches: [
+            Disk.named: Disk(),
+            Memory.named: Memory(),
+        ])
+        if var disk = storage.caches[Disk.named] as? Disk {
+            disk.named = self.named
+            disk.expiry = self.expiry
+            disk.maxCountLimit = self.maxCountLimit
+            storage.caches.updateValue(disk, forKey: Disk.named)
+        }
+        if var memory = storage.caches[Memory.named] as? Memory {
+            memory.maxCostLimit = self.maxCostLimit
+            storage.caches.updateValue(memory, forKey: Memory.named)
+        }
     }
     
     /// The name of disk storage, this will be used as folder name within directory.
     public var named: String {
         didSet {
-            storage.disk.named = named
+            if var disk = storage.caches[Disk.named] as? Disk {
+                disk.named = named
+                storage.caches.updateValue(disk, forKey: Disk.named)
+            }
         }
     }
     
@@ -47,14 +59,20 @@ public struct CacheManager {
     /// Default is 1 week ``60 * 60 * 24 * 7 seconds``.
     public var expiry: CacheX.Expiry {
         didSet {
-            storage.disk.expiry = expiry
+            if var disk = storage.caches[Disk.named] as? Disk {
+                disk.expiry = expiry
+                storage.caches.updateValue(disk, forKey: Disk.named)
+            }
         }
     }
     
     /// The maximum total cost that the cache can hold before it starts evicting objects. default 20kb.
     public var maxCountLimit: CacheX.Disk.Byte {
         didSet {
-            storage.disk.maxCountLimit = maxCountLimit
+            if var disk = storage.caches[Disk.named] as? Disk {
+                disk.maxCountLimit = maxCountLimit
+                storage.caches.updateValue(disk, forKey: Disk.named)
+            }
         }
     }
     
@@ -62,14 +80,20 @@ public struct CacheManager {
     /// Default is unlimited. Memory cache will be purged automatically when a memory warning notification is received.
     public var maxCostLimit: UInt = 0 {
         didSet {
-            storage.memory.maxCostLimit = maxCostLimit
+            if var memory = storage.caches[Memory.named] as? Memory {
+                memory.maxCostLimit = maxCostLimit
+                storage.caches.updateValue(memory, forKey: Memory.named)
+            }
         }
     }
     
     /// Get the disk cache size.
     public var totalCost: UInt64 {
         mutating get {
-            return UInt64(storage.disk.totalCost)
+            guard let disk = storage.caches[Disk.named] as? Disk else {
+                return 0
+            }
+            return UInt64(disk.totalCost)
         }
     }
     
@@ -80,8 +104,13 @@ public struct CacheManager {
     
     /// Clear the cache according to key value.
     @discardableResult public func removeObjectCache(_ key: String) -> Bool {
-        let _ = storage.memory.removeCache(key: key)
-        return storage.disk.removeCache(key: key)
+        if let memory = storage.caches[Memory.named] as? Memory {
+            let _ = memory.removeCache(key: key)
+        }
+        if let disk = storage.caches[Disk.named] as? Disk {
+            return disk.removeCache(key: key)
+        }
+        return false
     }
     
     /// Read disk data or memory data.
