@@ -10,8 +10,46 @@ import Moya
 
 public struct X {
     
+    static func window() -> BOOMINGWindow? {
+        #if os(macOS)
+        return NSApplication.shared.mainWindow
+        #else
+        return UIApplication.shared.delegate?.window ?? nil
+        #endif
+    }
+    
+    public static func keyWindow() -> BOOMINGWindow? {
+        #if os(macOS)
+        return NSApplication.shared.keyWindow
+        #else
+        if #available(iOS 13.0, *) {
+            return UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first(where: { $0 is UIWindowScene })
+                .flatMap({ $0 as? UIWindowScene })?.windows
+                .first(where: \.isKeyWindow)
+        } else {
+            return UIApplication.shared.keyWindow
+        }
+        #endif
+    }
+    
+    public static func createWindow() -> BOOMINGWindow {
+        #if os(macOS)
+        let window = NSWindow()
+        window.styleMask = NSWindow.StyleMask(rawValue: 0xf)
+        window.backingType = .buffered
+        let width = NSScreen.main?.frame.midX ?? 1.0
+        let height = NSScreen.main?.frame.midY ?? 1.0
+        window.setFrame(NSRect(x: 0, y: 0, width: width, height: height), display: false)
+        return window
+        #else
+        return UIWindow(frame: UIScreen.main.bounds)
+        #endif
+    }
+    
     /// Maps data received from the signal into a JSON object.
-    public static func mapJSON<T>(_ type: T.Type, named: String, forResource: String = "RxNetworks") -> T? {
+    public static func mapJSON<T>(_ type: T.Type, named: String, forResource: String = "Booming") -> T? {
         guard let data = jsonData(named, forResource: forResource) else {
             return nil
         }
@@ -20,7 +58,7 @@ public struct X {
     }
     
     /// Read json data
-    public static func jsonData(_ named: String, forResource: String = "RxNetworks") -> Data? {
+    public static func jsonData(_ named: String, forResource: String = "Booming") -> Data? {
         let bundle: Bundle?
         if let bundlePath = Bundle.main.path(forResource: forResource, ofType: "bundle") {
             bundle = Bundle.init(path: bundlePath)

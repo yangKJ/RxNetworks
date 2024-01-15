@@ -20,4 +20,24 @@ extension NSImage {
     }
 }
 
+extension NSWindow {
+    var rootViewController: NSViewController? {
+        get {
+            return contentViewController
+        }
+        set {
+            self.contentViewController = newValue
+        }
+    }
+    
+    var isHidden: Bool {
+        get {
+            return canHide
+        }
+        set {
+            self.canHide = newValue
+        }
+    }
+}
+
 #endif

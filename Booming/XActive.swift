@@ -6,6 +6,7 @@
 //  https://github.com/yangKJ/RxNetworks
 
 import Foundation
+import Moya
 
 // MARK: - 模块宏定义
 extension X {
