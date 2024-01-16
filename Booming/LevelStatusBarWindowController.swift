@@ -10,7 +10,7 @@ import Foundation
 public protocol LevelStatusBarWindowShowUpable {
     /// 打开状态
     /// - Parameter superview: 父视图
-    func makeOpenedStatusConstraint(superview: BOOMINGView)
+    func makeOpenedStatusConstraint(superview: ViewType)
     
     /// 根据添加设置内容，刷新界面
     func refreshBeforeShow()
@@ -31,9 +31,9 @@ public protocol LevelStatusBarWindowShowUpable {
 }
 
 /// 状态窗口显示器
-open class LevelStatusBarWindowController: BOOMINGViewController {
-    private static let window: BOOMINGWindow = X.createWindow()
-    private static var lastKeyWindow: BOOMINGWindow?
+open class LevelStatusBarWindowController: ViewControllerType {
+    private static let window: WindowType = X.createWindow()
+    private static var lastKeyWindow: WindowType?
     private static var controllers = [LevelStatusBarWindowController]()
     
     private var isCalledClose = false
@@ -59,9 +59,9 @@ open class LevelStatusBarWindowController: BOOMINGViewController {
     }
     #endif
     
-    private lazy var overlay: BOOMINGView = {
-        let view = BOOMINGView(frame: self.view.bounds)
-        self.setupBackgroundColor(view: view, color: overlayBackgroundColor)
+    private lazy var overlay: ViewType = {
+        let view = ViewType(frame: self.view.bounds)
+        view.backgroundColor = overlayBackgroundColor
         #if os(macOS)
         let click = NSClickGestureRecognizer(target: self, action: #selector(overlayTap))
         view.addGestureRecognizer(click)
@@ -83,9 +83,9 @@ open class LevelStatusBarWindowController: BOOMINGViewController {
     /// 外界已经将`showUpView`添加到控制器
     public var addedShowUpView: Bool = false
     
-    public var overlayBackgroundColor: BOOMINGColor = .black.withAlphaComponent(0.2) {
+    public var overlayBackgroundColor: ColorType = .black.withAlphaComponent(0.2) {
         didSet {
-            setupBackgroundColor(view: self.overlay, color: oldValue)
+            self.overlay.backgroundColor = overlayBackgroundColor
         }
     }
     
@@ -109,18 +109,18 @@ open class LevelStatusBarWindowController: BOOMINGViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupBackgroundColor(view: self.view, color: .clear)
+        self.view.backgroundColor = .clear
         #if os(macOS)
         self.overlay.wantsLayer = true
         #endif
         self.view.addSubview(self.overlay)
         if self.addedShowUpView {
-            if let alertView = self.showUpView as? BOOMINGView {
-                #if os(iOS) || os(tvOS) || os(watchOS)
+            if let alertView = self.showUpView as? ViewType {
+                #if os(iOS) || os(tvOS)
                 self.view.bringSubviewToFront(alertView)
                 #endif
             }
-        } else if let alertView = self.showUpView as? BOOMINGView {
+        } else if let alertView = self.showUpView as? ViewType {
             self.view.addSubview(alertView)
         }
         self.showUpView?.makeOpenedStatusConstraint(superview: self.view)
@@ -152,7 +152,7 @@ open class LevelStatusBarWindowController: BOOMINGViewController {
         self.setupOverlayHidden(hide: true)
         self.showUpView?.show(animated: true, animation: { [weak self] in
             self?.setupOverlayHidden(hide: false)
-            self?.setupBackgroundColor(view: self?.overlay, color: self?.overlayBackgroundColor)
+            self?.overlay.backgroundColor = self?.overlayBackgroundColor
         }, completion: completion)
     }
     
@@ -210,6 +210,14 @@ open class LevelStatusBarWindowController: BOOMINGViewController {
         }
     }
     
+    private func setupOverlayHidden(hide: Bool) {
+        #if os(macOS)
+        self.overlay.isHidden = hide
+        #else
+        self.overlay.alpha = hide ? 0 : 1
+        #endif
+    }
+    
     public static func cancelAllBackgroundControllersShow() {
         Self.controllers = Self.controllers.filter({ $0.canNotBeCanceled })
     }
@@ -220,24 +228,5 @@ open class LevelStatusBarWindowController: BOOMINGViewController {
             Self.window.isHidden = true
         }
         cancelAllBackgroundControllersShow()
-    }
-}
-
-extension LevelStatusBarWindowController {
-    private func setupBackgroundColor(view: BOOMINGView?, color: BOOMINGColor?) {
-        #if os(macOS)
-        view?.layer?.backgroundColor = color?.cgColor
-        view?.needsDisplay = true
-        #else
-        view?.backgroundColor = color
-        #endif
-    }
-    
-    private func setupOverlayHidden(hide: Bool) {
-        #if os(macOS)
-        self.overlay.isHidden = hide
-        #else
-        self.overlay.alpha = hide ? 0 : 1
-        #endif
     }
 }

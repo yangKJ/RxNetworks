@@ -10,7 +10,15 @@ import Moya
 
 public struct X {
     
-    static func window() -> BOOMINGWindow? {
+    public static func mainScale() -> CGFloat {
+        #if os(macOS)
+        return NSScreen.main?.backingScaleFactor ?? 1.0
+        #else
+        return UIScreen.main.scale
+        #endif
+    }
+    
+    static func window() -> WindowType? {
         #if os(macOS)
         return NSApplication.shared.mainWindow
         #else
@@ -18,7 +26,7 @@ public struct X {
         #endif
     }
     
-    public static func keyWindow() -> BOOMINGWindow? {
+    public static func keyWindow() -> WindowType? {
         #if os(macOS)
         return NSApplication.shared.keyWindow
         #else
@@ -34,7 +42,7 @@ public struct X {
         #endif
     }
     
-    public static func createWindow() -> BOOMINGWindow {
+    public static func createWindow() -> WindowType {
         #if os(macOS)
         let window = NSWindow()
         window.styleMask = NSWindow.StyleMask(rawValue: 0xf)

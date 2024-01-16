@@ -42,6 +42,14 @@ Pod::Spec.new do |s|
     s.dependency 'Moya'
   end
   
+  s.subspec 'AnimatedLoading' do |xxx|
+    xxx.source_files = 'Plugins/AnimatedLoading/*.swift'
+    xxx.dependency 'Booming/Core'
+    xxx.dependency 'lottie-ios'
+    xxx.ios.deployment_target = '11.0'
+    xxx.osx.deployment_target = '10.15'
+  end
+  
   s.subspec 'Debugging' do |xxx|
     xxx.source_files = 'Plugins/Debugging/*.swift'
     xxx.dependency 'Booming/Core'
@@ -50,7 +58,7 @@ Pod::Spec.new do |s|
       'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_DEBUGGING=1'
     }
   end
-    
+  
   s.subspec 'Cache' do |xxx|
     xxx.source_files = 'Plugins/Cache/*.swift'
     xxx.dependency 'Booming/Core'
@@ -90,14 +98,6 @@ Pod::Spec.new do |s|
   end
   
   ################## -- ios插件系列 -- ##################
-  s.subspec 'AnimatedLoading' do |xxx|
-    xxx.ios.source_files = 'Plugins/AnimatedLoading/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.ios.dependency 'lottie-ios'#, '~> 4.2.0'
-    xxx.ios.deployment_target = '11.0'
-    #xxx.osx.deployment_target = '10.12'
-  end
-  
   s.subspec 'Loading' do |xxx|
     xxx.ios.source_files = 'Plugins/Loading/*.swift'
     xxx.dependency 'Booming/Core'

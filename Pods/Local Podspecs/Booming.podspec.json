@@ -39,6 +39,22 @@
       "name": "Core"
     },
     {
+      "name": "AnimatedLoading",
+      "source_files": "Plugins/AnimatedLoading/*.swift",
+      "dependencies": {
+        "Booming/Core": [
+
+        ],
+        "lottie-ios": [
+
+        ]
+      },
+      "platforms": {
+        "ios": "11.0",
+        "osx": "10.15"
+      }
+    },
+    {
       "name": "Debugging",
       "source_files": "Plugins/Debugging/*.swift",
       "dependencies": {
@@ -109,25 +125,6 @@
       "pod_target_xcconfig": {
         "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_DOWNLOAD_UPLOAD",
         "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_DOWNLOAD_UPLOAD=1"
-      }
-    },
-    {
-      "name": "AnimatedLoading",
-      "ios": {
-        "source_files": "Plugins/AnimatedLoading/*.swift",
-        "dependencies": {
-          "lottie-ios": [
-
-          ]
-        }
-      },
-      "dependencies": {
-        "Booming/Core": [
-
-        ]
-      },
-      "platforms": {
-        "ios": "11.0"
       }
     },
     {

@@ -7,18 +7,32 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
-public typealias BOOMINGView  = UIView
-public typealias BOOMINGColor = UIColor
-public typealias BOOMINGImage = UIImage
-public typealias BOOMINGViewController = UIViewController
-public typealias BOOMINGWindow = UIWindow
-#elseif os(macOS)
+#if os(macOS)
 import AppKit
-public typealias BOOMINGView  = NSView
-public typealias BOOMINGColor = NSColor
-public typealias BOOMINGImage = NSImage
-public typealias BOOMINGViewController = NSViewController
-public typealias BOOMINGWindow = NSWindow
+public typealias ImageType = NSImage
+public typealias ColorType = NSColor
+public typealias ViewType = NSView
+public typealias ImageViewType = NSImageView
+public typealias LabelType = NSTextField
+public typealias ViewControllerType = NSViewController
+public typealias WindowType = NSWindow
+#else
+import UIKit
+public typealias ImageType = UIImage
+public typealias ColorType = UIColor
+#if !os(watchOS)
+public typealias ViewType = UIView
+public typealias ImageViewType = UIImageView
+public typealias LabelType = UILabel
+public typealias ViewControllerType = UIViewController
+public typealias WindowType = UIWindow
+#if canImport(TVUIKit)
+import TVUIKit
+#endif
+#if canImport(CarPlay) && !targetEnvironment(macCatalyst)
+import CarPlay
+#endif
+#else
+import WatchKit
+#endif
 #endif

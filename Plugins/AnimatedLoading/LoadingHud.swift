@@ -8,15 +8,23 @@
 import Foundation
 import Lottie
 
-final class LoadingHud: UIView {
+final class LoadingHud: ViewType {
     
-    lazy var containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+    lazy var containerView: ViewType = {
+        let view = ViewType()
+        view.backgroundColor = .black.withAlphaComponent(0.7)
+        #if os(macOS)
+        view.wantsLayer = true
+        view.layer?.cornerRadius = 15
+        view.layer?.masksToBounds = true
+        view.layer?.shouldRasterize = true
+        view.layer?.rasterizationScale = X.mainScale()
+        #else
         view.layer.cornerRadius = 15
         view.layer.masksToBounds = true
         view.layer.shouldRasterize = true
-        view.layer.rasterizationScale = UIScreen.main.scale
+        view.layer.rasterizationScale = X.mainScale()
+        #endif
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -24,20 +32,29 @@ final class LoadingHud: UIView {
     lazy var animatedView: LottieAnimationView = {
         let view = LottieAnimationView()
         view.contentMode = .scaleAspectFit
-        view.layer.rasterizationScale = UIScreen.main.scale
+        #if os(macOS)
+        view.layer?.rasterizationScale = X.mainScale()
+        #else
+        view.layer.rasterizationScale = X.mainScale()
+        #endif
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    lazy var textLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.white
+    lazy var textLabel: LabelType = {
+        let label = LabelType()
+        label.textColor = .white
         label.font = .systemFont(ofSize: 14)
-        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "loading.."
+        #if os(macOS)
+        label.layer?.rasterizationScale = X.mainScale()
+        label.maximumNumberOfLines = 0
+        #else
+        label.textAlignment = .center
         label.numberOfLines = 0
-        label.layer.rasterizationScale = UIScreen.main.scale
+        label.layer.rasterizationScale = X.mainScale()
+        #endif
         return label
     }()
     
@@ -98,7 +115,7 @@ final class LoadingHud: UIView {
 
 extension LoadingHud: LevelStatusBarWindowShowUpable {
     
-    func makeOpenedStatusConstraint(superview: UIView) {
+    func makeOpenedStatusConstraint(superview: ViewType) {
         let size = CGSize(width: 100, height: 100)
         let origin = CGPoint(x: superview.center.x - 50, y: superview.center.y - 50)
         self.frame = CGRect(origin: origin, size: size)
@@ -112,9 +129,18 @@ extension LoadingHud: LevelStatusBarWindowShowUpable {
         self.animatedView.play(fromProgress: 0, toProgress: 1, loopMode: LottieLoopMode.loop)
         DispatchQueue.main.async {
             if animated {
+                #if os(macOS)
+                NSAnimationContext.runAnimationGroup({ context in
+                    context.duration = 0.2
+                    animation?()
+                }, completionHandler: {
+                    completion?(true)
+                })
+                #else
                 UIView.animate(withDuration: 0.2, animations: {
                     animation?()
                 }, completion: completion)
+                #endif
             } else {
                 animation?()
                 completion?(true)
@@ -126,9 +152,18 @@ extension LoadingHud: LevelStatusBarWindowShowUpable {
         self.animatedView.stop()
         DispatchQueue.main.async {
             if animated {
+                #if os(macOS)
+                NSAnimationContext.runAnimationGroup({ context in
+                    context.duration = 0.2
+                    animation?()
+                }, completionHandler: {
+                    completion?(true)
+                })
+                #else
                 UIView.animate(withDuration: 0.2, animations: {
                     animation?()
                 }, completion: completion)
+                #endif
             } else {
                 animation?()
                 completion?(true)

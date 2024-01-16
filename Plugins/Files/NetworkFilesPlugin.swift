@@ -18,7 +18,7 @@ public final class NetworkFilesPlugin {
     
     public enum OperateType {
         /// Upload pictures.
-        case uploadImags([BOOMINGImage])
+        case uploadImags([ImageType])
         /// Upload file.
         case uploadFile(URL)
         /// Upload multipart or form-data.
