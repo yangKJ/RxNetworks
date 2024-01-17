@@ -19,6 +19,7 @@ public struct NetworkConfig {
     /// Set the request timeout, the default is 30 seconds
     public static var timeoutIntervalForRequest: Double = 30
     
+    public static var interceptor: RequestInterceptor? = nil
     /// Root path address
     public static var baseURL: APIHost = ""
     /// Default request type, default `post`

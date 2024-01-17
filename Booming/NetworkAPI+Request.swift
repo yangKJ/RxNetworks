@@ -55,7 +55,11 @@ public extension NetworkAPI {
         let session = request.session ?? {
             let configuration = URLSessionConfiguration.af.default
             configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
-            return Moya.Session(configuration: configuration, startRequestsImmediately: false)
+            return Moya.Session(
+                configuration: configuration,
+                startRequestsImmediately: false,
+                interceptor: NetworkConfig.interceptor
+            )
         }()
         
         let queue = queue ?? {

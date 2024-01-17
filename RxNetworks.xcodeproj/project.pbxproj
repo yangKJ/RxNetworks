@@ -33,6 +33,8 @@
 		04F0A888279A465C008534D8 /* GZipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A885279A465C008534D8 /* GZipViewController.swift */; };
 		04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A886279A465C008534D8 /* GZipAPI.swift */; };
 		36ADE5ADE90CB24F23D9B8B5 /* Pods_RxNetworks_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */; };
+		42264D3F2B56DE620044051D /* OAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42264D3D2B56DE620044051D /* OAuthentication.swift */; };
+		42264D402B56DE620044051D /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42264D3E2B56DE620044051D /* OAuthenticator.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* HomeViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -89,6 +91,8 @@
 		04F0A884279A465C008534D8 /* GZipViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewModel.swift; sourceTree = "<group>"; };
 		04F0A885279A465C008534D8 /* GZipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewController.swift; sourceTree = "<group>"; };
 		04F0A886279A465C008534D8 /* GZipAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipAPI.swift; sourceTree = "<group>"; };
+		42264D3D2B56DE620044051D /* OAuthentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthentication.swift; sourceTree = "<group>"; };
+		42264D3E2B56DE620044051D /* OAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* RxNetworks_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxNetworks_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -250,6 +254,15 @@
 			path = Modules/GZip;
 			sourceTree = "<group>";
 		};
+		42264D3C2B56DE620044051D /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				42264D3D2B56DE620044051D /* OAuthentication.swift */,
+				42264D3E2B56DE620044051D /* OAuthenticator.swift */,
+			);
+			path = OAuth;
+			sourceTree = "<group>";
+		};
 		52E8D0F8A548010FC369397B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +379,7 @@
 		8759D02728B328E500C22107 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				42264D3C2B56DE620044051D /* OAuth */,
 				8759D02828B328E500C22107 /* Auth */,
 				874BB9CC2A121A0C00C9DA33 /* Token */,
 			);
@@ -542,6 +556,7 @@
 				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
 				0423350F278E61DE00547494 /* CacheViewController.swift in Sources */,
 				0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */,
+				42264D3F2B56DE620044051D /* OAuthentication.swift in Sources */,
 				04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */,
 				87EDFCD42B4F8292005F3756 /* LoadingModel.swift in Sources */,
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
@@ -549,6 +564,7 @@
 				87124A8D2A1324470049CAC6 /* TokenViewModel.swift in Sources */,
 				874BB9CE2A121A2700C9DA33 /* TokenPlugin.swift in Sources */,
 				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,
+				42264D402B56DE620044051D /* OAuthenticator.swift in Sources */,
 				04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */,
 				87124A872A13243C0049CAC6 /* ClosureViewModel.swift in Sources */,
 				8707F02C29EE8FC80060C94B /* AnimatedLoadingViewController.swift in Sources */,
