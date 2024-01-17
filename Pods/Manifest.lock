@@ -11,51 +11,51 @@ PODS:
   - RxCocoa (6.6.0):
     - RxRelay (= 6.6.0)
     - RxSwift (= 6.6.0)
-  - RxNetworks (0.5.1):
-    - RxNetworks/Core (= 0.5.1)
-    - RxNetworks/HandyJSON (= 0.5.1)
-    - RxNetworks/Plugins (= 0.5.1)
-    - RxNetworks/RxSwift (= 0.5.1)
-  - RxNetworks/Core (0.5.1):
+  - RxNetworks (0.5.2):
+    - RxNetworks/Core (= 0.5.2)
+    - RxNetworks/HandyJSON (= 0.5.2)
+    - RxNetworks/Plugins (= 0.5.2)
+    - RxNetworks/RxSwift (= 0.5.2)
+  - RxNetworks/Core (0.5.2):
     - Moya
-  - RxNetworks/HandyJSON (0.5.1):
+  - RxNetworks/HandyJSON (0.5.2):
     - HandyJSON
-  - RxNetworks/Plugins (0.5.1):
-    - RxNetworks/Plugins/AnimatedLoading (= 0.5.1)
-    - RxNetworks/Plugins/Cache (= 0.5.1)
-    - RxNetworks/Plugins/Debugging (= 0.5.1)
-    - RxNetworks/Plugins/Files (= 0.5.1)
-    - RxNetworks/Plugins/GZip (= 0.5.1)
-    - RxNetworks/Plugins/Header (= 0.5.1)
-    - RxNetworks/Plugins/Indicator (= 0.5.1)
-    - RxNetworks/Plugins/Loading (= 0.5.1)
-    - RxNetworks/Plugins/Shared (= 0.5.1)
-    - RxNetworks/Plugins/Warning (= 0.5.1)
-  - RxNetworks/Plugins/AnimatedLoading (0.5.1):
+  - RxNetworks/Plugins (0.5.2):
+    - RxNetworks/Plugins/AnimatedLoading (= 0.5.2)
+    - RxNetworks/Plugins/Cache (= 0.5.2)
+    - RxNetworks/Plugins/Debugging (= 0.5.2)
+    - RxNetworks/Plugins/Files (= 0.5.2)
+    - RxNetworks/Plugins/GZip (= 0.5.2)
+    - RxNetworks/Plugins/Header (= 0.5.2)
+    - RxNetworks/Plugins/Indicator (= 0.5.2)
+    - RxNetworks/Plugins/Loading (= 0.5.2)
+    - RxNetworks/Plugins/Shared (= 0.5.2)
+    - RxNetworks/Plugins/Warning (= 0.5.2)
+  - RxNetworks/Plugins/AnimatedLoading (0.5.2):
     - lottie-ios
     - RxNetworks/Core
-  - RxNetworks/Plugins/Cache (0.5.1):
+  - RxNetworks/Plugins/Cache (0.5.2):
     - CacheX (~> 1.1.0)
     - RxNetworks/Core
-  - RxNetworks/Plugins/Debugging (0.5.1):
+  - RxNetworks/Plugins/Debugging (0.5.2):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Files (0.5.1):
+  - RxNetworks/Plugins/Files (0.5.2):
     - RxNetworks/Core
-  - RxNetworks/Plugins/GZip (0.5.1):
+  - RxNetworks/Plugins/GZip (0.5.2):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Header (0.5.1):
+  - RxNetworks/Plugins/Header (0.5.2):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Indicator (0.5.1):
+  - RxNetworks/Plugins/Indicator (0.5.2):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Loading (0.5.1):
+  - RxNetworks/Plugins/Loading (0.5.2):
     - MBProgressHUD
     - RxNetworks/Core
-  - RxNetworks/Plugins/Shared (0.5.1):
+  - RxNetworks/Plugins/Shared (0.5.2):
     - RxNetworks/Core
-  - RxNetworks/Plugins/Warning (0.5.1):
+  - RxNetworks/Plugins/Warning (0.5.2):
     - MBProgressHUD
     - RxNetworks/Core
-  - RxNetworks/RxSwift (0.5.1):
+  - RxNetworks/RxSwift (0.5.2):
     - RxNetworks/Core
     - RxSwift
   - RxRelay (6.6.0):
@@ -90,7 +90,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
-  RxNetworks: 98a265825d1764f0f10b422c2c0e50cb80c48ecf
+  RxNetworks: 8eb8dae53d6cd3e48b705a2199a4c77dac35cb37
   RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
   RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
 

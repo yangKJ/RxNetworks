@@ -15,12 +15,12 @@ import Alamofire
 /// It relies on an `Authenticator` type to handle the actual `URLRequest` authentication and `Credential` refresh.
 public class OAuthentication<AuthenticatorType>: RequestInterceptor where AuthenticatorType: Authenticator {
     // MARK: Typealiases
-
+    
     /// Type of credential used to authenticate requests.
     public typealias Credential = AuthenticatorType.Credential
-
+    
     // MARK: Helper Types
-
+    
     /// Type that defines a time window used to identify excessive refresh calls. When enabled, prior to executing a
     /// refresh, the `Authentication` compares the timestamp history of previous refresh calls against the
     /// `RefreshWindow`. If more refreshes have occurred within the refresh window than allowed, the refresh is
@@ -31,10 +31,10 @@ public class OAuthentication<AuthenticatorType>: RequestInterceptor where Authen
         /// `RefreshWindow` represents the past 30 seconds. If more attempts occurred in the past 30 seconds than
         /// `maximumAttempts`, an `.excessiveRefresh` error will be thrown.
         public let interval: TimeInterval
-
+        
         /// Total refresh attempts allowed within `interval` before throwing an `.excessiveRefresh` error.
         public let maximumAttempts: Int
-
+        
         /// Creates a `RefreshWindow` instance from the specified `interval` and `maximumAttempts`.
         ///
         /// - Parameters:
@@ -45,46 +45,46 @@ public class OAuthentication<AuthenticatorType>: RequestInterceptor where Authen
             self.maximumAttempts = maximumAttempts
         }
     }
-
+    
     private struct AdaptOperation {
         let urlRequest: URLRequest
         let session: Session
         let completion: (Result<URLRequest, Error>) -> Void
     }
-
+    
     private enum AdaptResult {
         case adapt(Credential)
         case doNotAdapt(AuthenticationError)
         case adaptDeferred
     }
-
+    
     private struct MutableState {
         var credential: Credential?
-
+        
         var isRefreshing = false
         var refreshTimestamps: [TimeInterval] = []
         var refreshWindow: RefreshWindow?
-
+        
         var adaptOperations: [AdaptOperation] = []
         var requestsToRetry: [(RetryResult) -> Void] = []
     }
-
+    
     // MARK: Properties
-
+    
     /// The `Credential` used to authenticate requests.
     public var credential: Credential? {
         get { $mutableState.credential }
         set { $mutableState.credential = newValue }
     }
-
+    
     let authenticator: AuthenticatorType
     let queue = DispatchQueue(label: "org.alamofire.authentication.inspector")
-
+    
     @Protected
     private var mutableState: MutableState
-
+    
     // MARK: Initialization
-
+    
     /// Creates an `Authentication` instance from the specified parameters.
     ///
     /// A `nil` `RefreshWindow` will result in the `Authentication` not checking for excessive refresh calls.
@@ -100,9 +100,9 @@ public class OAuthentication<AuthenticatorType>: RequestInterceptor where Authen
         self.authenticator = authenticator
         mutableState = MutableState(credential: credential, refreshWindow: refreshWindow)
     }
-
+    
     // MARK: Adapt
-
+    
     public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var authenticatedRequest = urlRequest
         if let credential = mutableState.credential {
@@ -110,56 +110,56 @@ public class OAuthentication<AuthenticatorType>: RequestInterceptor where Authen
         }
         completion(.success(authenticatedRequest))
     }
-
+    
     // MARK: Retry
-
+    
     public func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
         // Do not attempt retry if there was not an original request and response from the server.
         guard let urlRequest = request.request, let response = request.response else {
             completion(.doNotRetry)
             return
         }
-
+        
         // Do not attempt retry unless the `Authenticator` verifies failure was due to authentication error (i.e. 401 status code).
         guard authenticator.didRequest(urlRequest, with: response, failDueToAuthenticationError: error) else {
             completion(.doNotRetry)
             return
         }
-
+        
         // Do not attempt retry if there is no credential.
         guard let credential = credential else {
             let error = AuthenticationError.missingCredential
             completion(.doNotRetryWithError(error))
             return
         }
-
+        
         // Retry the request if the `Authenticator` verifies it was authenticated with a previous credential.
         guard authenticator.isRequest(urlRequest, authenticatedWith: credential) else {
             completion(.retry)
             return
         }
-
+        
         $mutableState.write { mutableState in
             mutableState.requestsToRetry.append(completion)
-
+            
             guard !mutableState.isRefreshing else { return }
-
+            
             refresh(credential, for: session, insideLock: &mutableState)
         }
     }
-
+    
     // MARK: Refresh
-
+    
     private func refresh(_ credential: Credential, for session: Session, insideLock mutableState: inout MutableState) {
         guard !isRefreshExcessive(insideLock: &mutableState) else {
             let error = AuthenticationError.excessiveRefresh
             handleRefreshFailure(error, insideLock: &mutableState)
             return
         }
-
+        
         mutableState.refreshTimestamps.append(ProcessInfo.processInfo.systemUptime)
         mutableState.isRefreshing = true
-
+        
         // Dispatch to queue to hop out of the lock in case authenticator.refresh is implemented synchronously.
         queue.async {
             self.authenticator.refresh(credential, for: session) { result in
@@ -174,49 +174,49 @@ public class OAuthentication<AuthenticatorType>: RequestInterceptor where Authen
             }
         }
     }
-
+    
     private func isRefreshExcessive(insideLock mutableState: inout MutableState) -> Bool {
         guard let refreshWindow = mutableState.refreshWindow else { return false }
-
+        
         let refreshWindowMin = ProcessInfo.processInfo.systemUptime - refreshWindow.interval
-
+        
         let refreshAttemptsWithinWindow = mutableState.refreshTimestamps.reduce(into: 0) { attempts, refreshTimestamp in
             guard refreshWindowMin <= refreshTimestamp else { return }
             attempts += 1
         }
-
+        
         let isRefreshExcessive = refreshAttemptsWithinWindow >= refreshWindow.maximumAttempts
-
+        
         return isRefreshExcessive
     }
-
+    
     private func handleRefreshSuccess(_ credential: Credential, insideLock mutableState: inout MutableState) {
         mutableState.credential = credential
-
+        
         let adaptOperations = mutableState.adaptOperations
         let requestsToRetry = mutableState.requestsToRetry
-
+        
         mutableState.adaptOperations.removeAll()
         mutableState.requestsToRetry.removeAll()
-
+        
         mutableState.isRefreshing = false
-
+        
         // Dispatch to queue to hop out of the mutable state lock
         queue.async {
             adaptOperations.forEach { self.adapt($0.urlRequest, for: $0.session, completion: $0.completion) }
             requestsToRetry.forEach { $0(.retry) }
         }
     }
-
+    
     private func handleRefreshFailure(_ error: Error, insideLock mutableState: inout MutableState) {
         let adaptOperations = mutableState.adaptOperations
         let requestsToRetry = mutableState.requestsToRetry
-
+        
         mutableState.adaptOperations.removeAll()
         mutableState.requestsToRetry.removeAll()
-
+        
         mutableState.isRefreshing = false
-
+        
         // Dispatch to queue to hop out of the mutable state lock
         queue.async {
             adaptOperations.forEach { $0.completion(.failure(error)) }
@@ -241,7 +241,7 @@ extension Lock {
         lock(); defer { unlock() }
         return try closure()
     }
-
+    
     /// Execute a closure while acquiring the lock.
     ///
     /// - Parameter closure: The closure to run.
@@ -261,21 +261,21 @@ extension NSLock: Lock {}
 /// An `os_unfair_lock` wrapper.
 final class UnfairLock: Lock {
     private let unfairLock: os_unfair_lock_t
-
+    
     init() {
         unfairLock = .allocate(capacity: 1)
         unfairLock.initialize(to: os_unfair_lock())
     }
-
+    
     deinit {
         unfairLock.deinitialize(count: 1)
         unfairLock.deallocate()
     }
-
+    
     fileprivate func lock() {
         os_unfair_lock_lock(unfairLock)
     }
-
+    
     fileprivate func unlock() {
         os_unfair_lock_unlock(unfairLock)
     }
@@ -286,29 +286,29 @@ final class UnfairLock: Lock {
 @propertyWrapper
 @dynamicMemberLookup
 final class Protected<T> {
-    #if canImport(Darwin)
+#if canImport(Darwin)
     private let lock = UnfairLock()
-    #elseif os(Linux) || os(Windows) || os(Android)
+#elseif os(Linux) || os(Windows) || os(Android)
     private let lock = NSLock()
-    #endif
+#endif
     private var value: T
-
+    
     init(_ value: T) {
         self.value = value
     }
-
+    
     /// The contained value. Unsafe for anything more than direct read or write.
     var wrappedValue: T {
         get { lock.around { value } }
         set { lock.around { value = newValue } }
     }
-
+    
     var projectedValue: Protected<T> { self }
-
+    
     init(wrappedValue: T) {
         value = wrappedValue
     }
-
+    
     /// Synchronously read or transform the contained value.
     ///
     /// - Parameter closure: The closure to execute.
@@ -317,7 +317,7 @@ final class Protected<T> {
     func read<U>(_ closure: (T) throws -> U) rethrows -> U {
         try lock.around { try closure(self.value) }
     }
-
+    
     /// Synchronously modify the protected value.
     ///
     /// - Parameter closure: The closure to execute.
@@ -327,12 +327,12 @@ final class Protected<T> {
     func write<U>(_ closure: (inout T) throws -> U) rethrows -> U {
         try lock.around { try closure(&self.value) }
     }
-
+    
     subscript<Property>(dynamicMember keyPath: WritableKeyPath<T, Property>) -> Property {
         get { lock.around { value[keyPath: keyPath] } }
         set { lock.around { value[keyPath: keyPath] = newValue } }
     }
-
+    
     subscript<Property>(dynamicMember keyPath: KeyPath<T, Property>) -> Property {
         lock.around { value[keyPath: keyPath] }
     }
