@@ -15,7 +15,7 @@ public struct OAuthCredential: AuthenticationCredential {
     let refreshToken: String
     let uid: String
     let expiration: Date
-
+    
     // 这里我们在有效期即将过期的5分钟返回需要刷新
     public var requiresRefresh: Bool { Date(timeIntervalSinceNow: 60 * 5) > expiration }
     
@@ -86,12 +86,12 @@ extension OAuthCredential {
         }
         self.isLoging = true
         /*
-        let para = R_BizMaster.PRLogin {
-            self.isLoging = false
-        }
-        DispatchQueue.main.async {
-            Mediator.shared.present(R_BizMaster.login, context: para)
-        }
+         let para = R_BizMaster.PRLogin {
+         self.isLoging = false
+         }
+         DispatchQueue.main.async {
+         Mediator.shared.present(R_BizMaster.login, context: para)
+         }
          */
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.isLoging = false
@@ -119,8 +119,8 @@ public class OAuthenticator: Authenticator {
     }
     /// 实现刷新流程
     public func refresh(_ credential: OAuthCredential,
-                 for session: Session,
-                 completion: @escaping (Result<OAuthCredential, Error>) -> Void) {
+                        for session: Session,
+                        completion: @escaping (Result<OAuthCredential, Error>) -> Void) {
         let __error = NSError(domain: "", code: 401)
         if !credential.isLogined {
             /// 未登录时，去登录
@@ -136,25 +136,25 @@ public class OAuthenticator: Authenticator {
         } else if !credential.refreshToken.isEmpty {
             /// 已登录的情况下，还返回 401 说明登录过期，刷新 token
             /*
-            _ = ApiLogin.refresh_token(credential.refreshToken)
-                .request()
-                .decode(ApiResponse<MLogin>.self)
-                .subscribe(onNext: { response in
-                    guard let info = response.data else {
-                        OAuthCredential.logout()
-                        completion(.failure(__error))
-                        return
-                    }
-                    OAuthCredential.login(
-                        accessToken: info.access_token,
-                        refreshToken: info.refresh_token,
-                        uid: credential.uid
-                    )
-                    let __credential = OAuthCredential.restore()
-                    completion(.success(__credential))
-                }, onError: { error in
-                    completion(.failure(error))
-                })
+             _ = ApiLogin.refresh_token(credential.refreshToken)
+             .request()
+             .decode(ApiResponse<MLogin>.self)
+             .subscribe(onNext: { response in
+             guard let info = response.data else {
+             OAuthCredential.logout()
+             completion(.failure(__error))
+             return
+             }
+             OAuthCredential.login(
+             accessToken: info.access_token,
+             refreshToken: info.refresh_token,
+             uid: credential.uid
+             )
+             let __credential = OAuthCredential.restore()
+             completion(.success(__credential))
+             }, onError: { error in
+             completion(.failure(error))
+             })
              */
             /// 请修改以上注释部分代码
             OAuthCredential.login(
@@ -168,13 +168,13 @@ public class OAuthenticator: Authenticator {
             completion(.failure(__error))
         }
     }
-
+    
     public func didRequest(_ urlRequest: URLRequest,
-                    with response: HTTPURLResponse,
-                    failDueToAuthenticationError error: Error) -> Bool {
+                           with response: HTTPURLResponse,
+                           failDueToAuthenticationError error: Error) -> Bool {
         return response.statusCode == 401
     }
-
+    
     public func isRequest(_ urlRequest: URLRequest, authenticatedWith credential: OAuthCredential) -> Bool {
         if (!credential.isLogined) {
             // 去刷新 token 或者登录

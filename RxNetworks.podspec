@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
   s.version          = '1.0.0'
-  s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Booming.'
+  s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
