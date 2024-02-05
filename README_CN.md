@@ -16,7 +16,7 @@
 ### 内置插件
 该模块主要就是基于moya封装网络相关插件
 
-- 目前已封装8款插件供您使用：
+- 目前已封装10款插件供您使用：
     - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
     - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
     - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
@@ -24,7 +24,9 @@
     - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
     - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/GZip/NetworkGZipPlugin.swift): 解压缩插件
     - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Shared/NetworkSharedPlugin.swift): 网络共享插件
-    - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
+    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
+    - [Header](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Header/NetworkHttpHeaderPlugin.swift): 网络HTTP头插件
+    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Files/NetworkFilesPlugin.swift): 网络下载文件和上传资源插件
     
 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
 

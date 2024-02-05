@@ -45,16 +45,18 @@ SharedAPI.userInfo(name: "yangKJ").HTTPRequest(success: { json in
 This module is mainly based on moya package network related plugins.
 
 - At present, 10 plugins have been packaged for you to use:
-    - [HTTPHeader](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Header/NetworkHttpHeaderPlugin.swift): Network HTTP Header Plugin.
+    - [Header](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Header/NetworkHttpHeaderPlugin.swift): Network HTTP Header Plugin.
     - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin.
-    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin.
-    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin.
-    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin.
     - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Debugging/NetworkDebuggingPlugin.swift): Network printing, built in plugin.
     - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/GZip/NetworkGZipPlugin.swift): Network data unzip plugin.
     - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Shared/NetworkSharedPlugin.swift): Network sharing plugin.
-    - [AnimatedLoading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
+    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
     - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Files/NetworkFilesPlugin.swift): Network Downloading Files And Uploading Resources Plugin.
+    
+For ios platform:    
+- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin.
+- [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin.
+- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin.
 
 🏠 Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
 
