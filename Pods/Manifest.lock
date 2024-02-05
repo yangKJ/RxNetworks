@@ -1,36 +1,36 @@
 PODS:
   - Alamofire (5.8.1)
-  - Booming (1.0.0):
-    - Booming/Core (= 1.0.0)
-  - Booming/Cache (1.0.0):
+  - Booming (1.0.1):
+    - Booming/Core (= 1.0.1)
+  - Booming/Cache (1.0.1):
     - Booming/Core
     - CacheX (~> 1.1.0)
-  - Booming/Core (1.0.0):
+  - Booming/Core (1.0.1):
     - Moya
-  - Booming/Debugging (1.0.0):
+  - Booming/Debugging (1.0.1):
     - Booming/Core
-  - Booming/Files (1.0.0):
+  - Booming/Files (1.0.1):
     - Booming/Core
-  - Booming/GZip (1.0.0):
+  - Booming/GZip (1.0.1):
     - Booming/Core
-  - Booming/Header (1.0.0):
+  - Booming/Header (1.0.1):
     - Booming/Core
-  - Booming/Indicator (1.0.0):
+  - Booming/Indicator (1.0.1):
     - Booming/Core
-  - Booming/Loading (1.0.0):
+  - Booming/Loading (1.0.1):
     - Booming/Core
     - MBProgressHUD
-  - Booming/Lottie (1.0.0):
+  - Booming/Lottie (1.0.1):
     - Booming/Core
     - lottie-ios
-  - Booming/Shared (1.0.0):
+  - Booming/Shared (1.0.1):
     - Booming/Core
-  - Booming/Warning (1.0.0):
+  - Booming/Warning (1.0.1):
     - Booming/Core
     - MBProgressHUD
   - CacheX (1.1.0)
   - HandyJSON (5.0.2)
-  - lottie-ios (4.3.4)
+  - lottie-ios (4.4.0)
   - MBProgressHUD (1.2.0)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
@@ -39,48 +39,48 @@ PODS:
   - RxCocoa (6.6.0):
     - RxRelay (= 6.6.0)
     - RxSwift (= 6.6.0)
-  - RxNetworks (1.0.0):
-    - RxNetworks/Core (= 1.0.0)
-    - RxNetworks/HandyJSON (= 1.0.0)
-    - RxNetworks/Plugins (= 1.0.0)
-    - RxNetworks/RxSwift (= 1.0.0)
-  - RxNetworks/Core (1.0.0):
-    - Booming
-  - RxNetworks/HandyJSON (1.0.0):
+  - RxNetworks (1.0.1):
+    - RxNetworks/Core (= 1.0.1)
+    - RxNetworks/HandyJSON (= 1.0.1)
+    - RxNetworks/Plugins (= 1.0.1)
+    - RxNetworks/RxSwift (= 1.0.1)
+  - RxNetworks/Core (1.0.1):
+    - Booming/Core
+  - RxNetworks/HandyJSON (1.0.1):
     - HandyJSON
-  - RxNetworks/Plugins (1.0.0):
-    - RxNetworks/Plugins/AnimatedLoading (= 1.0.0)
-    - RxNetworks/Plugins/Cache (= 1.0.0)
-    - RxNetworks/Plugins/Debugging (= 1.0.0)
-    - RxNetworks/Plugins/Files (= 1.0.0)
-    - RxNetworks/Plugins/GZip (= 1.0.0)
-    - RxNetworks/Plugins/Header (= 1.0.0)
-    - RxNetworks/Plugins/Indicator (= 1.0.0)
-    - RxNetworks/Plugins/Loading (= 1.0.0)
-    - RxNetworks/Plugins/Shared (= 1.0.0)
-    - RxNetworks/Plugins/Warning (= 1.0.0)
-  - RxNetworks/Plugins/AnimatedLoading (1.0.0):
+  - RxNetworks/Plugins (1.0.1):
+    - RxNetworks/Plugins/AnimatedLoading (= 1.0.1)
+    - RxNetworks/Plugins/Cache (= 1.0.1)
+    - RxNetworks/Plugins/Debugging (= 1.0.1)
+    - RxNetworks/Plugins/Files (= 1.0.1)
+    - RxNetworks/Plugins/GZip (= 1.0.1)
+    - RxNetworks/Plugins/Header (= 1.0.1)
+    - RxNetworks/Plugins/Indicator (= 1.0.1)
+    - RxNetworks/Plugins/Loading (= 1.0.1)
+    - RxNetworks/Plugins/Shared (= 1.0.1)
+    - RxNetworks/Plugins/Warning (= 1.0.1)
+  - RxNetworks/Plugins/AnimatedLoading (1.0.1):
     - Booming/Lottie
-  - RxNetworks/Plugins/Cache (1.0.0):
+  - RxNetworks/Plugins/Cache (1.0.1):
     - Booming/Cache
-  - RxNetworks/Plugins/Debugging (1.0.0):
+  - RxNetworks/Plugins/Debugging (1.0.1):
     - Booming/Debugging
-  - RxNetworks/Plugins/Files (1.0.0):
+  - RxNetworks/Plugins/Files (1.0.1):
     - Booming/Files
-  - RxNetworks/Plugins/GZip (1.0.0):
+  - RxNetworks/Plugins/GZip (1.0.1):
     - Booming/GZip
-  - RxNetworks/Plugins/Header (1.0.0):
+  - RxNetworks/Plugins/Header (1.0.1):
     - Booming/Header
-  - RxNetworks/Plugins/Indicator (1.0.0):
+  - RxNetworks/Plugins/Indicator (1.0.1):
     - Booming/Indicator
-  - RxNetworks/Plugins/Loading (1.0.0):
+  - RxNetworks/Plugins/Loading (1.0.1):
     - Booming/Loading
-  - RxNetworks/Plugins/Shared (1.0.0):
+  - RxNetworks/Plugins/Shared (1.0.1):
     - Booming/Shared
-  - RxNetworks/Plugins/Warning (1.0.0):
+  - RxNetworks/Plugins/Warning (1.0.1):
     - Booming/Warning
-  - RxNetworks/RxSwift (1.0.0):
-    - Booming
+  - RxNetworks/RxSwift (1.0.1):
+    - RxNetworks/Core
     - RxSwift
   - RxRelay (6.6.0):
     - RxSwift (= 6.6.0)
@@ -111,14 +111,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
-  Booming: 01652c1f65a469e650934d9a0c6928fdea427cc8
+  Booming: a597edd5927ca2bedecb82bfea27b7586265ebbe
   CacheX: 8db0e9d17717600be0b5c34bde7bc7522dbd9a3a
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  lottie-ios: 3d98679b41fa6fd6aff2352b3953dbd3df8a397e
+  lottie-ios: ef1be1f90d54255f08e09d767950e43714661178
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
-  RxNetworks: 17734394bda7fa656cff0a9250095b46b40b007f
+  RxNetworks: 37aae47cb4c3f040a97fa805ab4402429df5025c
   RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
   RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
 

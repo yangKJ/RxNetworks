@@ -8,9 +8,11 @@
 import Foundation
 import Alamofire
 
+public typealias NetworkConfig = Configuration
+
 /// 网络配置信息，只需要在程序开启的时刻配置一次
 /// Network configuration information, only need to be configured once when the program is started
-public struct NetworkConfig {
+public struct Configuration {
     
     /// Whether to add the Debugging plugin by default
     public static var addDebugging: Bool = false
@@ -44,12 +46,12 @@ public struct NetworkConfig {
     ///   - value: Update value
     ///   - key: Update key
     public static func updateBaseParametersWithValue(_ value: AnyObject?, key: String) {
-        var dict = NetworkConfig.baseParameters
+        var dict = Self.baseParameters
         if let value = value {
             dict.updateValue(value, forKey: key)
         } else {
             dict.removeValue(forKey: key)
         }
-        NetworkConfig.baseParameters = dict
+        Self.baseParameters = dict
     }
 }

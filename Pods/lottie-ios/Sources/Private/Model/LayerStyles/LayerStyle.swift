@@ -1,8 +1,6 @@
 // Created by Cal Stephens on 8/14/23.
 // Copyright © 2023 Airbnb Inc. All rights reserved.
 
-import Foundation
-
 // MARK: - LayerStyleType
 
 enum LayerStyleType: Int, Codable, Sendable {
@@ -63,7 +61,7 @@ class LayerStyle: Codable, DictionaryInitializable {
   }
 }
 
-extension Array where Element == LayerStyle {
+extension [LayerStyle] {
   static func fromDictionaries(_ dictionaries: [[String: Any]]) throws -> [LayerStyle] {
     try dictionaries.compactMap { dictionary in
       let shapeType = dictionary[LayerStyle.CodingKeys.type.rawValue] as? Int
@@ -82,4 +80,5 @@ extension Array where Element == LayerStyle {
 
 /// Since `LayerStyle` isn't `final`, we have to use `@unchecked Sendable` instead of `Sendable.`
 /// All `LayerStyle` subclasses are immutable `Sendable` values.
+// swiftlint:disable:next no_unchecked_sendable
 extension LayerStyle: @unchecked Sendable { }

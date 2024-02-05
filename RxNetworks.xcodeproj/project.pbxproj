@@ -125,8 +125,8 @@
 		874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		8759D02928B328E500C22107 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		876E046629EE35F500A7CF1C /* testLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testLoading.json; sourceTree = "<group>"; };
-		87E9B23D2B70B3D100B0012C /* RxNetworks.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = RxNetworks.podspec; sourceTree = SOURCE_ROOT; };
-		87E9B23E2B70B3D100B0012C /* Booming.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = Booming.podspec; sourceTree = SOURCE_ROOT; };
+		87E9B23D2B70B3D100B0012C /* RxNetworks.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = RxNetworks.podspec; sourceTree = SOURCE_ROOT; };
+		87E9B23E2B70B3D100B0012C /* Booming.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Booming.podspec; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		87EDFCD32B4F8292005F3756 /* LoadingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingModel.swift; sourceTree = "<group>"; };
 		98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworks_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.debug.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.debug.xcconfig"; sourceTree = "<group>"; };

@@ -3,11 +3,11 @@
 //  RxNetworks
 //
 //  Created by Condy on 2024/1/1.
-//
+//  https://github.com/yangKJ/RxNetworks
 
 import Foundation
 
-#if os(macOS)
+#if canImport(AppKit)
 import AppKit
 
 extension NSImage {

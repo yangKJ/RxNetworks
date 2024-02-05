@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Booming'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Network Api Library.'
   
   # This description is used to generate tags and improve search results.
@@ -27,9 +27,9 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
   s.osx.deployment_target = '10.13'
   s.swift_version    = '5.0'
-  s.cocoapods_version = '>= 1.4.0'
   s.requires_arc     = true
   s.static_framework = true
+  s.cocoapods_version = '>= 1.4.0'
   
   s.pod_target_xcconfig = {
     'SWIFT_WHOLE_MODULE_OPTIMIZATION' => 'YES',
@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'Lottie' do |xxx|
-    xxx.source_files = 'Plugins/AnimatedLoading/*.swift'
+    xxx.source_files = 'Plugins/Lottie/*.swift'
     xxx.dependency 'Booming/Core'
     xxx.dependency 'lottie-ios'
     xxx.ios.deployment_target = '11.0'

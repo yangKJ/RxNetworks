@@ -24,7 +24,7 @@
     - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
     - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/GZip/NetworkGZipPlugin.swift): 解压缩插件
     - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Shared/NetworkSharedPlugin.swift): 网络共享插件
-    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
+    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Lottie/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
     - [Header](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Header/NetworkHttpHeaderPlugin.swift): 网络HTTP头插件
     - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Files/NetworkFilesPlugin.swift): 网络下载文件和上传资源插件
     

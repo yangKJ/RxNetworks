@@ -33,7 +33,7 @@ public extension NetworkAPI {
         progress: ProgressBlock? = nil,
         queue: DispatchQueue? = nil,
         plugins: APIPlugins = []
-    ) -> Cancellable? {
+    ) -> Moya.Cancellable? {
         let key = self.keyPrefix
         let plugins__ = X.setupPluginsAndKey(key, plugins: self.plugins + plugins)
         
@@ -120,7 +120,7 @@ public extension NetworkAPI {
     }
     
     @discardableResult
-    func request(plugins: APIPlugins = [], complete: @escaping APIComplete) -> Cancellable? {
+    func request(plugins: APIPlugins = [], complete: @escaping APIComplete) -> Moya.Cancellable? {
         HTTPRequest(success: { json in
             complete(.success(json))
         }, failure: { error in

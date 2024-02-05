@@ -26,13 +26,27 @@ At the moment, the most important features of Booming can be summarized as follo
 - [x] Support configuration of general request and path, general parameters, etc.
 - [x] Support simple customization of various network plugins for [Moya](https://github.com/Moya/Moya).
 - [x] Support uploading and downloading files/resources and so on.
-- [x] Support for injecting default plugins with `NetworkConfig.basePlugins`.
+- [x] Support for added default plugins with `NetworkConfig.basePlugins`.
+- [x] Support setup authorization certificate with Alamofire [RequestInterceptor](https://github.com/Alamofire/Alamofire/blob/master/Source/Features/RequestInterceptor.swift).
+- [x] Support automatic managed loading hud with `NetworkConfig.lastCompleteAndCloseLoadingHUDs`.
 - [x] Support 10 plugins have been packaged for you to use.
 
 ### Usages
 How to use [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md).
 
 ```
+TokenAPI.auth.request(complete: { res in
+    switch res {
+    case let .success(json):
+        // do somthing..
+        let model = Deserialized<Model>.toModel(with: json)
+    case let .failure(error):    
+        print(error.localizedDescription)
+    }
+})
+
+or
+
 SharedAPI.userInfo(name: "yangKJ").HTTPRequest(success: { json in
     // do somthing..
     let model = Deserialized<Model>.toModel(with: json)
@@ -50,15 +64,19 @@ This module is mainly based on moya package network related plugins.
     - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Debugging/NetworkDebuggingPlugin.swift): Network printing, built in plugin.
     - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/GZip/NetworkGZipPlugin.swift): Network data unzip plugin.
     - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Shared/NetworkSharedPlugin.swift): Network sharing plugin.
-    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/AnimatedLoading/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
-    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Files/NetworkFilesPlugin.swift): Network Downloading Files And Uploading Resources Plugin.
+    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Lottie/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
+    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Files/NetworkFilesPlugin.swift): Network downloading files And Uploading resources plugin.
     
 For ios platform:    
-- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin.
+- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift): Loading animation plugin.
 - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin.
 - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin.
 
-🏠 Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
+If you want to use token plugin and auth plugin you can refer to the project use case.    
+- [Token](https://github.com/yangKJ/RxNetworks/blob/master/RxNetworks/Plugins/Token/TokenPlugin.swift): Token verify plugin.
+- [Auth](https://github.com/yangKJ/RxNetworks/blob/master/RxNetworks/Plugins/Auth/AuthPlugin.swift): Authorization plugin.
+
+🎷 Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
 
 ```
 var plugins: APIPlugins {

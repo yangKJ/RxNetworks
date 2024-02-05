@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
@@ -30,21 +30,15 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.module_name      = 'RxNetworks'
   s.ios.source_files = 'Sources/RxNetworks.h'
-  #s.default_subspec  = "Core"
-  
-  s.pod_target_xcconfig = {
-    'SWIFT_WHOLE_MODULE_OPTIMIZATION' => 'YES',
-    "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
-  }
   
   s.subspec 'Core' do |xx|
-    xx.dependency 'Booming'
+    xx.dependency 'Booming/Core'
   end
   
   s.subspec 'RxSwift' do |xx|
     xx.source_files = 'Sources/RxSwift/*.swift'
     xx.dependency 'RxSwift'
-    xx.dependency 'Booming'
+    xx.dependency 'RxNetworks/Core'
   end
   
   s.subspec 'HandyJSON' do |xx|

@@ -1,6 +1,6 @@
 {
   "name": "Booming",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "summary": "Network Api Library.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/yangKJ/RxNetworks.git",
-    "tag": "1.0.0"
+    "tag": "1.0.1"
   },
   "social_media_url": "https://juejin.cn/user/1987535102554472/posts",
   "platforms": {
@@ -21,9 +21,9 @@
     "osx": "10.13"
   },
   "swift_versions": "5.0",
-  "cocoapods_version": ">= 1.4.0",
   "requires_arc": true,
   "static_framework": true,
+  "cocoapods_version": ">= 1.4.0",
   "pod_target_xcconfig": {
     "SWIFT_WHOLE_MODULE_OPTIMIZATION": "YES",
     "OTHER_SWIFT_FLAGS[config=Debug]": "-D DEBUG"
@@ -42,7 +42,7 @@
     },
     {
       "name": "Lottie",
-      "source_files": "Plugins/AnimatedLoading/*.swift",
+      "source_files": "Plugins/Lottie/*.swift",
       "dependencies": {
         "Booming/Core": [
 

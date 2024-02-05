@@ -187,7 +187,6 @@ extension CALayer {
           try setUpRepeater(
             repeater,
             items: repeaterGrouping.grouping,
-            parentGroup: parentGroup,
             parentGroupPath: parentGroupPath,
             context: context)
         }
@@ -222,7 +221,6 @@ extension CALayer {
   private func setUpRepeater(
     _ repeater: Repeater,
     items allItems: [ShapeItemLayer.Item],
-    parentGroup: Group?,
     parentGroupPath: [String],
     context: LayerContext)
     throws
@@ -233,7 +231,7 @@ extension CALayer {
     for index in 0..<copyCount {
       let groupLayers = try makeGroupLayers(
         from: items,
-        parentGroup: parentGroup,
+        parentGroup: nil, // The repeater layer acts as the parent of its sublayers
         parentGroupPath: parentGroupPath,
         context: context)
 
@@ -427,7 +425,7 @@ struct ShapeRenderGroup {
   var otherItems: [ShapeItemLayer.Item] = []
 }
 
-extension Array where Element == ShapeItemLayer.Item {
+extension [ShapeItemLayer.Item] {
   /// Splits this list of `ShapeItem`s into groups that should be rendered together as individual units,
   /// plus the remaining items that were not included in any group.
   ///  - groupHasChildGroupsToInheritUnusedItems: whether or not this group has child groups

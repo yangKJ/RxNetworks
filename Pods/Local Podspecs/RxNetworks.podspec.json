@@ -1,6 +1,6 @@
 {
   "name": "RxNetworks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "summary": "Network Architecture API RxSwift + Moya + HandyJSON + Plugins.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/yangKJ/RxNetworks.git",
-    "tag": "1.0.0"
+    "tag": "1.0.1"
   },
   "social_media_url": "https://juejin.cn/user/1987535102554472/posts",
   "platforms": {
@@ -26,15 +26,11 @@
   "ios": {
     "source_files": "Sources/RxNetworks.h"
   },
-  "pod_target_xcconfig": {
-    "SWIFT_WHOLE_MODULE_OPTIMIZATION": "YES",
-    "OTHER_SWIFT_FLAGS[config=Debug]": "-D DEBUG"
-  },
   "subspecs": [
     {
       "name": "Core",
       "dependencies": {
-        "Booming": [
+        "Booming/Core": [
 
         ]
       }
@@ -46,7 +42,7 @@
         "RxSwift": [
 
         ],
-        "Booming": [
+        "RxNetworks/Core": [
 
         ]
       }
