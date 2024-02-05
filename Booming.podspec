@@ -24,9 +24,10 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/yangKJ/RxNetworks.git', :tag => "#{s.version}" }
   s.social_media_url = 'https://juejin.cn/user/1987535102554472/posts'
   
-  s.ios.deployment_target = '11.0'
-  s.osx.deployment_target = '10.15'
+  s.ios.deployment_target = '10.0'
+  s.osx.deployment_target = '10.13'
   s.swift_version    = '5.0'
+  s.cocoapods_version = '>= 1.4.0'
   s.requires_arc     = true
   s.static_framework = true
   
@@ -35,17 +36,19 @@ Pod::Spec.new do |s|
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  #s.default_subspec  = 'Core'
+  s.default_subspec  = 'Core'
   
-  s.subspec 'Core' do |xxx|
-    s.source_files = 'Booming/*.swift'
-    s.dependency 'Moya'
+  s.subspec 'Core' do |ss|
+    ss.source_files = 'Booming/*.swift'
+    ss.dependency 'Moya'
+    ss.framework = "Foundation"
   end
   
-  s.subspec 'AnimatedLoading' do |xxx|
+  s.subspec 'Lottie' do |xxx|
     xxx.source_files = 'Plugins/AnimatedLoading/*.swift'
     xxx.dependency 'Booming/Core'
     xxx.dependency 'lottie-ios'
+    xxx.ios.deployment_target = '11.0'
   end
   
   s.subspec 'Debugging' do |xxx|

@@ -21,6 +21,7 @@
     "osx": "10.13"
   },
   "swift_versions": "5.0",
+  "cocoapods_version": ">= 1.4.0",
   "requires_arc": true,
   "static_framework": true,
   "pod_target_xcconfig": {
@@ -28,18 +29,19 @@
     "OTHER_SWIFT_FLAGS[config=Debug]": "-D DEBUG"
   },
   "default_subspecs": "Core",
-  "source_files": "Booming/*.swift",
-  "dependencies": {
-    "Moya": [
-
-    ]
-  },
   "subspecs": [
     {
-      "name": "Core"
+      "name": "Core",
+      "source_files": "Booming/*.swift",
+      "dependencies": {
+        "Moya": [
+
+        ]
+      },
+      "frameworks": "Foundation"
     },
     {
-      "name": "AnimatedLoading",
+      "name": "Lottie",
       "source_files": "Plugins/AnimatedLoading/*.swift",
       "dependencies": {
         "Booming/Core": [
@@ -50,8 +52,7 @@
         ]
       },
       "platforms": {
-        "ios": "11.0",
-        "osx": "10.15"
+        "ios": "11.0"
       }
     },
     {

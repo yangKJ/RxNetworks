@@ -1,7 +1,7 @@
 {
   "name": "RxNetworks",
   "version": "1.0.0",
-  "summary": "Network Architecture API RxSwift + Moya + HandyJSON + Booming.",
+  "summary": "Network Architecture API RxSwift + Moya + HandyJSON + Plugins.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
   "license": {
@@ -90,7 +90,7 @@
         {
           "name": "AnimatedLoading",
           "dependencies": {
-            "Booming/AnimatedLoading": [
+            "Booming/Lottie": [
 
             ]
           }

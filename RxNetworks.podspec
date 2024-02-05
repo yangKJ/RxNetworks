@@ -64,7 +64,7 @@ Pod::Spec.new do |s|
       xxx.dependency 'Booming/Loading'
     end
     xx.subspec 'AnimatedLoading' do |xxx|
-      xxx.dependency 'Booming/AnimatedLoading'
+      xxx.dependency 'Booming/Lottie'
     end
     xx.subspec 'Warning' do |xxx|
       xxx.dependency 'Booming/Warning'
