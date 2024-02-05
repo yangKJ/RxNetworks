@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  s.default_subspec  = 'Core'
+  #s.default_subspec  = 'Core'
   
   s.subspec 'Core' do |xxx|
     s.source_files = 'Booming/*.swift'

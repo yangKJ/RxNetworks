@@ -62,6 +62,8 @@
 		874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */; };
 		8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8759D02928B328E500C22107 /* AuthPlugin.swift */; };
 		876E046729EE35F500A7CF1C /* testLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 876E046629EE35F500A7CF1C /* testLoading.json */; };
+		87E9B23F2B70B3D100B0012C /* RxNetworks.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 87E9B23D2B70B3D100B0012C /* RxNetworks.podspec */; };
+		87E9B2402B70B3D100B0012C /* Booming.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 87E9B23E2B70B3D100B0012C /* Booming.podspec */; };
 		87EDFCD42B4F8292005F3756 /* LoadingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EDFCD32B4F8292005F3756 /* LoadingModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +125,8 @@
 		874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		8759D02928B328E500C22107 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		876E046629EE35F500A7CF1C /* testLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testLoading.json; sourceTree = "<group>"; };
+		87E9B23D2B70B3D100B0012C /* RxNetworks.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = RxNetworks.podspec; sourceTree = SOURCE_ROOT; };
+		87E9B23E2B70B3D100B0012C /* Booming.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = Booming.podspec; sourceTree = SOURCE_ROOT; };
 		87EDFCD32B4F8292005F3756 /* LoadingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingModel.swift; sourceTree = "<group>"; };
 		98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworks_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.debug.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -217,6 +221,8 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				87E9B23E2B70B3D100B0012C /* Booming.podspec */,
+				87E9B23D2B70B3D100B0012C /* RxNetworks.podspec */,
 				04233518278E620D00547494 /* README_CN.md */,
 				0423351A278E622400547494 /* README.md */,
 				872C0DBB2AB3052200D17DA8 /* CODE_OF_CONDUCT.md */,
@@ -466,6 +472,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				87E9B2402B70B3D100B0012C /* Booming.podspec in Resources */,
+				87E9B23F2B70B3D100B0012C /* RxNetworks.podspec in Resources */,
 				872C0DBC2AB3052200D17DA8 /* CODE_OF_CONDUCT.md in Resources */,
 				04233519278E620D00547494 /* README_CN.md in Resources */,
 				871E4E0C2A0CCB760061BE14 /* AMList.json in Resources */,

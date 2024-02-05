@@ -994,7 +994,7 @@
 		1A076EDA720BB78D6BE3F1FF6E16F425 /* Moya-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Moya-umbrella.h"; sourceTree = "<group>"; };
 		1A0B608231ADF8FAABBC9388B21631AD /* AsSingle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsSingle.swift; path = RxSwift/Observables/AsSingle.swift; sourceTree = "<group>"; };
 		1A548E3F6929D99AA2B130DE827266F1 /* ObserverType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ObserverType.swift; path = RxSwift/ObserverType.swift; sourceTree = "<group>"; };
-		1A5F2A5734F6BC83381F5F94638301E9 /* Booming.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = Booming.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1A5F2A5734F6BC83381F5F94638301E9 /* Booming.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = Booming.podspec; sourceTree = "<group>"; tabWidth = 2; };
 		1A6C5A4D8BFE229EA489211073D8BA81 /* HistoricalScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HistoricalScheduler.swift; path = RxSwift/Schedulers/HistoricalScheduler.swift; sourceTree = "<group>"; };
 		1A97D6184BC794577572DC056AD5FE17 /* Take.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Take.swift; path = RxSwift/Observables/Take.swift; sourceTree = "<group>"; };
 		1B00D25C28205472BEC790041FCA52BD /* Plugin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Plugin.swift; path = Sources/Moya/Plugin.swift; sourceTree = "<group>"; };
@@ -1122,7 +1122,7 @@
 		41752C06BDE8E417101D63FD9EC87E73 /* URLTransform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = URLTransform.swift; path = Source/URLTransform.swift; sourceTree = "<group>"; };
 		41D1BA41F542F1AEECF85ABFBA2C6644 /* NotificationCenter+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NotificationCenter+Rx.swift"; path = "RxCocoa/Foundation/NotificationCenter+Rx.swift"; sourceTree = "<group>"; };
 		420B14EACE99ABEFAA05CD524CEC6DDC /* RxNetworks */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RxNetworks; path = RxNetworks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		428B19874FEF13C1F940AF3983847AE8 /* RxNetworks.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = RxNetworks.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		428B19874FEF13C1F940AF3983847AE8 /* RxNetworks.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = RxNetworks.podspec; sourceTree = "<group>"; tabWidth = 2; };
 		42D253AED983FDB3105D77043B24BFF1 /* DelegateProxyType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DelegateProxyType.swift; path = RxCocoa/Common/DelegateProxyType.swift; sourceTree = "<group>"; };
 		431446AC7AA995A34D2B042A747FF7FB /* RxPickerViewDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxPickerViewDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxPickerViewDelegateProxy.swift; sourceTree = "<group>"; };
 		437796825A96139C673144EF8AA1443E /* Signal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Signal.swift; path = RxCocoa/Traits/Signal/Signal.swift; sourceTree = "<group>"; };
@@ -1417,7 +1417,7 @@
 		9CD0E925E4C5BDF547FEA4ABC6DA8EF9 /* URL+Moya.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "URL+Moya.swift"; path = "Sources/Moya/URL+Moya.swift"; sourceTree = "<group>"; };
 		9D106AEFDD2B47D80EF4979083EFD536 /* Pods-RxNetworks_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-RxNetworks_Example-Info.plist"; sourceTree = "<group>"; };
 		9D722A2A1097E36DCBCEEBA02B3A39F0 /* CacheX-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "CacheX-Info.plist"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DA41452EF804956E068CB79C01661CE /* TextDocument.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextDocument.swift; path = Sources/Private/Model/Text/TextDocument.swift; sourceTree = "<group>"; };
 		9E208F6929CE4E3D972880BF834AECB7 /* RectNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RectNode.swift; path = Sources/Private/MainThread/NodeRenderSystem/Nodes/PathNodes/RectNode.swift; sourceTree = "<group>"; };
 		9E5A5D6549A1FDA0A921782D033D80CE /* Alamofire-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Alamofire-umbrella.h"; sourceTree = "<group>"; };
@@ -1513,7 +1513,7 @@
 		B579994B87CE2A296F5D8BF122A68CE6 /* SetBehaviorsProviding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SetBehaviorsProviding.swift; path = Sources/Private/EmbeddedLibraries/EpoxyCore/Model/Providers/SetBehaviorsProviding.swift; sourceTree = "<group>"; };
 		B586C31FBD1C3DC3BC1950A5EE232A7C /* AnimationImageProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnimationImageProvider.swift; path = Sources/Public/ImageProvider/AnimationImageProvider.swift; sourceTree = "<group>"; };
 		B5A6549C9C2EFD3072C122C5101CAB67 /* HelpingMapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HelpingMapper.swift; path = Source/HelpingMapper.swift; sourceTree = "<group>"; };
-		B5DB5C5483EF5BEE8358FA8B14FAA066 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		B5DB5C5483EF5BEE8358FA8B14FAA066 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B69993993DBD77F52E777558B15E74D4 /* X.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = X.swift; path = Booming/X.swift; sourceTree = "<group>"; };
 		B6C9A286761C8F3455DEDE87FE2EE1ED /* SerialDisposable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SerialDisposable.swift; path = RxSwift/Disposables/SerialDisposable.swift; sourceTree = "<group>"; };
 		B74C279A239E12674A8376926225EBD9 /* Logger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Source/Logger.swift; sourceTree = "<group>"; };
@@ -1957,7 +1957,6 @@
 				5A4E416E276380A92DEC9E6071B22AC3 /* WKWebView+Rx.swift */,
 				29DA80FAE8AC5F6EE9756785000A9EC2 /* Support Files */,
 			);
-			name = RxCocoa;
 			path = RxCocoa;
 			sourceTree = "<group>";
 		};
@@ -2056,7 +2055,6 @@
 				3B697F9DC02C8A1712387EE8CB2E919E /* TransformerFactory.swift */,
 				1FDF90D0819B3895415178DB743B73D6 /* Support Files */,
 			);
-			name = CacheX;
 			path = CacheX;
 			sourceTree = "<group>";
 		};
@@ -2159,7 +2157,6 @@
 				1C4DE669FC56BB29D3C64CD591C4D613 /* Core */,
 				2E9934F2A14AAC531D371781D110248B /* Support Files */,
 			);
-			name = Moya;
 			path = Moya;
 			sourceTree = "<group>";
 		};
@@ -2445,7 +2442,6 @@
 				1049A0564146DA27FE69CC412956E7DE /* WillDisplayProviding.swift */,
 				C9B671836B278F3BDFB1777CDA2CE1C5 /* Support Files */,
 			);
-			name = "lottie-ios";
 			path = "lottie-ios";
 			sourceTree = "<group>";
 		};
@@ -2459,7 +2455,6 @@
 				DBC278F88B40B5194B5376294E55967A /* Utils.swift */,
 				7E555B44DBA2A21C64B3BA218DF450EF /* Support Files */,
 			);
-			name = RxRelay;
 			path = RxRelay;
 			sourceTree = "<group>";
 		};
@@ -2505,7 +2500,6 @@
 				2CF94ED21AF3D4A6844E8CE26CB06514 /* Validation.swift */,
 				784F93EF28897DB4EB9C7A4A5ECCF49B /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -2701,7 +2695,6 @@
 				FB904A35A027FA29047D39C644E4D995 /* Zip+Collection.swift */,
 				B39EF157B4AA861EE45D31F2E0A0663D /* Support Files */,
 			);
-			name = RxSwift;
 			path = RxSwift;
 			sourceTree = "<group>";
 		};
@@ -2949,7 +2942,6 @@
 				80BA7E39ED4CE03448DDDF82F6D70D3B /* MBProgressHUD.m */,
 				C76294DBFBEECA8A26AEE7055441334D /* Support Files */,
 			);
-			name = MBProgressHUD;
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
@@ -3032,7 +3024,6 @@
 				41752C06BDE8E417101D63FD9EC87E73 /* URLTransform.swift */,
 				1B29F057061AFA8898550AC6B43F3E4C /* Support Files */,
 			);
-			name = HandyJSON;
 			path = HandyJSON;
 			sourceTree = "<group>";
 		};
@@ -4980,8 +4971,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
