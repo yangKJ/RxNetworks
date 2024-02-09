@@ -63,7 +63,7 @@ extension X {
         return nil
     }
     
-    public static func hasNetworkFilesPlugin(_ plugins: APIPlugins) -> URL? {
+    static func hasNetworkFilesPlugin(_ plugins: APIPlugins) -> URL? {
         #if BOOMING_PLUGINGS_DOWNLOAD_UPLOAD
         if let p = plugins.first(where: { $0 is NetworkFilesPlugin }) {
             return (p as? NetworkFilesPlugin)?.downloadAssetURL
@@ -113,7 +113,7 @@ extension X {
     
     static func toJSON(with response: Moya.Response) throws -> APISuccessJSON {
         let response = try response.filterSuccessfulStatusCodes()
-        return try response.mapJSON()
+        return try response.mapJSON(failsOnEmptyData: NetworkConfig.failsOnEmptyData)
     }
     
     static func loadingSuffix(key: SharedDriver.Key?) -> Bool {

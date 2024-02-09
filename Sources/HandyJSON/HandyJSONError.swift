@@ -8,6 +8,7 @@
 import Foundation
 
 @frozen public enum HandyJSONError: Swift.Error {
+    case error(Error)
     case mapModel
     case mapArray
     case mapCode(Int)
@@ -17,6 +18,8 @@ extension HandyJSONError: LocalizedError {
     
     public var errorDescription: String? {
         switch self {
+        case let .error(err):
+            return err.localizedDescription
         case .mapModel:
             return "Failed to map HandyJSON to an model."
         case .mapArray:
@@ -28,6 +31,8 @@ extension HandyJSONError: LocalizedError {
     
     var underlyingError: Swift.Error? {
         switch self {
+        case .error(let err):
+            return err
         case .mapModel:
             return nil
         case .mapArray:

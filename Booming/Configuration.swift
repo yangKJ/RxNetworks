@@ -41,6 +41,9 @@ public struct Configuration {
     /// Auto close all loading after the end of the last network requesting.
     public static var lastCompleteAndCloseLoadingHUDs: Bool = true
     
+    /// Maps data received from the signal into a JSON object, when the data is empty mapping should fail.
+    public static var failsOnEmptyData: Bool = true
+    
     /// Update the default basic parameter data, which is generally used for what operation the user has switched.
     /// - Parameters:
     ///   - value: Update value

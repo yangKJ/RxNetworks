@@ -30,7 +30,7 @@ extension HeadstreamRequest {
                 NSLocalizedDescriptionKey: "The result is empty."
             ]
             let error = NSError(domain: "com.condy.rx.network", code: 2004, userInfo: userInfo)
-            throw  error
+            throw MoyaError.underlying(error, nil)
         }
         switch result {
         case .success(let response):

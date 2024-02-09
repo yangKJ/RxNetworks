@@ -28,7 +28,7 @@ At the moment, the most important features of Booming can be summarized as follo
 - [x] Support uploading and downloading files/resources and so on.
 - [x] Support for added default plugins with `NetworkConfig.basePlugins`.
 - [x] Support setup authorization certificate with Alamofire [RequestInterceptor](https://github.com/Alamofire/Alamofire/blob/master/Source/Features/RequestInterceptor.swift).
-- [x] Support automatic managed loading hud with `NetworkConfig.lastCompleteAndCloseLoadingHUDs`.
+- [x] Support automatic managed loading plugins hud.
 - [x] Support 10 plugins have been packaged for you to use.
 
 ### Usages
