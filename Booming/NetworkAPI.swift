@@ -49,6 +49,6 @@ public protocol NetworkAPI: Moya.TargetType {
     /// Remove all HUDs displayed to `LevelStatusBarWindowController`.
     func removeHUD()
     
-    /// Remove  displaying in the window`NetworkConfig.loadingPluginNames` loading.
+    /// Remove  displaying in the window`BoomingSetup.loadingPluginNames` loading.
     func removeLoading()
 }

@@ -48,7 +48,7 @@ extension NetworkFilesPlugin {
     public struct Options {
         /// Choice of parameter encoding.
         public let encoding: Moya.ParameterEncoding
-        /// Do you need default parameters with `NetworkConfig.baseParameters`.
+        /// Do you need default parameters with `BoomingSetup.baseParameters`.
         public let needBaseParameters: Bool
         
         public init(encoding: ParameterEncoding = JSONEncoding.default, needBaseParameters: Bool = false) {
@@ -82,7 +82,7 @@ extension NetworkFilesPlugin {
     
     private func parameters(_ parameters: APIParameters?) -> APIParameters {
         if options.needBaseParameters {
-            var param = NetworkConfig.baseParameters
+            var param = BoomingSetup.baseParameters
             if let dict = parameters {
                 // Merge the dictionaries and take the second value
                 param = param.merging(dict) { $1 }

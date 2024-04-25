@@ -1,6 +1,6 @@
 ![Alamofire: Elegant Networking in Swift](https://raw.githubusercontent.com/Alamofire/Alamofire/master/Resources/AlamofireLogo.png)
 
-[![Swift](https://img.shields.io/badge/Swift-5.6_5.7_5.8_5.9-orange?style=flat-square)](https://img.shields.io/badge/Swift-5.6_5.7_5.8_5.9-Orange?style=flat-square)
+[![Swift](https://img.shields.io/badge/Swift-5.7_5.8_5.9-orange?style=flat-square)](https://img.shields.io/badge/Swift-5.7_5.8_5.9-Orange?style=flat-square)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS_iOS_tvOS_watchOS_visionOS_Linux_Windows_Android-yellowgreen?style=flat-square)](https://img.shields.io/badge/Platforms-macOS_iOS_tvOS_watchOS_vision_OS_Linux_Windows_Android-Green?style=flat-square)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Alamofire.svg?style=flat-square)](https://img.shields.io/cocoapods/v/Alamofire.svg)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat-square)](https://github.com/Carthage/Carthage)
@@ -89,7 +89,7 @@ In order to keep Alamofire focused specifically on core networking implementatio
 
 | Platform                                             | Minimum Swift Version | Installation                                                                                                         | Status                   |
 | ---------------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| iOS 10.0+ / macOS 10.12+ / tvOS 10.0+ / watchOS 3.0+ | 5.6                   | [CocoaPods](#cocoapods), [Carthage](#carthage), [Swift Package Manager](#swift-package-manager), [Manual](#manually) | Fully Tested             |
+| iOS 10.0+ / macOS 10.12+ / tvOS 10.0+ / watchOS 3.0+ | 5.7.1 / Xcode 14.1    | [CocoaPods](#cocoapods), [Carthage](#carthage), [Swift Package Manager](#swift-package-manager), [Manual](#manually) | Fully Tested             |
 | Linux                                                | Latest Only           | [Swift Package Manager](#swift-package-manager)                                                                      | Building But Unsupported |
 | Windows                                              | Latest Only           | [Swift Package Manager](#swift-package-manager)                                                                      | Building But Unsupported |
 | Android                                              | Latest Only           | [Swift Package Manager](#swift-package-manager)                                                                      | Building But Unsupported |
@@ -102,6 +102,7 @@ Alamofire builds on Linux, Windows, and Android but there are missing features a
 - Various methods of HTTP authentication may crash, including HTTP Basic and HTTP Digest. Crashes may occur if responses contain server challenges.
 - Cache control through `CachedResponseHandler` and associated APIs is unavailable, as the underlying delegate methods aren't called.
 - `URLSessionTaskMetrics` are never gathered.
+- `WebSocketRequest` is not available.
 
 Due to these issues, Alamofire is unsupported on Linux, Windows, and Android. Please report any crashes to the [Swift bug reporter](https://bugs.swift.org).
 
@@ -123,6 +124,30 @@ Due to these issues, Alamofire is unsupported on Linux, Windows, and Android. Pl
 
 ## Installation
 
+### Swift Package Manager
+
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
+
+Once you have your Swift package set up, adding Alamofire as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift` or the Package list in Xcode.
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.9.1"))
+]
+```
+
+Normally you'll want to depend on the `Alamofire` target:
+
+```swift
+.product(name: "Alamofire", package: "Alamofire")
+```
+
+But if you want to force Alamofire to be dynamically linked (do not do this unless you're sure you need it), you can depend on the `AlamofireDynamic` target:
+
+```swift
+.product(name: "AlamofireDynamic", package: "Alamofire")
+```
+
 ### CocoaPods
 
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
@@ -137,18 +162,6 @@ pod 'Alamofire'
 
 ```ogdl
 github "Alamofire/Alamofire"
-```
-
-### Swift Package Manager
-
-The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
-
-Once you have your Swift package set up, adding Alamofire as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.8.1"))
-]
 ```
 
 ### Manually

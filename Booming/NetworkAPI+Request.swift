@@ -54,11 +54,11 @@ public extension NetworkAPI {
         
         let session = request.session ?? {
             let configuration = URLSessionConfiguration.af.default
-            configuration.timeoutIntervalForRequest = NetworkConfig.timeoutIntervalForRequest
+            configuration.timeoutIntervalForRequest = BoomingSetup.timeoutIntervalForRequest
             return Moya.Session(
                 configuration: configuration,
                 startRequestsImmediately: false,
-                interceptor: NetworkConfig.interceptor
+                interceptor: BoomingSetup.interceptor
             )
         }()
         
@@ -68,7 +68,7 @@ public extension NetworkAPI {
         
         let target = MultiTarget.target(self)
         let endpointTask = X.hasNetworkFilesPluginTask(key) ?? self.task
-        var endpointHeaders = X.hasNetworkHttpHeaderPlugin(key) ?? NetworkConfig.baseHeaders
+        var endpointHeaders = X.hasNetworkHttpHeaderPlugin(key) ?? BoomingSetup.baseHeaders
         if let dict = self.headers {
             // Merge the dictionaries and take the second value.
             endpointHeaders = endpointHeaders.merging(dict) { $1 }

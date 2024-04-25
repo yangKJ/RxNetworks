@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let authenticator = OAuthenticator()
         // 使用授权中心和凭证（若没有可以不传）配置拦截器
         let interceptor = OAuthentication(authenticator: authenticator, credential: credential)
-        NetworkConfig.interceptor = interceptor
+        BoomingSetup.interceptor = interceptor
         
         return true
     }

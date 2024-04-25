@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.8.1)
+  - Alamofire (5.9.1)
   - Booming (1.0.2):
     - Booming/Core (= 1.0.2)
   - Booming/Cache (1.0.2):
@@ -28,17 +28,17 @@ PODS:
   - Booming/Warning (1.0.2):
     - Booming/Core
     - MBProgressHUD
-  - CacheX (1.1.0)
+  - CacheX (1.1.1)
   - HandyJSON (5.0.2)
-  - lottie-ios (4.4.0)
+  - lottie-ios (4.4.1)
   - MBProgressHUD (1.2.0)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
-  - RxCocoa (6.6.0):
-    - RxRelay (= 6.6.0)
-    - RxSwift (= 6.6.0)
+  - RxCocoa (6.7.0):
+    - RxRelay (= 6.7.0)
+    - RxSwift (= 6.7.0)
   - RxNetworks (1.0.2):
     - RxNetworks/Core (= 1.0.2)
     - RxNetworks/HandyJSON (= 1.0.2)
@@ -82,9 +82,9 @@ PODS:
   - RxNetworks/RxSwift (1.0.2):
     - RxNetworks/Core
     - RxSwift
-  - RxRelay (6.6.0):
-    - RxSwift (= 6.6.0)
-  - RxSwift (6.6.0)
+  - RxRelay (6.7.0):
+    - RxSwift (= 6.7.0)
+  - RxSwift (6.7.0)
 
 DEPENDENCIES:
   - Booming (from `./`)
@@ -110,18 +110,18 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
+  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   Booming: 65aca14fb2c6c291fff07bf967d6a31da6ac09f7
-  CacheX: 8db0e9d17717600be0b5c34bde7bc7522dbd9a3a
+  CacheX: 9665503a86f9e38b3eb0c4ab14251649a79d292d
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  lottie-ios: ef1be1f90d54255f08e09d767950e43714661178
+  lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
-  RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
+  RxCocoa: fb0aefb9e7229c8ab057acde714136d19117f102
   RxNetworks: e634a349d7a8db631415961521e28a13f98216fb
-  RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
-  RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
+  RxRelay: 5d39f4d8da150ad47a71b9ce11915e3eae2a8f4d
+  RxSwift: 6ee35684dc3f7a63938758f4b7708199517dfa97
 
 PODFILE CHECKSUM: 6678097f0ab144d51f8d45fc58e05e04ca7f3a29
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

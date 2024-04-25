@@ -39,12 +39,12 @@ class HomeViewController: UIViewController {
     }
     
     func setupDefault() {
-        NetworkConfig.baseURL = "https://www.httpbin.org"
-        NetworkConfig.baseParameters = ["github": "RxNetworks"]
-        NetworkConfig.addDebugging = true
-        NetworkConfig.addIndicator = true
-        //NetworkConfig.basePlugins = [AuthPlugin.shared]
-        NetworkConfig.animatedJSON = "testLoading"
+        BoomingSetup.baseURL = "https://www.httpbin.org"
+        BoomingSetup.baseParameters = ["github": "RxNetworks"]
+        BoomingSetup.addDebugging = true
+        BoomingSetup.addIndicator = true
+        //BoomingSetup.basePlugins = [AuthPlugin.shared]
+        BoomingSetup.animatedJSON = "testLoading"
     }
     
     func setupUI() {

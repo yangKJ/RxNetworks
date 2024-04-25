@@ -46,7 +46,7 @@ extension SharedDriver {
         let plugins = self.requestingAPIs[key]?.plugins
         self.requestingAPIs.removeValue(forKey: key)
         // 没有正在请求的网络，则移除全部加载Loading
-        if NetworkConfig.lastCompleteAndCloseLoadingHUDs, self.requestingAPIs.isEmpty, let p = plugins {
+        if BoomingSetup.lastCompleteAndCloseLoadingHUDs, self.requestingAPIs.isEmpty, let p = plugins {
             let maxTime = X.maxDelayTime(with: p)
             DispatchQueue.main.asyncAfter(deadline: .now() + maxTime) {
                 SharedDriver.shared.removeLoadingHUDs()
@@ -65,7 +65,7 @@ extension SharedDriver {
 // MARK: - task and blocks
 extension SharedDriver {
     
-    func readTask(key: Key) -> Cancellable? {
+    func readTask(key: Key) -> Moya.Cancellable? {
         self.tasklock.lock()
         defer { tasklock.unlock() }
         return self.tasks[key]
@@ -77,7 +77,7 @@ extension SharedDriver {
         self.cacheBlocks.append((key, success, failure))
     }
     
-    mutating func cacheTask(key: Key, task: Cancellable) {
+    mutating func cacheTask(key: Key, task: Moya.Cancellable) {
         self.tasklock.lock()
         defer { tasklock.unlock() }
         self.tasks[key] = task
@@ -132,9 +132,9 @@ extension SharedDriver {
         }
     }
     
-    mutating func saveHUD(key: Key, window: LevelStatusBarWindowController) {
+    mutating func saveHUD(key: Key, viewController: LevelStatusBarWindowController) {
         self.HUDsLock.lock()
-        self.cacheHUDs[key] = window
+        self.cacheHUDs[key] = viewController
         self.HUDsLock.unlock()
     }
     

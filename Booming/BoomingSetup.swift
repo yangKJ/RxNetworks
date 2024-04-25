@@ -1,5 +1,5 @@
 //
-//  NetworkConfig.swift
+//  BoomingSetup.swift
 //  RxNetworks
 //
 //  Created by Condy on 2021/10/5.
@@ -8,11 +8,12 @@
 import Foundation
 import Alamofire
 
-public typealias NetworkConfig = Configuration
+@available(*, deprecated, message: "Typo. Use `BoomingSetup` instead", renamed: "BoomingSetup")
+public typealias NetworkConfig = BoomingSetup
 
 /// 网络配置信息，只需要在程序开启的时刻配置一次
 /// Network configuration information, only need to be configured once when the program is started
-public struct Configuration {
+public struct BoomingSetup {
     
     /// Whether to add the Debugging plugin by default
     public static var addDebugging: Bool = false

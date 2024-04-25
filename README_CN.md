@@ -78,7 +78,7 @@ class OOViewModel: NSObject {
     
     func loadData() {
         var api = NetworkAPIOO.init()
-        api.cdy_ip = NetworkConfig.baseURL
+        api.cdy_ip = BoomingSetup.baseURL
         api.cdy_path = "/ip"
         api.cdy_method = .get
         api.cdy_plugins = [NetworkLoadingPlugin.init()]
@@ -101,7 +101,7 @@ enum LoadingAPI {
 
 extension LoadingAPI: NetworkAPI {
     var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     var path: String {

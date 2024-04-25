@@ -15,9 +15,7 @@ enum DownloadAPI {
 extension DownloadAPI: NetworkAPI {
     
     var ip: APIHost {
-        //return NetworkConfig.baseURL
-        //return "https://nr-platform.s3.amazonaws.com"
-        return "https://raw.githubusercontent.com"
+        return "https://github.com/yangKJ/RxNetworks"
     }
     
     var method: APIMethod {
@@ -25,8 +23,7 @@ extension DownloadAPI: NetworkAPI {
     }
     
     var path: APIPath {
-        //return "/uploads/platform/published_extension/branding_icon/275/AmazonS3.png"
-        return "/yangKJ/ImageX/master/Images/IMG_3960.heic"
+        return "/blob/master/RxNetworks/Images.xcassets/AppIcon.appiconset/iOS-Marketing.png"
     }
     
     var parameters: APIParameters? {

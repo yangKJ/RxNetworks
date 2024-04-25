@@ -27,7 +27,7 @@ class OOViewModel: NSObject {
 extension OOViewModel.Input {
     func request() -> Observable<String> {
         let api = NetworkAPIOO.init()
-        api.cdy_ip = NetworkConfig.baseURL
+        api.cdy_ip = BoomingSetup.baseURL
         api.cdy_path = "/ip"
         api.cdy_method = APIMethod.get
         api.cdy_plugins = [NetworkLoadingPlugin()]

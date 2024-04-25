@@ -26,7 +26,7 @@ At the moment, the most important features of Booming can be summarized as follo
 - [x] Support configuration of general request and path, general parameters, etc.
 - [x] Support simple customization of various network plugins for [Moya](https://github.com/Moya/Moya).
 - [x] Support uploading and downloading files/resources and so on.
-- [x] Support for added default plugins with `NetworkConfig.basePlugins`.
+- [x] Support for added default plugins with `BoomingSetup.basePlugins`.
 - [x] Support setup authorization certificate with Alamofire [RequestInterceptor](https://github.com/Alamofire/Alamofire/blob/master/Source/Features/RequestInterceptor.swift).
 - [x] Support automatic managed loading plugins hud.
 - [x] Support 10 plugins have been packaged for you to use.

@@ -855,7 +855,6 @@ open class LottieAnimationView: LottieAnimationViewBase {
     var shouldForceUpdates = false
 
     if let viewportFrame {
-      setNeedsLayout()
       shouldForceUpdates = contentMode == .redraw
 
       let compAspect = viewportFrame.size.width / viewportFrame.size.height
@@ -995,11 +994,7 @@ open class LottieAnimationView: LottieAnimationViewBase {
   }
 
   func updateRasterizationState() {
-    if lottieAnimationLayer.isAnimationPlaying {
-      lottieAnimationLayer.animationLayer?.shouldRasterize = false
-    } else {
-      lottieAnimationLayer.animationLayer?.shouldRasterize = lottieAnimationLayer.shouldRasterizeWhenIdle
-    }
+    lottieAnimationLayer.updateRasterizationState()
   }
 
   /// Updates the animation frame. Does not affect any current animations

@@ -4,7 +4,7 @@
 This module is based on the Moya encapsulated network API architecture.
 
 - Mainly divided into parts:
-    - [Configuration](https://github.com/yangKJ/RxNetworks/blob/master/Booming/Configuration.swift): Set the configuration information at the beginning of the program.
+    - [BoomingSetup](https://github.com/yangKJ/RxNetworks/blob/master/Booming/BoomingSetup.swift): Set the configuration information at the beginning of the program.
         - **addDebugging**：Whether to introduce the debug mode plugin by default.
         - **baseURL**: Root path address to base URL.
         - **baseParameters**: Default basic parameters, like: userID, token, etc.
@@ -59,7 +59,7 @@ class OOViewModel: NSObject {
 extension OOViewModel.Input {
     func request() -> Observable<String> {
         var api = NetworkAPIOO.init()
-        api.cdy_ip = NetworkConfig.baseURL
+        api.cdy_ip = BoomingSetup.baseURL
         api.cdy_path = "/ip"
         api.cdy_method = APIMethod.get
         api.cdy_plugins = [NetworkLoadingPlugin()]
@@ -84,7 +84,7 @@ enum LoadingAPI {
 extension LoadingAPI: NetworkAPI {
     
     var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     var path: APIPath {

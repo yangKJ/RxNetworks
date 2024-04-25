@@ -445,7 +445,7 @@ public final class URLEncodedFormEncoder {
 
     /// Encodes the `value` as a URL form encoded `String`.
     ///
-    /// - Parameter value: The `Encodable` value.`
+    /// - Parameter value: The `Encodable` value.
     ///
     /// - Returns:         The encoded `String`.
     /// - Throws:          An `Error` or `EncodingError` instance if encoding fails.
@@ -756,7 +756,7 @@ extension _URLEncodedFormEncoder.KeyedContainer: KeyedEncodingContainerProtocol 
     }
 
     func _encodeIfPresent<Value>(_ value: Value?, forKey key: Key) throws where Value: Encodable {
-        if let value = value {
+        if let value {
             try encode(value, forKey: key)
         } else {
             try encodeNil(forKey: key)
@@ -1124,7 +1124,7 @@ final class URLEncodedFormSerializer {
     }
 }
 
-extension Array where Element == String {
+extension [String] {
     func joinedWithAmpersands() -> String {
         joined(separator: "&")
     }

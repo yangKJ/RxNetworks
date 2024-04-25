@@ -14,17 +14,17 @@ extension X {
     /// 注入默认插件
     static func setupBasePlugins(_ plugins: inout APIPlugins) {
         var plugins_ = plugins
-        if let others = NetworkConfig.basePlugins {
+        if let others = BoomingSetup.basePlugins {
             plugins_ += others
         }
         #if BOOMING_PLUGINGS_INDICATOR
-        if NetworkConfig.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
+        if BoomingSetup.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
             let Indicator = NetworkIndicatorPlugin.shared
             plugins_.insert(Indicator, at: 0)
         }
         #endif
         #if DEBUG && BOOMING_PLUGINGS_DEBUGGING
-        if NetworkConfig.addDebugging, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
+        if BoomingSetup.addDebugging, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
             let Debugging = NetworkDebuggingPlugin.init()
             plugins_.append(Debugging)
         }
@@ -113,12 +113,12 @@ extension X {
     
     static func toJSON(with response: Moya.Response) throws -> APISuccessJSON {
         let response = try response.filterSuccessfulStatusCodes()
-        return try response.mapJSON(failsOnEmptyData: NetworkConfig.failsOnEmptyData)
+        return try response.mapJSON(failsOnEmptyData: BoomingSetup.failsOnEmptyData)
     }
     
     static func loadingSuffix(key: SharedDriver.Key?) -> Bool {
         guard let key = key else { return false }
-        if let suffix = key.components(separatedBy: "_").last, NetworkConfig.loadingPluginNames.contains(suffix) {
+        if let suffix = key.components(separatedBy: "_").last, BoomingSetup.loadingPluginNames.contains(suffix) {
             return true
         }
         return false

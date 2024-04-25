@@ -14,7 +14,7 @@ import CommonCrypto
 /// Protocol default implementation scheme
 extension NetworkAPI {
     public var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     public var parameters: APIParameters? {
@@ -69,7 +69,7 @@ extension NetworkAPI {
     }
     
     public var method: APIMethod {
-        return NetworkConfig.baseMethod
+        return BoomingSetup.baseMethod
     }
     
     public var headers: [String: String]? {
@@ -77,7 +77,7 @@ extension NetworkAPI {
     }
     
     public var task: Moya.Task {
-        let param = NetworkConfig.baseParameters.merging(parameters ?? [:]) { $1 }
+        let param = BoomingSetup.baseParameters.merging(parameters ?? [:]) { $1 }
         switch method {
         case APIMethod.get:
             return .requestParameters(parameters: param, encoding: URLEncoding.default)

@@ -44,7 +44,7 @@ open class NetworkAPIOO {
 extension NetworkAPIOO: NetworkAPI {
     
     public var ip: APIHost {
-        return cdy_ip ?? NetworkConfig.baseURL
+        return cdy_ip ?? BoomingSetup.baseURL
     }
     
     public var path: String {
@@ -56,7 +56,7 @@ extension NetworkAPIOO: NetworkAPI {
     }
     
     public var method: APIMethod {
-        return cdy_method ?? NetworkConfig.baseMethod
+        return cdy_method ?? BoomingSetup.baseMethod
     }
     
     public var plugins: APIPlugins {

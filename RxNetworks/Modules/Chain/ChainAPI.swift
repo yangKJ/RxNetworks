@@ -16,7 +16,7 @@ enum ChainAPI {
 extension ChainAPI: NetworkAPI {
     
     var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     var path: APIPath {

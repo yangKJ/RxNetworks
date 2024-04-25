@@ -13,14 +13,6 @@ import MBProgressHUD
 
 extension MBProgressHUD: LevelStatusBarWindowShowUpable {
     
-    public func makeOpenedStatusConstraint(superview: UIView) {
-        
-    }
-    
-    public func refreshBeforeShow() {
-        
-    }
-    
     public func show(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?) {
         DispatchQueue.main.async {
             self.show(animated: animated)

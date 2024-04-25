@@ -124,7 +124,7 @@ extension NetworkLoadingPlugin {
             vc.showUpView = hud
             vc.addedShowUpView = true
             vc.show()
-            X.saveHUD(key: key, window: vc)
+            X.saveHUD(key: key, viewController: vc)
         }
     }
 }

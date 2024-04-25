@@ -24,8 +24,13 @@ class DownloadViewModel: NSObject {
                 guard let url = $0 as? URL else {
                     return nil
                 }
-                let image = UIImage(contentsOfFile: url.path)
-                return image
+                if #available(iOS 16.0, *) {
+                    let image = UIImage(contentsOfFile: url.path())
+                    return image
+                } else {
+                    let image = UIImage(contentsOfFile: url.path)
+                    return image
+                }
             }
             .bind(to: self.image)
             .disposed(by: disposeBag)

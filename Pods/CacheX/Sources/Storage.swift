@@ -20,7 +20,7 @@ public final class Storage<T: Codable> {
     public init(queue: DispatchQueue? = nil, caches: [String: Cacheable]) {
         self.backgroundQueue = queue ?? {
             /// Create a background thread.
-            DispatchQueue(label: "com.condy.CacheX.cached.queue", attributes: [.concurrent])
+            DispatchQueue(label: "com.condy.CacheX.cached.queue.\(UUID().uuidString)", attributes: [.concurrent])
         }()
         self.caches = caches
     }
@@ -89,29 +89,39 @@ public final class Storage<T: Codable> {
             }
         }
     }
+    
+    public func setCacheableValue<TT: Cacheable>(_ type: TT.Type, value: TT?) {
+        if let value = value {
+            caches.updateValue(value, forKey: TT.named)            
+        } else {
+            caches.removeValue(forKey: TT.named)
+        }
+    }
+    
+    public func getCacheable<TT: Cacheable>(_ type: TT.Type) -> TT? {
+        return caches[TT.named] as? TT
+    }
 }
 
 /// 暂时兼容以前版本，未来将被废弃⚠️
 extension Storage {
+    @available(*, deprecated, message: "It is temporarily compatible with previous versions and will be deprecated in the future.")
     public var disk: Disk? {
         get {
-            return caches[Disk.named] as? Disk
+            getCacheable(Disk.self)
         }
         set {
-            if let val = newValue {
-                caches.updateValue(val, forKey: Disk.named)
-            }
+            setCacheableValue(Disk.self, value: newValue)
         }
     }
     
+    @available(*, deprecated, message: "It is temporarily compatible with previous versions and will be deprecated in the future.")
     public var memory: Memory? {
         get {
-            return caches[Memory.named] as? Memory
+            getCacheable(Memory.self)
         }
         set {
-            if let val = newValue {
-                caches.updateValue(val, forKey: Memory.named)
-            }
+            setCacheableValue(Memory.self, value: newValue)
         }
     }
 }

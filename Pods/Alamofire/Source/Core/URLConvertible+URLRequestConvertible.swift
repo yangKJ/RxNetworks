@@ -25,7 +25,7 @@
 import Foundation
 
 /// Types adopting the `URLConvertible` protocol can be used to construct `URL`s, which can then be used to construct
-/// `URLRequests`.
+/// `URLRequest`s.
 public protocol URLConvertible {
     /// Returns a `URL` from the conforming instance or throws.
     ///
@@ -57,7 +57,7 @@ extension URLComponents: URLConvertible {
     /// - Returns: The `URL` from the `url` property.
     /// - Throws:  An `AFError.invalidURL` instance.
     public func asURL() throws -> URL {
-        guard let url = url else { throw AFError.invalidURL(url: self) }
+        guard let url else { throw AFError.invalidURL(url: self) }
 
         return url
     }

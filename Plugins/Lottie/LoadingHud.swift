@@ -116,13 +116,8 @@ final class LoadingHud: ViewType {
 extension LoadingHud: LevelStatusBarWindowShowUpable {
     
     func makeOpenedStatusConstraint(superview: ViewType) {
-        let size = CGSize(width: 100, height: 100)
         let origin = CGPoint(x: superview.center.x - 50, y: superview.center.y - 50)
-        self.frame = CGRect(origin: origin, size: size)
-    }
-    
-    func refreshBeforeShow() {
-        
+        self.frame = CGRect(origin: origin, size: .init(width: 100, height: 100))
     }
     
     func show(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?) {

@@ -7,29 +7,6 @@
 
 import Foundation
 
-public protocol LevelStatusBarWindowShowUpable {
-    /// 打开状态
-    /// - Parameter superview: 父视图
-    func makeOpenedStatusConstraint(superview: ViewType)
-    
-    /// 根据添加设置内容，刷新界面
-    func refreshBeforeShow()
-    
-    /// 显示
-    /// - Parameters:
-    ///   - animated: 是否动画效果
-    ///   - animation: 动画内容
-    ///   - completion: 完成回调
-    func show(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?)
-    
-    /// 关闭
-    /// - Parameters:
-    ///   - animated: 是否动画效果
-    ///   - animation: 动画内容
-    ///   - completion: 完成回调
-    func close(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?)
-}
-
 /// 状态窗口显示器
 open class LevelStatusBarWindowController: ViewControllerType {
     private static let window: WindowType = X.createWindow()
@@ -38,8 +15,6 @@ open class LevelStatusBarWindowController: ViewControllerType {
     
     private var isCalledClose = false
     private var canNotBeCanceled = false
-    private lazy var loadingCount: Int = 0
-    private lazy var lock = NSLock()
     
     #if os(macOS)
     private let windowController = NSWindowController()
@@ -59,6 +34,20 @@ open class LevelStatusBarWindowController: ViewControllerType {
     }
     #endif
     
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        initShowUpViewIfNeed()
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initShowUpViewIfNeed()
+    }
+    
+    open func initShowUpViewIfNeed() {
+        
+    }
+    
     private lazy var overlay: ViewType = {
         let view = ViewType(frame: self.view.bounds)
         view.backgroundColor = overlayBackgroundColor
@@ -77,9 +66,6 @@ open class LevelStatusBarWindowController: ViewControllerType {
     
     public var showUpView: LevelStatusBarWindowShowUpable?
     
-    /// 点击外面区域是否可关闭
-    public var canCloseWhenTapOutSize: Bool = true
-    
     /// 外界已经将`showUpView`添加到控制器
     public var addedShowUpView: Bool = false
     
@@ -87,19 +73,6 @@ open class LevelStatusBarWindowController: ViewControllerType {
         didSet {
             self.overlay.backgroundColor = overlayBackgroundColor
         }
-    }
-    
-    public func addedLoadingCount() {
-        self.lock.lock()
-        self.loadingCount += 1
-        self.lock.unlock()
-    }
-    
-    public func subtractLoadingCount() -> Int {
-        self.lock.lock()
-        defer { self.lock.unlock() }
-        self.loadingCount -= 1
-        return self.loadingCount
     }
     
     private var overlayTapCloseBlock: ((LevelStatusBarWindowController) -> Void)?
@@ -115,13 +88,13 @@ open class LevelStatusBarWindowController: ViewControllerType {
         #endif
         self.view.addSubview(self.overlay)
         if self.addedShowUpView {
-            if let alertView = self.showUpView as? ViewType {
+            if let containerView = self.showUpView as? ViewType {
                 #if os(iOS) || os(tvOS)
-                self.view.bringSubviewToFront(alertView)
+                self.view.bringSubviewToFront(containerView)
                 #endif
             }
-        } else if let alertView = self.showUpView as? ViewType {
-            self.view.addSubview(alertView)
+        } else if let containerView = self.showUpView as? ViewType {
+            self.view.addSubview(containerView)
         }
         self.showUpView?.makeOpenedStatusConstraint(superview: self.view)
     }
@@ -129,24 +102,24 @@ open class LevelStatusBarWindowController: ViewControllerType {
     public func show(completion: ((Bool) -> Void)? = nil) {
         Self.controllers.removeAll { $0 == self }
         if let rootViewController = Self.window.rootViewController as? Self, !rootViewController.isCalledClose {
-            Self.controllers.append(rootViewController)
-            Self.window.rootViewController = nil
+            LevelStatusBarWindowController.controllers.append(rootViewController)
+            LevelStatusBarWindowController.window.rootViewController = nil
         }
         self.showUpView?.refreshBeforeShow()
-        if Self.lastKeyWindow != Self.window {
-            Self.lastKeyWindow = X.keyWindow()
+        if LevelStatusBarWindowController.lastKeyWindow != LevelStatusBarWindowController.window {
+            LevelStatusBarWindowController.lastKeyWindow = X.keyWindow()
         }
         #if os(macOS)
-        Self.window.isHidden = false
-        Self.window.contentViewController = self
-        windowController.contentViewController = Self.window.contentViewController
-        windowController.window = Self.window
+        LevelStatusBarWindowController.window.isHidden = false
+        LevelStatusBarWindowController.window.contentViewController = self
+        windowController.contentViewController = LevelStatusBarWindowController.window.contentViewController
+        windowController.window = LevelStatusBarWindowController.window
         windowController.showWindow(self)
         #else
-        Self.window.isHidden = false
-        Self.window.windowLevel = UIWindow.Level.statusBar
-        Self.window.rootViewController = self
-        Self.window.makeKeyAndVisible()
+        LevelStatusBarWindowController.window.isHidden = false
+        LevelStatusBarWindowController.window.windowLevel = UIWindow.Level.statusBar
+        LevelStatusBarWindowController.window.rootViewController = self
+        LevelStatusBarWindowController.window.makeKeyAndVisible()
         #endif
         
         self.setupOverlayHidden(hide: true)
@@ -164,10 +137,10 @@ open class LevelStatusBarWindowController: ViewControllerType {
     }
     
     private func closeCompleted(_: Bool) {
-        guard Self.window.rootViewController == self else {
+        guard LevelStatusBarWindowController.window.rootViewController == self else {
             return
         }
-        if let window_ = Self.lastKeyWindow {
+        if let window_ = LevelStatusBarWindowController.lastKeyWindow {
             if window_.rootViewController != nil {
                 #if os(macOS)
                 windowController.contentViewController = window_.contentViewController
@@ -177,8 +150,8 @@ open class LevelStatusBarWindowController: ViewControllerType {
                 window_.makeKeyAndVisible()
                 #endif
             }
-            Self.lastKeyWindow = nil
-        } else if let window_ = X.window() {
+            LevelStatusBarWindowController.lastKeyWindow = nil
+        } else if let window_ = mainWindow {
             #if os(macOS)
             windowController.contentViewController = window_.contentViewController
             windowController.window = window_
@@ -187,24 +160,32 @@ open class LevelStatusBarWindowController: ViewControllerType {
             window_.makeKeyAndVisible()
             #endif
         }
-        Self.window.rootViewController = nil
-        Self.window.isHidden = true
+        LevelStatusBarWindowController.window.rootViewController = nil
+        LevelStatusBarWindowController.window.isHidden = true
         if Self.controllers.count < 10 {
-            while let rootViewController = Self.controllers.last {
+            while let rootViewController = LevelStatusBarWindowController.controllers.last {
                 if rootViewController.isCalledClose {
-                    Self.controllers.removeLast()
+                    LevelStatusBarWindowController.controllers.removeLast()
                     continue
                 }
                 rootViewController.show()
                 break
             }
         } else {
-            Self.controllers.removeAll()
+            LevelStatusBarWindowController.controllers.removeAll()
         }
     }
     
+    private var mainWindow: WindowType? {
+        #if os(macOS)
+        return NSApplication.shared.mainWindow
+        #else
+        return UIApplication.shared.delegate?.window ?? nil
+        #endif
+    }
+    
     @objc private func overlayTap() {
-        if canCloseWhenTapOutSize {
+        if self.showUpView?.canCloseWhenTapOutSize ?? false {
             close()
             overlayTapCloseBlock?(self)
         }
@@ -219,13 +200,13 @@ open class LevelStatusBarWindowController: ViewControllerType {
     }
     
     public static func cancelAllBackgroundControllersShow() {
-        Self.controllers = Self.controllers.filter({ $0.canNotBeCanceled })
+        LevelStatusBarWindowController.controllers = LevelStatusBarWindowController.controllers.filter({ $0.canNotBeCanceled })
     }
     
     public static func forceCancelAllControllers() {
         if let controller = Self.window.rootViewController as? LevelStatusBarWindowController, !controller.canNotBeCanceled {
-            Self.window.rootViewController = nil
-            Self.window.isHidden = true
+            LevelStatusBarWindowController.window.rootViewController = nil
+            LevelStatusBarWindowController.window.isHidden = true
         }
         cancelAllBackgroundControllersShow()
     }

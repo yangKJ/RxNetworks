@@ -69,7 +69,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        guard let key = self.key, let vc = X.readHUD(key: key) else {
+        guard let key = self.key, let vc = X.readHUD(key: key) as? LoadingHudViewController else {
             return
         }
         if vc.subtractLoadingCount() <= 0 {
@@ -86,18 +86,14 @@ extension AnimatedLoadingPlugin {
         guard let key = self.key else {
             return
         }
-        if let vc = X.readHUD(key: key) {
+        if let vc = X.readHUD(key: key) as? LoadingHudViewController {
             vc.addedLoadingCount()
         } else {
-            let animatedNamed = self.options.animatedJSON ?? NetworkConfig.animatedJSON
-            let hud = LoadingHud(frame: .zero, animatedNamed: animatedNamed)
-            hud.setupLoadingText(self.options.displayLoadText)
-            let vc = LevelStatusBarWindowController()
+            let animatedNamed = self.options.animatedJSON ?? BoomingSetup.animatedJSON
+            let vc = LoadingHudViewController(animatedNamed: animatedNamed)
+            vc.setupLoadingText(self.options.displayLoadText)
             vc.key = key
-            vc.showUpView = hud
             vc.show()
-            vc.addedLoadingCount()
-            X.saveHUD(key: key, window: vc)
         }
     }
 }

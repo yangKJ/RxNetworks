@@ -15,7 +15,7 @@ enum TokenAPI {
 extension TokenAPI: NetworkAPI {
     
     var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     var path: APIPath {

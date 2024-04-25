@@ -15,7 +15,7 @@ enum SharedAPI {
 extension SharedAPI: NetworkAPI {
     
     var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     var method: APIMethod {

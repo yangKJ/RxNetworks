@@ -18,14 +18,6 @@ public struct X {
         #endif
     }
     
-    static func window() -> WindowType? {
-        #if os(macOS)
-        return NSApplication.shared.mainWindow
-        #else
-        return UIApplication.shared.delegate?.window ?? nil
-        #endif
-    }
-    
     public static func keyWindow() -> WindowType? {
         #if os(macOS)
         return NSApplication.shared.keyWindow
@@ -122,8 +114,8 @@ extension X {
         SharedDriver.shared.readHUD(key: key)
     }
     
-    public static func saveHUD(key: String, window vc: LevelStatusBarWindowController) {
-        SharedDriver.shared.saveHUD(key: key, window: vc)
+    public static func saveHUD(key: String, viewController: LevelStatusBarWindowController) {
+        SharedDriver.shared.saveHUD(key: key, viewController: viewController)
     }
     
     @discardableResult

@@ -21,28 +21,25 @@ public struct CacheManager {
     
     public static let `default` = CacheManager()
     
-    public let storage: Storage<CacheModel>
+    public let storage: CacheX.Storage<CacheModel>
     
     private init() {
+        /// Create a unified background processing thread.
+        let background = DispatchQueue(label: "com.condy.booming.cached.queue.\(UUID().uuidString)", attributes: [.concurrent])
         self.named = "RxNetworksCached"
         self.expiry = .seconds(60 * 60 * 24 * 7)
         self.maxCostLimit = 0
         self.maxCountLimit = 20 * 1024
-        let background = DispatchQueue(label: "com.condy.rx.networks.cached.queue", attributes: [.concurrent])
-        storage = Storage<CacheModel>.init(queue: background, caches: [
-            Disk.named: Disk(),
-            Memory.named: Memory(),
+        var disk = Disk.init()
+        disk.named = self.named
+        disk.expiry = self.expiry
+        disk.maxCountLimit = self.maxCountLimit
+        var memory = Memory.init()
+        memory.maxCostLimit = self.maxCostLimit
+        self.storage = CacheX.Storage<CacheModel>.init(queue: background, caches: [
+            Disk.named: disk,
+            Memory.named: memory,
         ])
-        if var disk = storage.caches[Disk.named] as? Disk {
-            disk.named = self.named
-            disk.expiry = self.expiry
-            disk.maxCountLimit = self.maxCountLimit
-            storage.caches.updateValue(disk, forKey: Disk.named)
-        }
-        if var memory = storage.caches[Memory.named] as? Memory {
-            memory.maxCostLimit = self.maxCostLimit
-            storage.caches.updateValue(memory, forKey: Memory.named)
-        }
     }
     
     /// The name of disk storage, this will be used as folder name within directory.

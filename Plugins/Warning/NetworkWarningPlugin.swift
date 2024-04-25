@@ -104,7 +104,7 @@ extension NetworkWarningPlugin {
         vc.showUpView = hud
         vc.addedShowUpView = true
         vc.show()
-        X.saveHUD(key: key, window: vc)
+        X.saveHUD(key: key, viewController: vc)
         
         self.queue.asyncAfter(deadline: .now() + self.options.duration) {
             vc.close()

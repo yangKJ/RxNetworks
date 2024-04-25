@@ -12,7 +12,8 @@ public struct Disk {
     public typealias Byte = UInt
     
     /// A singleton shared disk cache.
-    static let disk: FileManager = FileManager()
+    private static let disk: FileManager = FileManager()
+    private static var createDirectory: Bool = false
     
     /// The name of disk storage, this will be used as folder name within directory.
     public var named: String = "DiskCached"
@@ -29,7 +30,7 @@ public struct Disk {
 extension Disk: Cacheable {
     
     public static  var named: String {
-        "cache_disk"
+        "CacheX_disk"
     }
     
     public func read(key: String) -> Data? {
@@ -45,13 +46,10 @@ extension Disk: Cacheable {
     }
     
     public func store(key: String, value: Data) {
-        if let docPath = diskCacheDoc(), !Disk.disk.fileExists(atPath: docPath) {
-            let url = URL(fileURLWithPath: docPath, isDirectory: true)
-            try? Disk.disk.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
-        }
         guard let cachePath = diskCachePath(key: key) else {
             return
         }
+        createDirectoryFile()
         Disk.disk.createFile(atPath: cachePath, contents: value, attributes: nil)
     }
     
@@ -189,6 +187,19 @@ extension Disk {
             return nil
         }
         return (docPath as NSString).appendingPathComponent(key)
+    }
+    
+    private func createDirectoryFile() {
+        if Disk.createDirectory {
+            return
+        }
+        if let docPath = diskCacheDoc(), !Disk.disk.fileExists(atPath: docPath) {
+            let url = URL(fileURLWithPath: docPath, isDirectory: true)
+            do {
+                try Disk.disk.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+                Disk.createDirectory = true
+            } catch { }
+        }
     }
     
     /// Get disk cache files and file sizes and expired files.

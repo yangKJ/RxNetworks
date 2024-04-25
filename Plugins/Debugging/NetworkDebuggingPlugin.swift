@@ -102,7 +102,7 @@ extension NetworkDebuggingPlugin {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale.current
         let date = formatter.string(from: Date())
-        let headers = target.headers
+        //let headers = target.headers
         let parameters = (target as? NetworkAPI)?.parameters
         let requestLink = X.requestLink(with: target, parameters: parameters)
         if let param = parameters, param.isEmpty == false {
@@ -158,7 +158,7 @@ extension NetworkDebuggingPlugin {
                   ║ Method: \(target.method.rawValue)
                   ║ Host: \(target.baseURL.absoluteString)
                   ║ Path: \(target.path)
-                  ║ BaseParameters: \(NetworkConfig.baseParameters)\n
+                  ║ BaseParameters: \(BoomingSetup.baseParameters)\n
                   """
         let suffix = """
                   ║---------- 🎈 Response 🎈 ----------

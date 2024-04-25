@@ -15,7 +15,7 @@ enum AnimatedLoadingAPI {
 extension AnimatedLoadingAPI: NetworkAPI {
     
     var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     var method: APIMethod {

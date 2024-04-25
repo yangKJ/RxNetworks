@@ -12,8 +12,11 @@ public enum CryptoType {
     case md5
     case sha1
     case base58
+    case customized((String) -> String)
+    
     /// 用户自定义命名处理，这里不能包含操作符`/`和`.`
-    case user((_ key: String) -> String)
+    @available(*, deprecated, renamed: "customized")
+    case user((String) -> String)
 }
 
 extension CryptoType {
@@ -30,6 +33,8 @@ extension CryptoType {
         case .base58:
             return CryptoType.Base58.base58Encoded(string: key)
         case .user(let callback):
+            return CryptoType.customized(callback).encryptedString(with: key)
+        case .customized(let callback):
             return callback(key)
         }
     }

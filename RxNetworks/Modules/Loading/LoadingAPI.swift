@@ -15,7 +15,7 @@ enum LoadingAPI {
 extension LoadingAPI: NetworkAPI {
     
     var ip: APIHost {
-        return NetworkConfig.baseURL
+        return BoomingSetup.baseURL
     }
     
     var path: APIPath {

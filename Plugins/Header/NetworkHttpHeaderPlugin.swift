@@ -10,7 +10,7 @@ import Alamofire
 import Moya
 
 /// 添加网络请求头插件
-/// 相同元素时刻，该插件会覆盖`NetworkConfig.baseHeaders`参数
+/// 相同元素时刻，该插件会覆盖`BoomingSetup.baseHeaders`参数
 public struct NetworkHttpHeaderPlugin {
     
     public let headers: [Alamofire.HTTPHeader]
@@ -44,12 +44,12 @@ public struct NetworkHttpHeaderPlugin {
         case .replacement:
             return toHeaders
         case .baseHeaders:
-            return NetworkConfig.baseHeaders
+            return BoomingSetup.baseHeaders
         case .coexistAndBaseHeaders:
-            return toHeaders.merging(NetworkConfig.baseHeaders) { $1 }
+            return toHeaders.merging(BoomingSetup.baseHeaders) { $1 }
         case .coexistAndPlugin:
             // Merge the dictionaries and take the second value
-            return NetworkConfig.baseHeaders.merging(toHeaders) { $1 }
+            return BoomingSetup.baseHeaders.merging(toHeaders) { $1 }
         }
     }
 }

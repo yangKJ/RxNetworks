@@ -34,21 +34,21 @@ struct StorageModel: Codable { }
     /// The name of disk storage, this will be used as folder name within directory.
     @objc public var named: String = "DiskCached" {
         didSet {
-            storage.disk?.named = named
+            disk?.named = named
         }
     }
     
     /// The longest time duration in second of the cache being stored in disk. default is an week.
     @objc public var maxAgeLimit: TimeInterval = 60 * 60 * 24 * 7 {
         didSet {
-            storage.disk?.expiry = Expiry.seconds(maxAgeLimit)
+            disk?.expiry = Expiry.seconds(maxAgeLimit)
         }
     }
     
     /// The maximum total cost that the cache can hold before it starts evicting objects. default 20kb.
     @objc public var maxCountLimit: Disk.Byte = 20 * 1024 {
         didSet {
-            storage.disk?.maxCountLimit = maxCountLimit
+            disk?.maxCountLimit = maxCountLimit
         }
     }
     
@@ -56,7 +56,7 @@ struct StorageModel: Codable { }
     /// Memory cache will be purged automatically when a memory warning notification is received.
     @objc public var maxCostLimit: UInt = 00 {
         didSet {
-            storage.memory?.maxCostLimit = maxCostLimit
+            memory?.maxCostLimit = maxCostLimit
         }
     }
     
@@ -110,6 +110,28 @@ struct StorageModel: Codable { }
     @objc public func removedDiskAndMemoryCached(completion: @escaping SuccessComplete) {
         storage.removedDiskAndMemoryCached(completion: completion)
     }
+    
+    private var disk: Disk? {
+        get {
+            return storage.caches[Disk.named] as? Disk
+        }
+        set {
+            if let val = newValue {
+                storage.caches.updateValue(val, forKey: Disk.named)
+            }
+        }
+    }
+    
+    private var memory: Memory? {
+        get {
+            return storage.caches[Memory.named] as? Memory
+        }
+        set {
+            if let val = newValue {
+                storage.caches.updateValue(val, forKey: Memory.named)
+            }
+        }
+    }
 }
 
 // MARK: - disk
@@ -117,18 +139,18 @@ extension OCStorage {
     /// Get the disk cache size.
     @objc public var totalCost: Disk.Byte {
         get {
-            return storage.disk?.totalCost ?? 0
+            return disk?.totalCost ?? 0
         }
     }
     
     /// It's the file expired?
     @objc public func isExpired(forKey key: String) -> Bool {
-        storage.disk?.isExpired(forKey: key) ?? false
+        disk?.isExpired(forKey: key) ?? false
     }
     
     /// Remove expired files from disk.
     /// - Parameter completion: Removed file URLs callback.
     @objc public func removeExpiredURLsFromDisk(completion: ((_ expiredURLs: [URL]) -> Void)? = nil) {
-        storage.disk?.removeExpiredURLsFromDisk(completion: completion)
+        disk?.removeExpiredURLsFromDisk(completion: completion)
     }
 }

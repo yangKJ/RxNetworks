@@ -163,7 +163,7 @@ public struct URLEncoding: ParameterEncoding {
     public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
         var urlRequest = try urlRequest.asURLRequest()
 
-        guard let parameters = parameters else { return urlRequest }
+        guard let parameters else { return urlRequest }
 
         if let method = urlRequest.method, destination.encodesParametersInURL(for: method) {
             guard let url = urlRequest.url else {
@@ -243,7 +243,10 @@ public struct URLEncoding: ParameterEncoding {
 /// Uses `JSONSerialization` to create a JSON representation of the parameters object, which is set as the body of the
 /// request. The `Content-Type` HTTP header field of an encoded request is set to `application/json`.
 public struct JSONEncoding: ParameterEncoding {
+    /// Error produced by `JSONEncoding`.
     public enum Error: Swift.Error {
+        /// `JSONEncoding` attempted to encode an invalid JSON object. Usually this means the value included types not
+        /// representable in Objective-C. See `JSONSerialization.isValidJSONObject` for details.
         case invalidJSONObject
     }
 
@@ -272,7 +275,7 @@ public struct JSONEncoding: ParameterEncoding {
     public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
         var urlRequest = try urlRequest.asURLRequest()
 
-        guard let parameters = parameters else { return urlRequest }
+        guard let parameters else { return urlRequest }
 
         guard JSONSerialization.isValidJSONObject(parameters) else {
             throw AFError.parameterEncodingFailed(reason: .jsonEncodingFailed(error: Error.invalidJSONObject))
@@ -297,14 +300,14 @@ public struct JSONEncoding: ParameterEncoding {
     ///
     /// - Parameters:
     ///   - urlRequest: `URLRequestConvertible` value into which the object will be encoded.
-    ///   - jsonObject: `Any` value (must be JSON compatible` to be encoded into the `URLRequest`. `nil` by default.
+    ///   - jsonObject: `Any` value (must be JSON compatible) to be encoded into the `URLRequest`. `nil` by default.
     ///
     /// - Returns:      The encoded `URLRequest`.
     /// - Throws:       Any `Error` produced during encoding.
     public func encode(_ urlRequest: URLRequestConvertible, withJSONObject jsonObject: Any? = nil) throws -> URLRequest {
         var urlRequest = try urlRequest.asURLRequest()
 
-        guard let jsonObject = jsonObject else { return urlRequest }
+        guard let jsonObject else { return urlRequest }
 
         guard JSONSerialization.isValidJSONObject(jsonObject) else {
             throw AFError.parameterEncodingFailed(reason: .jsonEncodingFailed(error: Error.invalidJSONObject))
