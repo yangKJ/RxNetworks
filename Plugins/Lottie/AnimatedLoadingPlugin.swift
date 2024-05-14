@@ -47,11 +47,16 @@ extension AnimatedLoadingPlugin {
         let delayHideHUD: Double
         /// Set up this loading animated JSON file named.
         let animatedJSON: String?
+        /// The bundle in which the animation is located. Defaults to `Bundle.main`.
+        let bundle: Bundle
+        /// A subdirectory in the bundle in which the animation is located. Optional.
+        public var subdirectory: String?
         
-        public init(text: String = "正在加载...", delay: Double = 0.0, animatedJSON: String? = nil) {
+        public init(text: String = "正在加载...", delay: Double = 0.0, animatedJSON: String? = nil, bundle: Bundle = .main) {
             self.displayLoadText = text
             self.delayHideHUD = delay
             self.animatedJSON = animatedJSON
+            self.bundle = bundle
         }
     }
 }
@@ -90,7 +95,7 @@ extension AnimatedLoadingPlugin {
             vc.addedLoadingCount()
         } else {
             let animatedNamed = self.options.animatedJSON ?? BoomingSetup.animatedJSON
-            let vc = LoadingHudViewController(animatedNamed: animatedNamed)
+            let vc = LoadingHudViewController(animatedNamed: animatedNamed, bundle: options.bundle, subdirectory: options.subdirectory)
             vc.setupLoadingText(self.options.displayLoadText)
             vc.key = key
             vc.show()

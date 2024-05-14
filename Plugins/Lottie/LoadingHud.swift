@@ -58,10 +58,10 @@ final class LoadingHud: ViewType {
         return label
     }()
     
-    init(frame: CGRect, animatedNamed: String?) {
+    init(frame: CGRect, animatedNamed: String?, bundle: Bundle, subdirectory: String?) {
         super.init(frame: frame)
         self.setup()
-        self.setup(animatedNamed: animatedNamed)
+        self.setup(animatedNamed: animatedNamed, bundle: bundle, subdirectory: subdirectory)
     }
     
     required init?(coder: NSCoder) {
@@ -88,9 +88,9 @@ final class LoadingHud: ViewType {
         ])
     }
     
-    private func setup(animatedNamed: String?) {
+    private func setup(animatedNamed: String?, bundle: Bundle, subdirectory: String?) {
         if let animatedNamed = animatedNamed {
-            animatedView.animation = LottieAnimation.named(animatedNamed)
+            animatedView.animation = LottieAnimation.named(animatedNamed, bundle: bundle, subdirectory: subdirectory)
         } else {
             NSLayoutConstraint.activate([
                 textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 10),

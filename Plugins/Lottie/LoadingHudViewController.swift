@@ -12,19 +12,13 @@ class LoadingHudViewController: LevelStatusBarWindowController {
     private lazy var loadingCount: Int = 0
     private lazy var lock = NSLock()
     
-    private let animatedNamed: String?
-    
-    init(animatedNamed: String?) {
-        self.animatedNamed = animatedNamed
+    init(animatedNamed: String?, bundle: Bundle, subdirectory: String?) {
         super.init(nibName: nil, bundle: nil)
+        self.showUpView = LoadingHud(frame: .zero, animatedNamed: animatedNamed, bundle: bundle, subdirectory: subdirectory)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func initShowUpViewIfNeed() {
-        showUpView = LoadingHud(frame: .zero, animatedNamed: animatedNamed)
     }
     
     func setupLoadingText(_ text: String?) {
