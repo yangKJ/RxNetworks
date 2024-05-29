@@ -31,7 +31,7 @@ public struct AnimatedLoadingPlugin: PluginPropertiesable {
     
     /// Hide the loading hud.
     public func hideLoadingHUD() {
-        let vc = X.removeHUD(key: key)
+        let vc = HUDs.removeHUD(key: key)
         vc?.close()
     }
 }
@@ -74,7 +74,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        guard let key = self.key, let vc = X.readHUD(key: key) as? LoadingHudViewController else {
+        guard let key = self.key, let vc = HUDs.readHUD(key: key) as? LoadingHudViewController else {
             return
         }
         if vc.subtractLoadingCount() <= 0 {
@@ -91,7 +91,7 @@ extension AnimatedLoadingPlugin {
         guard let key = self.key else {
             return
         }
-        if let vc = X.readHUD(key: key) as? LoadingHudViewController {
+        if let vc = HUDs.readHUD(key: key) as? LoadingHudViewController {
             vc.addedLoadingCount()
         } else {
             let animatedNamed = self.options.animatedJSON ?? BoomingSetup.animatedJSON

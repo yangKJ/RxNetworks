@@ -79,7 +79,7 @@ extension NetworkWarningPlugin {
         guard let key = self.key else {
             return
         }
-        if self.options.coverLastToast, let vc = X.readHUD(key: key) {
+        if self.options.coverLastToast, let vc = HUDs.readHUD(key: key) {
             (vc.showUpView as? MBProgressHUD)?.label.text = text
             return
         }
@@ -104,11 +104,11 @@ extension NetworkWarningPlugin {
         vc.showUpView = hud
         vc.addedShowUpView = true
         vc.show()
-        X.saveHUD(key: key, viewController: vc)
+        HUDs.saveHUD(key: key, viewController: vc)
         
         self.queue.asyncAfter(deadline: .now() + self.options.duration) {
             vc.close()
-            X.removeHUD(key: key)
+            HUDs.removeHUD(key: key)
         }
     }
 }

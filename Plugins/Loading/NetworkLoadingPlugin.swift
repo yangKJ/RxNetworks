@@ -32,7 +32,7 @@ public struct NetworkLoadingPlugin: PluginPropertiesable {
     
     /// Hide the loading hud.
     public func hideMBProgressHUD() {
-        let vc = X.removeHUD(key: key)
+        let vc = HUDs.removeHUD(key: key)
         vc?.close()
     }
 }
@@ -93,7 +93,7 @@ extension NetworkLoadingPlugin {
         guard let key = self.key else {
             return
         }
-        if let vc = X.readHUD(key: key) {
+        if let vc = HUDs.readHUD(key: key) {
             if let _ = MBProgressHUD.forView(vc.view) {
                 return
             }
@@ -124,7 +124,7 @@ extension NetworkLoadingPlugin {
             vc.showUpView = hud
             vc.addedShowUpView = true
             vc.show()
-            X.saveHUD(key: key, viewController: vc)
+            HUDs.saveHUD(key: key, viewController: vc)
         }
     }
 }

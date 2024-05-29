@@ -29,7 +29,7 @@ class LoadingHudViewController: LevelStatusBarWindowController {
         super.show(completion: completion)
         self.addedLoadingCount()
         if let key = key {
-            X.saveHUD(key: key, viewController: self)
+            HUDs.saveHUD(key: key, viewController: self)
         }
     }
     

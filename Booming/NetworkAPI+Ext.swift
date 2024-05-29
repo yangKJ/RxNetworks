@@ -43,16 +43,16 @@ extension NetworkAPI {
     }
     
     public func removeHUD() {
-        SharedDriver.shared.readHUD(prefix: keyPrefix).forEach {
-            X.removeHUD(key: $0.key)
+        HUDs.readHUD(prefix: keyPrefix).forEach {
+            HUDs.removeHUD(key: $0.key)
             $0.close()
         }
     }
     
     public func removeLoading() {
-        let vcs = SharedDriver.shared.readHUD(prefix: keyPrefix)
+        let vcs = HUDs.readHUD(prefix: keyPrefix)
         for vc in vcs where X.loadingSuffix(key: vc.key) {
-            X.removeHUD(key: vc.key)
+            HUDs.removeHUD(key: vc.key)
             vc.close()
         }
     }

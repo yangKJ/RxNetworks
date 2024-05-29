@@ -97,29 +97,3 @@ public struct X {
         return result
     }
 }
-
-// MARK: - HUD
-extension X {
-    /// 移除窗口所有HUD
-    public static func removeAllAtLevelStatusBarWindow() {
-        SharedDriver.shared.removeAllAtLevelStatusBarWindow()
-    }
-    
-    /// 移除所有加载HUD
-    public static func removeLoadingHUDs() {
-        SharedDriver.shared.removeLoadingHUDs()
-    }
-    
-    public static func readHUD(key: String) -> LevelStatusBarWindowController? {
-        SharedDriver.shared.readHUD(key: key)
-    }
-    
-    public static func saveHUD(key: String, viewController: LevelStatusBarWindowController) {
-        SharedDriver.shared.saveHUD(key: key, viewController: viewController)
-    }
-    
-    @discardableResult
-    public static func removeHUD(key: String?) -> LevelStatusBarWindowController? {
-        SharedDriver.shared.removeHUD(key: key)
-    }
-}
