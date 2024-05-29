@@ -140,24 +140,25 @@ open class LevelStatusBarWindowController: ViewControllerType {
         guard LevelStatusBarWindowController.window.rootViewController == self else {
             return
         }
-        if let window_ = LevelStatusBarWindowController.lastKeyWindow {
-            if window_.rootViewController != nil {
+        LevelStatusBarWindowController.window.isHidden = true
+        if let lastKeyWindow = LevelStatusBarWindowController.lastKeyWindow {
+            if lastKeyWindow.rootViewController != nil {
                 #if os(macOS)
-                windowController.contentViewController = window_.contentViewController
-                windowController.window = window_
+                windowController.contentViewController = lastKeyWindow.contentViewController
+                windowController.window = lastKeyWindow
                 windowController.showWindow(self)
                 #else
-                window_.makeKeyAndVisible()
+                lastKeyWindow.makeKeyAndVisible()
                 #endif
             }
             LevelStatusBarWindowController.lastKeyWindow = nil
-        } else if let window_ = mainWindow {
+        } else if let mainWindow = mainWindow {
             #if os(macOS)
-            windowController.contentViewController = window_.contentViewController
-            windowController.window = window_
+            windowController.contentViewController = mainWindow.contentViewController
+            windowController.window = mainWindow
             windowController.showWindow(self)
             #else
-            window_.makeKeyAndVisible()
+            mainWindow.makeKeyAndVisible()
             #endif
         }
         LevelStatusBarWindowController.window.rootViewController = nil
