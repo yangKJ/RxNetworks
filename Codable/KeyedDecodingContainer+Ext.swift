@@ -2,16 +2,16 @@
 //  KeyedDecodingContainer+Ext.swift
 //  Hollow
 //
-//  Created by Condy on 2024/5/30.
+//  Created by Condy on 2024/5/20.
 //
 
 import Foundation
 
 extension KeyedDecodingContainer {
     
-    public func decodeIfPresent(_ type: BoomingColor.Type, forKey key: Key) throws -> BoomingColor? {
+    public func decodeIfPresent(_ type: HollowColor.Type, forKey key: Key) throws -> HollowColor? {
         let value = try self.decode(String.self, forKey: key)
-        return CodableHexColor.color(with: value)
+        return CodingHexColor.color(with: value)
     }
     
     public func decodeIfPresent(_ type: NSDecimalNumber.Type, forKey key: Key) throws -> NSDecimalNumber? {

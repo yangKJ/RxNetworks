@@ -7,7 +7,7 @@
 
 import Foundation
 
-@propertyWrapper public struct CodableDecimalNumber: Codable {
+@propertyWrapper public struct CodingDecimalNumber: Codable {
     
     public let wrappedValue: NSDecimalNumber?
     

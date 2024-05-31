@@ -1,5 +1,5 @@
 //
-//  CodableHexColor.swift
+//  CodingHexColor.swift
 //  Hollow
 //
 //  Created by Condy on 2024/5/20.
@@ -8,20 +8,20 @@
 import Foundation
 #if canImport(UIKit)
 import UIKit
-public typealias BoomingColor = UIColor
+public typealias HollowColor = UIColor
 #elseif canImport(AppKit)
 import AppKit
-public typealias BoomingColor = NSColor
+public typealias HollowColor = NSColor
 #endif
 
-@propertyWrapper public struct CodableHexColor: Codable {
+@propertyWrapper public struct CodingHexColor: Codable {
     
-    public let wrappedValue: BoomingColor?
+    public let wrappedValue: HollowColor?
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let hex = try container.decode(String.self)
-        self.wrappedValue = CodableHexColor.color(with: hex)
+        self.wrappedValue = CodingHexColor.color(with: hex)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -33,7 +33,7 @@ public typealias BoomingColor = NSColor
         }
     }
     
-    func hexString(color: BoomingColor) -> String {
+    func hexString(color: HollowColor) -> String {
         let comps = color.cgColor.components!
         let r = Int(comps[0] * 255)
         let g = Int(comps[1] * 255)
@@ -45,7 +45,7 @@ public typealias BoomingColor = NSColor
         return hexString
     }
     
-    static func color(with hex: String) -> BoomingColor {
+    static func color(with hex: String) -> HollowColor {
         let input = hex.replacingOccurrences(of: "#", with: "").uppercased()
         var a: CGFloat = 1.0, r: CGFloat = 0.0, b: CGFloat = 0.0, g: CGFloat = 0.0
         func colorComponent(from string: String, start: Int, length: Int) -> CGFloat {
@@ -77,6 +77,6 @@ public typealias BoomingColor = NSColor
         default:
             break
         }
-        return BoomingColor.init(red: r, green: g, blue: b, alpha: a)
+        return HollowColor.init(red: r, green: g, blue: b, alpha: a)
     }
 }

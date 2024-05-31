@@ -2,7 +2,7 @@
 //  KeyedEncodingContainer+Ext.swift
 //  Hollow
 //
-//  Created by Condy on 2024/5/30.
+//  Created by Condy on 2024/5/20.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ extension KeyedEncodingContainer {
     
     public mutating func encode<T>(_ value: T, forKey key: KeyedEncodingContainer<K>.Key) throws {
         switch value {
-        case let col as BoomingColor:
+        case let col as HollowColor:
             try self.encode(hexString(color: col), forKey: key)
         case let del as NSDecimalNumber:
             try self.encode(del.description, forKey: key)
@@ -45,7 +45,7 @@ extension KeyedEncodingContainer {
 
 extension KeyedEncodingContainer {
     
-    private func hexString(color: BoomingColor) -> String {
+    private func hexString(color: HollowColor) -> String {
         let comps = color.cgColor.components!
         let r = Int(comps[0] * 255)
         let g = Int(comps[1] * 255)

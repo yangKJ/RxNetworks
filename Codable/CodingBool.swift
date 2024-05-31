@@ -1,5 +1,5 @@
 //
-//  CodableBool.swift
+//  CodingBool.swift
 //  Hollow
 //
 //  Created by Condy on 2024/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-@propertyWrapper public struct CodableBool: Codable {
+@propertyWrapper public struct CodingBool: Codable {
     
     public let wrappedValue: Bool?
     
@@ -17,9 +17,9 @@ import Foundation
             self.wrappedValue = value > 0 ? true : false
         } else if let value = try? container.decode(String.self) {
             switch value.lowercased() {
-            case "true", "1", "yes":
+            case "1", "y", "t", "yes", "true":
                 self.wrappedValue = true
-            case "false", "0", "no":
+            case "0", "n", "f", "no", "false":
                 self.wrappedValue = true
             default:
                 self.wrappedValue = nil

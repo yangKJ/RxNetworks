@@ -1,10 +1,8 @@
 PODS:
   - Alamofire (5.9.1)
   - Booming (1.0.4):
-    - Booming/Codable (= 1.0.4)
     - Booming/Core (= 1.0.4)
     - Booming/Plugins (= 1.0.4)
-  - Booming/Codable (1.0.4)
   - Booming/Core (1.0.4):
     - Moya
   - Booming/Plugins (1.0.4):
@@ -44,6 +42,7 @@ PODS:
     - MBProgressHUD
   - CacheX (1.1.1)
   - HandyJSON (5.0.2)
+  - HollowCodable (1.0.4)
   - lottie-ios (4.4.1)
   - MBProgressHUD (1.2.0)
   - Moya (15.0.0):
@@ -102,6 +101,7 @@ PODS:
 
 DEPENDENCIES:
   - Booming (from `./`)
+  - HollowCodable (from `./`)
   - RxCocoa
   - RxNetworks (from `./`)
 
@@ -120,14 +120,17 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Booming:
     :path: "./"
+  HollowCodable:
+    :path: "./"
   RxNetworks:
     :path: "./"
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  Booming: 7fa935812c9b88faab85862b051a66e853d29722
+  Booming: 2d65dd8f8f6b357a924acd18d8e60167887e601c
   CacheX: 9665503a86f9e38b3eb0c4ab14251649a79d292d
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
+  HollowCodable: 05836c3e92725252bdb9f2e759c998af71cde6f8
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
@@ -136,6 +139,6 @@ SPEC CHECKSUMS:
   RxRelay: 5d39f4d8da150ad47a71b9ce11915e3eae2a8f4d
   RxSwift: 6ee35684dc3f7a63938758f4b7708199517dfa97
 
-PODFILE CHECKSUM: cc2af6fde967b14851f42511441be9bd8462489f
+PODFILE CHECKSUM: a86926085765f737df777e6e6606adb15980e57b
 
 COCOAPODS: 1.15.2

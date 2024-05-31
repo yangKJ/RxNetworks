@@ -8,6 +8,7 @@
 
 import Foundation
 import RxNetworks
+import HollowCodable
 
 class CodableViewController: BaseViewController<CodableViewModel> {
     
@@ -31,10 +32,7 @@ class CodableViewController: BaseViewController<CodableViewModel> {
         let output = viewModel.transform(input: input)
         
         output.items.subscribe(onNext: { [weak self] (datas) in
-            guard datas.isEmpty == false else {
-                return
-            }
-            self?.textView.text = try? datas.toJSONString(prettyPrint: true)
+            self?.textView.text = try? datas.toJSONString(CodeableModel.self, prettyPrint: true)
         }).disposed(by: disposeBag)
     }
 }

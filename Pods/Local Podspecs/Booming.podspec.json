@@ -43,10 +43,6 @@
       "frameworks": "Foundation"
     },
     {
-      "name": "Codable",
-      "source_files": "Codable/*.swift"
-    },
-    {
       "name": "Plugins",
       "subspecs": [
         {

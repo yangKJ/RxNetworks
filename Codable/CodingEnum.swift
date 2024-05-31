@@ -1,5 +1,5 @@
 //
-//  CodableEnum.swift
+//  CodingEnum.swift
 //  Hollow
 //
 //  Created by Condy on 2024/5/20.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// 枚举系列
-@propertyWrapper public struct CodableEnum<T: RawRepresentable>: Codable where T.RawValue: Codable {
+@propertyWrapper public struct CodingEnum<T: RawRepresentable>: Codable where T.RawValue: Codable {
     
     public let wrappedValue: T?
     

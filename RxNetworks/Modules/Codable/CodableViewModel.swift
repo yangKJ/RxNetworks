@@ -9,6 +9,7 @@
 import Foundation
 import RxNetworks
 import RxCocoa
+import HollowCodable
 
 class CodableViewModel: NSObject {
 
@@ -17,7 +18,7 @@ class CodableViewModel: NSObject {
     }
 
     struct Output {
-        let items: Observable<[HollowCodeable]>
+        let items: Observable<[CodeableModel]>
     }
     
     func transform(input: Input) -> Output {
@@ -29,9 +30,9 @@ class CodableViewModel: NSObject {
 
 extension CodableViewModel {
     
-    func request(_ count: Int) -> Observable<[HollowCodeable]> {
+    func request(_ count: Int) -> Observable<[CodeableModel]> {
         CodableAPI.cache(count).request().asObservable()
-            .deserialized(ApiResponse<[HollowCodeable]>.self)
+            .deserialized(ApiResponse<[CodeableModel]>.self, mapping: CodeableModel.self)
             .compactMap({ $0.data })
             .observe(on: MainScheduler.instance)
             .catchAndReturn([])
@@ -40,13 +41,9 @@ extension CodableViewModel {
 
 public extension Observable where Element: Any {
     
-    @discardableResult func deserialized<T: Codable>(_ type: T.Type) -> Observable<T> {
+    @discardableResult func deserialized<T: Codable>(_ type: T.Type, mapping: MappingCodable.Type) -> Observable<T> {
         return self.map { element -> T in
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let data = try JSONSerialization.data(withJSONObject: element)
-            let result = try decoder.decode(T.self, from: data)
-            return result
+            return try Decodering<T>.decodering(mapping, element: element)
         }
     }
 }

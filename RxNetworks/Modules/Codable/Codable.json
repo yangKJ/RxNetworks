@@ -7,21 +7,29 @@
         "imageURL": "https://upload-images.jianshu.io/upload_images/1933747-4bc58b5a94713f99.jpeg",
         "github": "https://github.com/yangKJ/Harbeth",
         "amount": "23.6",
-        "hex": "#333333",
+        "hex_color": "#333333",
         "type": "text1",
-        "immutableTime" : 590277534,
+        "timestamp" : 590277534,
         "bar": 1,
-        "time": "2024-05-29 23:49:55"
+        "time": "2024-05-29 23:49:55",
+        "iso8601": "2023-07-23T23:36:38Z",
+        "dict": {
+            "amount": "52.9",
+        }
     }, {
         "id": 7,
         "title": "Network Framework",
         "imageURL": "https://upload-images.jianshu.io/upload_images/1933747-4bc58b5a94713f99.jpeg",
         "github": "https://github.com/yangKJ/RxNetworks",
         "amount": 120.3,
-        "hex": "#F3F3F3",
+        "hex_color": "#F3F3F3",
         "type": "text2",
-        "immutableTime" : 590288534,
+        "timestamp" : 590288534,
         "bar": "yes",
-        "time": "2024-05-29 20:23:46"
+        "time": "2024-05-29 20:23:46",
+        "iso8601": "2023-05-23T09:43:38Z",
+        "dict": {
+            "amount": 200,
+        },
     }]
 }

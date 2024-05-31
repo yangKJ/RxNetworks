@@ -1,5 +1,5 @@
 //
-//  CodableBase64Data.swift
+//  CodingBase64Data.swift
 //  Hollow
 //
 //  Created by Condy on 2024/5/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-@propertyWrapper public struct CodableBase64Data: Codable {
+@propertyWrapper public struct CodingBase64Data: Codable {
     
     public let wrappedValue: Data?
     

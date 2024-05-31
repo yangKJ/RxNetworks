@@ -45,10 +45,6 @@ Pod::Spec.new do |s|
     ss.framework = "Foundation"
   end
   
-  s.subspec 'Codable' do |ss|
-    ss.source_files = 'Codable/*.swift'
-  end
-  
   ################## -- 插件系列 -- ##################
   s.subspec 'Plugins' do |xx|
     xx.subspec 'Lottie' do |xxx|
