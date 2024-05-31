@@ -10,7 +10,8 @@
         "hex": "#333333",
         "type": "text1",
         "immutableTime" : 590277534,
-        "bar": 1
+        "bar": 1,
+        "time": "2024-05-29 23:49:55"
     }, {
         "id": 7,
         "title": "Network Framework",
@@ -20,6 +21,7 @@
         "hex": "#F3F3F3",
         "type": "text2",
         "immutableTime" : 590288534,
-        "bar": "false"
+        "bar": "yes",
+        "time": "2024-05-29 20:23:46"
     }]
 }

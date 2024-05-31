@@ -22,6 +22,7 @@ enum ViewControllerType: String {
     case Token = "Simulation Token Plugin"
     case Shared = "Shared Network Plugin"
     case Download = "Download Image Resources Plugin"
+    case Codable = "Text use codable"
     
     func viewController() -> UIViewController {
         switch self {
@@ -49,6 +50,8 @@ enum ViewControllerType: String {
             return SharedViewController()
         case .Download:
             return DownloadViewController()
+        case .Codable:
+            return CodableViewController()
         }
     }
 }
@@ -69,6 +72,7 @@ struct HomeViewModel {
             .Token,
             .Shared,
             .Download,
+            .Codable,
         ]
     }()
 }

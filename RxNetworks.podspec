@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '1.0.3'
+  s.version          = '1.0.4'
   s.summary          = 'Network Architecture API RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
@@ -49,34 +49,34 @@ Pod::Spec.new do |s|
   ################## -- 插件系列 -- ##################
   s.subspec 'Plugins' do |xx|
     xx.subspec 'Indicator' do |xxx|
-      xxx.dependency 'Booming/Indicator'
+      xxx.dependency 'Booming/Plugins/Indicator'
     end
     xx.subspec 'Debugging' do |xxx|
-      xxx.dependency 'Booming/Debugging'
+      xxx.dependency 'Booming/Plugins/Debugging'
     end
     xx.subspec 'Loading' do |xxx|
-      xxx.dependency 'Booming/Loading'
+      xxx.dependency 'Booming/Plugins/Loading'
     end
     xx.subspec 'AnimatedLoading' do |xxx|
-      xxx.dependency 'Booming/Lottie'
+      xxx.dependency 'Booming/Plugins/Lottie'
     end
     xx.subspec 'Warning' do |xxx|
-      xxx.dependency 'Booming/Warning'
+      xxx.dependency 'Booming/Plugins/Warning'
     end
     xx.subspec 'Cache' do |xxx|
-      xxx.dependency 'Booming/Cache'
+      xxx.dependency 'Booming/Plugins/Cache'
     end
     xx.subspec 'GZip' do |xxx|
-      xxx.dependency 'Booming/GZip'
+      xxx.dependency 'Booming/Plugins/GZip'
     end
     xx.subspec 'Shared' do |xxx|
-      xxx.dependency 'Booming/Shared'
+      xxx.dependency 'Booming/Plugins/Shared'
     end
     xx.subspec 'Header' do |xxx|
-      xxx.dependency 'Booming/Header'
+      xxx.dependency 'Booming/Plugins/Header'
     end
     xx.subspec 'Files' do |xxx|
-      xxx.dependency 'Booming/Files'
+      xxx.dependency 'Booming/Plugins/Files'
     end
   end
   

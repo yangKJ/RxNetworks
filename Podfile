@@ -15,6 +15,7 @@ target 'RxNetworks_Example' do
   pod 'RxNetworks', :path => './'
   pod 'Booming', :path => './'
   
+  pod 'MetaCodable'
 end
 
 post_install do |installer|

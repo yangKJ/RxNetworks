@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Booming'
-  s.version          = '1.0.3'
+  s.version          = '1.0.4'
   s.summary          = 'Network Api Library.'
   
   # This description is used to generate tags and improve search results.
@@ -36,7 +36,8 @@ Pod::Spec.new do |s|
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  s.default_subspec  = 'Core'
+  #s.default_subspec  = 'Core'
+  s.ios.source_files = 'Booming.h'
   
   s.subspec 'Core' do |ss|
     ss.source_files = 'Booming/*.swift'
@@ -44,84 +45,92 @@ Pod::Spec.new do |s|
     ss.framework = "Foundation"
   end
   
-  s.subspec 'Lottie' do |xxx|
-    xxx.source_files = 'Plugins/Lottie/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.dependency 'lottie-ios'
-    xxx.ios.deployment_target = '11.0'
+  s.subspec 'Codable' do |ss|
+    ss.source_files = 'Codable/*.swift'
   end
   
-  s.subspec 'Debugging' do |xxx|
-    xxx.source_files = 'Plugins/Debugging/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.pod_target_xcconfig = {
-      'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_DEBUGGING',
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_DEBUGGING=1'
-    }
-  end
-  
-  s.subspec 'Cache' do |xxx|
-    xxx.source_files = 'Plugins/Cache/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.dependency 'CacheX', '~> 1.1.0'
-  end
-  
-  s.subspec 'GZip' do |xxx|
-    xxx.source_files = 'Plugins/GZip/*.swift'
-    xxx.dependency 'Booming/Core'
-  end
-  
-  s.subspec 'Shared' do |xxx|
-    xxx.source_files = 'Plugins/Shared/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.pod_target_xcconfig = {
-      'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_SHARED',
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_SHARED=1'
-    }
-  end
-  
-  s.subspec 'Header' do |xxx|
-    xxx.source_files = 'Plugins/Header/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.pod_target_xcconfig = {
-      'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_HTTPHEADER',
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_HTTPHEADER=1'
-    }
-  end
-  
-  s.subspec 'Files' do |xxx|
-    xxx.source_files = 'Plugins/Files/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.pod_target_xcconfig = {
-      'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_DOWNLOAD_UPLOAD',
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_DOWNLOAD_UPLOAD=1'
-    }
-  end
-  
-  ################## -- ios插件系列 -- ##################
-  s.subspec 'Loading' do |xxx|
-    xxx.ios.source_files = 'Plugins/Loading/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.ios.dependency 'MBProgressHUD'
-  end
-  
-  s.subspec 'Warning' do |xxx|
-    xxx.ios.source_files = 'Plugins/Warning/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.ios.dependency 'MBProgressHUD'
-    xxx.ios.pod_target_xcconfig = {
-      'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_WARNING',
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_WARNING=1'
-    }
-  end
-  
-  s.subspec 'Indicator' do |xxx|
-    xxx.ios.source_files = 'Plugins/Indicator/*.swift'
-    xxx.dependency 'Booming/Core'
-    xxx.ios.pod_target_xcconfig = {
-      'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_INDICATOR',
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_INDICATOR=1'
-    }
+  ################## -- 插件系列 -- ##################
+  s.subspec 'Plugins' do |xx|
+    xx.subspec 'Lottie' do |xxx|
+      xxx.source_files = 'Plugins/Lottie/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.dependency 'lottie-ios'
+      xxx.ios.deployment_target = '11.0'
+      xxx.osx.deployment_target = '10.15'
+    end
+    
+    xx.subspec 'Debugging' do |xxx|
+      xxx.source_files = 'Plugins/Debugging/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_DEBUGGING',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_DEBUGGING=1'
+      }
+    end
+    
+    xx.subspec 'Cache' do |xxx|
+      xxx.source_files = 'Plugins/Cache/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.dependency 'CacheX', '~> 1.1.0'
+    end
+    
+    xx.subspec 'GZip' do |xxx|
+      xxx.source_files = 'Plugins/GZip/*.swift'
+      xxx.dependency 'Booming/Core'
+    end
+    
+    xx.subspec 'Shared' do |xxx|
+      xxx.source_files = 'Plugins/Shared/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_SHARED',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_SHARED=1'
+      }
+    end
+    
+    xx.subspec 'Header' do |xxx|
+      xxx.source_files = 'Plugins/Header/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_HTTPHEADER',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_HTTPHEADER=1'
+      }
+    end
+    
+    xx.subspec 'Files' do |xxx|
+      xxx.source_files = 'Plugins/Files/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_DOWNLOAD_UPLOAD',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_DOWNLOAD_UPLOAD=1'
+      }
+    end
+    
+    ################## -- ios插件系列 -- ##################
+    xx.subspec 'Loading' do |xxx|
+      xxx.ios.source_files = 'Plugins/Loading/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.ios.dependency 'MBProgressHUD'
+    end
+    
+    xx.subspec 'Warning' do |xxx|
+      xxx.ios.source_files = 'Plugins/Warning/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.ios.dependency 'MBProgressHUD'
+      xxx.ios.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_WARNING',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_WARNING=1'
+      }
+    end
+    
+    xx.subspec 'Indicator' do |xxx|
+      xxx.ios.source_files = 'Plugins/Indicator/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.ios.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_INDICATOR',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_INDICATOR=1'
+      }
+    end
   end
   
 end

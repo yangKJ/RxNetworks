@@ -1,5 +1,5 @@
 //
-//  CacheAPI.swift
+//  CodableAPI.swift
 //  RxNetworks_Example
 //
 //  Created by Condy on 2022/1/6.
@@ -8,7 +8,7 @@
 
 import RxNetworks
 
-enum CacheAPI: NetworkAPI {
+enum CodableAPI: NetworkAPI {
     case cache(Int)
     
     var ip: APIHost {
@@ -24,9 +24,8 @@ enum CacheAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        let cache = NetworkCachePlugin.init(options: .ignoreCache)
         let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
-        return [loading, cache]
+        return [loading]
     }
     
     var stubBehavior: APIStubBehavior {
@@ -36,7 +35,7 @@ enum CacheAPI: NetworkAPI {
     var sampleData: Data {
         switch self {
         case .cache:
-            return X.jsonData("AMList")!
+            return X.jsonData("Codable")!
         }
     }
 }

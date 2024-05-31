@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "Booming.h"
 
 FOUNDATION_EXPORT double BoomingVersionNumber;
 FOUNDATION_EXPORT const unsigned char BoomingVersionString[];
