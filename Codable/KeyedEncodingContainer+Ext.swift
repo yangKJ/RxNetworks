@@ -20,7 +20,7 @@ extension KeyedEncodingContainer {
     public mutating func encode<T>(_ value: T, forKey key: KeyedEncodingContainer<K>.Key) throws {
         switch value {
         case let col as HollowColor:
-            try self.encode(hexString(color: col), forKey: key)
+            try self.encode(HexColorEncoding.hexString(color: col), forKey: key)
         case let del as NSDecimalNumber:
             try self.encode(del.description, forKey: key)
         case let ee as Encodable:
@@ -40,20 +40,5 @@ extension KeyedEncodingContainer {
     
     public mutating func encode<R: RawRepresentable>(_ value: R, forKey key: KeyedEncodingContainer<K>.Key) throws where R.RawValue: Encodable {
         try self.encode(value.rawValue, forKey: key)
-    }
-}
-
-extension KeyedEncodingContainer {
-    
-    private func hexString(color: HollowColor) -> String {
-        let comps = color.cgColor.components!
-        let r = Int(comps[0] * 255)
-        let g = Int(comps[1] * 255)
-        let b = Int(comps[2] * 255)
-        let a = Int(comps[3] * 255)
-        var hexString: String = "#"
-        hexString += String(format: "%02X%02X%02X", r, g, b)
-        hexString += String(format: "%02X", a)
-        return hexString
     }
 }

@@ -23,8 +23,10 @@ public struct Decodering<T: Decodable> {
                 }
             })
         }
+        if let data = element as? Data {
+            return try decoder.decode(T.self, from: data)
+        }
         let data = try JSONSerialization.data(withJSONObject: element)
-        let result = try decoder.decode(T.self, from: data)
-        return result
+        return try decoder.decode(T.self, from: data)
     }
 }

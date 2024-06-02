@@ -11,7 +11,7 @@ extension KeyedDecodingContainer {
     
     public func decodeIfPresent(_ type: HollowColor.Type, forKey key: Key) throws -> HollowColor? {
         let value = try self.decode(String.self, forKey: key)
-        return CodingHexColor.color(with: value)
+        return HexColorDecoding.color(with: value)
     }
     
     public func decodeIfPresent(_ type: NSDecimalNumber.Type, forKey key: Key) throws -> NSDecimalNumber? {

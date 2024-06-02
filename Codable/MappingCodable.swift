@@ -7,9 +7,10 @@
 
 import Foundation
 
-public typealias ReplaceKeys = [(newKey: String, oldKey: String)]
+public typealias ReplaceKeys = [(replaceKey: String, originalKey: String)]
 
 public protocol MappingCodable: Codable {
+    /// Setup the coding key that needs to be replaced.
     static var codingKeys: ReplaceKeys { get }
 }
 
