@@ -105,8 +105,7 @@ final class LoadingHud: ViewType {
         textLabel.text = text
         if let text = text, !text.isEmpty { } else {
             NSLayoutConstraint.activate([
-                animatedView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
-                animatedView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
+                animatedView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
                 animatedView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             ])
         }

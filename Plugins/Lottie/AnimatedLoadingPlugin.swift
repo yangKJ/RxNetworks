@@ -13,9 +13,7 @@ import Moya
 
 /// 动画加载插件，基于Lottie封装
 /// Animation loading plugin, based on Lottie package.
-public struct AnimatedLoadingPlugin: PluginPropertiesable {
-    
-    public var plugins: APIPlugins = []
+public struct AnimatedLoadingPlugin: HasKeyAndDelayPropertyProtocol {
     
     public var key: String?
     
@@ -41,6 +39,12 @@ extension AnimatedLoadingPlugin {
         /// Loading will not be automatically hidden and display window.
         public static let `default`: Options = .init(text: "")
         
+        /// Do you need to automatically hide the loading hud.
+        public var autoHideLoading: Bool = true
+        
+        /// A subdirectory in the bundle in which the animation is located. Optional.
+        public var subdirectory: String?
+        
         /// Do you need to display an error message, the default is empty
         let displayLoadText: String
         /// Delay hidden, the default is zero seconds
@@ -49,8 +53,6 @@ extension AnimatedLoadingPlugin {
         let animatedJSON: String?
         /// The bundle in which the animation is located. Defaults to `Bundle.main`.
         let bundle: Bundle
-        /// A subdirectory in the bundle in which the animation is located. Optional.
-        public var subdirectory: String?
         
         public init(text: String = "正在加载...", delay: Double = 0.0, animatedJSON: String? = nil, bundle: Bundle = .main) {
             self.displayLoadText = text
@@ -77,7 +79,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
         guard let key = self.key, let vc = HUDs.readHUD(key: key) as? LoadingHudViewController else {
             return
         }
-        if vc.subtractLoadingCount() <= 0 {
+        if vc.subtractLoadingCount() <= 0, options.autoHideLoading {
             DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
                 self.hideLoadingHUD()
             }
@@ -88,16 +90,14 @@ extension AnimatedLoadingPlugin: PluginSubType {
 extension AnimatedLoadingPlugin {
     
     private func showHUD() {
-        guard let key = self.key else {
-            return
-        }
-        if let vc = HUDs.readHUD(key: key) as? LoadingHudViewController {
+        if let vc = HUDs.readHUD(suffix: pluginName).first as? LoadingHudViewController {
+            vc.setupLoadingText(self.options.displayLoadText)
             vc.addedLoadingCount()
         } else {
             let animatedNamed = self.options.animatedJSON ?? BoomingSetup.animatedJSON
             let vc = LoadingHudViewController(animatedNamed: animatedNamed, bundle: options.bundle, subdirectory: options.subdirectory)
             vc.setupLoadingText(self.options.displayLoadText)
-            vc.key = key
+            vc.key = self.key
             vc.show()
         }
     }

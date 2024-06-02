@@ -39,17 +39,17 @@ extension SharedDriver {
     }
     
     mutating func removeRequestingAPI(_ key: Key) {
-        self.lock.lock()
-        let plugins = self.requestingAPIs[key]?.plugins
-        self.requestingAPIs.removeValue(forKey: key)
-        // 没有正在请求的网络，则移除全部加载Loading
-        if BoomingSetup.lastCompleteAndCloseLoadingHUDs, self.requestingAPIs.isEmpty, let p = plugins {
-            let maxTime = X.maxDelayTime(with: p)
-            DispatchQueue.main.asyncAfter(deadline: .now() + maxTime) {
-                HUDs.removeLoadingHUDs()
+        // 延迟一点点时间移除，解决串行网络中间闪一下问题
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            SharedDriver.shared.lock.lock()
+            let plugins = SharedDriver.shared.requestingAPIs[key]?.plugins
+            SharedDriver.shared.requestingAPIs.removeValue(forKey: key)
+            SharedDriver.shared.lock.unlock()
+            // 没有正在请求的网络，则移除全部加载Loading
+            if BoomingSetup.lastCompleteAndCloseLoadingHUDs, SharedDriver.shared.requestingAPIs.isEmpty {
+                HUDs.delayRemoveLoadingHUDs(with: plugins)
             }
         }
-        self.lock.unlock()
     }
     
     mutating func addedRequestingAPI(_ api: NetworkAPI, key: Key, plugins: APIPlugins) {

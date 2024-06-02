@@ -77,6 +77,22 @@ public struct HUDs {
             return nil
         }
     }
+    
+    static func delayRemoveLoadingHUDs(with plugins: APIPlugins?) {
+        guard let plugins = plugins else {
+            return
+        }
+        let maxTime = X.maxDelayTime(with: plugins)
+        if maxTime > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + maxTime) {
+                HUDs.removeLoadingHUDs()
+            }
+        } else {
+            DispatchQueue.main.async {
+                HUDs.removeLoadingHUDs()
+            }
+        }
+    }
 }
 
 extension X {
