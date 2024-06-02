@@ -51,14 +51,11 @@ Pod::Spec.new do |s|
     xx.subspec 'Indicator' do |xxx|
       xxx.dependency 'Booming/Plugins/Indicator'
     end
-    xx.subspec 'Debugging' do |xxx|
-      xxx.dependency 'Booming/Plugins/Debugging'
+    xx.subspec 'AnimatedLoading' do |xxx|
+      xxx.dependency 'Booming/Plugins/Lottie'
     end
     xx.subspec 'Loading' do |xxx|
       xxx.dependency 'Booming/Plugins/Loading'
-    end
-    xx.subspec 'AnimatedLoading' do |xxx|
-      xxx.dependency 'Booming/Plugins/Lottie'
     end
     xx.subspec 'Warning' do |xxx|
       xxx.dependency 'Booming/Plugins/Warning'
@@ -66,17 +63,20 @@ Pod::Spec.new do |s|
     xx.subspec 'Cache' do |xxx|
       xxx.dependency 'Booming/Plugins/Cache'
     end
+    xx.subspec 'Debugging' do |xxx|
+      xxx.dependency 'Booming/Plugins/Shared'
+    end
     xx.subspec 'GZip' do |xxx|
-      xxx.dependency 'Booming/Plugins/GZip'
+      xxx.dependency 'Booming/Plugins/Shared'
     end
     xx.subspec 'Shared' do |xxx|
       xxx.dependency 'Booming/Plugins/Shared'
     end
     xx.subspec 'Header' do |xxx|
-      xxx.dependency 'Booming/Plugins/Header'
+      xxx.dependency 'Booming/Plugins/Shared'
     end
     xx.subspec 'Files' do |xxx|
-      xxx.dependency 'Booming/Plugins/Files'
+      xxx.dependency 'Booming/Plugins/Shared'
     end
   end
   

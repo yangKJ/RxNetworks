@@ -12,19 +12,15 @@ import RxNetworks
 
 struct CacheModel: HandyJSON {
     
-    var id: Int?
-    var title: String?
-    var imageURL: String?
+    var ip: String?
     var url: String?
-    var amount: NSDecimalNumber?
+    var data: String?
     
     /// 转换映射key
     mutating func mapping(mapper: HelpingMapper) {
         mapper <<<
+            ip <-- "origin"
+        mapper <<<
             url <-- "github"
-        mapper <<<
-            imageURL <-- "image"
-        mapper <<<
-            amount <-- DecimalNumberTransform()
     }
 }

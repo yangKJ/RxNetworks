@@ -32,11 +32,11 @@ public struct NetworkHttpHeaderPlugin {
         self.choiceValueType = type
     }
     
-    /// The dictionary representation of all headers.
+    /// The dictionary to []
     /// This representation does not preserve the current order of the instance.
     private var toHeaders: [String: String] {
         let namesAndValues = headers.map { ($0.name, $0.value) }
-        return Dictionary(namesAndValues, uniquingKeysWith: { _, last in last })
+        return Dictionary(namesAndValues, uniquingKeysWith: { $1 })
     }
     
     var dictionary: [String: String] {
@@ -46,10 +46,9 @@ public struct NetworkHttpHeaderPlugin {
         case .baseHeaders:
             return BoomingSetup.baseHeaders
         case .coexistAndBaseHeaders:
-            return toHeaders.merging(BoomingSetup.baseHeaders) { $1 }
+            return toHeaders.merging(BoomingSetup.baseHeaders) { (_,new) in new }
         case .coexistAndPlugin:
-            // Merge the dictionaries and take the second value
-            return BoomingSetup.baseHeaders.merging(toHeaders) { $1 }
+            return toHeaders.merging(BoomingSetup.baseHeaders) { (current,_) in current }
         }
     }
 }

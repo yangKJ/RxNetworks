@@ -31,7 +31,6 @@ class CacheViewController: BaseViewController<CacheViewModel> {
         let output = viewModel.transform(input: input)
         
         output.items.subscribe(onNext: { [weak self] (datas) in
-            guard datas.isEmpty == false else { return }
             self?.textView.text = datas.toJSONString(prettyPrint: true)
         }).disposed(by: disposeBag)
     }

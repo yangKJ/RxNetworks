@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 
 // 该组件主要是基于 Moya 搭建响应式数据绑定网络API架构，提供多种网络插件使用；
-// 该框架也支持 Codable 使用，请导入Codable模块即可 pod 'Booming/Codable'
+// 该框架也支持 Codable 使用，请导入Codable模块即可 pod 'HollowCodable'
 
 // 如果觉得好用，希望您能STAR支持，你的 ⭐️ 是我持续更新的动力!
 // 传送门：https://github.com/YangKJ/RxNetworks <备注：快捷打开浏览器命令，command + 鼠标左键>

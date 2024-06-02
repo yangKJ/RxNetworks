@@ -6,6 +6,7 @@
 //  https://github.com/yangKJ/RxNetworks
 
 import Foundation
+import Alamofire
 import Moya
 
 /// 上传/下载文件资源插件
@@ -76,6 +77,18 @@ extension NetworkFilesPlugin: PluginSubType {
         }
         return request
     }
+    
+    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+        switch result.result {
+        case .success:
+            if let downloadURL = downloadAssetURL {
+                result.mapSuccessedResult = downloadURL
+            }
+        case .failure:
+            break
+        }
+        onNext(result)
+    }
 }
 
 extension NetworkFilesPlugin {
@@ -97,10 +110,21 @@ extension NetworkFilesPlugin {
         switch self.type {
         case .uploadImags(let images):
             let formDatas: [Moya.MultipartFormData] = images.compactMap {
-                guard let imageData = $0.pngData() else {
+                var imageData: Data?
+                var fileName = "Booming-" + UUID().uuidString
+                if let pngData = $0.pngData() {
+                    imageData = pngData
+                    fileName += ".png"
+                } else if let jpgdata = $0.jpegData(compressionQuality: 1.0) {
+                    imageData = jpgdata
+                    fileName += ".jpeg"
+                } else if #available(iOS 17.0, *), let heicData = $0.heicData() {
+                    imageData = heicData
+                    fileName += ".heic"
+                }
+                guard let imageData = imageData else {
                     return nil
                 }
-                let fileName = "ios_\(Int(Date().timeIntervalSince1970/2)).png"
                 return MultipartFormData(provider: .data(imageData), name: "file", fileName: fileName, mimeType: "image/png")
             }
             return .uploadMultipart(formDatas)
@@ -112,7 +136,7 @@ extension NetworkFilesPlugin {
             }
             return Moya.Task.uploadCompositeMultipart(datas, urlParameters: parameters)
         case .downloadAsset:
-            let fileName = "Condy_\(Int(Date().timeIntervalSince1970)/2)"
+            let fileName = "Booming-" + UUID().uuidString
             var localLocation = Self.DownloadAssetDir.appendingPathComponent(fileName)
             localLocation = localLocation.appendingPathExtension(baseURL.pathExtension)
             self.downloadAssetURL = localLocation
@@ -120,6 +144,7 @@ extension NetworkFilesPlugin {
                 // `createIntermediateDirectories` will create directories in file path
                 (localLocation, [.removePreviousFile, .createIntermediateDirectories])
             }
+            //let destination = DownloadRequest.suggestedDownloadDestination(options: [.removePreviousFile])
             if parameters.isEmpty {
                 return Moya.Task.downloadDestination(destination)
             }

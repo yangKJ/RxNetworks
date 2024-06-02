@@ -55,50 +55,19 @@ Pod::Spec.new do |s|
       xxx.osx.deployment_target = '10.15'
     end
     
-    xx.subspec 'Debugging' do |xxx|
-      xxx.source_files = 'Plugins/Debugging/*.swift'
-      xxx.dependency 'Booming/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_DEBUGGING',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_DEBUGGING=1'
-      }
-    end
-    
     xx.subspec 'Cache' do |xxx|
       xxx.source_files = 'Plugins/Cache/*.swift'
       xxx.dependency 'Booming/Core'
       xxx.dependency 'CacheX', '~> 1.1.0'
     end
     
-    xx.subspec 'GZip' do |xxx|
-      xxx.source_files = 'Plugins/GZip/*.swift'
-      xxx.dependency 'Booming/Core'
-    end
-    
+    ## 无任何耦合和要求的插件
     xx.subspec 'Shared' do |xxx|
       xxx.source_files = 'Plugins/Shared/*.swift'
       xxx.dependency 'Booming/Core'
       xxx.pod_target_xcconfig = {
         'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_SHARED',
         'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_SHARED=1'
-      }
-    end
-    
-    xx.subspec 'Header' do |xxx|
-      xxx.source_files = 'Plugins/Header/*.swift'
-      xxx.dependency 'Booming/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_HTTPHEADER',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_HTTPHEADER=1'
-      }
-    end
-    
-    xx.subspec 'Files' do |xxx|
-      xxx.source_files = 'Plugins/Files/*.swift'
-      xxx.dependency 'Booming/Core'
-      xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_DOWNLOAD_UPLOAD',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_DOWNLOAD_UPLOAD=1'
       }
     end
     

@@ -12,7 +12,7 @@ enum CacheAPI: NetworkAPI {
     case cache(Int)
     
     var ip: APIHost {
-        return "https://www.httpbin.org"
+        return BoomingSetup.baseURL
     }
     
     var path: APIPath {
@@ -20,23 +20,15 @@ enum CacheAPI: NetworkAPI {
     }
     
     var parameters: APIParameters? {
-        return ["test": "x12345"]
+        switch self {
+        case .cache(let c):
+            return ["count": "\(c)"]
+        }
     }
     
     var plugins: APIPlugins {
-        let cache = NetworkCachePlugin.init(options: .ignoreCache)
-        let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
+        let cache = NetworkCachePlugin.init(options: .cacheThenNetwork)
+        let loading = NetworkLoadingPlugin.init(options: .init(text: "Cacheing..", delay: 0.5))
         return [loading, cache]
-    }
-    
-    var stubBehavior: APIStubBehavior {
-        return .delayed(seconds: 0.5)
-    }
-    
-    var sampleData: Data {
-        switch self {
-        case .cache:
-            return X.jsonData("AMList")!
-        }
     }
 }

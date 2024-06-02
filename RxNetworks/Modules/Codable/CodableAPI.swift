@@ -25,7 +25,8 @@ enum CodableAPI: NetworkAPI {
     
     var plugins: APIPlugins {
         let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
-        return [loading]
+        let ignore = NetworkIgnorePlugin(pluginTypes: [NetworkDebuggingPlugin.self])
+        return [loading, ignore]
     }
     
     var stubBehavior: APIStubBehavior {

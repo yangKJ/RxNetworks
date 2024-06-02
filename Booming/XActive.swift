@@ -11,8 +11,8 @@ import Moya
 // MARK: - 模块宏定义
 extension X {
     
-    /// 注入默认插件
-    static func setupBasePlugins(_ plugins: inout APIPlugins) {
+    /// 配置所有插件
+    static func setupPluginsAndKey(_ key: String, plugins: APIPlugins) -> APIPlugins {
         var plugins_ = plugins
         if let others = BoomingSetup.basePlugins {
             plugins_ += others
@@ -23,13 +23,27 @@ extension X {
             plugins_.insert(Indicator, at: 0)
         }
         #endif
-        #if DEBUG && BOOMING_PLUGINGS_DEBUGGING
-        if BoomingSetup.addDebugging, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
-            let Debugging = NetworkDebuggingPlugin.init()
-            plugins_.append(Debugging)
+        #if BOOMING_PLUGINGS_SHARED
+        if BoomingSetup.debuggingLogOption != .none, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
+            let logger = NetworkDebuggingPlugin.init(options: BoomingSetup.debuggingLogOption)
+            plugins_.append(logger)
         }
         #endif
-        plugins = plugins_
+        let allPlugins = hasIgnorePlugin(plugins_).sorted(by: {
+            $0.usePriorityLevel.rawValue < $1.usePriorityLevel.rawValue
+        })
+        return allPlugins.map({
+            var midp = $0
+            if var p = midp as? HasKeyAndDelayPropertyProtocol {
+                p.key = key + "_" + midp.pluginName
+                midp = p
+            }
+            if var p = midp as? HasPluginsPropertyProtocol {
+                p.plugins = allPlugins
+                midp = p
+            }
+            return midp
+        })
     }
     
     /// 是否存在共享网络插件
@@ -42,20 +56,19 @@ extension X {
     }
     
     /// 是否存在请求头插件
-    static func hasNetworkHttpHeaderPlugin(_ key: String) -> [String: String]? {
-        #if BOOMING_PLUGINGS_HTTPHEADER
-        let plugins = SharedDriver.shared.readRequestPlugins(key)
-        if let p = plugins.first(where: { $0 is NetworkHttpHeaderPlugin }) {
-            return (p as? NetworkHttpHeaderPlugin)?.dictionary
+    static func hasNetworkHttpHeaderPlugin(_ plugins: APIPlugins) -> [String: String] {
+        #if BOOMING_PLUGINGS_SHARED
+        if let p = plugins.first(where: { $0 is NetworkHttpHeaderPlugin }),
+           let headers = (p as? NetworkHttpHeaderPlugin)?.dictionary {
+            return headers
         }
         #endif
-        return nil
+        return BoomingSetup.baseHeaders
     }
     
     /// 上传下载插件
-    static func hasNetworkFilesPluginTask(_ key: String) -> Moya.Task? {
-        #if BOOMING_PLUGINGS_DOWNLOAD_UPLOAD
-        let plugins = SharedDriver.shared.readRequestPlugins(key)
+    static func hasNetworkFilesPluginTask(_ plugins: APIPlugins) -> Moya.Task? {
+        #if BOOMING_PLUGINGS_SHARED
         if let p = plugins.first(where: { $0 is NetworkFilesPlugin }) {
             return (p as? NetworkFilesPlugin)?.task
         }
@@ -63,22 +76,45 @@ extension X {
         return nil
     }
     
+    /// 下载文件链接
     static func hasNetworkFilesPlugin(_ plugins: APIPlugins) -> URL? {
-        #if BOOMING_PLUGINGS_DOWNLOAD_UPLOAD
+        #if BOOMING_PLUGINGS_SHARED
         if let p = plugins.first(where: { $0 is NetworkFilesPlugin }) {
             return (p as? NetworkFilesPlugin)?.downloadAssetURL
         }
         #endif
         return nil
     }
+    
+    /// 忽略插件
+    static func hasIgnorePlugin(_ plugins: APIPlugins) -> APIPlugins {
+        #if BOOMING_PLUGINGS_SHARED
+        if let p = plugins.first(where: { $0 is NetworkIgnorePlugin }),
+           let value = (p as? NetworkIgnorePlugin)?.removePlugins(plugins) {
+            return value
+        }
+        #endif
+        return plugins
+    }
+    
+    /// 拦截器插件
+    static func hasAuthenticationPlugin(_ plugins: APIPlugins) -> RequestInterceptor? {
+        #if BOOMING_PLUGINGS_SHARED
+        if let p = plugins.first(where: { $0 is NetworkAuthenticationPlugin }),
+           let interceptor = (p as? NetworkAuthenticationPlugin)?.interceptor {
+            return interceptor
+        }
+        #endif
+        return BoomingSetup.interceptor
+    }
 }
 
 // MARK: - 网络相关
 extension X {
     
-    static func maxDelayTime(with plugins: APIPlugins) -> Double {
+    static func maxDelayTime(with plugins: APIPlugins) -> TimeInterval {
         let times: [Double] = plugins.compactMap {
-            if let p = $0 as? PluginPropertiesable {
+            if let p = $0 as? HasKeyAndDelayPropertyProtocol {
                 return p.delay
             }
             return nil
@@ -124,16 +160,10 @@ extension X {
         return false
     }
     
-    static func setupPluginsAndKey(_ key: String, plugins: APIPlugins) -> APIPlugins {
-        var plugins = plugins
-        X.setupBasePlugins(&plugins)
-        return plugins.map({
-            if var plugin = $0 as? PluginPropertiesable {
-                plugin.plugins = plugins
-                plugin.key = key + "_" + plugin.pluginName
-                return plugin
-            }
-            return $0
-        })
+    static func safetyQueue(_ queue: DispatchQueue?) -> DispatchQueue {
+        if let queue = queue {
+            return (queue === DispatchQueue.main) ? queue : DispatchQueue(label: queue.label, target: queue)
+        }
+        return DispatchQueue(label: "condy.request.network.queue.\(UUID().uuidString)", attributes: [.concurrent])
     }
 }

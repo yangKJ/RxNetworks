@@ -7,10 +7,6 @@ PODS:
     - Moya
   - Booming/Plugins (1.0.4):
     - Booming/Plugins/Cache (= 1.0.4)
-    - Booming/Plugins/Debugging (= 1.0.4)
-    - Booming/Plugins/Files (= 1.0.4)
-    - Booming/Plugins/GZip (= 1.0.4)
-    - Booming/Plugins/Header (= 1.0.4)
     - Booming/Plugins/Indicator (= 1.0.4)
     - Booming/Plugins/Loading (= 1.0.4)
     - Booming/Plugins/Lottie (= 1.0.4)
@@ -19,14 +15,6 @@ PODS:
   - Booming/Plugins/Cache (1.0.4):
     - Booming/Core
     - CacheX (~> 1.1.0)
-  - Booming/Plugins/Debugging (1.0.4):
-    - Booming/Core
-  - Booming/Plugins/Files (1.0.4):
-    - Booming/Core
-  - Booming/Plugins/GZip (1.0.4):
-    - Booming/Core
-  - Booming/Plugins/Header (1.0.4):
-    - Booming/Core
   - Booming/Plugins/Indicator (1.0.4):
     - Booming/Core
   - Booming/Plugins/Loading (1.0.4):
@@ -77,13 +65,13 @@ PODS:
   - RxNetworks/Plugins/Cache (1.0.4):
     - Booming/Plugins/Cache
   - RxNetworks/Plugins/Debugging (1.0.4):
-    - Booming/Plugins/Debugging
+    - Booming/Plugins/Shared
   - RxNetworks/Plugins/Files (1.0.4):
-    - Booming/Plugins/Files
+    - Booming/Plugins/Shared
   - RxNetworks/Plugins/GZip (1.0.4):
-    - Booming/Plugins/GZip
+    - Booming/Plugins/Shared
   - RxNetworks/Plugins/Header (1.0.4):
-    - Booming/Plugins/Header
+    - Booming/Plugins/Shared
   - RxNetworks/Plugins/Indicator (1.0.4):
     - Booming/Plugins/Indicator
   - RxNetworks/Plugins/Loading (1.0.4):
@@ -127,15 +115,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  Booming: 2d65dd8f8f6b357a924acd18d8e60167887e601c
+  Booming: 6b8eb6ece13648fdfabda841af5c866535bb4312
   CacheX: 9665503a86f9e38b3eb0c4ab14251649a79d292d
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
-  HollowCodable: 05836c3e92725252bdb9f2e759c998af71cde6f8
+  HollowCodable: a6d1f334a97775350e4cd0020df07d8e5603d3e7
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: fb0aefb9e7229c8ab057acde714136d19117f102
-  RxNetworks: b56ce14a26877f078ccfcf2d914ed3fd970f2a9d
+  RxNetworks: 63f3f1bed313662049fab26692884f93524f65db
   RxRelay: 5d39f4d8da150ad47a71b9ce11915e3eae2a8f4d
   RxSwift: 6ee35684dc3f7a63938758f4b7708199517dfa97
 

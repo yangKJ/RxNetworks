@@ -33,7 +33,6 @@
 		04F0A888279A465C008534D8 /* GZipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A885279A465C008534D8 /* GZipViewController.swift */; };
 		04F0A889279A465C008534D8 /* GZipAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F0A886279A465C008534D8 /* GZipAPI.swift */; };
 		36ADE5ADE90CB24F23D9B8B5 /* Pods_RxNetworks_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */; };
-		42264D3F2B56DE620044051D /* OAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42264D3D2B56DE620044051D /* OAuthentication.swift */; };
 		42264D402B56DE620044051D /* OAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42264D3E2B56DE620044051D /* OAuthenticator.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* HomeViewController.swift */; };
@@ -53,7 +52,6 @@
 		871870A52A4C17A0008FFE6B /* SharedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871870A22A4C17A0008FFE6B /* SharedViewController.swift */; };
 		871870A62A4C17A0008FFE6B /* SharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871870A32A4C17A0008FFE6B /* SharedViewModel.swift */; };
 		871870A72A4C17A0008FFE6B /* SharedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871870A42A4C17A0008FFE6B /* SharedAPI.swift */; };
-		871E4E0C2A0CCB760061BE14 /* AMList.json in Resources */ = {isa = PBXBuildFile; fileRef = 871E4E0B2A0CCB760061BE14 /* AMList.json */; };
 		872C0DBC2AB3052200D17DA8 /* CODE_OF_CONDUCT.md in Resources */ = {isa = PBXBuildFile; fileRef = 872C0DBB2AB3052200D17DA8 /* CODE_OF_CONDUCT.md */; };
 		8731BD922AE119580088DDCC /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731BD8F2AE119580088DDCC /* DownloadViewController.swift */; };
 		8731BD932AE119580088DDCC /* DownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731BD902AE119580088DDCC /* DownloadViewModel.swift */; };
@@ -98,7 +96,6 @@
 		04F0A884279A465C008534D8 /* GZipViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewModel.swift; sourceTree = "<group>"; };
 		04F0A885279A465C008534D8 /* GZipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipViewController.swift; sourceTree = "<group>"; };
 		04F0A886279A465C008534D8 /* GZipAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GZipAPI.swift; sourceTree = "<group>"; };
-		42264D3D2B56DE620044051D /* OAuthentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthentication.swift; sourceTree = "<group>"; };
 		42264D3E2B56DE620044051D /* OAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthenticator.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* RxNetworks_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxNetworks_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -121,7 +118,6 @@
 		871870A22A4C17A0008FFE6B /* SharedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedViewController.swift; sourceTree = "<group>"; };
 		871870A32A4C17A0008FFE6B /* SharedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedViewModel.swift; sourceTree = "<group>"; };
 		871870A42A4C17A0008FFE6B /* SharedAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedAPI.swift; sourceTree = "<group>"; };
-		871E4E0B2A0CCB760061BE14 /* AMList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AMList.json; sourceTree = "<group>"; };
 		872C0DBB2AB3052200D17DA8 /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = SOURCE_ROOT; };
 		8731BD8F2AE119580088DDCC /* DownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
 		8731BD902AE119580088DDCC /* DownloadViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewModel.swift; sourceTree = "<group>"; };
@@ -157,7 +153,6 @@
 		04233501278E61DE00547494 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				871E4E0B2A0CCB760061BE14 /* AMList.json */,
 				04233504278E61DE00547494 /* CacheAPI.swift */,
 				04233505278E61DE00547494 /* CacheModel.swift */,
 				04233503278E61DE00547494 /* CacheViewController.swift */,
@@ -274,7 +269,6 @@
 		42264D3C2B56DE620044051D /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
-				42264D3D2B56DE620044051D /* OAuthentication.swift */,
 				42264D3E2B56DE620044051D /* OAuthenticator.swift */,
 			);
 			path = OAuth;
@@ -500,7 +494,6 @@
 				87E9B23F2B70B3D100B0012C /* RxNetworks.podspec in Resources */,
 				872C0DBC2AB3052200D17DA8 /* CODE_OF_CONDUCT.md in Resources */,
 				04233519278E620D00547494 /* README_CN.md in Resources */,
-				871E4E0C2A0CCB760061BE14 /* AMList.json in Resources */,
 				0423351B278E622400547494 /* README.md in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				876E046729EE35F500A7CF1C /* testLoading.json in Resources */,
@@ -590,7 +583,6 @@
 				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
 				0423350F278E61DE00547494 /* CacheViewController.swift in Sources */,
 				0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */,
-				42264D3F2B56DE620044051D /* OAuthentication.swift in Sources */,
 				04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */,
 				87EDFCD42B4F8292005F3756 /* LoadingModel.swift in Sources */,
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
@@ -755,7 +747,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = AAHMKJNWLX;
 				INFOPLIST_FILE = RxNetworks/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = condy.network.001;
@@ -773,7 +765,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = AAHMKJNWLX;
 				INFOPLIST_FILE = RxNetworks/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = condy.network.001;

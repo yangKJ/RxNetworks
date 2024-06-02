@@ -20,7 +20,7 @@ class GZipViewModel: NSObject {
         GZipAPI.gzip.request()
             .asObservable()
             .mapHandyJSON(HandyDataModel<CacheModel>.self)
-            .map { ($0.data?.url)! }
+            .compactMap { $0.data?.url }
             .observe(on: MainScheduler.instance)
             .catchAndReturn("")
             .subscribe(data)

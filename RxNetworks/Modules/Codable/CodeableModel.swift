@@ -10,37 +10,38 @@ import Foundation
 import HollowCodable
 
 struct CodeableModel: Codable, MappingCodable {
+    @Immutable
     var id: Int
     var title: String?
     var imageURL: URL?
     
     var url: URL?
     
-    @CodingBool
+    @Immutable @BoolCoding
     var bar: Bool?
     
-    @CodingSince1970Date
+    @SecondsSince1970DateCoding
     var timestamp: Date?
     
-    @CodingDateFormatter<Hollow.DateFormat.yyyy_mm_dd_hh_mm_ss>
+    @DateFormatCoding<Hollow.DateFormat.yyyy_mm_dd_hh_mm_ss>
     var time: Date?
     
-    @CodingISO8601Date
+    @ISO8601DateCoding
     var iso8601: Date?
     
-    @CodingHexColor
+    @HexColorCoding
     var color: HollowColor?
     
-    @CodingEnum<TextEnumType>
+    @EnumCoding<TextEnumType>
     var type: TextEnumType?
     
-    @CodingDecimalNumber
+    @DecimalNumberCoding
     var amount: NSDecimalNumber?
     
     var dict: DictAA?
     
     struct DictAA: Codable {
-        @CodingDecimalNumber
+        @DecimalNumberCoding
         var amount: NSDecimalNumber?
     }
     

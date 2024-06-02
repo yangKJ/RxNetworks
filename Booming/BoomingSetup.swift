@@ -15,23 +15,31 @@ public typealias NetworkConfig = BoomingSetup
 /// Network configuration information, only need to be configured once when the program is started
 public struct BoomingSetup {
     
-    /// Whether to add the Debugging plugin by default
-    public static var addDebugging: Bool = false
-    /// Whether to add the Indicator plugin by default
+    /// Whether to add the Indicator plugin by default.
     public static var addIndicator: Bool = false
-    /// Set the request timeout, the default is 30 seconds
+    #if BOOMING_PLUGINGS_SHARED
+    /// 默认日志插件
+    public static var debuggingLogOption: NetworkDebuggingPlugin.Options = .concise
+    #endif
+    
+    /// Set the request timeout, the default is 30 seconds.
     public static var timeoutIntervalForRequest: Double = 30
     
-    public static var interceptor: RequestInterceptor? = nil
-    /// Root path address
+    /// Whether to support background URLSessionConfigurations with Alamofire.
+    public static var supportBackgroundRequest: Bool = false
+    /// Determines whether this instance will automatically start all requests.
+    /// If set to `false`, all requests created must have `.resume()` called. on them for them to start.
+    public static var startRequestsImmediately: Bool = false
+    
+    /// Root path address.
     public static var baseURL: APIHost = ""
     /// Default request type, default `post`
     public static var baseMethod: APIMethod = APIMethod.post
     /// Default basic parameters, similar to: userID, token, etc.
     public static var baseParameters: APIParameters = [:]
-    /// Default Header argument, 相同数据时该数据会被`NetworkHttpHeaderPlugin`插件覆盖.
+    /// Default Header argument, When the same data is the same, the data will be overwritten by the `NetworkHttpHeaderPlugin` plug-in.
     public static var baseHeaders: [String: String] = [:]
-    /// Plugins that require default injection, generally not recommended
+    /// Plugins that require default injection, generally not recommended.
     /// However, you can inject this kind of global unified general plugin, such as secret key plugin, certificate plugin, etc.
     public static var basePlugins: [PluginSubType]?
     
@@ -57,5 +65,22 @@ public struct BoomingSetup {
             dict.removeValue(forKey: key)
         }
         Self.baseParameters = dict
+    }
+}
+
+extension BoomingSetup {
+    @available(*, deprecated, message: "Use `NetworkAuthenticationPlugin` add to `BoomingSetup.basePlugins`")
+    /// It is recommended to use plug-in mode to add interceptor.
+    /// You can also add it to the `BoomingSetup.basePlugins`.
+    public static var interceptor: RequestInterceptor? = nil
+    
+    @available(*, deprecated, message: "Use `BoomingSetup.debuggingLogOption`, if you set false correspond to `BoomingSetup.debuggingLogOption = .none`")
+    /// Whether to add the Debugging plugin by default.
+    public static var addDebugging: Bool = true {
+        didSet {
+            if !addDebugging {
+                debuggingLogOption = .none
+            }
+        }
     }
 }

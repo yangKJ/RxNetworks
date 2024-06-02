@@ -12,7 +12,7 @@ import Moya
 public final class HeadstreamRequest {
     
     /// Empty data, convenient for subsequent plugin operations.
-    public var result: Result<Moya.Response, MoyaError>?
+    public var result: APIResponseResult?
     
     public var session: Moya.Session?
     
@@ -24,7 +24,7 @@ public final class HeadstreamRequest {
 
 extension HeadstreamRequest {
     
-    func toJSON() throws -> Any {
+    func toJSON() throws -> APISuccessJSON {
         guard let result = result else {
             let userInfo = [
                 NSLocalizedDescriptionKey: "The result is empty."

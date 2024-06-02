@@ -62,19 +62,6 @@
           }
         },
         {
-          "name": "Debugging",
-          "source_files": "Plugins/Debugging/*.swift",
-          "dependencies": {
-            "Booming/Core": [
-
-            ]
-          },
-          "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_DEBUGGING",
-            "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_DEBUGGING=1"
-          }
-        },
-        {
           "name": "Cache",
           "source_files": "Plugins/Cache/*.swift",
           "dependencies": {
@@ -83,15 +70,6 @@
             ],
             "CacheX": [
               "~> 1.1.0"
-            ]
-          }
-        },
-        {
-          "name": "GZip",
-          "source_files": "Plugins/GZip/*.swift",
-          "dependencies": {
-            "Booming/Core": [
-
             ]
           }
         },
@@ -106,32 +84,6 @@
           "pod_target_xcconfig": {
             "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_SHARED",
             "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_SHARED=1"
-          }
-        },
-        {
-          "name": "Header",
-          "source_files": "Plugins/Header/*.swift",
-          "dependencies": {
-            "Booming/Core": [
-
-            ]
-          },
-          "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_HTTPHEADER",
-            "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_HTTPHEADER=1"
-          }
-        },
-        {
-          "name": "Files",
-          "source_files": "Plugins/Files/*.swift",
-          "dependencies": {
-            "Booming/Core": [
-
-            ]
-          },
-          "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_DOWNLOAD_UPLOAD",
-            "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_DOWNLOAD_UPLOAD=1"
           }
         },
         {

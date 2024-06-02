@@ -8,8 +8,14 @@
 import Foundation
 import Moya
 
-public protocol PluginPropertiesable: PluginSubType {
+public protocol HasPluginsPropertyProtocol: PluginSubType {
     var plugins: APIPlugins { get set }
+}
+
+@available(*, deprecated, message: "Typo. Use `HasKeyAndDelayPropertyProtocol` instead", renamed: "HasKeyAndDelayPropertyProtocol")
+public typealias PluginPropertiesable = HasKeyAndDelayPropertyProtocol
+
+public protocol HasKeyAndDelayPropertyProtocol: PluginSubType {
     
     var key: String? { get set }
     
@@ -17,7 +23,7 @@ public protocol PluginPropertiesable: PluginSubType {
     var delay: Double { get }
 }
 
-extension PluginPropertiesable {
+extension HasKeyAndDelayPropertyProtocol {
     public var delay: Double {
         return 0
     }
@@ -27,8 +33,16 @@ extension PluginPropertiesable {
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol
 public protocol PluginSubType: Moya.PluginType {
     
+    static var className: String { get }
+    
+    var className: String { get }
+    
     /// 插件名
     var pluginName: String { get }
+    
+    /// 优先等级，解决某些插件需要先后顺序问题
+    /// 场景：比如解析插件和解压插件甚至加解密插件，至少就需要先解压再解密最后才是解析数据。
+    var usePriorityLevel: UsePriorityLevel { get }
     
     /// 设置网络配置信息之后，开始准备请求之前，
     /// 该方法可以用于本地缓存存在时直接抛出数据而不用再执行后序网络请求等场景
@@ -58,16 +72,28 @@ public protocol PluginSubType: Moya.PluginType {
     ///   - result: Containing the data source and whether auto-last network request.
     ///   - target: The protocol used to define the specifications necessary for a `MoyaProvider`.
     ///   - onNext: Provide callbacks for the plug-in to process tasks asynchronously.
-    func lastNever(_ result: LastNeverResult, target: TargetType, onNext: @escaping LastNeverCallback)
+    func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback)
 }
 
 extension PluginSubType {
+    
+    public static var className: String {
+        String(describing: self)
+    }
+    
+    public var className: String {
+        String(describing: type(of: self))
+    }
+    
+    public var usePriorityLevel: UsePriorityLevel {
+        UsePriorityLevel.medium
+    }
     
     public func configuration(_ request: HeadstreamRequest, target: TargetType) -> HeadstreamRequest {
         return request
     }
     
-    public func lastNever(_ result: LastNeverResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback) {
         onNext(result)
     }
 }

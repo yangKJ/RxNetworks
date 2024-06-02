@@ -111,7 +111,7 @@ extension NetworkCachePlugin: PluginSubType {
         }
     }
     
-    public func process(_ result: Result<Response, MoyaError>, target: TargetType) -> Result<Response, MoyaError> {
+    public func process(_ result: Result<Moya.Response, MoyaError>, target: TargetType) -> Result<Moya.Response, MoyaError> {
         switch options.cacheType {
         case .networkElseCache:
             switch result {
@@ -132,7 +132,7 @@ extension NetworkCachePlugin: PluginSubType {
 extension NetworkCachePlugin {
     
     private func readCacheResponse(_ target: TargetType) -> Moya.Response? {
-        let key = options.cryptoType.encryptedString(with: X.requestLink(with: target))
+        let key = options.cryptoType.encryptedString(with: requestLink(with: target))
         guard let model = CacheManager.default.storage.fetchCached(forKey: key, options: options.cachedOptions),
               let statusCode = model.statusCode,
               let data = model.data else {
@@ -143,8 +143,20 @@ extension NetworkCachePlugin {
     
     private func saveCacheResponse(_ response: Moya.Response?, target: TargetType) {
         guard let response = response else { return }
-        let key = options.cryptoType.encryptedString(with: X.requestLink(with: target))
+        let key = options.cryptoType.encryptedString(with: requestLink(with: target))
         let model = CacheModel(data: response.data, statusCode: response.statusCode)
         CacheManager.default.storage.storeCached(model, forKey: key, options: options.cachedOptions)
+    }
+    
+    /// 由于参数可能会存在变化，这边以用户设置`api.parameters`为准；
+    private func requestLink(with target: TargetType) -> String {
+        if let api = target as? NetworkAPI {
+            let paramString = X.sortParametersToString(api.parameters)
+            return target.baseURL.absoluteString + target.path + paramString
+        } else if let multiTarget = target as? MultiTarget, let api = multiTarget.target as? NetworkAPI {
+            let paramString = X.sortParametersToString(api.parameters)
+            return target.baseURL.absoluteString + target.path + paramString
+        }
+        return target.baseURL.absoluteString + target.path
     }
 }

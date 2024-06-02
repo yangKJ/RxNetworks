@@ -31,6 +31,7 @@ extension ClosureAPI: NetworkAPI {
     
     var plugins: APIPlugins {
         let loading = NetworkLoadingPlugin.init(options: .init(delay: 0.5))
-        return [loading]
+        let ignore = NetworkIgnorePlugin(pluginTypes: [NetworkAuthenticationPlugin.self])
+        return [loading, ignore]
     }
 }

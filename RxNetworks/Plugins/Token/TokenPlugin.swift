@@ -70,7 +70,7 @@ extension TokenPlugin: PluginSubType {
         return request
     }
     
-    public func lastNever(_ result: LastNeverResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback) {
         guard self.token.isEmpty else {
             onNext(result)
             return

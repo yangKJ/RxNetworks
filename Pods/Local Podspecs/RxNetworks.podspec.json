@@ -68,9 +68,9 @@
           }
         },
         {
-          "name": "Debugging",
+          "name": "AnimatedLoading",
           "dependencies": {
-            "Booming/Plugins/Debugging": [
+            "Booming/Plugins/Lottie": [
 
             ]
           }
@@ -79,14 +79,6 @@
           "name": "Loading",
           "dependencies": {
             "Booming/Plugins/Loading": [
-
-            ]
-          }
-        },
-        {
-          "name": "AnimatedLoading",
-          "dependencies": {
-            "Booming/Plugins/Lottie": [
 
             ]
           }
@@ -108,9 +100,17 @@
           }
         },
         {
+          "name": "Debugging",
+          "dependencies": {
+            "Booming/Plugins/Shared": [
+
+            ]
+          }
+        },
+        {
           "name": "GZip",
           "dependencies": {
-            "Booming/Plugins/GZip": [
+            "Booming/Plugins/Shared": [
 
             ]
           }
@@ -126,7 +126,7 @@
         {
           "name": "Header",
           "dependencies": {
-            "Booming/Plugins/Header": [
+            "Booming/Plugins/Shared": [
 
             ]
           }
@@ -134,7 +134,7 @@
         {
           "name": "Files",
           "dependencies": {
-            "Booming/Plugins/Files": [
+            "Booming/Plugins/Shared": [
 
             ]
           }

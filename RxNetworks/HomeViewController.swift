@@ -41,10 +41,20 @@ class HomeViewController: UIViewController {
     func setupDefault() {
         BoomingSetup.baseURL = "https://www.httpbin.org"
         BoomingSetup.baseParameters = ["github": "RxNetworks"]
-        BoomingSetup.addDebugging = true
         BoomingSetup.addIndicator = true
-        //BoomingSetup.basePlugins = [AuthPlugin.shared]
         BoomingSetup.animatedJSON = "testLoading"
+        BoomingSetup.debuggingLogOption = .init(logOptions: .concise)
+        
+        // 生成授权凭证。用户没有登陆时，可以不生成。
+        let credential = OAuthCredential.restore()
+        // 生成授权中心
+        let authenticator = OAuthenticator()
+        // 使用授权中心和凭证（若没有可以不传）配置拦截器
+        let interceptor = OAuthentication(authenticator: authenticator, credential: credential)
+        // 生成拦截器插件加入到全局插件中
+        let interceptorPlugin = NetworkAuthenticationPlugin(interceptor: interceptor)
+        
+        BoomingSetup.basePlugins = [interceptorPlugin]
     }
     
     func setupUI() {

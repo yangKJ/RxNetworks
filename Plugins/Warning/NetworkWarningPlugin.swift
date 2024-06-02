@@ -14,10 +14,8 @@ import MBProgressHUD
 
 /// 自动提示插件，基于MBProgressHUD封装
 /// Warning plugin, based on MBProgressHUD package
-public struct NetworkWarningPlugin: PluginPropertiesable {
+public struct NetworkWarningPlugin: HasKeyAndDelayPropertyProtocol {
     let queue = DispatchQueue(label: "condy.warning.network.queue", attributes: .concurrent)
-    
-    public var plugins: APIPlugins = []
     
     public var key: String?
     
@@ -63,7 +61,7 @@ extension NetworkWarningPlugin: PluginSubType {
         return "Warning"
     }
     
-    public func lastNever(_ result: LastNeverResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback) {
         result.mapResult(failure: { error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.showText(error.localizedDescription)

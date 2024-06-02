@@ -1,7 +1,7 @@
 {
   "name": "HollowCodable",
   "version": "1.0.4",
-  "summary": "Network Api Library.",
+  "summary": "Codable Customization using PropertyWrappers.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
   "license": {

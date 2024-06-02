@@ -12,23 +12,7 @@
 /// https://github.com/Alamofire/Alamofire
 ///
 
-@_exported import Alamofire
-@_exported import Moya
-
-public typealias APIHost = String
-public typealias APIPath = String
-public typealias APINumber = Int
-public typealias APIMethod = Moya.Method
-public typealias APIParameters = Alamofire.Parameters
-public typealias APIPlugins = [PluginSubType]
-public typealias APIStubBehavior = Moya.StubBehavior
-public typealias APISuccessJSON = Any
-public typealias APIFailureError = Swift.Error
-public typealias APIResponseResult = Result<Moya.Response, MoyaError>
-
-public typealias APISuccess = (_ json: APISuccessJSON) -> Void
-public typealias APIFailure = (_ error: APIFailureError) -> Void
-public typealias APIComplete = (_ result: Result<APISuccessJSON, APIFailureError>) -> Void
+import Moya
 
 public protocol NetworkAPI: Moya.TargetType {
     

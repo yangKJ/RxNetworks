@@ -16,7 +16,7 @@ class CacheViewModel: NSObject {
     }
 
     struct Output {
-        let items: Observable<[CacheModel]>
+        let items: Observable<CacheModel>
     }
     
     func transform(input: Input) -> Output {
@@ -28,11 +28,9 @@ class CacheViewModel: NSObject {
 
 extension CacheViewModel {
     
-    func request(_ count: Int) -> Observable<[CacheModel]> {
+    func request(_ count: Int) -> Observable<CacheModel> {
         CacheAPI.cache(count).request()
-            .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
-            .compactMap { $0.data }
-            .observe(on: MainScheduler.instance) // 结果在主线程返回
-            .catchAndReturn([]) // 错误时刻返回空
+            .mapHandyJSON(CacheModel.self)
+            .observe(on: MainScheduler.instance)
     }
 }

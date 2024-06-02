@@ -14,9 +14,7 @@ import MBProgressHUD
 
 /// 加载插件，基于MBProgressHUD封装
 /// Loading plugin, based on MBProgressHUD package
-public struct NetworkLoadingPlugin: PluginPropertiesable {
-    
-    public var plugins: APIPlugins = []
+public struct NetworkLoadingPlugin: HasKeyAndDelayPropertyProtocol {
     
     public var key: String?
     
