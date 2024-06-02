@@ -43,7 +43,7 @@ extension ChainViewModel {
     func requestData(ip: String) -> Observable<NSDictionary> {
         return ChainAPI.test2(ip).request()
             .map { ($0 as! NSDictionary) }
-            .catchAndReturn(["data": "nil"]) // 异常抛出
+            .catchAndReturn(["data": "nil"])
             .observe(on: MainScheduler.instance)
     }
 }

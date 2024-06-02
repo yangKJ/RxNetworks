@@ -19,15 +19,17 @@ public struct NetworkWarningPlugin: HasKeyAndDelayPropertyProtocol {
     
     public var key: String?
     
-    public let options: Options
+    public let options: NetworkWarningPlugin.Options
     
-    public init(options: Options = .init()) {
+    public init(options: NetworkWarningPlugin.Options = .init()) {
         self.options = options
     }
 }
 
 extension NetworkWarningPlugin {
     public struct Options {
+        /// Don't cover last errror content display level window.
+        public static let dontCover = Options.init(cover: false)
         /// The default duration.
         let duration: Double
         /// 是否会覆盖上次的错误展示，如果上次错误展示还在，新的错误展示是否需要覆盖上次。
@@ -73,11 +75,15 @@ extension NetworkWarningPlugin: PluginSubType {
 
 extension NetworkWarningPlugin {
     
+    private var viewController: LevelStatusBarWindowController? {
+        HUDs.readHUD(suffix: pluginName).first
+    }
+    
     private func showText(_ text: String) {
         guard let key = self.key else {
             return
         }
-        if self.options.coverLastToast, let vc = HUDs.readHUD(key: key) {
+        if self.options.coverLastToast, let vc = viewController {
             (vc.showUpView as? MBProgressHUD)?.label.text = text
             return
         }

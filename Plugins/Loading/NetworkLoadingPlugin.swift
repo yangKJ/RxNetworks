@@ -22,9 +22,9 @@ public struct NetworkLoadingPlugin: HasKeyAndDelayPropertyProtocol {
         options.delayHideHUD
     }
     
-    public var options: Options
+    public var options: NetworkLoadingPlugin.Options
     
-    public init(options: Options = .init()) {
+    public init(options: NetworkLoadingPlugin.Options = .loading) {
         self.options = options
     }
     
@@ -37,8 +37,10 @@ public struct NetworkLoadingPlugin: HasKeyAndDelayPropertyProtocol {
 
 extension NetworkLoadingPlugin {
     public struct Options {
+        /// Default text hud display loading hud view controller.
+        public static let loading = Options.init(text: "正在加载...")
         /// Loading will not be automatically hidden and display window.
-        public static let dontAutoHide: Options = .init(autoHide: false)
+        public static let dontAutoHide = Options.init(text: "", autoHide: false)
         
         /// Do you need to display an error message, the default is empty
         let displayLoadText: String
@@ -70,59 +72,53 @@ extension NetworkLoadingPlugin: PluginSubType {
     
     public func willSend(_ request: RequestType, target: TargetType) {
         DispatchQueue.main.async {
-            self.showText(options.displayLoadText)
+            self.showHUD()
         }
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        if options.autoHideLoading == false, case .success = result {
-            return
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
-            self.hideMBProgressHUD()
+        if (hudViewController?.subtractLoadingCount() ?? 0) <= 0, options.autoHideLoading {
+            DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
+                self.hideMBProgressHUD()
+            }
         }
     }
 }
 
 extension NetworkLoadingPlugin {
     
-    /// Display the prompt text
-    private func showText(_ text: String) {
-        guard let key = self.key else {
-            return
-        }
-        if let vc = HUDs.readHUD(key: key) {
-            if let _ = MBProgressHUD.forView(vc.view) {
-                return
-            }
-            vc.show()
+    private var hudViewController: LoadingHudViewController? {
+        HUDs.readHUD(suffix: pluginName).first as? LoadingHudViewController
+    }
+    
+    private func showHUD() {
+        if let vc = hudViewController {
+            (vc.showUpView as? MBProgressHUD)?.detailsLabel.text = options.displayLoadText
+            vc.addedLoadingCount()
         } else {
-            let vc = LevelStatusBarWindowController()
-            
-            // Set Activity Indicator View to white for hud loading.
-            let indicatorView = UIActivityIndicatorView.appearance(whenContainedInInstancesOf: [MBProgressHUD.self])
-            indicatorView.color = UIColor.white
-            
-            let hud = MBProgressHUD.showAdded(to: vc.view, animated: true)
-            hud.mode = MBProgressHUDMode.indeterminate
-            hud.animationType = MBProgressHUDAnimation.zoom
-            hud.removeFromSuperViewOnHide = true
-            hud.bezelView.style = MBProgressHUDBackgroundStyle.solidColor
-            hud.bezelView.color = UIColor.black.withAlphaComponent(0.7)
-            hud.bezelView.layer.cornerRadius = 14
-            hud.detailsLabel.text = text
-            hud.detailsLabel.font = UIFont.systemFont(ofSize: 16)
-            hud.detailsLabel.numberOfLines = 0
-            hud.detailsLabel.textColor = UIColor.white
-            
-            // User defined the hud configuration.
-            self.options.hudCallback?(hud)
-            
-            vc.key = key
-            vc.showUpView = hud
-            vc.addedShowUpView = true
+            let vc = LoadingHudViewController(createShowUpViewCallback: {
+                // Set Activity Indicator View to white for hud loading.
+                let indicatorView = UIActivityIndicatorView.appearance(whenContainedInInstancesOf: [MBProgressHUD.self])
+                indicatorView.color = UIColor.white
+                
+                let hud = MBProgressHUD.init(frame: .zero)//showAdded(to: vc.view, animated: true)
+                hud.mode = MBProgressHUDMode.indeterminate
+                hud.animationType = MBProgressHUDAnimation.zoom
+                hud.removeFromSuperViewOnHide = true
+                hud.bezelView.style = MBProgressHUDBackgroundStyle.solidColor
+                hud.bezelView.color = UIColor.black.withAlphaComponent(0.7)
+                hud.bezelView.layer.cornerRadius = 14
+                hud.detailsLabel.text = options.displayLoadText
+                hud.detailsLabel.font = UIFont.systemFont(ofSize: 16)
+                hud.detailsLabel.numberOfLines = 0
+                hud.detailsLabel.textColor = UIColor.white
+                
+                // User defined the hud configuration.
+                self.options.hudCallback?(hud)
+                return hud
+            })
+            vc.key = self.key
             vc.show()
-            HUDs.saveHUD(key: key, viewController: vc)
         }
     }
 }

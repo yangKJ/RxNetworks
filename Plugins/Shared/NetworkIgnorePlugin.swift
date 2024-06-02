@@ -15,7 +15,7 @@ public struct NetworkIgnorePlugin {
     /// This network request will ignore the plug-ins that have been added.
     public let ignorePluginTypes: [PluginSubType.Type]
     
-    public init(pluginTypes: [PluginSubType.Type] = []) {
+    public init(pluginTypes: [PluginSubType.Type]) {
         self.ignorePluginTypes = pluginTypes
     }
     

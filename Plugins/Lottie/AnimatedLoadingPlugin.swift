@@ -21,9 +21,9 @@ public struct AnimatedLoadingPlugin: HasKeyAndDelayPropertyProtocol {
         options.delayHideHUD
     }
     
-    public let options: Options
+    public let options: AnimatedLoadingPlugin.Options
     
-    public init(options: Options = .`default`) {
+    public init(options: AnimatedLoadingPlugin.Options = .loading) {
         self.options = options
     }
     
@@ -36,14 +36,27 @@ public struct AnimatedLoadingPlugin: HasKeyAndDelayPropertyProtocol {
 
 extension AnimatedLoadingPlugin {
     public struct Options {
-        /// Loading will not be automatically hidden and display window.
-        public static let `default`: Options = .init(text: "")
+        /// Only lottie hud display loading hud view controller.
+        public static let `default` = Options.init(text: "")
+        /// Default text hud display loading hud view controller.
+        public static let loading = Options.init(text: "正在加载...")
+        /// Loading will not be automatically hidden and display loading hud view controller.
+        public static let dontAutoHide = {
+            var opt = Options.init(text: "")
+            opt.autoHideLoading = false
+            return opt
+        }()
         
         /// Do you need to automatically hide the loading hud.
         public var autoHideLoading: Bool = true
-        
         /// A subdirectory in the bundle in which the animation is located. Optional.
         public var subdirectory: String?
+        /// Set the window background color.
+        public var overlayBackgroundColor: ColorType = .black.withAlphaComponent(0.2)
+        /// Set the HUD background.
+        public var hudBackground: ColorType = .black.withAlphaComponent(0.7)
+        /// Set the size of HUD rounded corners.
+        public var hudCornerRadius: CGFloat = 15.0
         
         /// Do you need to display an error message, the default is empty
         let displayLoadText: String
@@ -54,7 +67,7 @@ extension AnimatedLoadingPlugin {
         /// The bundle in which the animation is located. Defaults to `Bundle.main`.
         let bundle: Bundle
         
-        public init(text: String = "正在加载...", delay: Double = 0.0, animatedJSON: String? = nil, bundle: Bundle = .main) {
+        public init(text: String = "", delay: Double = 0.0, animatedJSON: String? = nil, bundle: Bundle = .main) {
             self.displayLoadText = text
             self.delayHideHUD = delay
             self.animatedJSON = animatedJSON
@@ -76,10 +89,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
-        guard let key = self.key, let vc = HUDs.readHUD(key: key) as? LoadingHudViewController else {
-            return
-        }
-        if vc.subtractLoadingCount() <= 0, options.autoHideLoading {
+        if (hudViewController?.subtractLoadingCount() ?? 0) <= 0, options.autoHideLoading {
             DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
                 self.hideLoadingHUD()
             }
@@ -89,16 +99,30 @@ extension AnimatedLoadingPlugin: PluginSubType {
 
 extension AnimatedLoadingPlugin {
     
+    private var hudViewController: LoadingHudViewController? {
+        HUDs.readHUD(suffix: pluginName).first as? LoadingHudViewController
+    }
+    
     private func showHUD() {
-        if let vc = HUDs.readHUD(suffix: pluginName).first as? LoadingHudViewController {
-            vc.setupLoadingText(self.options.displayLoadText)
+        if let vc = hudViewController {
+            setupHUD(hud: (vc.showUpView as? AnimatedLoadingHUD))
+            vc.overlayBackgroundColor = options.overlayBackgroundColor
             vc.addedLoadingCount()
         } else {
             let animatedNamed = self.options.animatedJSON ?? BoomingSetup.animatedJSON
-            let vc = LoadingHudViewController(animatedNamed: animatedNamed, bundle: options.bundle, subdirectory: options.subdirectory)
-            vc.setupLoadingText(self.options.displayLoadText)
+            let vc = LoadingHudViewController(createShowUpViewCallback: {
+                AnimatedLoadingHUD(frame: .zero, animatedNamed: animatedNamed, bundle: options.bundle, subdirectory: options.subdirectory)
+            })
+            setupHUD(hud: (vc.showUpView as? AnimatedLoadingHUD))
+            vc.overlayBackgroundColor = options.overlayBackgroundColor
             vc.key = self.key
             vc.show()
         }
+    }
+    
+    private func setupHUD(hud: AnimatedLoadingHUD?) {
+        hud?.containerView.backgroundColor = options.hudBackground
+        hud?.cornerRadius = options.hudCornerRadius
+        hud?.setupLoadingText(options.displayLoadText)
     }
 }

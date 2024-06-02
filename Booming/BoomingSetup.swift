@@ -18,7 +18,7 @@ public struct BoomingSetup {
     /// Whether to add the Indicator plugin by default.
     public static var addIndicator: Bool = false
     #if BOOMING_PLUGINGS_SHARED
-    /// 默认日志插件
+    /// Set the log plug-in to print content, Default concise.
     public static var debuggingLogOption: NetworkDebuggingPlugin.Options = .concise
     #endif
     
@@ -74,12 +74,12 @@ extension BoomingSetup {
     /// You can also add it to the `BoomingSetup.basePlugins`.
     public static var interceptor: RequestInterceptor? = nil
     
-    @available(*, deprecated, message: "Use `BoomingSetup.debuggingLogOption`, if you set false correspond to `BoomingSetup.debuggingLogOption = .none`")
+    @available(*, deprecated, message: "Use `BoomingSetup.debuggingLogOption`, if you set false correspond to `BoomingSetup.debuggingLogOption = .nothing`")
     /// Whether to add the Debugging plugin by default.
     public static var addDebugging: Bool = true {
         didSet {
             if !addDebugging {
-                debuggingLogOption = .none
+                debuggingLogOption = .nothing
             }
         }
     }

@@ -24,7 +24,7 @@ extension X {
         }
         #endif
         #if BOOMING_PLUGINGS_SHARED
-        if BoomingSetup.debuggingLogOption != .none, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
+        if BoomingSetup.debuggingLogOption != .nothing, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
             let logger = NetworkDebuggingPlugin.init(options: BoomingSetup.debuggingLogOption)
             plugins_.append(logger)
         }

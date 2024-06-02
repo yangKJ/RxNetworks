@@ -14,9 +14,9 @@ public struct NetworkDebuggingPlugin: HasPluginsPropertyProtocol {
     
     public var plugins: APIPlugins = []
     
-    public let options: Options
+    public let options: NetworkDebuggingPlugin.Options
     
-    public init(options: Options = .default) {
+    public init(options: NetworkDebuggingPlugin.Options = .default) {
         self.options = options
     }
 }
@@ -24,11 +24,11 @@ public struct NetworkDebuggingPlugin: HasPluginsPropertyProtocol {
 extension NetworkDebuggingPlugin {
     public struct Options: Equatable {
         
-        public static let `default`: Options = .init(logOptions: .default)
+        public static let `default` = Options.init(logOptions: .default)
         
-        public static let concise: Options = .init(logOptions: .concise)
+        public static let concise = Options.init(logOptions: .concise)
         
-        public static let none: Options = .init(logOptions: .none)
+        public static let nothing = Options.init(logOptions: .none)
         
         let logOptions: LogOptions
         

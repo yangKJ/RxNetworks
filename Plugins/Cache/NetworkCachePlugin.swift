@@ -32,9 +32,9 @@ public enum NetworkCacheType {
 /// Cache plugin, based on `CacheX` package use
 public struct NetworkCachePlugin {
     
-    public let options: Options
+    public let options: NetworkCachePlugin.Options
     
-    public init(options: Options = .ignoreCache) {
+    public init(options: NetworkCachePlugin.Options = .ignoreCache) {
         self.options = options
     }
     

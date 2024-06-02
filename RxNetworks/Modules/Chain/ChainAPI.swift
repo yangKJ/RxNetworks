@@ -47,14 +47,28 @@ extension ChainAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
+        //((arc4random() % 2) != 0) ? loadingPlugins : 
+        lottiePlugins
+    }
+    
+    var loadingPlugins: APIPlugins {
         switch self {
         case .test:
-            var option = AnimatedLoadingPlugin.Options.init(text: "loading-1..")
-            option.autoHideLoading = false
-            let loading = AnimatedLoadingPlugin(options: option)
+            let loading = NetworkLoadingPlugin(options: .dontAutoHide)
             return [loading]
         case .test2(_):
-            let loading = AnimatedLoadingPlugin(options: .init(text: "loading-2.."))
+            let loading = NetworkLoadingPlugin(options: .init(text: "loading..", delay: 1))
+            return [loading]
+        }
+    }
+    
+    var lottiePlugins: APIPlugins {
+        switch self {
+        case .test:
+            let loading = AnimatedLoadingPlugin(options: .dontAutoHide)
+            return [loading]
+        case .test2:
+            let loading = AnimatedLoadingPlugin(options: .init(text: "loading..", delay: 1))
             return [loading]
         }
     }

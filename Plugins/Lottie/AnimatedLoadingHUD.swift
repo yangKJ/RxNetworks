@@ -1,5 +1,5 @@
 //
-//  LoadingHud.swift
+//  AnimatedLoadingHUD.swift
 //  RxNetworks
 //
 //  Created by Condy on 2023/4/12.
@@ -8,19 +8,18 @@
 import Foundation
 import Lottie
 
-final class LoadingHud: ViewType {
+final class AnimatedLoadingHUD: ViewType {
     
     lazy var containerView: ViewType = {
         let view = ViewType()
-        view.backgroundColor = .black.withAlphaComponent(0.7)
         #if os(macOS)
         view.wantsLayer = true
-        view.layer?.cornerRadius = 15
+        view.layer?.cornerRadius = cornerRadius
         view.layer?.masksToBounds = true
         view.layer?.shouldRasterize = true
         view.layer?.rasterizationScale = X.mainScale()
         #else
-        view.layer.cornerRadius = 15
+        view.layer.cornerRadius = cornerRadius
         view.layer.masksToBounds = true
         view.layer.shouldRasterize = true
         view.layer.rasterizationScale = X.mainScale()
@@ -68,23 +67,30 @@ final class LoadingHud: ViewType {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var containerSize: CGSize = .init(width: 100, height: 100)
+    
+    var cornerRadius: CGFloat = 15.0 {
+        didSet {
+            #if os(macOS)
+            containerView.layer?.cornerRadius = cornerRadius
+            #else
+            containerView.layer.cornerRadius = cornerRadius
+            #endif
+        }
+    }
+    
     private func setup() {
         self.addSubview(containerView)
         containerView.addSubview(animatedView)
-        containerView.addSubview(textLabel)
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
-            containerView.widthAnchor.constraint(equalToConstant: 100),
-            containerView.heightAnchor.constraint(equalToConstant: 100),
-            animatedView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            containerView.widthAnchor.constraint(equalToConstant: containerSize.width),
+            containerView.heightAnchor.constraint(equalToConstant: containerSize.height),
             animatedView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
             animatedView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
-            textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 10),
-            textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -10),
-            textLabel.heightAnchor.constraint(equalToConstant: 15),
-            textLabel.topAnchor.constraint(equalTo: animatedView.bottomAnchor, constant: 5),
-            textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15),
+            animatedView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            animatedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
     }
     
@@ -92,10 +98,11 @@ final class LoadingHud: ViewType {
         if let animatedNamed = animatedNamed {
             animatedView.animation = LottieAnimation.named(animatedNamed, bundle: bundle, subdirectory: subdirectory)
         } else {
+            animatedView.isHidden = true
+            containerView.addSubview(textLabel)
             NSLayoutConstraint.activate([
-                textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 10),
-                textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -10),
-                textLabel.heightAnchor.constraint(equalToConstant: 15),
+                textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8),
+                textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -8),
                 textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             ])
         }
@@ -103,7 +110,25 @@ final class LoadingHud: ViewType {
     
     func setupLoadingText(_ text: String?) {
         textLabel.text = text
-        if let text = text, !text.isEmpty { } else {
+        if let text = text, !text.isEmpty {
+            if textLabel.superview == nil {
+                containerView.addSubview(textLabel)
+            }
+            if animatedView.isHidden {
+                NSLayoutConstraint.activate([
+                    textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8),
+                    textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -8),
+                    textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    animatedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -30),
+                    textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8),
+                    textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -8),
+                    textLabel.topAnchor.constraint(equalTo: animatedView.bottomAnchor, constant: 5),
+                ])
+            }
+        } else {
             NSLayoutConstraint.activate([
                 animatedView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
                 animatedView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
@@ -112,11 +137,11 @@ final class LoadingHud: ViewType {
     }
 }
 
-extension LoadingHud: LevelStatusBarWindowShowUpable {
+extension AnimatedLoadingHUD: LevelStatusBarWindowShowUpable {
     
     func makeOpenedStatusConstraint(superview: ViewType) {
-        let origin = CGPoint(x: superview.center.x - 50, y: superview.center.y - 50)
-        self.frame = CGRect(origin: origin, size: .init(width: 100, height: 100))
+        let origin = CGPoint(x: superview.center.x - containerSize.width/2, y: superview.center.y - containerSize.height/2)
+        self.frame = CGRect(origin: origin, size: containerSize)
     }
     
     func show(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?) {

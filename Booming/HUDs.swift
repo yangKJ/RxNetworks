@@ -11,7 +11,7 @@ import Foundation
 public struct HUDs {
     
     private static let HUDsLock = NSLock()
-    private static var cacheHUDs = [String: LevelStatusBarWindowController]()
+    static var cacheHUDs = [String: LevelStatusBarWindowController]()
     
     public static func readHUD(key: String) -> LevelStatusBarWindowController? {
         self.HUDsLock.lock()

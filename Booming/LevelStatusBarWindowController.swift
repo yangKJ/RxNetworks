@@ -7,6 +7,20 @@
 
 import Foundation
 
+public protocol LevelStatusBarWindowShowUpable {
+    
+    func makeOpenedStatusConstraint(superview: ViewType)
+    
+    func show(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?)
+    
+    func close(animated: Bool, animation: (() -> Void)?, completion: ((Bool) -> Void)?)
+    
+    /// Refresh the interface according to the added settings.
+    func refreshBeforeShow()
+    /// Click on the outside area to close it.
+    var canCloseWhenTapOutSize: Bool { get }
+}
+
 /// 状态窗口显示器
 open class LevelStatusBarWindowController: ViewControllerType {
     private static let window: WindowType = X.createWindow()
@@ -66,7 +80,7 @@ open class LevelStatusBarWindowController: ViewControllerType {
     
     public var showUpView: LevelStatusBarWindowShowUpable?
     
-    /// 外界已经将`showUpView`添加到控制器
+    /// The outside world has added `showUpView` to the controller.
     public var addedShowUpView: Bool = false
     
     public var overlayBackgroundColor: ColorType = .black.withAlphaComponent(0.2) {
@@ -211,4 +225,10 @@ open class LevelStatusBarWindowController: ViewControllerType {
         }
         cancelAllBackgroundControllersShow()
     }
+}
+
+extension LevelStatusBarWindowShowUpable {
+    public func makeOpenedStatusConstraint(superview: ViewType) { }
+    public func refreshBeforeShow() { }
+    public var canCloseWhenTapOutSize: Bool { false }
 }

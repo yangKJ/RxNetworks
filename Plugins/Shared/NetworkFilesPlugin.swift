@@ -36,10 +36,10 @@ public final class NetworkFilesPlugin {
     
     private(set) var task: Moya.Task?
     
-    public let options: Options
+    public let options: NetworkFilesPlugin.Options
     public let type: OperateType
     
-    public init(type: OperateType, options: Options = .init()) {
+    public init(type: OperateType, options: NetworkFilesPlugin.Options = .init()) {
         self.type = type
         self.options = options
     }
