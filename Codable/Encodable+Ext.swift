@@ -16,7 +16,7 @@ extension Encodable {
         }
         let mapKeys = type.codingKeys
         if !mapKeys.isEmpty {
-            let mapping = Dictionary(uniqueKeysWithValues: mapKeys.map { ($0, $1) })
+            let mapping = mapKeys.toEncoderingMappingKeys
             encoder.keyEncodingStrategy = .custom({ codingPath in
                 let key = codingPath.last!.stringValue
                 if let mapped = mapping[key] {

@@ -9,21 +9,35 @@
 import Foundation
 import RxNetworks
 import RxCocoa
+import HollowCodable
+
+struct GZipModel: Codable, MappingCodable {
+    @Immutable
+    var id: Int
+    var title: String?
+    var imageURL: URL?
+    var url: URL?
+    
+    static var codingKeys: [ReplaceKeys] {
+        return [
+            ReplaceKeys.init(replaceKey: "imageURL", originalKey: "image"),
+            ReplaceKeys.init(replaceKey: "url", originalKey: "github"),
+        ]
+    }
+}
 
 class GZipViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishSubject<String>()
+    let data = PublishRelay<GZipModel>()
     
     func loadData() {
         GZipAPI.gzip.request()
-            .asObservable()
-            .mapHandyJSON(HandyDataModel<CacheModel>.self)
-            .compactMap { $0.data?.url }
+            .deserialized(ApiResponse<GZipModel>.self, mapping: GZipModel.self)
+            .compactMap { $0.data }
             .observe(on: MainScheduler.instance)
-            .catchAndReturn("")
-            .subscribe(data)
+            .bind(to: data)
             .disposed(by: disposeBag)
     }
 }

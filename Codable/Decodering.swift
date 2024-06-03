@@ -13,7 +13,7 @@ public struct Decodering<T: Decodable> {
         let decoder = JSONDecoder()
         let mapKeys = type.codingKeys
         if !mapKeys.isEmpty {
-            let mapping = Dictionary(uniqueKeysWithValues: mapKeys.map { ($1, $0) })
+            let mapping = mapKeys.toDecoderingMappingKeys
             decoder.keyDecodingStrategy = .custom({ codingPath in
                 let key = codingPath.last!.stringValue
                 if let mapped = mapping[key] {

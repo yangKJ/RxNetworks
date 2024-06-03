@@ -45,10 +45,10 @@ struct CodeableModel: Codable, MappingCodable {
         var amount: NSDecimalNumber?
     }
     
-    static var codingKeys: ReplaceKeys {
+    static var codingKeys: [ReplaceKeys] {
         return [
-            ("color", "hex_color"),
-            ("url", "github"),
+            ReplaceKeys.init(replaceKey: "color", originalKey: "hex_color"),
+            ReplaceKeys.init(replaceKey: "url", originalKey: "github"),
         ]
     }
 }

@@ -29,7 +29,9 @@ class GZipViewController: BaseViewController<GZipViewModel> {
     
     func setupBindings() {
         // 绑定数据
-        viewModel.data.map { $0 }.bind(to: textView.rx.text).disposed(by: disposeBag)
+        viewModel.data.map { try? $0.toJSONString(prettyPrint: true) }
+            .bind(to: textView.rx.text)
+            .disposed(by: disposeBag)
         
         viewModel.loadData()
     }
