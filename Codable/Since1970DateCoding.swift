@@ -10,18 +10,18 @@ import Foundation
 public extension Hollow {
     struct Interval {
         /// The interval is in seconds since midnight UTC on January 1st, 1970.
-        public enum seconds: HollowValue { public static let hasValue: TimeInterval = 1 }
+        public enum seconds: HollowValueProvider { public static let hasValue: TimeInterval = 1 }
         /// The interval is in milliseconds since midnight UTC on January 1st, 1970.
-        public enum milliseconds: HollowValue { public static let hasValue: TimeInterval = 1_000 }
+        public enum milliseconds: HollowValueProvider { public static let hasValue: TimeInterval = 1_000 }
         /// The interval is in microseconds since midnight UTC on January 1st, 1970.
-        public enum microseconds: HollowValue { public static let hasValue: TimeInterval = 1_000_000 }
+        public enum microseconds: HollowValueProvider { public static let hasValue: TimeInterval = 1_000_000 }
         /// The interval is in nanoseconds since midnight UTC on January 1st, 1970.
-        public enum nanoseconds: HollowValue { public static let hasValue: TimeInterval = 1_000_000_000 }
+        public enum nanoseconds: HollowValueProvider { public static let hasValue: TimeInterval = 1_000_000_000 }
     }
 }
 
 /// If you want to use it like this: `@Since1970DateCoding<Hollow.Interval.milliseconds>`
-@propertyWrapper public struct Since1970DateCoding<D: HollowValue, E: HollowValue>: Codable {
+@propertyWrapper public struct Since1970DateCoding<D: HollowValueProvider, E: HollowValueProvider>: Codable {
     
     public let wrappedValue: Date?
     
@@ -34,7 +34,7 @@ public extension Hollow {
     }
 }
 
-@propertyWrapper public struct Since1970DateDecoding<T: HollowValue>: Decodable {
+@propertyWrapper public struct Since1970DateDecoding<T: HollowValueProvider>: Decodable {
     
     public let wrappedValue: Date?
     
@@ -57,7 +57,7 @@ public extension Hollow {
     }
 }
 
-@propertyWrapper public struct Since1970DateEncoding<T: HollowValue>: Encodable {
+@propertyWrapper public struct Since1970DateEncoding<T: HollowValueProvider>: Encodable {
     
     public let wrappedValue: Date?
     

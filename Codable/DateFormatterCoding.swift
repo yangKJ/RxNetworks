@@ -9,33 +9,33 @@ import Foundation
 
 public extension Hollow {
     struct DateFormat {
-        public enum yyyy: HollowValue { public static let hasValue = "yyyy" }
-        public enum yyyy_p_mm_p_dd: HollowValue { public static let hasValue = "yyyy.MM.dd" }
-        public enum mm_p_dd: HollowValue { public static let hasValue = "MM.dd" }
-        public enum yyyy_p_mm: HollowValue { public static let hasValue = "yyyy.MM" }
-        public enum yyyy_p_mm_p_dd_hh_mm: HollowValue { public static let hasValue = "yyyy.MM.dd HH:mm" }
-        public enum yyyy_mm: HollowValue { public static let hasValue = "yyyyMM" }
-        public enum yyyy_mm_dd: HollowValue { public static let hasValue = "yyyy-MM-dd" }
-        public enum yyyy_virgule_mm_virgule_dd: HollowValue { public static let hasValue = "yyyy/MM/dd" }
-        public enum mm_dd: HollowValue { public static let hasValue = "MM-dd" }
-        public enum mmdd: HollowValue { public static let hasValue = "MMdd" }
-        public enum yymm: HollowValue { public static let hasValue = "yyMM" }
-        public enum yyyymmdd: HollowValue { public static let hasValue = "yyyyMMdd" }
-        public enum yyyymmddhhkmmss: HollowValue { public static let hasValue = "yyyyMMddHHmmss" }
-        public enum yyyy_mm_dd_CH: HollowValue { public static let hasValue = "yyyy年MM月dd日" }
-        public enum yyyy_m_d_CH: HollowValue { public static let hasValue = "yyyy年M月d日" }
-        public enum yyyy_mm_dd_hh_mm_ss_CH: HollowValue { public static let hasValue = "yyyy年MM月dd日 HH:mm:ss" }
-        public enum mm_dd_hh_mm_ss_CH: HollowValue { public static let hasValue = "MM月dd日 HH:mm:ss" }
-        public enum yyyym_CH: HollowValue { public static let hasValue = "yyyy年M月" }
-        public enum yyyy_mm_dd_hh_mm: HollowValue { public static let hasValue = "yyyy-MM-dd HH:mm" }
-        public enum yyyy_mm_dd_hh_mm_ss: HollowValue { public static let hasValue = "yyyy-MM-dd HH:mm:ss" }
+        public enum yyyy: HollowValueProvider { public static let hasValue = "yyyy" }
+        public enum yyyy_p_mm_p_dd: HollowValueProvider { public static let hasValue = "yyyy.MM.dd" }
+        public enum mm_p_dd: HollowValueProvider { public static let hasValue = "MM.dd" }
+        public enum yyyy_p_mm: HollowValueProvider { public static let hasValue = "yyyy.MM" }
+        public enum yyyy_p_mm_p_dd_hh_mm: HollowValueProvider { public static let hasValue = "yyyy.MM.dd HH:mm" }
+        public enum yyyy_mm: HollowValueProvider { public static let hasValue = "yyyyMM" }
+        public enum yyyy_mm_dd: HollowValueProvider { public static let hasValue = "yyyy-MM-dd" }
+        public enum yyyy_virgule_mm_virgule_dd: HollowValueProvider { public static let hasValue = "yyyy/MM/dd" }
+        public enum mm_dd: HollowValueProvider { public static let hasValue = "MM-dd" }
+        public enum mmdd: HollowValueProvider { public static let hasValue = "MMdd" }
+        public enum yymm: HollowValueProvider { public static let hasValue = "yyMM" }
+        public enum yyyymmdd: HollowValueProvider { public static let hasValue = "yyyyMMdd" }
+        public enum yyyymmddhhkmmss: HollowValueProvider { public static let hasValue = "yyyyMMddHHmmss" }
+        public enum yyyy_mm_dd_CH: HollowValueProvider { public static let hasValue = "yyyy年MM月dd日" }
+        public enum yyyy_m_d_CH: HollowValueProvider { public static let hasValue = "yyyy年M月d日" }
+        public enum yyyy_mm_dd_hh_mm_ss_CH: HollowValueProvider { public static let hasValue = "yyyy年MM月dd日 HH:mm:ss" }
+        public enum mm_dd_hh_mm_ss_CH: HollowValueProvider { public static let hasValue = "MM月dd日 HH:mm:ss" }
+        public enum yyyym_CH: HollowValueProvider { public static let hasValue = "yyyy年M月" }
+        public enum yyyy_mm_dd_hh_mm: HollowValueProvider { public static let hasValue = "yyyy-MM-dd HH:mm" }
+        public enum yyyy_mm_dd_hh_mm_ss: HollowValueProvider { public static let hasValue = "yyyy-MM-dd HH:mm:ss" }
     }
 }
 
 extension DateFormatter: FormatterConverter { }
 
 /// If you want to use it like this: `@DateFormatterCoding<Hollow.DateFormat.yyyy, Hollow.DateFormat.yyyym_CH>`
-@propertyWrapper public struct DateFormatterCoding<D: HollowValue, E: HollowValue>: Codable {
+@propertyWrapper public struct DateFormatterCoding<D: HollowValueProvider, E: HollowValueProvider>: Codable {
     
     public let wrappedValue: Date?
     
@@ -48,7 +48,7 @@ extension DateFormatter: FormatterConverter { }
     }
 }
 
-@propertyWrapper public struct DateFormatterDecoding<T: HollowValue>: Decodable {
+@propertyWrapper public struct DateFormatterDecoding<T: HollowValueProvider>: Decodable {
     
     public let wrappedValue: Date?
     
@@ -78,7 +78,7 @@ extension DateFormatter: FormatterConverter { }
     }
 }
 
-@propertyWrapper public struct DateFormatterEncoding<T: HollowValue>: Encodable {
+@propertyWrapper public struct DateFormatterEncoding<T: HollowValueProvider>: Encodable {
     
     public let wrappedValue: Date?
     

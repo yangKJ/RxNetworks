@@ -14,7 +14,7 @@ import AppKit
 public typealias HollowColor = NSColor
 #endif
 
-@propertyWrapper public struct HexColorHasCoding<T: HollowValue>: Codable {
+@propertyWrapper public struct HexColorHasCoding<T: HollowValueProvider>: Codable {
     
     public let wrappedValue: HollowColor?
     
@@ -35,7 +35,6 @@ public typealias HollowColor = NSColor
         let container = try decoder.singleValueContainer()
         let hex = try container.decode(String.self)
         self.wrappedValue = HexColorDecoding.color(with: hex)
-        //throw DecodingError.valueNotFound(Base64DataDecoding.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Expected \(Data.self) but could not convert \(value) to Data"))
     }
     
     static func color(with hex: String) -> HollowColor? {
@@ -74,7 +73,7 @@ public typealias HollowColor = NSColor
     }
 }
 
-@propertyWrapper public struct HexColorHasEncoding<T: HollowValue>: Encodable {
+@propertyWrapper public struct HexColorHasEncoding<T: HollowValueProvider>: Encodable {
     
     public let wrappedValue: HollowColor?
     

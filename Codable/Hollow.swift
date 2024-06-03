@@ -10,7 +10,8 @@
 
 import Foundation
 
-public protocol HollowValue {
+/// Contract for providing a default value of a Type.
+public protocol HollowValueProvider {
     associatedtype Value
     static var hasValue: Value { get }
 }
@@ -18,14 +19,26 @@ public protocol HollowValue {
 public struct Hollow {
     public struct HasBoolean {
         /// Used types to pass values, equivalent to true.
-        public enum yes: HollowValue { public static let hasValue: Bool = true }
+        public enum yes: HollowValueProvider { 
+            public static let hasValue: Bool = true
+        }
         /// Used types to pass values, equivalent to false.
-        public enum no: HollowValue { public static let hasValue: Bool = false }
+        public enum no: HollowValueProvider { 
+            public static let hasValue: Bool = false
+        }
         /// Used types to pass values, equivalent to nil.
-        public enum nothing: HollowValue {
+        public enum nothing: HollowValueProvider {
             public typealias Value = Bool?
             public static let hasValue: Bool? = nil
         }
+    }
+    
+    public struct EmptyString: HollowValueProvider {
+        public static var hasValue: String { "" }
+    }
+    
+    public struct ZeroInt: HollowValueProvider {
+        public static var hasValue: Int { 0 }
     }
 }
 
@@ -37,12 +50,12 @@ public protocol HollowCompatible { }
 
 extension HollowCompatible {
     
-    public var hoo: HollowWrapper<Self> {
+    public var hc: HollowWrapper<Self> {
         get { return HollowWrapper(base: self) }
         set { }
     }
     
-    public static var hoo: HollowWrapper<Self>.Type {
+    public static var hc: HollowWrapper<Self>.Type {
         HollowWrapper<Self>.self
     }
 }

@@ -52,11 +52,6 @@ import Foundation
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        if let value = self.wrappedValue {
-            try container.encode(value ? 1 : 0)
-        } else {
-            try container.encodeNil()
-        }
+        try BoolHasEncoding<Hollow.HasBoolean.nothing>(wrappedValue).encode(to: encoder)
     }
 }

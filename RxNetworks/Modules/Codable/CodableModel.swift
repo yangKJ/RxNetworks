@@ -20,6 +20,9 @@ struct CodableModel: Codable, MappingCodable {
     @Immutable @BoolCoding
     var bar: Bool?
     
+    @DefaultFalseCoding
+    var hasDefBool: Bool
+    
     @SecondsSince1970DateCoding
     var timestamp: Date?
     

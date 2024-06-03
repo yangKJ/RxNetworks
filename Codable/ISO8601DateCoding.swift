@@ -10,7 +10,7 @@ import Foundation
 extension ISO8601DateFormatter: FormatterConverter { }
 
 extension Hollow.DateFormat {
-    public enum ISO8601Date: HollowValue {
+    public enum ISO8601Date: HollowValueProvider {
         public static let hasValue: ISO8601DateFormatter = {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = .withInternetDateTime
