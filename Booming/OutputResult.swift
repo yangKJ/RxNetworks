@@ -8,7 +8,10 @@
 import Foundation
 import Moya
 
-public typealias LastNeverCallback = ((_ lastResult: OutputResult) -> Void)
+public typealias OutputResultBlock = ((_ lastResult: OutputResult) -> Void)
+
+@available(*, deprecated, message: "Typo. Use `OutputResultBlock` instead", renamed: "OutputResultBlock")
+public typealias LastNeverCallback = OutputResultBlock
 
 @available(*, deprecated, message: "Typo. Use `OutputResult` instead", renamed: "OutputResult")
 public typealias LastNeverResult = OutputResult

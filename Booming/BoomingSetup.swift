@@ -17,7 +17,7 @@ public struct BoomingSetup {
     
     /// Whether to add the Indicator plugin by default.
     public static var addIndicator: Bool = false
-    #if BOOMING_PLUGINGS_SHARED
+    #if BOOMING_PLUGINGS_FEATURES
     /// Set the log plug-in to print content, Default concise.
     public static var debuggingLogOption: NetworkDebuggingPlugin.Options = .concise
     #endif

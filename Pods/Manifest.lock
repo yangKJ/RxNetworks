@@ -7,27 +7,23 @@ PODS:
     - Moya
   - Booming/Plugins (1.0.4):
     - Booming/Plugins/Cache (= 1.0.4)
-    - Booming/Plugins/Indicator (= 1.0.4)
-    - Booming/Plugins/Loading (= 1.0.4)
+    - Booming/Plugins/Features (= 1.0.4)
+    - Booming/Plugins/Huds (= 1.0.4)
     - Booming/Plugins/Lottie (= 1.0.4)
-    - Booming/Plugins/Shared (= 1.0.4)
-    - Booming/Plugins/Warning (= 1.0.4)
+    - Booming/Plugins/Views (= 1.0.4)
   - Booming/Plugins/Cache (1.0.4):
     - Booming/Core
     - CacheX (~> 1.1.0)
-  - Booming/Plugins/Indicator (1.0.4):
+  - Booming/Plugins/Features (1.0.4):
     - Booming/Core
-  - Booming/Plugins/Loading (1.0.4):
+  - Booming/Plugins/Huds (1.0.4):
     - Booming/Core
     - MBProgressHUD
   - Booming/Plugins/Lottie (1.0.4):
     - Booming/Core
     - lottie-ios
-  - Booming/Plugins/Shared (1.0.4):
+  - Booming/Plugins/Views (1.0.4):
     - Booming/Core
-  - Booming/Plugins/Warning (1.0.4):
-    - Booming/Core
-    - MBProgressHUD
   - CacheX (1.1.1)
   - HandyJSON (5.0.2)
   - HollowCodable (1.0.4)
@@ -65,21 +61,21 @@ PODS:
   - RxNetworks/Plugins/Cache (1.0.4):
     - Booming/Plugins/Cache
   - RxNetworks/Plugins/Debugging (1.0.4):
-    - Booming/Plugins/Shared
+    - Booming/Plugins/Features
   - RxNetworks/Plugins/Files (1.0.4):
-    - Booming/Plugins/Shared
+    - Booming/Plugins/Features
   - RxNetworks/Plugins/GZip (1.0.4):
-    - Booming/Plugins/Shared
+    - Booming/Plugins/Features
   - RxNetworks/Plugins/Header (1.0.4):
-    - Booming/Plugins/Shared
+    - Booming/Plugins/Features
   - RxNetworks/Plugins/Indicator (1.0.4):
-    - Booming/Plugins/Indicator
+    - Booming/Plugins/Views
   - RxNetworks/Plugins/Loading (1.0.4):
-    - Booming/Plugins/Loading
+    - Booming/Plugins/Huds
   - RxNetworks/Plugins/Shared (1.0.4):
-    - Booming/Plugins/Shared
+    - Booming/Plugins/Features
   - RxNetworks/Plugins/Warning (1.0.4):
-    - Booming/Plugins/Warning
+    - Booming/Plugins/Huds
   - RxNetworks/RxSwift (1.0.4):
     - RxNetworks/Core
     - RxSwift
@@ -115,7 +111,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  Booming: 6b8eb6ece13648fdfabda841af5c866535bb4312
+  Booming: f78cf0c636af35b729d5cde344197ca594ae0f3c
   CacheX: 9665503a86f9e38b3eb0c4ab14251649a79d292d
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   HollowCodable: a6d1f334a97775350e4cd0020df07d8e5603d3e7
@@ -123,7 +119,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: fb0aefb9e7229c8ab057acde714136d19117f102
-  RxNetworks: 63f3f1bed313662049fab26692884f93524f65db
+  RxNetworks: e1bdb0ca7c5b3e8aa7100e6beee40ed5d8539138
   RxRelay: 5d39f4d8da150ad47a71b9ce11915e3eae2a8f4d
   RxSwift: 6ee35684dc3f7a63938758f4b7708199517dfa97
 

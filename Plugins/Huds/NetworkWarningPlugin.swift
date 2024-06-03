@@ -5,9 +5,6 @@
 //  Created by Condy on 2021/10/6.
 //  https://github.com/yangKJ/RxNetworks
 
-///`Toast_Swift`文档
-/// https://github.com/scalessec/Toast-Swift
-
 import Foundation
 import Moya
 import MBProgressHUD
@@ -63,7 +60,7 @@ extension NetworkWarningPlugin: PluginSubType {
         return "Warning"
     }
     
-    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func outputResult(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
         result.mapResult(failure: { error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.showText(error.localizedDescription)
@@ -75,15 +72,15 @@ extension NetworkWarningPlugin: PluginSubType {
 
 extension NetworkWarningPlugin {
     
-    private var viewController: LevelStatusBarWindowController? {
-        HUDs.readHUD(suffix: pluginName).first
+    private var topViewController: LevelStatusBarWindowController? {
+        HUDs.readHUD(suffix: pluginName).last
     }
     
     private func showText(_ text: String) {
         guard let key = self.key else {
             return
         }
-        if self.options.coverLastToast, let vc = viewController {
+        if self.options.coverLastToast, let vc = topViewController {
             (vc.showUpView as? MBProgressHUD)?.label.text = text
             return
         }

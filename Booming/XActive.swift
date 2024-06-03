@@ -17,13 +17,13 @@ extension X {
         if let others = BoomingSetup.basePlugins {
             plugins_ += others
         }
-        #if BOOMING_PLUGINGS_INDICATOR
+        #if BOOMING_PLUGINGS_VIEWS
         if BoomingSetup.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
             let Indicator = NetworkIndicatorPlugin.shared
             plugins_.insert(Indicator, at: 0)
         }
         #endif
-        #if BOOMING_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_FEATURES
         if BoomingSetup.debuggingLogOption != .nothing, !plugins_.contains(where: { $0 is NetworkDebuggingPlugin}) {
             let logger = NetworkDebuggingPlugin.init(options: BoomingSetup.debuggingLogOption)
             plugins_.append(logger)
@@ -48,7 +48,7 @@ extension X {
     
     /// 是否存在共享网络插件
     static func hasNetworkSharedPlugin(_ plugins: APIPlugins) -> Bool {
-        #if BOOMING_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_FEATURES
         return plugins.contains(where: { $0 is NetworkSharedPlugin })
         #else
         return false
@@ -57,7 +57,7 @@ extension X {
     
     /// 是否存在请求头插件
     static func hasNetworkHttpHeaderPlugin(_ plugins: APIPlugins) -> [String: String] {
-        #if BOOMING_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_FEATURES
         if let p = plugins.first(where: { $0 is NetworkHttpHeaderPlugin }),
            let headers = (p as? NetworkHttpHeaderPlugin)?.dictionary {
             return headers
@@ -68,7 +68,7 @@ extension X {
     
     /// 上传下载插件
     static func hasNetworkFilesPluginTask(_ plugins: APIPlugins) -> Moya.Task? {
-        #if BOOMING_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_FEATURES
         if let p = plugins.first(where: { $0 is NetworkFilesPlugin }) {
             return (p as? NetworkFilesPlugin)?.task
         }
@@ -78,7 +78,7 @@ extension X {
     
     /// 下载文件链接
     static func hasNetworkFilesPlugin(_ plugins: APIPlugins) -> URL? {
-        #if BOOMING_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_FEATURES
         if let p = plugins.first(where: { $0 is NetworkFilesPlugin }) {
             return (p as? NetworkFilesPlugin)?.downloadAssetURL
         }
@@ -88,7 +88,7 @@ extension X {
     
     /// 忽略插件
     static func hasIgnorePlugin(_ plugins: APIPlugins) -> APIPlugins {
-        #if BOOMING_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_FEATURES
         if let p = plugins.first(where: { $0 is NetworkIgnorePlugin }),
            let value = (p as? NetworkIgnorePlugin)?.removePlugins(plugins) {
             return value
@@ -99,7 +99,7 @@ extension X {
     
     /// 拦截器插件
     static func hasAuthenticationPlugin(_ plugins: APIPlugins) -> RequestInterceptor? {
-        #if BOOMING_PLUGINGS_SHARED
+        #if BOOMING_PLUGINGS_FEATURES
         if let p = plugins.first(where: { $0 is NetworkAuthenticationPlugin }),
            let interceptor = (p as? NetworkAuthenticationPlugin)?.interceptor {
             return interceptor

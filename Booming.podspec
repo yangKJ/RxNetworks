@@ -61,40 +61,30 @@ Pod::Spec.new do |s|
       xxx.dependency 'CacheX', '~> 1.1.0'
     end
     
-    ## 无任何耦合和要求的插件
-    xx.subspec 'Shared' do |xxx|
-      xxx.source_files = 'Plugins/Shared/*.swift'
+    ## 无任何耦合功能插件
+    xx.subspec 'Features' do |xxx|
+      xxx.source_files = 'Plugins/Features/*.swift'
       xxx.dependency 'Booming/Core'
       xxx.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_SHARED',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_SHARED=1'
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_FEATURES',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_FEATURES=1'
       }
     end
     
     ################## -- ios插件系列 -- ##################
-    xx.subspec 'Loading' do |xxx|
-      xxx.ios.source_files = 'Plugins/Loading/*.swift'
+    xx.subspec 'Views' do |xxx|
+      xxx.ios.source_files = 'Plugins/Views/*.swift'
       xxx.dependency 'Booming/Core'
-      xxx.ios.dependency 'MBProgressHUD'
-    end
-    
-    xx.subspec 'Warning' do |xxx|
-      xxx.ios.source_files = 'Plugins/Warning/*.swift'
-      xxx.dependency 'Booming/Core'
-      xxx.ios.dependency 'MBProgressHUD'
       xxx.ios.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_WARNING',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_WARNING=1'
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_VIEWS',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_VIEWS=1'
       }
     end
     
-    xx.subspec 'Indicator' do |xxx|
-      xxx.ios.source_files = 'Plugins/Indicator/*.swift'
+    xx.subspec 'Huds' do |xxx|
+      xxx.ios.source_files = 'Plugins/Huds/*.swift'
       xxx.dependency 'Booming/Core'
-      xxx.ios.pod_target_xcconfig = {
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_INDICATOR',
-        'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_INDICATOR=1'
-      }
+      xxx.ios.dependency 'MBProgressHUD'
     end
   end
   

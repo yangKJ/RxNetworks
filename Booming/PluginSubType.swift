@@ -8,39 +8,14 @@
 import Foundation
 import Moya
 
-public protocol HasPluginsPropertyProtocol: PluginSubType {
-    var plugins: APIPlugins { get set }
-}
-
-@available(*, deprecated, message: "Typo. Use `HasKeyAndDelayPropertyProtocol` instead", renamed: "HasKeyAndDelayPropertyProtocol")
-public typealias PluginPropertiesable = HasKeyAndDelayPropertyProtocol
-
-public protocol HasKeyAndDelayPropertyProtocol: PluginSubType {
-    
-    var key: String? { get set }
-    
-    /// Loading HUD delay hide time.
-    var delay: Double { get }
-}
-
-extension HasKeyAndDelayPropertyProtocol {
-    public var delay: Double {
-        return 0
-    }
-}
-
 /// 继承Moya插件协议，方便后序扩展，所有插件方法都必须实现该协议
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol
 public protocol PluginSubType: Moya.PluginType {
     
-    static var className: String { get }
-    
-    var className: String { get }
-    
     /// 插件名
     var pluginName: String { get }
     
-    /// 优先等级，解决某些插件需要先后顺序问题
+    /// Priority level, some plugins need to be sorted.
     /// 场景：比如解析插件和解压插件甚至加解密插件，至少就需要先解压再解密最后才是解析数据。
     var usePriorityLevel: UsePriorityLevel { get }
     
@@ -72,7 +47,7 @@ public protocol PluginSubType: Moya.PluginType {
     ///   - result: Containing the data source and whether auto-last network request.
     ///   - target: The protocol used to define the specifications necessary for a `MoyaProvider`.
     ///   - onNext: Provide callbacks for the plug-in to process tasks asynchronously.
-    func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback)
+    func outputResult(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock)
 }
 
 extension PluginSubType {
@@ -93,7 +68,14 @@ extension PluginSubType {
         return request
     }
     
-    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func outputResult(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
         onNext(result)
+    }
+}
+
+extension PluginSubType {
+    @available(*, deprecated, message: "Typo. Use `outputResult:target:onNext` instead")
+    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
+        outputResult(result, target: target, onNext: onNext)
     }
 }

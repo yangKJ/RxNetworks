@@ -16,19 +16,19 @@ public struct NetworkDebuggingPlugin: HasPluginsPropertyProtocol {
     
     public let options: NetworkDebuggingPlugin.Options
     
-    public init(options: NetworkDebuggingPlugin.Options = .default) {
+    public init(options: NetworkDebuggingPlugin.Options = .concise) {
         self.options = options
     }
 }
 
 extension NetworkDebuggingPlugin {
     public struct Options: Equatable {
-        
-        public static let `default` = Options.init(logOptions: .default)
-        
-        public static let concise = Options.init(logOptions: .concise)
-        
-        public static let nothing = Options.init(logOptions: .none)
+        /// This plugin has all the log records.
+        public static let all = Options.init(logOptions: LogOptions.all)
+        /// Concise printing log, has plugins and success body and error body.
+        public static let concise = Options.init(logOptions: LogOptions.concise)
+        /// Neither the request's nor the body of a response will be logged.
+        public static let nothing = Options.init(logOptions: LogOptions.haveNothing)
         
         let logOptions: LogOptions
         
@@ -45,9 +45,6 @@ extension NetworkDebuggingPlugin {
         if options.logOptions.contains(.requestBodyStream) {
             return true
         }
-        if options.logOptions.contains(.requestMethod) {
-            return true
-        }
         if options.logOptions.contains(.requestHeaders) {
             return true
         }
@@ -59,6 +56,7 @@ extension NetworkDebuggingPlugin {
         }
         return false
     }
+    
     /// Turn on printing the response result.
     var openDebugResponse: Bool {
         if options.logOptions.contains(.successResponseBody) {
@@ -77,7 +75,8 @@ extension NetworkDebuggingPlugin.Options {
         public init(rawValue: Int) { self.rawValue = rawValue }
         
         /// Neither the request's nor the body of a response will be logged.
-        public static let none: LogOptions = LogOptions(rawValue: 1 << 0)
+        public static let haveNothing: LogOptions = LogOptions(rawValue: 1 << 0)
+        
         /// The request's method will be logged.
         public static let requestMethod: LogOptions = LogOptions(rawValue: 1 << 1)
         /// The request's body stream will be logged.
@@ -95,11 +94,11 @@ extension NetworkDebuggingPlugin.Options {
         public static let errorResponseBody: LogOptions = LogOptions(rawValue: 1 << 88)
         
         /// Enable print request information.
-        public static let request: LogOptions = [requestMethod, requestBodyStream, requestHeaders, requestPlugins, requestParameters]
+        public static let request: LogOptions = [requestMethod, requestBodyStream, requestHeaders, requestParameters, requestPlugins]
         /// Turn on printing the response result.
         public static let response: LogOptions = [successResponseBody, errorResponseBody]
         /// Open the request log and response log at the same time.
-        public static let `default`: LogOptions = [request, response]
+        public static let all: LogOptions = [request, response]
         /// Concise printing log.
         public static let concise: LogOptions = [requestPlugins, successResponseBody, errorResponseBody]
         /// Diversity printing log.
@@ -133,7 +132,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
         #endif
     }
     
-    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping LastNeverCallback) {
+    public func outputResult(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
         #if DEBUG
         ansysisResult(result, target: target, local: false)
         #endif

@@ -62,7 +62,7 @@
         {
           "name": "Indicator",
           "dependencies": {
-            "Booming/Plugins/Indicator": [
+            "Booming/Plugins/Views": [
 
             ]
           }
@@ -78,7 +78,7 @@
         {
           "name": "Loading",
           "dependencies": {
-            "Booming/Plugins/Loading": [
+            "Booming/Plugins/Huds": [
 
             ]
           }
@@ -86,7 +86,7 @@
         {
           "name": "Warning",
           "dependencies": {
-            "Booming/Plugins/Warning": [
+            "Booming/Plugins/Huds": [
 
             ]
           }
@@ -102,7 +102,7 @@
         {
           "name": "Debugging",
           "dependencies": {
-            "Booming/Plugins/Shared": [
+            "Booming/Plugins/Features": [
 
             ]
           }
@@ -110,7 +110,7 @@
         {
           "name": "GZip",
           "dependencies": {
-            "Booming/Plugins/Shared": [
+            "Booming/Plugins/Features": [
 
             ]
           }
@@ -118,7 +118,7 @@
         {
           "name": "Shared",
           "dependencies": {
-            "Booming/Plugins/Shared": [
+            "Booming/Plugins/Features": [
 
             ]
           }
@@ -126,7 +126,7 @@
         {
           "name": "Header",
           "dependencies": {
-            "Booming/Plugins/Shared": [
+            "Booming/Plugins/Features": [
 
             ]
           }
@@ -134,7 +134,7 @@
         {
           "name": "Files",
           "dependencies": {
-            "Booming/Plugins/Shared": [
+            "Booming/Plugins/Features": [
 
             ]
           }

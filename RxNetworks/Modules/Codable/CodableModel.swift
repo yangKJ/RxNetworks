@@ -1,5 +1,5 @@
 //
-//  CodeableModel.swift
+//  CodableModel.swift
 //  RxNetworks_Example
 //
 //  Created by Condy on 2022/1/6.
@@ -9,7 +9,7 @@
 import Foundation
 import HollowCodable
 
-struct CodeableModel: Codable, MappingCodable {
+struct CodableModel: Codable, MappingCodable {
     @Immutable
     var id: Int
     var title: String?

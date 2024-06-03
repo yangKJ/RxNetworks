@@ -49,34 +49,34 @@ Pod::Spec.new do |s|
   ################## -- 插件系列 -- ##################
   s.subspec 'Plugins' do |xx|
     xx.subspec 'Indicator' do |xxx|
-      xxx.dependency 'Booming/Plugins/Indicator'
+      xxx.dependency 'Booming/Plugins/Views'
     end
     xx.subspec 'AnimatedLoading' do |xxx|
       xxx.dependency 'Booming/Plugins/Lottie'
     end
     xx.subspec 'Loading' do |xxx|
-      xxx.dependency 'Booming/Plugins/Loading'
+      xxx.dependency 'Booming/Plugins/Huds'
     end
     xx.subspec 'Warning' do |xxx|
-      xxx.dependency 'Booming/Plugins/Warning'
+      xxx.dependency 'Booming/Plugins/Huds'
     end
     xx.subspec 'Cache' do |xxx|
       xxx.dependency 'Booming/Plugins/Cache'
     end
     xx.subspec 'Debugging' do |xxx|
-      xxx.dependency 'Booming/Plugins/Shared'
+      xxx.dependency 'Booming/Plugins/Features'
     end
     xx.subspec 'GZip' do |xxx|
-      xxx.dependency 'Booming/Plugins/Shared'
+      xxx.dependency 'Booming/Plugins/Features'
     end
     xx.subspec 'Shared' do |xxx|
-      xxx.dependency 'Booming/Plugins/Shared'
+      xxx.dependency 'Booming/Plugins/Features'
     end
     xx.subspec 'Header' do |xxx|
-      xxx.dependency 'Booming/Plugins/Shared'
+      xxx.dependency 'Booming/Plugins/Features'
     end
     xx.subspec 'Files' do |xxx|
-      xxx.dependency 'Booming/Plugins/Shared'
+      xxx.dependency 'Booming/Plugins/Features'
     end
   end
   

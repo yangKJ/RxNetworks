@@ -78,6 +78,18 @@ public struct HUDs {
         }
     }
     
+    static func readTheKeyPrefixAllHUDs(key: String) -> [LevelStatusBarWindowController] {
+        self.HUDsLock.lock()
+        defer { self.HUDsLock.unlock() }
+        let prefix = key.components(separatedBy: "_").first!
+        return self.cacheHUDs.compactMap {
+            if let prefix_ = $0.key.components(separatedBy: "_").first, prefix_ == prefix {
+                return $0.value
+            }
+            return nil
+        }
+    }
+    
     static func delayRemoveLoadingHUDs(with plugins: APIPlugins?) {
         guard let plugins = plugins else {
             return

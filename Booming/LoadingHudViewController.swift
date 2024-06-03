@@ -9,8 +9,8 @@ import Foundation
 
 public final class LoadingHudViewController: LevelStatusBarWindowController {
     
-    private lazy var loadingCount: Int = 0
-    private lazy var lock = NSLock()
+    private var loadingCount: Int = 0
+    private let lock = NSLock()
     
     public init(createShowUpViewCallback: @escaping () -> LevelStatusBarWindowShowUpable) {
         super.init(nibName: nil, bundle: nil)
@@ -26,6 +26,12 @@ public final class LoadingHudViewController: LevelStatusBarWindowController {
         self.addedLoadingCount()
         if let key = key {
             HUDs.saveHUD(key: key, viewController: self)
+        }
+    }
+    
+    public var canRemoveThisHud: Bool {
+        get {
+            self.loadingCount <= 0
         }
     }
     

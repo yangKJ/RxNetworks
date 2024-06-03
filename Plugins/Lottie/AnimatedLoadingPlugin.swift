@@ -91,7 +91,9 @@ extension AnimatedLoadingPlugin: PluginSubType {
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
         if (hudViewController?.subtractLoadingCount() ?? 0) <= 0, options.autoHideLoading {
             DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
-                self.hideLoadingHUD()
+                if let hud = hudViewController, hud.canRemoveThisHud {
+                    self.hideLoadingHUD()
+                }
             }
         }
     }

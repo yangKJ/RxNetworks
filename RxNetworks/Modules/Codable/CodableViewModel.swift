@@ -18,7 +18,7 @@ class CodableViewModel: NSObject {
     }
 
     struct Output {
-        let items: Observable<[CodeableModel]>
+        let items: Observable<[CodableModel]>
     }
     
     func transform(input: Input) -> Output {
@@ -30,9 +30,10 @@ class CodableViewModel: NSObject {
 
 extension CodableViewModel {
     
-    func request(_ count: Int) -> Observable<[CodeableModel]> {
-        CodableAPI.cache(count).request().asObservable()
-            .deserialized(ApiResponse<[CodeableModel]>.self, mapping: CodeableModel.self)
+    func request(_ count: Int) -> Observable<[CodableModel]> {
+        CodableAPI.cache(count)
+            .request(callbackQueue: DispatchQueue(label: "request.codable"))
+            .deserialized(ApiResponse<[CodableModel]>.self, mapping: CodableModel.self)
             .compactMap({ $0.data })
             .observe(on: MainScheduler.instance)
             .catchAndReturn([])

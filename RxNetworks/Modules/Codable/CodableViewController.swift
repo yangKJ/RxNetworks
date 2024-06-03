@@ -44,7 +44,7 @@ class CodableViewController: BaseViewController<CodableViewModel> {
         
         output.items.subscribe(onNext: { [weak self] (datas) in
             self?.textView.textColor = datas.first?.color
-            self?.textView.text = try? datas.toJSONString(CodeableModel.self, prettyPrint: true)
+            self?.textView.text = try? datas.toJSONString(CodableModel.self, prettyPrint: true)
         }).disposed(by: disposeBag)
     }
 }

@@ -74,26 +74,25 @@
           }
         },
         {
-          "name": "Shared",
-          "source_files": "Plugins/Shared/*.swift",
+          "name": "Features",
+          "source_files": "Plugins/Features/*.swift",
           "dependencies": {
             "Booming/Core": [
 
             ]
           },
           "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_SHARED",
-            "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_SHARED=1"
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_FEATURES",
+            "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_FEATURES=1"
           }
         },
         {
-          "name": "Loading",
+          "name": "Views",
           "ios": {
-            "source_files": "Plugins/Loading/*.swift",
-            "dependencies": {
-              "MBProgressHUD": [
-
-              ]
+            "source_files": "Plugins/Views/*.swift",
+            "pod_target_xcconfig": {
+              "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_VIEWS",
+              "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_VIEWS=1"
             }
           },
           "dependencies": {
@@ -103,32 +102,13 @@
           }
         },
         {
-          "name": "Warning",
+          "name": "Huds",
           "ios": {
-            "source_files": "Plugins/Warning/*.swift",
+            "source_files": "Plugins/Huds/*.swift",
             "dependencies": {
               "MBProgressHUD": [
 
               ]
-            },
-            "pod_target_xcconfig": {
-              "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_WARNING",
-              "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_WARNING=1"
-            }
-          },
-          "dependencies": {
-            "Booming/Core": [
-
-            ]
-          }
-        },
-        {
-          "name": "Indicator",
-          "ios": {
-            "source_files": "Plugins/Indicator/*.swift",
-            "pod_target_xcconfig": {
-              "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_INDICATOR",
-              "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_INDICATOR=1"
             }
           },
           "dependencies": {

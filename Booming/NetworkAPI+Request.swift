@@ -159,7 +159,7 @@ extension NetworkAPI {
     }
     
     /// 最后的输出结果，插件配置处理
-    private func setupOutputResult(provider: MoyaProvider<MultiTarget>, result: APIResponseResult, onNext: @escaping LastNeverCallback) {
+    private func setupOutputResult(provider: MoyaProvider<MultiTarget>, result: APIResponseResult, onNext: @escaping OutputResultBlock) {
         let plugins = provider.plugins.compactMap { $0 as? PluginSubType }
         var outputResult = OutputResult(result: result)
         var iterator = plugins.makeIterator()
@@ -168,7 +168,7 @@ extension NetworkAPI {
                 onNext(outputResult)
                 return
             }
-            plugin.lastNever(outputResult, target: self) {
+            plugin.outputResult(outputResult, target: self) {
                 outputResult = $0
                 output(iterator.next())
             }

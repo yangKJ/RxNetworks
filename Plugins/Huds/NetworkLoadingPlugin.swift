@@ -79,7 +79,9 @@ extension NetworkLoadingPlugin: PluginSubType {
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
         if (hudViewController?.subtractLoadingCount() ?? 0) <= 0, options.autoHideLoading {
             DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
-                self.hideMBProgressHUD()
+                if let hud = hudViewController, hud.canRemoveThisHud {
+                    self.hideMBProgressHUD()
+                }
             }
         }
     }
