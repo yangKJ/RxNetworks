@@ -88,7 +88,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
         }
     }
     
-    public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
+    public func outputResult(_ result: OutputResult, target: any TargetType, onNext: @escaping OutputResultBlock) {
         if (hudViewController?.subtractLoadingCount() ?? 0) <= 0, options.autoHideLoading {
             DispatchQueue.main.asyncAfter(deadline: .now() + options.delayHideHUD) {
                 if let hud = hudViewController, hud.canRemoveThisHud {
@@ -96,6 +96,7 @@ extension AnimatedLoadingPlugin: PluginSubType {
                 }
             }
         }
+        onNext(result)
     }
 }
 

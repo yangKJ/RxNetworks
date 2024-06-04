@@ -10,12 +10,6 @@ import Moya
 
 public typealias OutputResultBlock = ((_ lastResult: OutputResult) -> Void)
 
-@available(*, deprecated, message: "Typo. Use `OutputResultBlock` instead", renamed: "OutputResultBlock")
-public typealias LastNeverCallback = OutputResultBlock
-
-@available(*, deprecated, message: "Typo. Use `OutputResult` instead", renamed: "OutputResult")
-public typealias LastNeverResult = OutputResult
-
 /// Containing the data source and whether auto last network request.
 public final class OutputResult {
     
@@ -69,3 +63,9 @@ extension OutputResult {
         }
     }
 }
+
+@available(*, deprecated, message: "Typo. Use `OutputResultBlock` instead", renamed: "OutputResultBlock")
+public typealias LastNeverCallback = OutputResultBlock
+
+@available(*, deprecated, message: "Typo. Use `OutputResult` instead", renamed: "OutputResult")
+public typealias LastNeverResult = OutputResult
