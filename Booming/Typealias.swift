@@ -51,5 +51,6 @@ public typealias APIFailureError = MoyaError
 public typealias APIResponseResult = Result<Moya.Response, MoyaError>
 
 public typealias APISuccess = (_ json: APISuccessJSON) -> Void
+public typealias APISuccessed = (_ json: APISuccessJSON, _ finished: Bool) -> Void
 public typealias APIFailure = (_ error: APIFailureError) -> Void
 public typealias APIComplete = (_ result: Result<APISuccessJSON, APIFailureError>) -> Void

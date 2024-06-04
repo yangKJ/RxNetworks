@@ -20,7 +20,7 @@ struct SharedDriver {
     private var requestingAPIs = [Key: (api: NetworkAPI, plugins: APIPlugins)]()
     private var tasks = [Key: Moya.Cancellable]()
     
-    private var cacheBlocks = [(key: Key, success: APISuccess, failure: APIFailure)]()
+    private var cacheBlocks = [(key: Key, successed: APISuccessed, failed: APIFailure)]()
 }
 
 // MARK: - api
@@ -68,10 +68,10 @@ extension SharedDriver {
         return self.tasks[key]
     }
     
-    mutating func cacheBlocks(key: Key, success: @escaping APISuccess, failure: @escaping APIFailure) {
+    mutating func cacheBlocks(key: Key, successed: @escaping APISuccessed, failed: @escaping APIFailure) {
         self.tasklock.lock()
         defer { tasklock.unlock() }
-        self.cacheBlocks.append((key, success, failure))
+        self.cacheBlocks.append((key, successed, failed))
     }
     
     mutating func cacheTask(key: Key, task: Moya.Cancellable) {
@@ -86,11 +86,11 @@ extension SharedDriver {
         switch type {
         case .success(let json):
             self.cacheBlocks.forEach {
-                $0.key == key ? $0.success(json) : nil
+                $0.key == key ? $0.successed(json, true) : nil
             }
         case .failure(let error):
             self.cacheBlocks.forEach {
-                $0.key == key ? $0.failure(error) : nil
+                $0.key == key ? $0.failed(error) : nil
             }
         }
         self.tasks.removeValue(forKey: key)

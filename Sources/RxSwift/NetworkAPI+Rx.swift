@@ -21,7 +21,7 @@ public extension NetworkAPI {
     /// Network request.
     /// Protocol oriented network request, Indicator plugin are added by default
     /// Example:
-    ///
+    /// 
     ///     func request(_ count: Int) -> Driver<[CacheModel]> {
     ///         CacheAPI.cache(count).request()
     ///             .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
@@ -30,18 +30,18 @@ public extension NetworkAPI {
     ///             .delay(.seconds(1), scheduler: MainScheduler.instance) // Delay 1 second to return
     ///             .asDriver(onErrorJustReturn: []) // return null at the moment of error
     ///     }
-    ///
+    /// 
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
+    /// - Parameter plugins: Set the plug-ins required for this request separately, eg: cache first page data.
     /// - Returns: Observable sequence JSON object. May be thrown twice.
-    func request(
-        callbackQueue: DispatchQueue? = nil,
-        plugins: APIPlugins = []
-    ) -> APIObservableJSON {
+    func request(callbackQueue: DispatchQueue? = nil, plugins: APIPlugins = []) -> APIObservableJSON {
         var single = APIObservableJSON.create { observer in
-            let token = HTTPRequest(success: { json in
+            let token = request(successed: { json, finished in
                 observer.onNext(json)
-                observer.onCompleted()
-            }, failure: { error in
+                if finished {
+                    observer.onCompleted()
+                }
+            }, failed: { error in
                 observer.onError(error)
             }, queue: callbackQueue, plugins: plugins)
             return Disposables.create {
