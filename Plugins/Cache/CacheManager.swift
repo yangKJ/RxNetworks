@@ -9,19 +9,13 @@
 /// https://github.com/yangKJ/CacheX
 
 import Foundation
-import CoreFoundation
 import CacheX
-
-public struct CacheModel: Codable {
-    let data: Data?
-    let statusCode: Int?
-}
 
 public struct CacheManager {
     
     public static let `default` = CacheManager()
     
-    public let storage: CacheX.Storage<CacheModel>
+    public let storage: CacheX.Storage<CacheXCodable>
     
     private init() {
         /// Create a unified background processing thread.
@@ -36,7 +30,7 @@ public struct CacheManager {
         disk.maxCountLimit = self.maxCountLimit
         var memory = Memory.init()
         memory.maxCostLimit = self.maxCostLimit
-        self.storage = CacheX.Storage<CacheModel>.init(queue: background, caches: [
+        self.storage = CacheX.Storage<CacheXCodable>.init(queue: background, caches: [
             Disk.named: disk,
             Memory.named: memory,
         ])

@@ -16,6 +16,7 @@ enum ViewControllerType: String {
     case Batch = "Batch Parallel Network"
     case Loading = "Loading Animation Plugin"
     case Cache = "Cache Network Plugin"
+    case CustomCache = "Custom Cache Network Plugin"
     case Warning = "Failed Prompting Plugin"
     case GZip = "GZip UnCompression Plugin"
     case AnimatedLoading = "Lottie Animated Loading Plugin"
@@ -38,6 +39,8 @@ enum ViewControllerType: String {
             return LoadingViewController()
         case .Cache:
             return CacheViewController()
+        case .CustomCache:
+            return CustomCacheViewController()
         case .Warning:
             return WarningViewController()
         case .GZip:
@@ -67,6 +70,7 @@ struct HomeViewModel {
             .Loading,
             .AnimatedLoading,
             .Cache,
+            .CustomCache,
             .Warning,
             .GZip,
             .Token,
