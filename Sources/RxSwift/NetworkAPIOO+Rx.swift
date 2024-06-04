@@ -14,14 +14,12 @@ extension NetworkAPIOO {
     /// Example:
     ///
     ///     let api = NetworkAPIOO.init()
-    ///     api.cdy_ip = "https://www.httpbin.org"
-    ///     api.cdy_path = "/ip"
-    ///     api.cdy_method = APIMethod.get
-    ///     api.cdy_plugins = [NetworkLoadingPlugin.init()]
-    ///     api.cdy_testJSON = "{\"Condy\":\"yangkj310@gmail.com\"}"
+    ///     api.ip = "https://www.httpbin.org"
+    ///     api.path = "/ip"
+    ///     api.method = APIMethod.get
+    ///     api.plugins = [NetworkLoadingPlugin.init()]
     ///
-    ///     api.cdy_HTTPRequest()
-    ///         .asObservable()
+    ///     api.request().asObservable()
     ///         .observe(on: MainScheduler.instance)
     ///         .subscribe { (data) in
     ///             print("\(data)")
@@ -30,9 +28,8 @@ extension NetworkAPIOO {
     ///         }
     ///         .disposed(by: disposeBag)
     ///
-    /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Observable sequence JSON object. May be thrown twice.
-    public func cdy_HTTPRequest(_ callbackQueue: DispatchQueue? = nil) -> APIObservableJSON {
-        request(callbackQueue: callbackQueue)
+    public func request() -> APIObservableJSON {
+        apiTarget.request(callbackQueue: callbackQueue)
     }
 }

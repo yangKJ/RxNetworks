@@ -10,7 +10,7 @@ import UIKit
 import RxNetworks
 
 class OOViewController: BaseViewController<OOViewModel> {
-
+    
     lazy var textView: UITextView = {
         let rect = CGRect(x: 20, y: 100, width: view.bounds.size.width-40, height: 200)
         let view = UITextView.init(frame: rect)
@@ -55,11 +55,7 @@ class OOViewController: BaseViewController<OOViewModel> {
     }
     
     func setupBindings() {
-        let input = OOViewModel.Input(retry: 3)
-        
-        let output = viewModel.transform(input: input)
-        
-        output.items.subscribe(onNext: { [weak self] (text) in
+        viewModel.request().subscribe(onNext: { [weak self] (text) in
             self?.textView.text = text
         }).disposed(by: disposeBag)
     }

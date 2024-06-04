@@ -11,29 +11,14 @@ import RxNetworks
 
 class OOViewModel: NSObject {
     
-    struct Input {
-        let retry: Int
-    }
-    
-    struct Output {
-        let items: Observable<String>
-    }
-    
-    func transform(input: Input) -> Output {
-        return Output(items: input.request())
-    }
-}
-
-extension OOViewModel.Input {
     func request() -> Observable<String> {
         let api = NetworkAPIOO.init()
-        api.cdy_ip = BoomingSetup.baseURL
-        api.cdy_path = "/ip"
-        api.cdy_method = APIMethod.get
-        api.cdy_plugins = [NetworkLoadingPlugin()]
-        api.cdy_retry = self.retry
-        return api.cdy_HTTPRequest()
-            .asObservable()
+        api.ip = "https://www.httpbin.org"
+        api.path = "/ip"
+        api.method = APIMethod.get
+        api.plugins = [NetworkLoadingPlugin()]
+        api.retry = 2
+        return api.request()
             .compactMap{ (($0 as? NSDictionary)?["origin"] as? String) }
             .catchAndReturn("")
             .observe(on: MainScheduler.instance)
