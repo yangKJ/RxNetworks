@@ -25,6 +25,10 @@ public final class HeadstreamRequest {
 extension HeadstreamRequest {
     
     func toJSON() throws -> APISuccessJSON {
+        try X.toJSON(with: try toResponse())
+    }
+    
+    func toResponse() throws -> Moya.Response {
         guard let result = result else {
             let userInfo = [
                 NSLocalizedDescriptionKey: "The result is empty."
@@ -34,7 +38,7 @@ extension HeadstreamRequest {
         }
         switch result {
         case .success(let response):
-            return try X.toJSON(with: response)
+            return response
         case .failure(let error):
             throw error
         }

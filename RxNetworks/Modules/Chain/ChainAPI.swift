@@ -47,8 +47,7 @@ extension ChainAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        //((arc4random() % 2) != 0) ? loadingPlugins : 
-        lottiePlugins
+        ((arc4random() % 2) != 0) ? loadingPlugins : lottiePlugins
     }
     
     var loadingPlugins: APIPlugins {

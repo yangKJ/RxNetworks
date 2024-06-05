@@ -1,5 +1,5 @@
 //
-//  SharedDriver.swift
+//  Shared.swift
 //  RxNetworks
 //
 //  Created by Condy on 2023/6/28.
@@ -9,10 +9,10 @@ import Foundation
 import Moya
 
 /// 共享网络中转数据
-struct SharedDriver {
+struct Shared {
     typealias Key = String
     
-    static var shared = SharedDriver()
+    static var shared = Shared()
     
     private let lock = NSLock()
     private let tasklock = NSLock()
@@ -24,7 +24,7 @@ struct SharedDriver {
 }
 
 // MARK: - api
-extension SharedDriver {
+extension Shared {
     
     func readRequestAPI(_ key: Key) -> NetworkAPI? {
         self.lock.lock()
@@ -41,12 +41,12 @@ extension SharedDriver {
     mutating func removeRequestingAPI(_ key: Key) {
         // 延迟一点点时间移除，解决串行网络中间闪一下问题
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            SharedDriver.shared.lock.lock()
-            let plugins = SharedDriver.shared.requestingAPIs[key]?.plugins
-            SharedDriver.shared.requestingAPIs.removeValue(forKey: key)
-            SharedDriver.shared.lock.unlock()
+            Shared.shared.lock.lock()
+            let plugins = Shared.shared.requestingAPIs[key]?.plugins
+            Shared.shared.requestingAPIs.removeValue(forKey: key)
+            Shared.shared.lock.unlock()
             // 没有正在请求的网络，则移除全部加载Loading
-            if BoomingSetup.lastCompleteAndCloseLoadingHUDs, SharedDriver.shared.requestingAPIs.isEmpty {
+            if BoomingSetup.lastCompleteAndCloseLoadingHUDs, Shared.shared.requestingAPIs.isEmpty {
                 HUDs.delayRemoveLoadingHUDs(with: plugins)
             }
         }
@@ -60,7 +60,7 @@ extension SharedDriver {
 }
 
 // MARK: - task and blocks
-extension SharedDriver {
+extension Shared {
     
     func readTask(key: Key) -> Moya.Cancellable? {
         self.tasklock.lock()

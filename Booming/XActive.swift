@@ -152,14 +152,6 @@ extension X {
         return try response.mapJSON(failsOnEmptyData: BoomingSetup.failsOnEmptyData)
     }
     
-    static func loadingSuffix(key: SharedDriver.Key?) -> Bool {
-        guard let key = key else { return false }
-        if let suffix = key.components(separatedBy: "_").last, BoomingSetup.loadingPluginNames.contains(suffix) {
-            return true
-        }
-        return false
-    }
-    
     static func safetyQueue(_ queue: DispatchQueue?) -> DispatchQueue {
         if let queue = queue {
             return (queue === DispatchQueue.main) ? queue : DispatchQueue(label: queue.label, target: queue)

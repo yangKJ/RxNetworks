@@ -13,7 +13,7 @@ public extension NetworkAPI {
     /// Network request
     /// Example:
     ///
-    ///     GitHubAPI.userInfo(name: "yangKJ").request(successed: { json, finished in
+    ///     GitHubAPI.userInfo(name: "yangKJ").request(successed: { json, finished, response in
     ///         print(json)
     ///         let model = Deserialized<Model>.toModel(with: json)
     ///     }, failed: { error in
@@ -21,7 +21,7 @@ public extension NetworkAPI {
     ///     })
     ///
     /// - Parameters:
-    ///   - successed: Success description, return in the main thread.
+    ///   - successed: Success description, return in the main thread. Note: Download file, take the link address from the `json` parameter.
     ///   - failed: Failure description, return in the main thread.
     ///   - progress: Progress description.
     ///   - queue: Callback queue. If nil - queue from provider initializer will be used.
@@ -37,90 +37,66 @@ public extension NetworkAPI {
         let key = self.keyPrefix
         let pls = X.setupPluginsAndKey(key, plugins: self.plugins + plugins)
         
-        SharedDriver.shared.addedRequestingAPI(self, key: key, plugins: pls)
+        Shared.shared.addedRequestingAPI(self, key: key, plugins: pls)
         
         let headstreamRequest = self.setupHeadstreamRequest(plugins: pls)
         if headstreamRequest.endRequest, let result = headstreamRequest.result {
-            let lastResult = OutputResult(result: result)
-            lastResult.mapResult(success: { json in
-                SharedDriver.shared.removeRequestingAPI(key)
+            let outputResult = OutputResult(result: result)
+            outputResult.mapResult(success: { json in
+                Shared.shared.removeRequestingAPI(key)
+                progress?(ProgressResponse(response: outputResult.response))
                 DispatchQueue.main.async { successed(json, true) }
             }, failure: { error in
-                SharedDriver.shared.removeRequestingAPI(key)
+                Shared.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async { failed(error) }
-            }, progress: progress)
+            })
             return nil
         }
         
         // 先抛出本地数据
         if let json = try? headstreamRequest.toJSON() {
-            DispatchQueue.main.async { successed(json, false) }
+            DispatchQueue.main.async {
+                successed(json, false)
+            }
         }
         
-        let safetyQueue = X.safetyQueue(queue)
-        
-        let session = headstreamRequest.session ?? {
-            let configuration: URLSessionConfiguration
-            if BoomingSetup.supportBackgroundRequest {
-                configuration = URLSessionConfiguration.background(withIdentifier: UUID().uuidString)
-            } else {
-                configuration = URLSessionConfiguration.default
-            }
-            configuration.headers = Alamofire.HTTPHeaders.default
-            configuration.timeoutIntervalForRequest = BoomingSetup.timeoutIntervalForRequest
-            return Moya.Session(
-                configuration: configuration,
-                rootQueue: safetyQueue,
-                startRequestsImmediately: BoomingSetup.startRequestsImmediately,
-                interceptor: X.hasAuthenticationPlugin(pls)
-            )
-        }()
-        
-        let provider = MoyaProvider<MultiTarget>.init(endpointClosure: { _ in
-            setupEndpoint(plugins: pls)
-        }, requestClosure: { endpoint, block in
-            do {
-                let urlRequest = try endpoint.urlRequest()
-                block(.success(urlRequest))
-            } catch MoyaError.requestMapping(let url) {
-                block(.failure(MoyaError.requestMapping(url)))
-            } catch MoyaError.parameterEncoding(let error) {
-                block(.failure(MoyaError.parameterEncoding(error)))
-            } catch {
-                block(.failure(MoyaError.underlying(error, nil)))
-            }
-        }, stubClosure: { _ in
-            stubBehavior
-        }, callbackQueue: safetyQueue, session: session, plugins: pls)
+        let provider = self.setupProvider(plugins: pls, session: headstreamRequest.session, queue: queue)
         
         // 共享网络插件处理
         if X.hasNetworkSharedPlugin(pls) {
-            if let task = SharedDriver.shared.readTask(key: key) {
-                SharedDriver.shared.cacheBlocks(key: key, successed: successed, failed: failed)
+            if let task = Shared.shared.readTask(key: key) {
+                Shared.shared.cacheBlocks(key: key, successed: successed, failed: failed)
                 return task
             }
-            let task = self.request(provider, success: { json in
-                SharedDriver.shared.removeRequestingAPI(key)
-                DispatchQueue.main.async {
-                    SharedDriver.shared.result(.success(json), key: key)
-                }
-            }, failure: { error in
-                SharedDriver.shared.removeRequestingAPI(key)
-                DispatchQueue.main.async {
-                    SharedDriver.shared.result(.failure(error), key: key)
-                }
+            let task = self.request(provider, key: key, output: { outputResult in
+                outputResult.mapResult(success: { json in
+                    progress?(ProgressResponse(response: outputResult.response))
+                    DispatchQueue.main.async {
+                        Shared.shared.result(.success(json), key: key)
+                    }
+                }, failure: { error in
+                    DispatchQueue.main.async {
+                        Shared.shared.result(.failure(error), key: key)
+                    }
+                })
             }, progress: progress)
-            SharedDriver.shared.cacheTask(key: key, task: task)
-            SharedDriver.shared.cacheBlocks(key: key, successed: successed, failed: failed)
+            Shared.shared.cacheTask(key: key, task: task)
+            Shared.shared.cacheBlocks(key: key, successed: successed, failed: failed)
             return task
         }
-        // 再处理网络数据
-        return self.request(provider, success: { json in
-            SharedDriver.shared.removeRequestingAPI(key)
-            DispatchQueue.main.async { successed(json, true) }
-        }, failure: { error in
-            SharedDriver.shared.removeRequestingAPI(key)
-            DispatchQueue.main.async { failed(error) }
+        
+        // 最后处理网络数据
+        return self.request(provider, key: key, output: { outputResult in
+            outputResult.mapResult(success: { json in
+                progress?(ProgressResponse(response: outputResult.response))
+                DispatchQueue.main.async {
+                    successed(json, true)
+                }
+            }, failure: { error in
+                DispatchQueue.main.async {
+                    failed(error)
+                }
+            })
         }, progress: progress)
     }
     
@@ -158,7 +134,7 @@ extension NetworkAPI {
         return request
     }
     
-    private func setupEndpoint(plugins: APIPlugins) -> Moya.Endpoint {
+    private func setupEndpoint(plugins: APIPlugins) -> (MultiTarget) -> Endpoint {
         //let headers = session.sessionConfiguration.headers
         let endpointTask = X.hasNetworkFilesPluginTask(plugins) ?? self.task
         var endpointHeaders = X.hasNetworkHttpHeaderPlugin(plugins)
@@ -166,17 +142,71 @@ extension NetworkAPI {
             // Merge the dictionaries and take the second value.
             endpointHeaders = endpointHeaders.merging(dict) { $1 }
         }
-        return Endpoint(url: URL(target: self).absoluteString,
-                        sampleResponseClosure: { .networkResponse(200, self.sampleData) },
-                        method: self.method,
-                        task: endpointTask,
-                        httpHeaderFields: endpointHeaders)
+        return { _ in
+            Endpoint(url: URL(target: self).absoluteString,
+                     sampleResponseClosure: { self.sampleResponse },
+                     method: self.method,
+                     task: endpointTask,
+                     httpHeaderFields: endpointHeaders)
+        }
+    }
+    
+    private func endpointResolver() -> MoyaProvider<MultiTarget>.RequestClosure {
+        return { (endpoint, closure) in
+            do {
+                var request = try endpoint.urlRequest()
+                request.httpShouldHandleCookies = self.httpShouldHandleCookies
+                request.timeoutInterval = BoomingSetup.timeoutIntervalForRequest
+                closure(.success(request))
+            } catch MoyaError.requestMapping(let url) {
+                closure(.failure(MoyaError.requestMapping(url)))
+            } catch MoyaError.parameterEncoding(let error) {
+                closure(.failure(MoyaError.parameterEncoding(error)))
+            } catch let error {
+                closure(.failure(MoyaError.underlying(error, nil)))
+            }
+        }
+    }
+    
+    private func stubBehaviourClosure() -> (MultiTarget) -> Moya.StubBehavior {
+        return { _ in
+            self.stubBehavior
+        }
+    }
+    
+    private func setupProvider(plugins: APIPlugins, session: Moya.Session?, queue: DispatchQueue?) -> MoyaProvider<MultiTarget> {
+        let safetyQueue = X.safetyQueue(queue)
+        let session = session ?? {
+            let configuration: URLSessionConfiguration
+            if BoomingSetup.supportBackgroundRequest {
+                configuration = URLSessionConfiguration.background(withIdentifier: UUID().uuidString)
+            } else {
+                configuration = URLSessionConfiguration.default
+            }
+            configuration.headers = Alamofire.HTTPHeaders.default
+            configuration.timeoutIntervalForRequest = BoomingSetup.timeoutIntervalForRequest
+            return Moya.Session(
+                configuration: configuration,
+                rootQueue: safetyQueue,
+                startRequestsImmediately: BoomingSetup.startRequestsImmediately,
+                interceptor: X.hasAuthenticationPlugin(plugins)
+            )
+        }()
+        return MoyaProvider<MultiTarget>.init(
+            endpointClosure: setupEndpoint(plugins: plugins),
+            requestClosure: endpointResolver(),
+            stubClosure: stubBehaviourClosure(),
+            callbackQueue: safetyQueue,
+            session: session,
+            plugins: plugins,
+            trackInflights: false
+        )
     }
     
     /// 最后的输出结果，插件配置处理
     private func setupOutputResult(provider: MoyaProvider<MultiTarget>, result: APIResponseResult, onNext: @escaping OutputResultBlock) {
         let plugins = provider.plugins.compactMap { $0 as? PluginSubType }
-        var outputResult = OutputResult(result: result)
+        var outputResult = OutputResult.init(result: result)
         let target = MultiTarget.target(self)
         var iterator = plugins.makeIterator()
         func output(_ plugin: PluginSubType?) {
@@ -193,17 +223,18 @@ extension NetworkAPI {
     }
     
     private func request(_ provider: MoyaProvider<MultiTarget>,
-                         success: @escaping APISuccess,
-                         failure: @escaping APIFailure,
-                         progress: ProgressBlock? = nil) -> Moya.Cancellable {
+                         key: String,
+                         output: @escaping (OutputResult) -> Void,
+                         progress: ProgressBlock?) -> Moya.Cancellable {
         let target = MultiTarget.target(self)
         return provider.request(target, progress: progress, completion: { result in
             setupOutputResult(provider: provider, result: result) { outputResult in
                 if outputResult.againRequest {
-                    _ = request(provider, success: success, failure: failure, progress: progress)
+                    _ = request(provider, key: key, output: output, progress: progress)
                     return
                 }
-                outputResult.mapResult(success: success, failure: failure)
+                output(outputResult)
+                Shared.shared.removeRequestingAPI(key)
             }
         })
     }

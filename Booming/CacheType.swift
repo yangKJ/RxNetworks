@@ -1,5 +1,5 @@
 //
-//  NetworkCacheType.swift
+//  CacheType.swift
 //  Booming
 //
 //  Created by Condy on 2024/6/3.
@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 /// Network cache plugin type
-public enum NetworkCacheType {
+public enum CacheType {
     /** 只从网络获取数据，且数据不会缓存在本地 */
     /** Only get data from the network, and the data will not be cached locally */
     case ignoreCache
@@ -27,7 +27,7 @@ public enum NetworkCacheType {
     case cacheThenNetwork
 }
 
-extension NetworkCacheType {
+extension CacheType {
     
     public func cacheKey(with target: TargetType) -> String {
         if let api = target as? NetworkAPI {

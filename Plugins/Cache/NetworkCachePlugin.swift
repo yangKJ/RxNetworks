@@ -19,7 +19,7 @@ public struct NetworkCachePlugin {
         self.options = options
     }
     
-    public init(cacheType: NetworkCacheType = .ignoreCache) {
+    public init(cacheType: CacheType = .ignoreCache) {
         let options = Options(cacheType: cacheType)
         self.init(options: options)
     }
@@ -28,13 +28,13 @@ public struct NetworkCachePlugin {
 extension NetworkCachePlugin {
     public struct Options {
         /// Network cache plugin type
-        let cacheType: NetworkCacheType
+        let cacheType: CacheType
         /// Encryption type, default md5
         let cryptoType: CacheX.CryptoType
         /// Storage type, default disk and memory.
         let cachedOptions: CacheX.CachedOptions
         
-        public init(cacheType: NetworkCacheType, cryptoType: CryptoType = .md5, cachedOptions: CachedOptions = .diskAndMemory) {
+        public init(cacheType: CacheType, cryptoType: CryptoType = .md5, cachedOptions: CachedOptions = .diskAndMemory) {
             self.cacheType = cacheType
             self.cryptoType = cryptoType
             self.cachedOptions = cachedOptions

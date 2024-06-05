@@ -10,11 +10,11 @@ import Moya
 
 public struct NetworkCustomCachePlugin {
     
-    public let cacher: any ResponseCacheConvertible
+    public let cacher: any CacheConvertable
     
-    public let cacheType: NetworkCacheType
+    public let cacheType: CacheType
     
-    public init(cacheType: NetworkCacheType = .ignoreCache, cacher: any ResponseCacheConvertible) {
+    public init(cacheType: CacheType = .ignoreCache, cacher: any CacheConvertable) {
         self.cacheType = cacheType
         self.cacher = cacher
     }

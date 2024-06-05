@@ -187,7 +187,7 @@ extension NetworkDebuggingPlugin {
     }
     
     private func printRequest(_ request: RequestType, target: TargetType) {
-        guard openDebugRequest else { 
+        guard openDebugRequest else {
             return
         }
         let requestLink = X.requestLink(with: target)
@@ -225,22 +225,22 @@ extension NetworkDebuggingPlugin {
         print(context)
     }
     
-    private func ansysisResult(_ lastResult: OutputResult, target: TargetType, local: Bool) {
+    private func ansysisResult(_ result: OutputResult, target: TargetType, local: Bool) {
         if !openDebugResponse {
             return
         }
-        lastResult.mapResult(success: { response in
+        result.mapResult(success: { json in
             if options.logOptions.contains(.successResponseBody) {
-                printResponse(target, response, local, true)
+                printResponse(target, json, local, true)
             }
         }, failure: { error in
             if options.logOptions.contains(.errorResponseBody) {
                 printResponse(target, error.localizedDescription, local, false)
             }
-        }, setToMapSuccessedResult: !local)
+        }, setToResult: !local)
     }
     
-    private func printResponse(_ target: TargetType, _ response: Any, _ local: Bool, _ success: Bool) {
+    private func printResponse(_ target: TargetType, _ result: Any, _ local: Bool, _ success: Bool) {
         guard openDebugResponse else {
             return
         }
@@ -258,7 +258,7 @@ extension NetworkDebuggingPlugin {
                     ║---------- 🎈 Response 🎈 ----------
                     ║ Result: \(success ? "Successed." : "Failed.")
                     ║ DataType: \(local ? "Local data." : "Remote data.")
-                    ║ Response: \(response)
+                    ║ Response: \(result)
                     ╚══════════════════════════════════════
                     """
         var context: String = prefix

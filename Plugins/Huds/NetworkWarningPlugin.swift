@@ -61,7 +61,7 @@ extension NetworkWarningPlugin: PluginSubType {
     }
     
     public func outputResult(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
-        result.mapResult(failure: { error in
+        result.mapResult(success: nil, failure: { error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.showText(error.localizedDescription)
             }

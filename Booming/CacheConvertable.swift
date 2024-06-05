@@ -1,5 +1,5 @@
 //
-//  ResponseCacheConvertible.swift
+//  CacheConvertable.swift
 //  Booming
 //
 //  Created by Condy on 2024/6/3.
@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 /// Any caching schema that complies with the protocol can use the `NetworkCustomCachePlugin`.
-public protocol ResponseCacheConvertible {
+public protocol CacheConvertable {
     
     func readResponse(forKey key: String) throws -> Moya.Response?
     
@@ -32,7 +32,7 @@ public struct CacheXCodable: Codable {
 
 import CacheX
 
-extension CacheX.Storage: ResponseCacheConvertible where T == CacheXCodable {
+extension CacheX.Storage: CacheConvertable where T == CacheXCodable {
     
     public func readResponse(forKey key: String) throws -> Moya.Response? {
         let key = CryptoType.md5.encryptedString(with: key)

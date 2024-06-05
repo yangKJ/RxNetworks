@@ -49,7 +49,7 @@ public struct HUDs {
     /// 移除所有加载HUD
     public static func removeLoadingHUDs() {
         self.HUDsLock.lock()
-        for (key, hud) in self.cacheHUDs where X.loadingSuffix(key: key) {
+        for (key, hud) in self.cacheHUDs where loadingHUDsSuffix(key: key) {
             self.cacheHUDs.removeValue(forKey: key)
             hud.close()
         }
@@ -104,6 +104,13 @@ public struct HUDs {
                 HUDs.removeLoadingHUDs()
             }
         }
+    }
+    
+    static func loadingHUDsSuffix(key: String?) -> Bool {
+        if let suffix = key?.components(separatedBy: "_").last, BoomingSetup.loadingPluginNames.contains(suffix) {
+            return true
+        }
+        return false
     }
 }
 

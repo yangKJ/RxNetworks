@@ -15,9 +15,9 @@ public final class OutputResult {
     
     public var result: APIResponseResult
     
-    /// 解决重复解析问题，如果某款插件已经对数据进行解析成Any之后
-    /// Solve the problem of repeated parsing, if a plugin has parsed the data into `Any`
-    public var mapSuccessedResult: Any?
+    /// 解决重复解析问题，如果某款插件已经解析过数据。
+    /// If a plug-in has mapped the data, and then save it.
+    public var mappedResult: Result<Any, MoyaError>?
     
     /// 是否自动上次网络请求
     public var againRequest: Bool = false
@@ -29,23 +29,33 @@ public final class OutputResult {
 
 extension OutputResult {
     
-    public func mapResult(success: APISuccess? = nil,
-                          failure: APIFailure? = nil,
-                          progress: ProgressBlock? = nil,
-                          setToMapSuccessedResult: Bool = true) {
-        if let mapResult = mapSuccessedResult {
-            success?(mapResult)
+    public var response: Moya.Response? {
+        try? result.get()
+    }
+    
+    /// 解析数据
+    /// - Parameters:
+    ///   - success: 成功回调
+    ///   - failure: 失败回调
+    ///   - setToResult: 是否需要设置到`mappedResult`
+    public func mapResult(success: APISuccess?, failure: APIFailure?, setToResult: Bool = true) {
+        if let mapResult = mappedResult {
+            switch mapResult {
+            case .success(let res):
+                success?(res)
+            case .failure(let error):
+                failure?(error)
+            }
             return
         }
         switch result {
         case let .success(response):
             do {
                 let json = try X.toJSON(with: response)
-                if setToMapSuccessedResult {
-                    self.mapSuccessedResult = json
+                if setToResult {
+                    self.mappedResult = .success(json)
                 }
                 success?(json)
-                progress?(ProgressResponse(response: response))
             } catch MoyaError.statusCode(let response) {
                 let error = MoyaError.statusCode(response)
                 failure?(error)

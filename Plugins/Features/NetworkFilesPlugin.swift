@@ -66,14 +66,18 @@ extension NetworkFilesPlugin: PluginSubType {
     }
     
     public func configuration(_ request: HeadstreamRequest, target: TargetType) -> HeadstreamRequest {
+        let baseURL: URL
+        if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
+            baseURL = target.baseURL.appending(path: target.path)
+        } else {
+            baseURL = target.baseURL.appendingPathComponent(target.path)
+        }
         if let api = target as? NetworkAPI {
-            let baseURL: URL
-            if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
-                baseURL = api.baseURL.appending(path: api.path)
-            } else {
-                baseURL = api.baseURL.appendingPathComponent(api.path)
-            }
             self.task = setupTask(parameters: api.parameters, baseURL: baseURL)
+        } else if let multiTarget = target as? MultiTarget, let api = multiTarget.target as? NetworkAPI {
+            self.task = setupTask(parameters: api.parameters, baseURL: baseURL)
+        } else {
+            self.task = setupTask(parameters: nil, baseURL: baseURL)
         }
         return request
     }
@@ -82,7 +86,7 @@ extension NetworkFilesPlugin: PluginSubType {
         switch result.result {
         case .success:
             if let downloadURL = downloadAssetURL {
-                result.mapSuccessedResult = downloadURL
+                result.mappedResult = .success(downloadURL)
             }
         case .failure:
             break

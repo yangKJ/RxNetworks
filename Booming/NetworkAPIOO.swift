@@ -38,8 +38,8 @@ open class NetworkAPIOO {
     
     @discardableResult
     open func request(successed: @escaping APISuccessed, failed: APIFailure? = nil) -> Moya.Cancellable? {
-        return apiTarget.request(successed: successed, failed: {
-            failed?($0)
+        return apiTarget.request(successed: successed, failed: { error in
+            failed?(error)
         }, queue: callbackQueue)
     }
     
