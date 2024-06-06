@@ -15,6 +15,7 @@ target 'RxNetworks_Example' do
   pod 'RxNetworks', :path => './'
   pod 'Booming', :path => './'
   pod 'HollowCodable', :path => './'
+  pod 'NetworkCachePlugin', :path => './'
   pod 'NetworkLottiePlugin', :path => './'
   
 end

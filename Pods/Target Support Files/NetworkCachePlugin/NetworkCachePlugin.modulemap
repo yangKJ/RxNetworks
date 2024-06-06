@@ -1,0 +1,6 @@
+framework module NetworkCachePlugin {
+  umbrella header "NetworkCachePlugin-umbrella.h"
+
+  export *
+  module * { export * }
+}

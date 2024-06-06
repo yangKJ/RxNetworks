@@ -56,13 +56,6 @@ Pod::Spec.new do |s|
       }
     end
     
-    ## CacheX缓存插件
-    xx.subspec 'Cache' do |xxx|
-      xxx.source_files = 'Plugins/Cache/*.swift'
-      xxx.dependency 'Booming/Core'
-      xxx.dependency 'CacheX', '~> 1.1.0'
-    end
-    
     ################## -- ios插件系列 -- ##################
     xx.subspec 'Views' do |xxx|
       xxx.ios.source_files = 'Plugins/Views/*.swift'

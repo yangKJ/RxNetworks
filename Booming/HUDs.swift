@@ -13,12 +13,6 @@ public struct HUDs {
     private static let HUDsLock = NSLock()
     static var cacheHUDs = [String: LevelStatusBarWindowController]()
     
-    public static func readHUD(key: String) -> LevelStatusBarWindowController? {
-        self.HUDsLock.lock()
-        defer { HUDsLock.unlock() }
-        return self.cacheHUDs[key]
-    }
-    
     public static func saveHUD(key: String, viewController: LevelStatusBarWindowController) {
         self.HUDsLock.lock()
         self.cacheHUDs[key] = viewController
@@ -56,7 +50,13 @@ public struct HUDs {
         self.HUDsLock.unlock()
     }
     
-    static func readHUD(prefix: String) -> [LevelStatusBarWindowController] {
+    public static func readHUD(key: String) -> LevelStatusBarWindowController? {
+        self.HUDsLock.lock()
+        defer { HUDsLock.unlock() }
+        return self.cacheHUDs[key]
+    }
+    
+    public static func readHUD(prefix: String) -> [LevelStatusBarWindowController] {
         self.HUDsLock.lock()
         defer { self.HUDsLock.unlock() }
         return self.cacheHUDs.compactMap {
@@ -67,7 +67,7 @@ public struct HUDs {
         }
     }
     
-    static func readHUD(suffix: String) -> [LevelStatusBarWindowController] {
+    public static func readHUD(suffix: String) -> [LevelStatusBarWindowController] {
         self.HUDsLock.lock()
         defer { self.HUDsLock.unlock() }
         return self.cacheHUDs.compactMap {
@@ -77,19 +77,9 @@ public struct HUDs {
             return nil
         }
     }
-    
-    static func readTheKeyPrefixAllHUDs(key: String) -> [LevelStatusBarWindowController] {
-        self.HUDsLock.lock()
-        defer { self.HUDsLock.unlock() }
-        let prefix = key.components(separatedBy: "_").first!
-        return self.cacheHUDs.compactMap {
-            if let prefix_ = $0.key.components(separatedBy: "_").first, prefix_ == prefix {
-                return $0.value
-            }
-            return nil
-        }
-    }
-    
+}
+
+extension HUDs {
     static func delayRemoveLoadingHUDs(with plugins: APIPlugins?) {
         guard let plugins = plugins else {
             return

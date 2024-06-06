@@ -59,18 +59,6 @@
           }
         },
         {
-          "name": "Cache",
-          "source_files": "Plugins/Cache/*.swift",
-          "dependencies": {
-            "Booming/Core": [
-
-            ],
-            "CacheX": [
-              "~> 1.1.0"
-            ]
-          }
-        },
-        {
           "name": "Views",
           "ios": {
             "source_files": "Plugins/Views/*.swift",

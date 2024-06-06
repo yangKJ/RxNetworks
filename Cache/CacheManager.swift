@@ -10,6 +10,7 @@
 
 import Foundation
 import CacheX
+import Booming
 
 public struct CacheManager {
     

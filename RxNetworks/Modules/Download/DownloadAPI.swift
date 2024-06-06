@@ -15,7 +15,7 @@ enum DownloadAPI {
 extension DownloadAPI: NetworkAPI {
     
     var ip: APIHost {
-        return "https://github.com/yangKJ/RxNetworks"
+        return "https://media.gcflearnfree.org"
     }
     
     var method: APIMethod {
@@ -23,7 +23,7 @@ extension DownloadAPI: NetworkAPI {
     }
     
     var path: APIPath {
-        return "/blob/master/RxNetworks/Images.xcassets/AppIcon.appiconset/iOS-Marketing.png"
+        return "/content/588f55e5a0b0042cb858653b_01_30_2017/images_stock_puppy.jpg"
     }
     
     var parameters: APIParameters? {
@@ -33,9 +33,10 @@ extension DownloadAPI: NetworkAPI {
     var plugins: APIPlugins {
         switch self {
         case .downloadImage:
-            let loading = AnimatedLoadingPlugin(options: .init(delay: 0.5))
+            let loading = NetworkLoadingPlugin(options: .init(text: "Downloading..", delay: 0.5))
             let download = NetworkFilesPlugin(type: .downloadAsset)
-            return [loading, download]
+            let ignore = NetworkIgnorePlugin(pluginTypes: [NetworkAuthenticationPlugin.self])
+            return [loading, download, ignore]
         }
     }
 }

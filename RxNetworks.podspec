@@ -61,7 +61,7 @@ Pod::Spec.new do |s|
       xxx.dependency 'Booming/Plugins/Huds'
     end
     xx.subspec 'Cache' do |xxx|
-      xxx.dependency 'Booming/Plugins/Cache'
+      xxx.dependency 'NetworkCachePlugin'
     end
     xx.subspec 'Debugging' do |xxx|
       xxx.dependency 'Booming/Plugins/Features'

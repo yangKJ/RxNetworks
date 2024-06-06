@@ -94,7 +94,7 @@
         {
           "name": "Cache",
           "dependencies": {
-            "Booming/Plugins/Cache": [
+            "NetworkCachePlugin": [
 
             ]
           }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Lottie
+import Booming
 
 final class AnimatedLoadingHUD: ViewType {
     

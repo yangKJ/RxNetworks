@@ -7,6 +7,7 @@
 //
 
 import RxNetworks
+import NetworkLottiePlugin
 
 enum AnimatedLoadingAPI {
     case loading(String)

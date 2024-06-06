@@ -10,6 +10,7 @@
 
 import Foundation
 import Moya
+import Booming
 
 /// 动画加载插件，基于Lottie封装
 /// Animation loading plugin, based on Lottie package.

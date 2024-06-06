@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 import CacheX
+import Booming
 
 /// 缓存插件，基于`CacheX`封装使用
 /// Cache plugin, based on `CacheX` package use
