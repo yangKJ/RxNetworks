@@ -79,7 +79,9 @@ extension BoomingSetup {
     public static var addDebugging: Bool = true {
         didSet {
             if !addDebugging {
+                #if BOOMING_PLUGINGS_FEATURES
                 debuggingLogOption = .nothing
+                #endif
             }
         }
     }

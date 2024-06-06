@@ -10,6 +10,25 @@ import Moya
 import CacheX
 import Booming
 
+/// Network cache plugin type
+public enum NetworkCacheType {
+    /** 只从网络获取数据，且数据不会缓存在本地 */
+    /** Only get data from the network, and the data will not be cached locally */
+    case ignoreCache
+    /** 先从网络获取数据，同时会在本地缓存数据 */
+    /** Get the data from the network first, and cache the data locally at the same time */
+    case networkOnly
+    /** 先从缓存读取数据，如果没有再从网络获取 */
+    /** Read the data from the cache first, if not, then get it from the network */
+    case cacheElseNetwork
+    /** 先从网络获取数据，如果没有在从缓存获取，此处的没有可以理解为访问网络失败，再从缓存读取 */
+    /** Get data from the network first, if not from the cache */
+    case networkElseCache
+    /** 先从缓存读取数据，然后在从网络获取并且缓存，可能会获取到两次数据 */
+    /** Data is first read from the cache, then retrieved from the network and cached, Maybe get `twice` data */
+    case cacheThenNetwork
+}
+
 /// 缓存插件，基于`CacheX`封装使用
 /// Cache plugin, based on `CacheX` package use
 public struct NetworkCachePlugin {
@@ -20,7 +39,7 @@ public struct NetworkCachePlugin {
         self.options = options
     }
     
-    public init(cacheType: CacheType = .ignoreCache) {
+    public init(cacheType: NetworkCacheType = .ignoreCache) {
         let options = Options(cacheType: cacheType)
         self.init(options: options)
     }
@@ -29,13 +48,13 @@ public struct NetworkCachePlugin {
 extension NetworkCachePlugin {
     public struct Options {
         /// Network cache plugin type
-        let cacheType: CacheType
+        let cacheType: NetworkCacheType
         /// Encryption type, default md5
         let cryptoType: CacheX.CryptoType
         /// Storage type, default disk and memory.
         let cachedOptions: CacheX.CachedOptions
         
-        public init(cacheType: CacheType, cryptoType: CryptoType = .md5, cachedOptions: CachedOptions = .diskAndMemory) {
+        public init(cacheType: NetworkCacheType, cryptoType: CryptoType = .md5, cachedOptions: CachedOptions = .diskAndMemory) {
             self.cacheType = cacheType
             self.cryptoType = cryptoType
             self.cachedOptions = cachedOptions
@@ -64,7 +83,7 @@ extension NetworkCachePlugin.Options {
 extension NetworkCachePlugin: PluginSubType {
     
     public var pluginName: String {
-        return "Cache"
+        return "CacheX"
     }
     
     public func configuration(_ request: HeadstreamRequest, target: TargetType) -> HeadstreamRequest {
@@ -107,7 +126,7 @@ extension NetworkCachePlugin: PluginSubType {
 extension NetworkCachePlugin {
     
     private func readCacheResponse(_ target: TargetType) -> Moya.Response? {
-        let key = options.cryptoType.encryptedString(with: options.cacheType.cacheKey(with: target))
+        let key = options.cryptoType.encryptedString(with: cacheKey(with: target))
         guard let model = CacheManager.default.storage.fetchCached(forKey: key, options: options.cachedOptions) else {
             return nil
         }
@@ -118,12 +137,23 @@ extension NetworkCachePlugin {
         if case .success(let response) = result {
             switch self.options.cacheType {
             case .networkElseCache, .cacheThenNetwork, .cacheElseNetwork:
-                let key = options.cryptoType.encryptedString(with: options.cacheType.cacheKey(with: target))
+                let key = options.cryptoType.encryptedString(with: cacheKey(with: target))
                 let model = CacheXCodable(data: response.data, statusCode: response.statusCode)
                 CacheManager.default.storage.storeCached(model, forKey: key, options: options.cachedOptions)
             default:
                 break
             }
         }
+    }
+    
+    private func cacheKey(with target: TargetType) -> String {
+        if let api = target as? NetworkAPI {
+            let paramString = X.sortParametersToString(api.parameters)
+            return target.baseURL.absoluteString + target.path + paramString
+        } else if let multiTarget = target as? MultiTarget, let api = multiTarget.target as? NetworkAPI {
+            let paramString = X.sortParametersToString(api.parameters)
+            return target.baseURL.absoluteString + target.path + paramString
+        }
+        return target.baseURL.absoluteString + target.path
     }
 }

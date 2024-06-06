@@ -123,7 +123,7 @@ extension X {
         return maxTime
     }
     
-    static func sortParametersToString(_ parameters: APIParameters?) -> String {
+    public static func sortParametersToString(_ parameters: APIParameters?) -> String {
         guard let params = parameters, !params.isEmpty else {
             return ""
         }
