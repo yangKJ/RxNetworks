@@ -64,13 +64,13 @@
 		873B1F892C09AA1C00812279 /* CodableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B1F832C09AA1C00812279 /* CodableViewController.swift */; };
 		873B1F8A2C09AA1C00812279 /* CodableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B1F842C09AA1C00812279 /* CodableViewModel.swift */; };
 		873B1F8B2C09AA1C00812279 /* CodableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B1F852C09AA1C00812279 /* CodableModel.swift */; };
-		874BB9CE2A121A2700C9DA33 /* TokenPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */; };
 		874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */; };
 		8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8759D02928B328E500C22107 /* AuthPlugin.swift */; };
 		876E046729EE35F500A7CF1C /* testLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 876E046629EE35F500A7CF1C /* testLoading.json */; };
 		87E9B23F2B70B3D100B0012C /* RxNetworks.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 87E9B23D2B70B3D100B0012C /* RxNetworks.podspec */; };
 		87E9B2402B70B3D100B0012C /* Booming.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 87E9B23E2B70B3D100B0012C /* Booming.podspec */; };
 		87EDFCD42B4F8292005F3756 /* LoadingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EDFCD32B4F8292005F3756 /* LoadingModel.swift */; };
+		F75C733B2C120CBC0067E330 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75C733A2C120CBC0067E330 /* TokenManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,7 +133,6 @@
 		873B1F832C09AA1C00812279 /* CodableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableViewController.swift; sourceTree = "<group>"; };
 		873B1F842C09AA1C00812279 /* CodableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableViewModel.swift; sourceTree = "<group>"; };
 		873B1F852C09AA1C00812279 /* CodableModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableModel.swift; sourceTree = "<group>"; };
-		874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPlugin.swift; sourceTree = "<group>"; };
 		874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		8759D02928B328E500C22107 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		876E046629EE35F500A7CF1C /* testLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testLoading.json; sourceTree = "<group>"; };
@@ -142,6 +141,7 @@
 		87EDFCD32B4F8292005F3756 /* LoadingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingModel.swift; sourceTree = "<group>"; };
 		98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworks_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6BA526A7FB7A026947C70BB /* Pods-RxNetworks_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworks_Example.debug.xcconfig"; path = "Target Support Files/Pods-RxNetworks_Example/Pods-RxNetworks_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		F75C733A2C120CBC0067E330 /* TokenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				87124A8C2A1324470049CAC6 /* TokenAPI.swift */,
+				F75C733A2C120CBC0067E330 /* TokenManager.swift */,
 				87124A8B2A1324470049CAC6 /* TokenViewController.swift */,
 				87124A8A2A1324470049CAC6 /* TokenViewModel.swift */,
 			);
@@ -410,20 +411,11 @@
 			path = Modules/Codable;
 			sourceTree = "<group>";
 		};
-		874BB9CC2A121A0C00C9DA33 /* Token */ = {
-			isa = PBXGroup;
-			children = (
-				874BB9CD2A121A2700C9DA33 /* TokenPlugin.swift */,
-			);
-			path = Token;
-			sourceTree = "<group>";
-		};
 		8759D02728B328E500C22107 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
 				42264D3C2B56DE620044051D /* OAuth */,
 				8759D02828B328E500C22107 /* Auth */,
-				874BB9CC2A121A0C00C9DA33 /* Token */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -606,8 +598,8 @@
 				87EDFCD42B4F8292005F3756 /* LoadingModel.swift in Sources */,
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
 				871870A52A4C17A0008FFE6B /* SharedViewController.swift in Sources */,
+				F75C733B2C120CBC0067E330 /* TokenManager.swift in Sources */,
 				87124A8D2A1324470049CAC6 /* TokenViewModel.swift in Sources */,
-				874BB9CE2A121A2700C9DA33 /* TokenPlugin.swift in Sources */,
 				8726CFAF2C0EFD6600E1A890 /* CustomCacheViewModel.swift in Sources */,
 				873B1F8B2C09AA1C00812279 /* CodableModel.swift in Sources */,
 				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,

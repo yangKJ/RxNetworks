@@ -17,19 +17,37 @@ class TokenViewController: BaseViewController<TokenViewModel> {
         let view = UITextView.init(frame: rect)
         view.font = UIFont.systemFont(ofSize: 14)
         view.textColor = UIColor.defaultTint
+        view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
         return view
     }()
     
     lazy var button: UIButton = {
         let button = UIButton.init(type: .custom)
-        button.frame = CGRect(x: 0, y: textView.frame.maxY + 50, width: 200, height: 200)
-        button.center = CGPoint(x: textView.center.x, y: button.center.y)
-        button.backgroundColor = UIColor.green.withAlphaComponent(0.5)
-        button.layer.cornerRadius = 100
+        button.frame = CGRect(x: 0, y: textView.frame.maxY + 50, width: 100, height: 100)
+        button.center = CGPoint(x: textView.center.x - 75, y: button.center.y)
+        button.backgroundColor = UIColor.red.withAlphaComponent(0.5)
+        button.layer.cornerRadius = 50
         button.layer.masksToBounds = true
         button.setTitle("Clear token", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.addTarget(self, action: #selector(thouch(_:)), for: UIControl.Event.touchUpInside)
+        return button
+    }()
+    
+    lazy var button2: UIButton = {
+        let button = UIButton.init(type: .custom)
+        button.frame = CGRect(x: 0, y: textView.frame.maxY + 50, width: 100, height: 100)
+        button.center = CGPoint(x: textView.center.x + 75, y: button.center.y)
+        button.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+        button.layer.cornerRadius = 50
+        button.layer.masksToBounds = true
+        button.setTitle("Request", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.rx.tap.subscribe(onNext: { [weak self] _ in
+            self?.textView.text = nil
+            self?.viewModel.loadData()
+        }).disposed(by: disposeBag)
         return button
     }()
     
@@ -42,6 +60,7 @@ class TokenViewController: BaseViewController<TokenViewModel> {
     func setupUI() {
         self.view.addSubview(textView)
         self.view.addSubview(button)
+        self.view.addSubview(button2)
     }
     
     func setupBindings() {
@@ -58,6 +77,6 @@ class TokenViewController: BaseViewController<TokenViewModel> {
     
     @objc func thouch(_ sender: UIButton) {
         // 模拟清除token
-        TokenPlugin.shared.hasToken.accept("")
+        TokenManager.shared.setToken("")
     }
 }

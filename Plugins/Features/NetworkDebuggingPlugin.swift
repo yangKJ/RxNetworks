@@ -192,7 +192,7 @@ extension NetworkDebuggingPlugin {
         }
         let requestLink = X.requestLink(with: target)
         let prefix = """
-                    ╔═══════════ 🎈 Request 🎈 ═══════════
+                    ╔════════ 🎷 Prepare Request 🎷 ════════
                     ║ Time: \(dateString)
                     ║ URL: \(requestLink)\n
                     """

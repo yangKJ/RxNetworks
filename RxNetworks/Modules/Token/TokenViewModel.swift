@@ -20,7 +20,6 @@ class TokenViewModel: NSObject {
         TokenAPI.auth.request()
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                //NetworkLoadingPlugin.hideMBProgressHUD()
                 if let dict = $0 as? NSDictionary {
                     self?.data.accept(dict)
                 }

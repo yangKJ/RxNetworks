@@ -8,19 +8,26 @@
 
 import Foundation
 import RxNetworks
+import RxCocoa
 
 class OOViewModel: NSObject {
     
-    func request() -> Observable<String> {
+    let result = PublishRelay<String>()
+    
+    let disposeBag = DisposeBag()
+    
+    func request() {
         let api = NetworkAPIOO.init()
         api.ip = "https://www.httpbin.org"
-        api.path = "/ip"
+        api.path = "/headers"
         api.method = APIMethod.get
-        api.plugins = [NetworkLoadingPlugin()]
+        api.plugins = [NetworkLoadingPlugin(options: .init(text: "OOing.."))]
         api.retry = 2
-        return api.request()
-            .compactMap{ (($0 as? NSDictionary)?["origin"] as? String) }
-            .catchAndReturn("")
+        api.request()
             .observe(on: MainScheduler.instance)
+            .compactMap{ X.toJSON(form: $0, prettyPrint: true) }
+            .catchAndReturn("")
+            .bind(to: result)
+            .disposed(by: disposeBag)
     }
 }

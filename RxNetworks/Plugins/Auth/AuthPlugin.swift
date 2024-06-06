@@ -60,7 +60,7 @@ extension AuthPlugin: PluginSubType {
             return
         }
         #else
-        switch tuple.result {
+        switch result.result {
         case .success:
             return onNext(result)
         case .failure(let error):
