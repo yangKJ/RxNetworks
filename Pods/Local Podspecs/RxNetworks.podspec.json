@@ -70,7 +70,7 @@
         {
           "name": "AnimatedLoading",
           "dependencies": {
-            "Booming/Plugins/Lottie": [
+            "NetworkLottiePlugin": [
 
             ]
           }

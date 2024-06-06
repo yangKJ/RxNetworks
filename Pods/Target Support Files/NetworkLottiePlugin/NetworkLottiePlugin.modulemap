@@ -1,0 +1,6 @@
+framework module NetworkLottiePlugin {
+  umbrella header "NetworkLottiePlugin-umbrella.h"
+
+  export *
+  module * { export * }
+}

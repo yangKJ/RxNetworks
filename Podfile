@@ -1,7 +1,7 @@
 use_frameworks!
 inhibit_all_warnings!
 
-platform :ios, '11.0'
+platform :ios, '13.0'
 
 # 在Podfile上添加环境变量
 # See: https://stackoverflow.com/questions/58795893/possibility-of-adding-environment-variables-on-podfile
@@ -15,6 +15,7 @@ target 'RxNetworks_Example' do
   pod 'RxNetworks', :path => './'
   pod 'Booming', :path => './'
   pod 'HollowCodable', :path => './'
+  pod 'NetworkLottiePlugin', :path => './'
   
 end
 

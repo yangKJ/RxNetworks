@@ -9,7 +9,6 @@ PODS:
     - Booming/Plugins/Cache (= 1.0.4)
     - Booming/Plugins/Features (= 1.0.4)
     - Booming/Plugins/Huds (= 1.0.4)
-    - Booming/Plugins/Lottie (= 1.0.4)
     - Booming/Plugins/Views (= 1.0.4)
   - Booming/Plugins/Cache (1.0.4):
     - Booming/Core
@@ -19,9 +18,6 @@ PODS:
   - Booming/Plugins/Huds (1.0.4):
     - Booming/Core
     - MBProgressHUD
-  - Booming/Plugins/Lottie (1.0.4):
-    - Booming/Core
-    - lottie-ios
   - Booming/Plugins/Views (1.0.4):
     - Booming/Core
   - CacheX (1.1.1)
@@ -33,6 +29,9 @@ PODS:
     - Moya/Core (= 15.0.0)
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
+  - NetworkLottiePlugin (1.0.4):
+    - Booming/Core
+    - lottie-ios
   - RxCocoa (6.7.0):
     - RxRelay (= 6.7.0)
     - RxSwift (= 6.7.0)
@@ -57,7 +56,7 @@ PODS:
     - RxNetworks/Plugins/Shared (= 1.0.4)
     - RxNetworks/Plugins/Warning (= 1.0.4)
   - RxNetworks/Plugins/AnimatedLoading (1.0.4):
-    - Booming/Plugins/Lottie
+    - NetworkLottiePlugin
   - RxNetworks/Plugins/Cache (1.0.4):
     - Booming/Plugins/Cache
   - RxNetworks/Plugins/Debugging (1.0.4):
@@ -86,6 +85,7 @@ PODS:
 DEPENDENCIES:
   - Booming (from `./`)
   - HollowCodable (from `./`)
+  - NetworkLottiePlugin (from `./`)
   - RxCocoa
   - RxNetworks (from `./`)
 
@@ -106,23 +106,26 @@ EXTERNAL SOURCES:
     :path: "./"
   HollowCodable:
     :path: "./"
+  NetworkLottiePlugin:
+    :path: "./"
   RxNetworks:
     :path: "./"
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  Booming: f78cf0c636af35b729d5cde344197ca594ae0f3c
+  Booming: 65b53b08bead34f59cbf68892c953c1c441cbd89
   CacheX: 9665503a86f9e38b3eb0c4ab14251649a79d292d
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   HollowCodable: a6d1f334a97775350e4cd0020df07d8e5603d3e7
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
+  NetworkLottiePlugin: d2bd9e95b12e46823e58dccb48d40785eb625598
   RxCocoa: fb0aefb9e7229c8ab057acde714136d19117f102
-  RxNetworks: e1bdb0ca7c5b3e8aa7100e6beee40ed5d8539138
+  RxNetworks: 469645ca138351d22a52bf1c445452b1cb4e701c
   RxRelay: 5d39f4d8da150ad47a71b9ce11915e3eae2a8f4d
   RxSwift: 6ee35684dc3f7a63938758f4b7708199517dfa97
 
-PODFILE CHECKSUM: 44b2edc6c78e7efa8b560c3629305b691ef8d305
+PODFILE CHECKSUM: 9b589ce49a5f055135d9c86ee66e79ff8cb791c3
 
 COCOAPODS: 1.15.2

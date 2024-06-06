@@ -52,7 +52,7 @@ Pod::Spec.new do |s|
       xxx.dependency 'Booming/Plugins/Views'
     end
     xx.subspec 'AnimatedLoading' do |xxx|
-      xxx.dependency 'Booming/Plugins/Lottie'
+      xxx.dependency 'NetworkLottiePlugin'
     end
     xx.subspec 'Loading' do |xxx|
       xxx.dependency 'Booming/Plugins/Huds'

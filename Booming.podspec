@@ -47,21 +47,6 @@ Pod::Spec.new do |s|
   
   ################## -- 插件系列 -- ##################
   s.subspec 'Plugins' do |xx|
-    xx.subspec 'Lottie' do |xxx|
-      xxx.source_files = 'Plugins/Lottie/*.swift'
-      xxx.dependency 'Booming/Core'
-      xxx.dependency 'lottie-ios'
-      xxx.ios.deployment_target = '11.0'
-      xxx.osx.deployment_target = '10.15'
-    end
-    
-    xx.subspec 'Cache' do |xxx|
-      xxx.source_files = 'Plugins/Cache/*.swift'
-      xxx.dependency 'Booming/Core'
-      xxx.dependency 'CacheX', '~> 1.1.0'
-    end
-    
-    ## 无任何耦合功能插件
     xx.subspec 'Features' do |xxx|
       xxx.source_files = 'Plugins/Features/*.swift'
       xxx.dependency 'Booming/Core'
@@ -69,6 +54,13 @@ Pod::Spec.new do |s|
         'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_FEATURES',
         'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_FEATURES=1'
       }
+    end
+    
+    ## CacheX缓存插件
+    xx.subspec 'Cache' do |xxx|
+      xxx.source_files = 'Plugins/Cache/*.swift'
+      xxx.dependency 'Booming/Core'
+      xxx.dependency 'CacheX', '~> 1.1.0'
     end
     
     ################## -- ios插件系列 -- ##################

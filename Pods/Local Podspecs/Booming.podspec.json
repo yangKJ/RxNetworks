@@ -46,19 +46,16 @@
       "name": "Plugins",
       "subspecs": [
         {
-          "name": "Lottie",
-          "source_files": "Plugins/Lottie/*.swift",
+          "name": "Features",
+          "source_files": "Plugins/Features/*.swift",
           "dependencies": {
             "Booming/Core": [
 
-            ],
-            "lottie-ios": [
-
             ]
           },
-          "platforms": {
-            "ios": "11.0",
-            "osx": "10.15"
+          "pod_target_xcconfig": {
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_FEATURES",
+            "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_FEATURES=1"
           }
         },
         {
@@ -71,19 +68,6 @@
             "CacheX": [
               "~> 1.1.0"
             ]
-          }
-        },
-        {
-          "name": "Features",
-          "source_files": "Plugins/Features/*.swift",
-          "dependencies": {
-            "Booming/Core": [
-
-            ]
-          },
-          "pod_target_xcconfig": {
-            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_FEATURES",
-            "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_FEATURES=1"
           }
         },
         {
