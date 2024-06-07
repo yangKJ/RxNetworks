@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NetworkLottiePlugin'
-  s.version          = '1.0.6'
+  s.version          = '1.0.8'
   s.summary          = 'Network Lottie Plugin Library.'
   
   # This description is used to generate tags and improve search results.
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/yangKJ/RxNetworks.git', :tag => "#{s.version}" }
   s.social_media_url = 'https://juejin.cn/user/1987535102554472/posts'
   
-  s.ios.deployment_target = '13.0'
+  s.ios.deployment_target = '11.0'
   s.osx.deployment_target = '10.15'
   s.swift_version    = '5.0'
   s.requires_arc     = true
