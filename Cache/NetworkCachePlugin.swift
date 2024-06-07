@@ -127,10 +127,7 @@ extension NetworkCachePlugin {
     
     private func readCacheResponse(_ target: TargetType) -> Moya.Response? {
         let key = options.cryptoType.encryptedString(with: cacheKey(with: target))
-        guard let model = CacheManager.default.storage.fetchCached(forKey: key, options: options.cachedOptions) else {
-            return nil
-        }
-        return Response(statusCode: model.statusCode, data: model.data)
+        return CacheManager.default.storage.fetchCached(forKey: key, options: options.cachedOptions)
     }
     
     private func saveCacheResponse(result: Result<Moya.Response, MoyaError>, target: TargetType) {
@@ -138,8 +135,7 @@ extension NetworkCachePlugin {
             switch self.options.cacheType {
             case .networkElseCache, .cacheThenNetwork, .cacheElseNetwork:
                 let key = options.cryptoType.encryptedString(with: cacheKey(with: target))
-                let model = CacheXCodable(data: response.data, statusCode: response.statusCode)
-                CacheManager.default.storage.storeCached(model, forKey: key, options: options.cachedOptions)
+                CacheManager.default.storage.storeCached(response, forKey: key, options: options.cachedOptions)
             default:
                 break
             }

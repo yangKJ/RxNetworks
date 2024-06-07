@@ -16,7 +16,7 @@ public struct CacheManager {
     
     public static let `default` = CacheManager()
     
-    public let storage: CacheX.Storage<CacheXCodable>
+    public let storage: CacheX.Storage<Moya.Response>
     
     private init() {
         /// Create a unified background processing thread.
@@ -31,7 +31,7 @@ public struct CacheManager {
         disk.maxCountLimit = self.maxCountLimit
         var memory = Memory.init()
         memory.maxCostLimit = self.maxCostLimit
-        self.storage = CacheX.Storage<CacheXCodable>.init(queue: background, caches: [
+        self.storage = CacheX.Storage<Moya.Response>.init(queue: background, caches: [
             Disk.named: disk,
             Memory.named: memory,
         ])

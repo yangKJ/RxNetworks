@@ -12,7 +12,7 @@ import RxNetworks
 class CustomCacheViewController: BaseViewController<CustomCacheViewModel> {
 
     lazy var textView: UITextView = {
-        let rect = CGRect(x: 20, y: 100, width: view.bounds.size.width-40, height: 200)
+        let rect = CGRect(x: 20, y: 100, width: view.bounds.size.width-40, height: 400)
         let view = UITextView.init(frame: rect)
         view.font = UIFont.systemFont(ofSize: 14)
         view.textColor = UIColor.defaultTint

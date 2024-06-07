@@ -9,6 +9,7 @@
 import Foundation
 import RxNetworks
 import CacheX
+import NetworkCachePlugin
 
 class CustomCacheViewModel: NSObject {
 
@@ -26,18 +27,15 @@ class CustomCacheViewModel: NSObject {
         return Output(items: items)
     }
     
-    lazy var storage: CacheX.Storage<CacheXCodable> = {
+    lazy var storage: CacheX.Storage<Moya.Response> = {
         /// Create a unified background processing thread.
         let background = DispatchQueue(label: "com.condy.booming.cached.queue.\(UUID().uuidString)", attributes: [.concurrent])
         var disk = Disk.init()
         disk.named = "CustomCached"
         disk.expiry = .seconds(60 * 60 * 24 * 7)
         disk.maxCountLimit = 20 * 1024
-        var memory = Memory.init()
-        memory.maxCostLimit = 0
-        return CacheX.Storage<CacheXCodable>.init(queue: background, caches: [
+        return CacheX.Storage<Moya.Response>.init(queue: background, caches: [
             Disk.named: disk,
-            Memory.named: memory,
         ])
     }()
 }

@@ -14,10 +14,6 @@ public protocol MappingCodable: Codable {
 
 extension MappingCodable {
     
-    public static var codingKeys: [ReplaceKeys] {
-        []
-    }
-    
     public func toData(prettyPrint: Bool = false) -> Data? {
         let encoder = JSONEncoder()
         if prettyPrint {

@@ -15,6 +15,7 @@ struct CacheModel: HandyJSON {
     var ip: String?
     var url: String?
     var data: String?
+    var headers: [String: Any]?
     
     /// 转换映射key
     mutating func mapping(mapper: HelpingMapper) {

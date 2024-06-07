@@ -27,6 +27,16 @@ public enum CacheType {
     case cacheThenNetwork
 }
 
+/// Any caching schema that complies with the protocol can use the `NetworkCustomCachePlugin`.
+public protocol CacheConvertable {
+    
+    func readResponse(forKey key: String) throws -> Moya.Response?
+    
+    func saveResponse(_ response: Moya.Response, forKey key: String) throws
+    
+    func clearAllResponses()
+}
+
 public struct NetworkCustomCachePlugin {
     
     public let cacher: any CacheConvertable
