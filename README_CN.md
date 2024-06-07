@@ -5,7 +5,7 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Booming.svg?style=flat&label=CocoaPods&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
 [![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)](#installation)
 
-<font color=red>**🧚. RxSwift + Moya + HandyJSON + Plugins.👒👒👒**</font>
+<font color=red>**🧚. RxSwift + Moya + HandyJSON/Codable + Plugins.👒👒👒**</font>
 
 -------
 
@@ -16,17 +16,24 @@
 ### 内置插件
 该模块主要就是基于moya封装网络相关插件
 
-- 目前已封装10款插件供您使用：
-    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Cache/NetworkCachePlugin.swift)：网络数据缓存插件
-    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Loading/NetworkLoadingPlugin.swift)：加载动画插件
-    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Indicator/NetworkIndicatorPlugin.swift)：指示器插件
-    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Warning/NetworkWarningPlugin.swift)：网络失败提示插件
-    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Debugging/NetworkDebuggingPlugin.swift): 网络打印，内置插件
-    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Sources/GZip/NetworkGZipPlugin.swift): 解压缩插件
-    - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Sources/Shared/NetworkSharedPlugin.swift): 网络共享插件
-    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Lottie/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
-    - [Header](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Header/NetworkHttpHeaderPlugin.swift): 网络HTTP头插件
-    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Files/NetworkFilesPlugin.swift): 网络下载文件和上传资源插件
+- 目前已封装14款插件供您使用：
+    - [Header](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkHttpHeaderPlugin.swift): 配置请求头插件
+    - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkDebuggingPlugin.swift): 网络打印，内置插件
+    - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkGZipPlugin.swift): 解压缩插件
+    - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkSharedPlugin.swift): 网络共享插件
+    - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkFilesPlugin.swift): 网络下载文件和上传资源插件
+    - [Token](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkTokenPlugin.swift): Token令牌注入验证插件
+    - [Ignore](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkIgnorePlugin.swift): 忽略默认插件
+    - [Authentication](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkAuthenticationPlugin.swift): 拦截器插件
+    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Cache/NetworkCachePlugin.swift): 网络数据缓存插件
+    - [CustomCache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkCustomCachePlugin.swift): 自定义网络数据缓存插件
+    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Lottie/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
+    
+iOS 系统:    
+- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkLoadingPlugin.swift): 加载动画插件
+- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkWarningPlugin.swift): 网络失败提示插件
+- [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Views/NetworkIndicatorPlugin.swift): 指示器插件
+
     
 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
 
@@ -62,6 +69,22 @@ func request(_ count: Int) -> Driver<[CacheModel]> {
         .observe(on: MainScheduler.instance) // 结果在主线程返回
         .delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回
         .asDriver(onErrorJustReturn: []) // 错误时刻返回空
+}
+```
+
+### HollowCodable
+这个模块是序列化和反序列化数据，取代HandyJSON。
+
+🎷 - 结合网络部分使用示例：
+
+```
+func request(_ count: Int) -> Observable<[CodableModel]> {
+    CodableAPI.cache(count)
+        .request(callbackQueue: DispatchQueue(label: "request.codable"))
+        .deserialized(ApiResponse<[CodableModel]>.self, mapping: CodableModel.self)
+        .compactMap({ $0.data })
+        .observe(on: MainScheduler.instance)
+        .catchAndReturn([])
 }
 ```
 
@@ -260,7 +283,7 @@ Ex: 导入网络架构API
 
 Ex: 导入加载动画插件
 - pod 'Booming'
-- pod 'Booming/Loading'
+- pod 'Booming/Plugins/Huds'
 
 Ex: 导入数据解析
 - pod 'RxNetworks/HandyJSON'
