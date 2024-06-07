@@ -25,7 +25,7 @@ PODS:
     - Moya/Core (= 15.0.0)
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
-  - NetworkCachePlugin (1.0.6):
+  - NetworkCachePlugin (1.0.7):
     - Booming/Core (~> 1.0.5)
     - CacheX (~> 1.1.0)
   - NetworkLottiePlugin (1.0.6):
@@ -122,7 +122,7 @@ SPEC CHECKSUMS:
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
-  NetworkCachePlugin: 7d810d30df41ee9c99ae8ff9a3ff9ae5a1a20de0
+  NetworkCachePlugin: 2dffc13d937667b7d818f090eef21e8046d8fb1e
   NetworkLottiePlugin: 512b8d8c844e31ab6fd955541002feeaafaa82e7
   RxCocoa: fb0aefb9e7229c8ab057acde714136d19117f102
   RxNetworks: 0880afafbae44935e9a7b1a7574b6967373f5a40
