@@ -8,7 +8,7 @@
 
 **[Booming](https://github.com/yangKJ/RxNetworks)** is a base network library for Swift. Developed for Swift 5, it aims to make use of the latest language features. The framework's ultimate goal is to enable easy networking that makes it easy to write well-maintainable code.
 
-**[HollowCodable](https://github.com/yangKJ/RxNetworks)** is a codable customization using property wrappers library for Swift.
+**[HollowCodable](https://github.com/yangKJ/HollowCodable)** is a codable customization using property wrappers library for Swift.
 
 **[RxNetworks](https://github.com/yangKJ/RxNetworks)** is a declarative and reactive networking library for Swift.
 
@@ -25,7 +25,7 @@ At the moment, the most important features of Booming can be summarized as follo
 
 - [x] Support reactive network requests combined with [RxSwift](https://github.com/ReactiveX/RxSwift).
 - [x] Support for OOP also support POP network requests.
-- [x] Support data parsing with [HandyJSON](https://github.com/alibaba/HandyJSON) and [Codable](https://github.com/yangKJ/RxNetworks/tree/master/Codable).
+- [x] Support data parsing with [HandyJSON](https://github.com/alibaba/HandyJSON) and [Codable](https://github.com/yangKJ/HollowCodable).
 - [x] Support configuration of general request and path, general parameters, etc.
 - [x] Support simple customization of various network plugins for [Moya](https://github.com/Moya/Moya).
 - [x] Support uploading and downloading files/resources and so on.

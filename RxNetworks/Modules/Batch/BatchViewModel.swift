@@ -31,15 +31,10 @@ class BatchViewModel: NSObject {
             BatchAPI.test3.request()
         )
         .observe(on: MainScheduler.instance)
-        .map({
-            guard let data1 = $0 as? [String: Any],
-                  let data2 = $1 as? [String: Any],
-                  let data3 = $2 as? [String: Any] else {
-                return [:]
-            }
-            let dict = data1 +== data2 +== data3
-            return dict
-        })
+        .map { [$0, $1, $2].compactMap {
+            $0 as? [String: Any]
+        }}
+        .map { $0.reduce([String: Any](), +==) }
         .catchAndReturn([:])
     }
 }

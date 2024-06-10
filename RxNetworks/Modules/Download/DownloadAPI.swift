@@ -33,7 +33,7 @@ extension DownloadAPI: NetworkAPI {
     var plugins: APIPlugins {
         switch self {
         case .downloadImage:
-            let loading = NetworkLoadingPlugin(options: .init(text: "Downloading..", delay: 0.5))
+            let loading = NetworkLoadingPlugin(options: .init(text: "Loading..", delay: 0.5))
             let download = NetworkFilesPlugin(type: .downloadAsset)
             let ignore = NetworkIgnorePlugin(pluginTypes: [NetworkAuthenticationPlugin.self])
             return [loading, download, ignore]

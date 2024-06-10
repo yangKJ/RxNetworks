@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NetworkCachePlugin'
-  s.version          = '1.0.7'
+  s.version          = '1.0.8'
   s.summary          = 'Network Cache Plugin Library.'
   
   # This description is used to generate tags and improve search results.
@@ -37,7 +37,7 @@ Pod::Spec.new do |s|
   }
   
   s.source_files = 'Cache/*.swift'
-  s.dependency 'Booming/Core', '~> 1.0.5'
-  s.dependency 'CacheX', '~> 1.1.0'
+  s.dependency 'Booming/Core'
+  s.dependency 'CacheX'
   
 end

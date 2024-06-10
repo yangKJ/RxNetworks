@@ -1,6 +1,0 @@
-framework module HollowCodable {
-  umbrella header "HollowCodable-umbrella.h"
-
-  export *
-  module * { export * }
-}

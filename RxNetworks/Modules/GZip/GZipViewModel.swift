@@ -9,20 +9,19 @@
 import Foundation
 import RxNetworks
 import RxCocoa
-import HollowCodable
+import HandyJSON
 
-struct GZipModel: Codable, MappingCodable {
-    @Immutable
-    var id: Int
+struct GZipModel: HandyJSON {
+    var id: Int?
     var title: String?
-    var imageURL: URL?
-    var url: URL?
+    var imageURL: String?
+    var url: String?
     
-    static var codingKeys: [ReplaceKeys] {
-        return [
-            ReplaceKeys.init(replaceKey: "imageURL", originalKey: "image"),
-            ReplaceKeys.init(replaceKey: "url", originalKey: "github"),
-        ]
+    mutating func mapping(mapper: HelpingMapper) {
+        mapper <<<
+            imageURL <-- "image"
+        mapper <<<
+            url <-- "github"
     }
 }
 
@@ -34,7 +33,7 @@ class GZipViewModel: NSObject {
     
     func loadData() {
         GZipAPI.gzip.request()
-            .deserialized(ApiResponse<GZipModel>.self, mapping: GZipModel.self)
+            .mapHandyJSON(HandyDataModel<GZipModel>.self)
             .compactMap { $0.data }
             .observe(on: MainScheduler.instance)
             .bind(to: data)

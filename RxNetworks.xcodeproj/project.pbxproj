@@ -59,11 +59,6 @@
 		8731BD922AE119580088DDCC /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731BD8F2AE119580088DDCC /* DownloadViewController.swift */; };
 		8731BD932AE119580088DDCC /* DownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731BD902AE119580088DDCC /* DownloadViewModel.swift */; };
 		8731BD942AE119580088DDCC /* DownloadAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731BD912AE119580088DDCC /* DownloadAPI.swift */; };
-		873B1F872C09AA1C00812279 /* Codable.json in Resources */ = {isa = PBXBuildFile; fileRef = 873B1F812C09AA1C00812279 /* Codable.json */; };
-		873B1F882C09AA1C00812279 /* CodableAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B1F822C09AA1C00812279 /* CodableAPI.swift */; };
-		873B1F892C09AA1C00812279 /* CodableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B1F832C09AA1C00812279 /* CodableViewController.swift */; };
-		873B1F8A2C09AA1C00812279 /* CodableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B1F842C09AA1C00812279 /* CodableViewModel.swift */; };
-		873B1F8B2C09AA1C00812279 /* CodableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B1F852C09AA1C00812279 /* CodableModel.swift */; };
 		874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */; };
 		8759D02A28B328E500C22107 /* AuthPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8759D02928B328E500C22107 /* AuthPlugin.swift */; };
 		876E046729EE35F500A7CF1C /* testLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 876E046629EE35F500A7CF1C /* testLoading.json */; };
@@ -128,11 +123,6 @@
 		8731BD8F2AE119580088DDCC /* DownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
 		8731BD902AE119580088DDCC /* DownloadViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadViewModel.swift; sourceTree = "<group>"; };
 		8731BD912AE119580088DDCC /* DownloadAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadAPI.swift; sourceTree = "<group>"; };
-		873B1F812C09AA1C00812279 /* Codable.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Codable.json; sourceTree = "<group>"; };
-		873B1F822C09AA1C00812279 /* CodableAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableAPI.swift; sourceTree = "<group>"; };
-		873B1F832C09AA1C00812279 /* CodableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableViewController.swift; sourceTree = "<group>"; };
-		873B1F842C09AA1C00812279 /* CodableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableViewModel.swift; sourceTree = "<group>"; };
-		873B1F852C09AA1C00812279 /* CodableModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableModel.swift; sourceTree = "<group>"; };
 		874BB9CF2A121BA000C9DA33 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		8759D02928B328E500C22107 /* AuthPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPlugin.swift; sourceTree = "<group>"; };
 		876E046629EE35F500A7CF1C /* testLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testLoading.json; sourceTree = "<group>"; };
@@ -244,16 +234,15 @@
 		04C053FE278D5D07008BCC42 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				8707F02829EE8FC70060C94B /* AnimatedLoading */,
 				04C04F2C2792A69400E85B6B /* Batch */,
 				04233501278E61DE00547494 /* Cache */,
 				0442C89B2791E9E500AB04DB /* Chain */,
 				87124A822A13243C0049CAC6 /* Closure */,
-				873B1F862C09AA1C00812279 /* Codable */,
 				8726CFAB2C0EFD6600E1A890 /* CustomCache */,
 				8731BD8E2AE119580088DDCC /* Download */,
 				04F0A883279A465C008534D8 /* GZip */,
 				04233506278E61DE00547494 /* Loading */,
+				8707F02829EE8FC70060C94B /* Lottie */,
 				0423350A278E61DE00547494 /* OO */,
 				871870A12A4C17A0008FFE6B /* Shared */,
 				87124A892A1324470049CAC6 /* Token */,
@@ -331,15 +320,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8707F02829EE8FC70060C94B /* AnimatedLoading */ = {
+		8707F02829EE8FC70060C94B /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
 				8707F02A29EE8FC70060C94B /* AnimatedLoadingAPI.swift */,
 				8707F02929EE8FC70060C94B /* AnimatedLoadingViewController.swift */,
 				8707F02B29EE8FC70060C94B /* AnimatedLoadingViewModel.swift */,
 			);
-			name = AnimatedLoading;
-			path = Modules/AnimatedLoading;
+			name = Lottie;
+			path = Modules/Lottie;
 			sourceTree = "<group>";
 		};
 		87124A822A13243C0049CAC6 /* Closure */ = {
@@ -396,19 +385,6 @@
 			);
 			name = Download;
 			path = Modules/Download;
-			sourceTree = "<group>";
-		};
-		873B1F862C09AA1C00812279 /* Codable */ = {
-			isa = PBXGroup;
-			children = (
-				873B1F812C09AA1C00812279 /* Codable.json */,
-				873B1F822C09AA1C00812279 /* CodableAPI.swift */,
-				873B1F852C09AA1C00812279 /* CodableModel.swift */,
-				873B1F832C09AA1C00812279 /* CodableViewController.swift */,
-				873B1F842C09AA1C00812279 /* CodableViewModel.swift */,
-			);
-			name = Codable;
-			path = Modules/Codable;
 			sourceTree = "<group>";
 		};
 		8759D02728B328E500C22107 /* Plugins */ = {
@@ -508,7 +484,6 @@
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				876E046729EE35F500A7CF1C /* testLoading.json in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
-				873B1F872C09AA1C00812279 /* Codable.json in Resources */,
 				6817A39627A022AC0034F283 /* Color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -582,7 +557,6 @@
 				8731BD932AE119580088DDCC /* DownloadViewModel.swift in Sources */,
 				04233511278E61DE00547494 /* CacheModel.swift in Sources */,
 				04F0A887279A465C008534D8 /* GZipViewModel.swift in Sources */,
-				873B1F8A2C09AA1C00812279 /* CodableViewModel.swift in Sources */,
 				607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */,
 				8726CFAE2C0EFD6600E1A890 /* CustomCacheViewController.swift in Sources */,
 				8731BD942AE119580088DDCC /* DownloadAPI.swift in Sources */,
@@ -601,7 +575,6 @@
 				F75C733B2C120CBC0067E330 /* TokenManager.swift in Sources */,
 				87124A8D2A1324470049CAC6 /* TokenViewModel.swift in Sources */,
 				8726CFAF2C0EFD6600E1A890 /* CustomCacheViewModel.swift in Sources */,
-				873B1F8B2C09AA1C00812279 /* CodableModel.swift in Sources */,
 				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,
 				42264D402B56DE620044051D /* OAuthenticator.swift in Sources */,
 				04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */,
@@ -611,7 +584,6 @@
 				87124A862A13243C0049CAC6 /* ClosureViewController.swift in Sources */,
 				874BB9D02A121BA000C9DA33 /* UserDefaults.swift in Sources */,
 				87124A8F2A1324470049CAC6 /* TokenAPI.swift in Sources */,
-				873B1F892C09AA1C00812279 /* CodableViewController.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
 				871870A72A4C17A0008FFE6B /* SharedAPI.swift in Sources */,
 				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
@@ -627,7 +599,6 @@
 				8731BD922AE119580088DDCC /* DownloadViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				8726CFAC2C0EFD6600E1A890 /* CustomCacheAPI.swift in Sources */,
-				873B1F882C09AA1C00812279 /* CodableAPI.swift in Sources */,
 				04BB29B4279911DD0056F94A /* WarningAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
