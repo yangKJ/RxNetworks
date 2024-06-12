@@ -44,32 +44,50 @@ Provide some test cases for reference.🚁
 
 ```
 class OOViewModel: NSObject {
-    struct Input {
-        let retry: Int
-    }
-    struct Output {
-        let items: Observable<String>
-    }
     
-    func transform(input: Input) -> Output {
-        return Output(items: input.request())
+    let userDefaultsCache = UserDefaults(suiteName: "userDefaultsCache")!
+    
+    func request(block: @escaping (String) -> Void) {
+        let api = NetworkAPIOO.init()
+        api.ip = "https://www.httpbin.org"
+        api.path = "/headers"
+        api.method = APIMethod.get
+        api.plugins = [
+            NetworkLoadingPlugin(options: .init(text: "OOing..")),
+            NetworkCustomCachePlugin.init(cacheType: .cacheThenNetwork, cacher: userDefaultsCache),
+            NetworkIgnorePlugin(pluginTypes: [NetworkActivityPlugin.self]),
+        ]
+        api.mapped2JSON = false
+        api.request(successed: { _, _, response in
+            guard let json = try? response.toJSON().get(),
+                  let string = X.toJSON(form: json, prettyPrint: true) else {
+                return
+            }
+            block(string)
+        })
     }
 }
 
-extension OOViewModel.Input {
-    func request() -> Observable<String> {
-        var api = NetworkAPIOO.init()
-        api.cdy_ip = BoomingSetup.baseURL
-        api.cdy_path = "/ip"
-        api.cdy_method = APIMethod.get
-        api.cdy_plugins = [NetworkLoadingPlugin()]
-        api.cdy_retry = self.retry
-        
-        return api.cdy_HTTPRequest()
-            .asObservable()
-            .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
-            .catchAndReturn("")
-            .observe(on: MainScheduler.instance)
+extension UserDefaults: CacheConvertable {
+    
+    public func readResponse(forKey key: String) throws -> Moya.Response? {
+        guard let data = data(forKey: key + "_response_data") else {
+            return nil
+        }
+        let statusCode = integer(forKey: key + "_response_statusCode")
+        return Moya.Response(statusCode: statusCode, data: data)
+    }
+    
+    public func saveResponse(_ response: Moya.Response, forKey key: String) throws {
+        set(response.data, forKey: key + "_response_data")
+        set(response.statusCode, forKey: key + "_response_statusCode")
+    }
+    
+    public func clearAllResponses() {
+        let dict = dictionaryRepresentation()
+        for key in dict.keys {
+            removeObject(forKey: key)
+        }
     }
 }
 ```
@@ -113,19 +131,12 @@ extension LoadingAPI: NetworkAPI {
 class LoadingViewModel: NSObject {
     
     func request(block: @escaping (_ text: String?) -> Void) {
-        LoadingAPI.test2("666").request(complete: { result in
-            switch result {
-            case .success(let json):
-                if let model = Deserialized<LoadingModel>.toModel(with: json) {
-                    DispatchQueue.main.async {
-                        block(model.origin)
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    block(error.localizedDescription)
-                }
+        LoadingAPI.test2("666").request(successed: { json, _, _ in
+            if let model = Deserialized<LoadingModel>.toModel(with: json) {
+                block(model.origin)
             }
+        }, failed: { error in
+            block(error.localizedDescription)
         })
     }
 }
@@ -165,33 +176,41 @@ extension CacheViewModel {
 
 ```
 class ChainViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
     
-    func chainLoad() {
-        requestIP()
-            .flatMapLatest(requestData)
-            .subscribe(onNext: { [weak self] data in
-                self?.data.accept(data)
-            }, onError: {
-                print("Network Failed: \($0)")
-            }).disposed(by: disposeBag)
+    struct Input { }
+    
+    struct Output {
+        let data: Observable<NSDictionary>
+    }
+    
+    func transform(input: Input) -> Output {
+        let data = chain().asObservable()
+        
+        return Output(data: data)
+    }
+    
+    func chain() -> Observable<NSDictionary> {
+        Observable.from(optional: "begin")
+            .flatMapLatest(requestIP)
+            .flatMapLatest(requestData(ip:))
+            .catchAndReturn([:])
     }
 }
 
 extension ChainViewModel {
-    func requestIP() -> Observable<String> {
+    
+    func requestIP(_ stirng: String) -> Observable<String> {
         return ChainAPI.test.request()
             .asObservable()
-            .map { ($0 as! NSDictionary)["origin"] as! String }
-            .catchAndReturn("") // Exception thrown
+            .map { (($0 as? NSDictionary)?["origin"] as? String) ?? stirng }
+            .observe(on: MainScheduler.instance)
     }
     
-    func requestData(_ ip: String) -> Observable<NSDictionary> {
+    func requestData(ip: String) -> Observable<NSDictionary> {
         return ChainAPI.test2(ip).request()
-            .asObservable()
             .map { ($0 as! NSDictionary) }
             .catchAndReturn(["data": "nil"])
+            .observe(on: MainScheduler.instance)
     }
 }
 ```
@@ -200,36 +219,31 @@ extension ChainViewModel {
 
 ```
 class BatchViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
     
-    /// Configure loading animation plugin
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let loading = NetworkLoadingPlugin.init()
-        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
-    }()
+    struct Input { }
     
-    func batchLoad() {
+    struct Output {
+        let data: Observable<[String: Any]>
+    }
+    
+    func transform(input: Input) -> Output {
+        let data = batch().asObservable()
+        
+        return Output(data: data)
+    }
+    
+    func batch() -> Observable<[String: Any]> {
         Observable.zip(
-            APIProvider.rx.request(api: BatchAPI.test).asObservable(),
-            APIProvider.rx.request(api: BatchAPI.test2("666")).asObservable(),
-            APIProvider.rx.request(api: BatchAPI.test3).asObservable()
-        ).subscribe(onNext: { [weak self] in
-            guard var data1 = $0 as? Dictionary<String, Any>,
-                  let data2 = $1 as? Dictionary<String, Any>,
-                  let data3 = $2 as? Dictionary<String, Any> else {
-                      return
-                  }
-            data1 += data2
-            data1 += data3
-            self?.data.accept(data1)
-        }, onError: {
-            print("Network Failed: \($0)")
-        }).disposed(by: disposeBag)
+            BatchAPI.test.request(),
+            BatchAPI.test2("666").request(),
+            BatchAPI.test3.request()
+        )
+        .observe(on: MainScheduler.instance)
+        .map { [$0, $1, $2].compactMap {
+            $0 as? [String: Any]
+        }}
+        .map { $0.reduce([String: Any](), +==) }
+        .catchAndReturn([:])
     }
 }
 ```

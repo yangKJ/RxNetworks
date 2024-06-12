@@ -6,6 +6,10 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/RxNetworks.svg?style=flat&label=RxNetworks&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
 ![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)
 
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/NetworkHudsPlugin.svg?style=flat&label=NetworkHudsPlugin&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/NetworkHudsPlugin)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/NetworkCachePlugin.svg?style=flat&label=NetworkCachePlugin&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/NetworkCachePlugin)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/NetworkLottiePlugin.svg?style=flat&label=NetworkLottiePlugin&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/NetworkLottiePlugin)
+
 **[Booming](https://github.com/yangKJ/RxNetworks)** is a base network library for Swift. Developed for Swift 5, it aims to make use of the latest language features. The framework's ultimate goal is to enable easy networking that makes it easy to write well-maintainable code.
 
 **[HollowCodable](https://github.com/yangKJ/HollowCodable)** is a codable customization using property wrappers library for Swift.
@@ -74,8 +78,8 @@ This module is mainly based on moya package network related plugins.
     - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Lottie/AnimatedLoadingPlugin.swift): Animation loading plugin based on lottie.
     
 For ios platform:    
-- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkLoadingPlugin.swift): Loading animation plugin.
-- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkWarningPlugin.swift): Network failure prompt plugin.
+- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Huds/NetworkLoadingPlugin.swift): Loading animation plugin.
+- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Huds/NetworkWarningPlugin.swift): Network failure prompt plugin.
 - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Views/NetworkIndicatorPlugin.swift): Indicator plugin.
 
 If you want to use token plugin and auth plugin you can refer to the project use case.    
@@ -165,6 +169,12 @@ If you want import cache plugin:
 
 ```
 pod 'NetworkCachePlugin'
+```
+
+If you want import loading plugin:
+
+```
+pod 'NetworkHudsPlugin'
 ```
 
 If you wang using Codable:

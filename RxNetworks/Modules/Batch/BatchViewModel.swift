@@ -15,7 +15,7 @@ class BatchViewModel: NSObject {
     struct Input { }
     
     struct Output {
-        let data: Observable<Dictionary<String, Any>>
+        let data: Observable<[String: Any]>
     }
     
     func transform(input: Input) -> Output {
@@ -24,7 +24,7 @@ class BatchViewModel: NSObject {
         return Output(data: data)
     }
     
-    func batch() -> Observable<Dictionary<String, Any>> {
+    func batch() -> Observable<[String: Any]> {
         Observable.zip(
             BatchAPI.test.request(),
             BatchAPI.test2("666").request(),

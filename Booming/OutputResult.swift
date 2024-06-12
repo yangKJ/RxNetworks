@@ -55,7 +55,7 @@ extension OutputResult {
         case let .success(response):
             do {
                 if mustMapedToJSON(compulsion: mapped2JSON) {
-                    let json = try response.toJSON()
+                    let json = try response.toJSON().get()
                     if setToMappedResult {
                         self.mappedResult = .success(json)
                     }

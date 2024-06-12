@@ -1,9 +1,9 @@
 # Booming
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks)
-[![Releases Compatible](https://img.shields.io/github/release/yangKJ/Booming.svg?style=flat&label=Releases&colorA=28a745&&colorB=4E4E4E)](https://github.com/yangKJ/RxNetworks/releases)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Booming.svg?style=flat&label=CocoaPods&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
-[![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)](#installation)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Booming.svg?style=flat&label=Booming&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/Booming)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/RxNetworks.svg?style=flat&label=RxNetworks&colorA=28a745&&colorB=4E4E4E)](https://cocoapods.org/pods/RxNetworks)
+![Platform](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS-4E4E4E.svg?colorA=28a745)
 
 <font color=red>**🧚. RxSwift + Moya + HandyJSON/Codable + Plugins.👒👒👒**</font>
 
@@ -30,8 +30,8 @@
     - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Lottie/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
     
 iOS 系统:    
-- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkLoadingPlugin.swift): 加载动画插件
-- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkWarningPlugin.swift): 网络失败提示插件
+- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Huds/NetworkLoadingPlugin.swift): 加载动画插件
+- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Huds/NetworkWarningPlugin.swift): 网络失败提示插件
 - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Views/NetworkIndicatorPlugin.swift): 指示器插件
 
     
@@ -96,21 +96,27 @@ func request(_ count: Int) -> Observable<[CodableModel]> {
 
 ```
 class OOViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<String>()
     
-    func loadData() {
-        var api = NetworkAPIOO.init()
-        api.cdy_ip = BoomingSetup.baseURL
-        api.cdy_path = "/ip"
-        api.cdy_method = .get
-        api.cdy_plugins = [NetworkLoadingPlugin.init()]
-        
-        api.cdy_HTTPRequest()
-            .asObservable()
-            .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
-            .bind(to: data)
-            .disposed(by: disposeBag)
+    let userDefaultsCache = UserDefaults(suiteName: "userDefaultsCache")!
+    
+    func request(block: @escaping (String) -> Void) {
+        let api = NetworkAPIOO.init()
+        api.ip = "https://www.httpbin.org"
+        api.path = "/headers"
+        api.method = APIMethod.get
+        api.plugins = [
+            NetworkLoadingPlugin(options: .init(text: "OOing..")),
+            NetworkCustomCachePlugin.init(cacheType: .cacheThenNetwork, cacher: userDefaultsCache),
+            NetworkIgnorePlugin(pluginTypes: [NetworkActivityPlugin.self]),
+        ]
+        api.mapped2JSON = false
+        api.request(successed: { _, _, response in
+            guard let json = try? response.toJSON().get(),
+                  let string = X.toJSON(form: json, prettyPrint: true) else {
+                return
+            }
+            block(string)
+        })
     }
 }
 ```
@@ -207,33 +213,41 @@ extension CacheViewModel {
 
 ```
 class ChainViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
     
-    func chainLoad() {
-        requestIP()
-            .flatMapLatest(requestData)
-            .subscribe(onNext: { [weak self] data in
-                self?.data.accept(data)
-            }, onError: {
-                print("Network Failed: \($0)")
-            }).disposed(by: disposeBag)
+    struct Input { }
+    
+    struct Output {
+        let data: Observable<NSDictionary>
+    }
+    
+    func transform(input: Input) -> Output {
+        let data = chain().asObservable()
+        
+        return Output(data: data)
+    }
+    
+    func chain() -> Observable<NSDictionary> {
+        Observable.from(optional: "begin")
+            .flatMapLatest(requestIP)
+            .flatMapLatest(requestData(ip:))
+            .catchAndReturn([:])
     }
 }
 
 extension ChainViewModel {
-    func requestIP() -> Observable<String> {
+    
+    func requestIP(_ stirng: String) -> Observable<String> {
         return ChainAPI.test.request()
             .asObservable()
-            .map { ($0 as! NSDictionary)["origin"] as! String }
-            .catchAndReturn("") // 异常抛出
+            .map { (($0 as? NSDictionary)?["origin"] as? String) ?? stirng }
+            .observe(on: MainScheduler.instance)
     }
     
-    func requestData(_ ip: String) -> Observable<NSDictionary> {
+    func requestData(ip: String) -> Observable<NSDictionary> {
         return ChainAPI.test2(ip).request()
-            .asObservable()
             .map { ($0 as! NSDictionary) }
             .catchAndReturn(["data": "nil"])
+            .observe(on: MainScheduler.instance)
     }
 }
 ```
@@ -242,36 +256,31 @@ extension ChainViewModel {
 
 ```
 class BatchViewModel: NSObject {
-    let disposeBag = DisposeBag()
-    let data = PublishRelay<NSDictionary>()
     
-    /// 配置加载动画插件
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        let loading = NetworkLoadingPlugin.init()
-        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
-    }()
+    struct Input { }
     
-    func batchLoad() {
+    struct Output {
+        let data: Observable<[String: Any]>
+    }
+    
+    func transform(input: Input) -> Output {
+        let data = batch().asObservable()
+        
+        return Output(data: data)
+    }
+    
+    func batch() -> Observable<[String: Any]> {
         Observable.zip(
-            APIProvider.rx.request(api: BatchAPI.test).asObservable(),
-            APIProvider.rx.request(api: BatchAPI.test2("666")).asObservable(),
-            APIProvider.rx.request(api: BatchAPI.test3).asObservable()
-        ).subscribe(onNext: { [weak self] in
-            guard var data1 = $0 as? Dictionary<String, Any>,
-                  let data2 = $1 as? Dictionary<String, Any>,
-                  let data3 = $2 as? Dictionary<String, Any> else {
-                      return
-                  }
-            data1 += data2
-            data1 += data3
-            self?.data.accept(data1)
-        }, onError: {
-            print("Network Failed: \($0)")
-        }).disposed(by: disposeBag)
+            BatchAPI.test.request(),
+            BatchAPI.test2("666").request(),
+            BatchAPI.test3.request()
+        )
+        .observe(on: MainScheduler.instance)
+        .map { [$0, $1, $2].compactMap {
+            $0 as? [String: Any]
+        }}
+        .map { $0.reduce([String: Any](), +==) }
+        .catchAndReturn([:])
     }
 }
 ```
@@ -282,8 +291,7 @@ Ex: 导入网络架构API
 - pod 'Booming'
 
 Ex: 导入加载动画插件
-- pod 'Booming'
-- pod 'Booming/Plugins/Huds'
+- pod 'NetworkHudsPlugin'
 
 Ex: 导入数据解析
 - pod 'RxNetworks/HandyJSON'

@@ -13,19 +13,12 @@ import RxNetworks
 class LoadingViewModel: NSObject {
     
     func request(block: @escaping (_ text: String?) -> Void) {
-        LoadingAPI.test2("666").request(complete: { result in
-            switch result {
-            case .success(let json):
-                if let model = Deserialized<LoadingModel>.toModel(with: json) {
-                    DispatchQueue.main.async {
-                        block(model.origin)
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    block(error.localizedDescription)
-                }
+        LoadingAPI.test2("666").request(successed: { json, _, _ in
+            if let model = Deserialized<LoadingModel>.toModel(with: json) {
+                block(model.origin)
             }
+        }, failed: { error in
+            block(error.localizedDescription)
         })
     }
 }
