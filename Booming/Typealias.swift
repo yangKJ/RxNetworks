@@ -48,9 +48,10 @@ public typealias APIPlugins = [PluginSubType]
 public typealias APIStubBehavior = Moya.StubBehavior
 public typealias APISuccessJSON = Any
 public typealias APIFailureError = MoyaError
-public typealias APIResponseResult = Result<Moya.Response, MoyaError>
+public typealias APIResponseResult = Result<Moya.Response, APIFailureError>
+public typealias APIJSONResult = Result<APISuccessJSON, APIFailureError>
 
-public typealias APISuccess = (_ json: APISuccessJSON) -> Void
-public typealias APISuccessed = (_ json: APISuccessJSON, _ finished: Bool) -> Void
+public typealias APISuccessed = (_ json: APISuccessJSON, _ finished: Bool, _ response: Moya.Response) -> Void
 public typealias APIFailure = (_ error: APIFailureError) -> Void
-public typealias APIComplete = (_ result: Result<APISuccessJSON, APIFailureError>) -> Void
+
+public typealias APISuccess = (_ json: APISuccessJSON, _ response: Moya.Response) -> Void

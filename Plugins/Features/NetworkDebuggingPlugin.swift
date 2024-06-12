@@ -119,7 +119,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
     public func configuration(_ request: HeadstreamRequest, target: TargetType) -> HeadstreamRequest {
         #if DEBUG
         if let result = request.result {
-            let lastResult = OutputResult(result: result)
+            let lastResult = OutputResult(result: result, mapped2JSON: false)
             ansysisResult(lastResult, target: target, local: true)
         }
         #endif
@@ -229,7 +229,7 @@ extension NetworkDebuggingPlugin {
         if !openDebugResponse {
             return
         }
-        result.mapResult(success: { json in
+        result.mapResult(success: { json, _ in
             if options.logOptions.contains(.successResponseBody) {
                 printResponse(target, json, local, true)
             }
@@ -237,10 +237,10 @@ extension NetworkDebuggingPlugin {
             if options.logOptions.contains(.errorResponseBody) {
                 printResponse(target, error.localizedDescription, local, false)
             }
-        }, setToResult: !local)
+        }, setToMappedResult: false, mapped2JSON: true)
     }
     
-    private func printResponse(_ target: TargetType, _ result: Any, _ local: Bool, _ success: Bool) {
+    private func printResponse(_ target: TargetType, _ result: Any?, _ local: Bool, _ success: Bool) {
         guard openDebugResponse else {
             return
         }
@@ -258,7 +258,7 @@ extension NetworkDebuggingPlugin {
                     ║---------- 🎈 Response 🎈 ----------
                     ║ Result: \(success ? "Successed." : "Failed.")
                     ║ DataType: \(local ? "Local data." : "Remote data.")
-                    ║ Response: \(result)
+                    ║ Response: \(result ?? "")
                     ╚══════════════════════════════════════
                     """
         var context: String = prefix

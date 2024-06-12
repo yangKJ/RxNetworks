@@ -6,6 +6,7 @@
 //  https://github.com/yangKJ/RxNetworks
 
 import Foundation
+import Booming
 
 #if canImport(MBProgressHUD)
 

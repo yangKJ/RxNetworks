@@ -30,7 +30,7 @@ class OOViewController: BaseViewController<OOViewModel> {
         button.layer.cornerRadius = 60
         button.layer.masksToBounds = true
         button.rx.tap.subscribe(onNext: { [weak self] _ in
-            self?.viewModel.request()
+            self?.request()
         }).disposed(by: disposeBag)
         return button
     }()
@@ -41,12 +41,12 @@ class OOViewController: BaseViewController<OOViewModel> {
         self.view.addSubview(button)
         self.view.addSubview(textView)
         
-        self.setupBindings()
+        self.request()
     }
     
-    func setupBindings() {
-        viewModel.result.bind(to: self.textView.rx.text).disposed(by: disposeBag)
-        
-        viewModel.request()
+    func request() {
+        viewModel.request { [weak self] text in
+            self?.textView.text = text
+        }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import RxNetworks
+import NetworkHudsPlugin
 
 enum ClosureAPI {
     case userInfo(name: String)

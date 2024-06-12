@@ -41,11 +41,11 @@ public extension NetworkAPI {
         
         let headstreamRequest = self.setupHeadstreamRequest(plugins: pls)
         if headstreamRequest.endRequest, let result = headstreamRequest.result {
-            let outputResult = OutputResult(result: result)
-            outputResult.mapResult(success: { json in
+            let outputResult = OutputResult(result: result, mapped2JSON: mapped2JSON)
+            outputResult.mapResult(success: { json, response in
                 Shared.shared.removeRequestingAPI(key)
-                progress?(ProgressResponse(response: outputResult.response))
-                DispatchQueue.main.async { successed(json, true) }
+                progress?(ProgressResponse(response: response))
+                DispatchQueue.main.async { successed(json, true, response) }
             }, failure: { error in
                 Shared.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async { failed(error) }
@@ -54,9 +54,17 @@ public extension NetworkAPI {
         }
         
         // 先抛出本地数据
-        if let json = try? headstreamRequest.toJSON() {
-            DispatchQueue.main.async {
-                successed(json, false)
+        if mapped2JSON {
+            if let json = try? headstreamRequest.toJSON(), let response = try? headstreamRequest.toResponse() {
+                DispatchQueue.main.async {
+                    successed(json, false, response)
+                }
+            }            
+        } else {
+            if let response = try? headstreamRequest.toResponse() {
+                DispatchQueue.main.async {
+                    successed(response.data, false, response)
+                }
             }
         }
         
@@ -69,14 +77,14 @@ public extension NetworkAPI {
                 return task
             }
             let task = self.request(provider, key: key, output: { outputResult in
-                outputResult.mapResult(success: { json in
-                    progress?(ProgressResponse(response: outputResult.response))
+                outputResult.mapResult(success: { json, response in
+                    progress?(ProgressResponse(response: response))
                     DispatchQueue.main.async {
-                        Shared.shared.result(.success(json), key: key)
+                        Shared.shared.resultSuccessed(json, key: key, response: response)
                     }
                 }, failure: { error in
                     DispatchQueue.main.async {
-                        Shared.shared.result(.failure(error), key: key)
+                        Shared.shared.resultFailed(error, key: key)
                     }
                 })
             }, progress: progress)
@@ -87,38 +95,15 @@ public extension NetworkAPI {
         
         // 最后处理网络数据
         return self.request(provider, key: key, output: { outputResult in
-            outputResult.mapResult(success: { json in
-                progress?(ProgressResponse(response: outputResult.response))
+            outputResult.mapResult(success: { json, response in
+                progress?(ProgressResponse(response: response))
                 DispatchQueue.main.async {
-                    successed(json, true)
+                    successed(json, true, response)
                 }
             }, failure: { error in
-                DispatchQueue.main.async {
-                    failed(error)
-                }
+                DispatchQueue.main.async { failed(error) }
             })
         }, progress: progress)
-    }
-    
-    @discardableResult func HTTPRequest(
-        success: @escaping APISuccess,
-        failure: @escaping APIFailure,
-        progress: ProgressBlock? = nil,
-        queue: DispatchQueue? = nil,
-        plugins: APIPlugins = []
-    ) -> Moya.Cancellable? {
-        request(successed: { json, _ in
-            success(json)
-        }, failed: failure, progress: progress, queue: queue, plugins: plugins)
-    }
-    
-    @discardableResult
-    func request(plugins: APIPlugins = [], complete: @escaping APIComplete) -> Moya.Cancellable? {
-        HTTPRequest(success: { json in
-            complete(.success(json))
-        }, failure: { error in
-            complete(.failure(error))
-        }, plugins: plugins)
     }
 }
 
@@ -206,7 +191,7 @@ extension NetworkAPI {
     /// 最后的输出结果，插件配置处理
     private func setupOutputResult(provider: MoyaProvider<MultiTarget>, result: APIResponseResult, onNext: @escaping OutputResultBlock) {
         let plugins = provider.plugins.compactMap { $0 as? PluginSubType }
-        var outputResult = OutputResult.init(result: result)
+        var outputResult = OutputResult.init(result: result, mapped2JSON: mapped2JSON)
         let target = MultiTarget.target(self)
         var iterator = plugins.makeIterator()
         func output(_ plugin: PluginSubType?) {
@@ -237,5 +222,30 @@ extension NetworkAPI {
                 Shared.shared.removeRequestingAPI(key)
             }
         })
+    }
+}
+
+public extension NetworkAPI {
+    @available(*, deprecated, message: "Typo. Use `request:successed:failed:progress:queue:plugins:` instead")
+    @discardableResult func HTTPRequest(
+        success: @escaping (APISuccessJSON) -> Void,
+        failure: @escaping APIFailure,
+        progress: ProgressBlock? = nil,
+        queue: DispatchQueue? = nil,
+        plugins: APIPlugins = []
+    ) -> Moya.Cancellable? {
+        request(successed: { json, _, _ in
+            success(json)
+        }, failed: failure, progress: progress, queue: queue, plugins: plugins)
+    }
+    
+    @available(*, deprecated, message: "Typo. Use `request:successed:failed:progress:queue:plugins:` instead")
+    @discardableResult
+    func request(plugins: APIPlugins = [], complete: @escaping (Result<APISuccessJSON, APIFailureError>) -> Void) -> Moya.Cancellable? {
+        HTTPRequest(success: { json in
+            complete(.success(json))
+        }, failure: { error in
+            complete(.failure(error))
+        }, plugins: plugins)
     }
 }

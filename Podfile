@@ -16,6 +16,7 @@ target 'RxNetworks_Example' do
   pod 'Booming', :path => './'
   pod 'NetworkCachePlugin', :path => './'
   pod 'NetworkLottiePlugin', :path => './'
+  pod 'NetworkHudsPlugin', :path => './'
   
 end
 

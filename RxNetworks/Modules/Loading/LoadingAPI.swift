@@ -7,6 +7,7 @@
 //
 
 import RxNetworks
+import NetworkHudsPlugin
 
 enum LoadingAPI {
     case test2(String)

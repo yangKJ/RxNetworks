@@ -1,0 +1,6 @@
+framework module NetworkHudsPlugin {
+  umbrella header "NetworkHudsPlugin-umbrella.h"
+
+  export *
+  module * { export * }
+}

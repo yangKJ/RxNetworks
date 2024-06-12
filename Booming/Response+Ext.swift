@@ -27,4 +27,22 @@ extension Moya.Response: Codable {
         try container.encode(statusCode, forKey: CodingKeys.statusCode)
         try container.encode(data, forKey: CodingKeys.data)
     }
+    
+    public func toJSON() throws -> APIJSONResult {
+        do {
+            let json = try X.toJSON(with: self)
+            return .success(json)
+        } catch MoyaError.statusCode(let response) {
+            let error = MoyaError.statusCode(response)
+            return .failure(error)
+        } catch MoyaError.jsonMapping(let response) {
+            let error = MoyaError.jsonMapping(response)
+            return .failure(error)
+        } catch MoyaError.stringMapping(let response) {
+            let error = MoyaError.stringMapping(response)
+            return .failure(error)
+        } catch {
+            return .failure(MoyaError.underlying(error, nil))
+        }
+    }
 }

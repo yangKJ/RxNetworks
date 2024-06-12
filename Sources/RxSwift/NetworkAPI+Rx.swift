@@ -9,9 +9,6 @@ import Foundation
 import Moya
 @_exported import Booming
 @_exported import RxSwift
-//#if canImport(Plugins)
-//@_exported import Plugins
-//#endif
 
 public typealias APIObservableJSON = RxSwift.Observable<Any>
 
@@ -36,7 +33,7 @@ public extension NetworkAPI {
     /// - Returns: Observable sequence JSON object. May be thrown twice.
     func request(callbackQueue: DispatchQueue? = nil, plugins: APIPlugins = []) -> APIObservableJSON {
         var single = APIObservableJSON.create { observer in
-            let token = request(successed: { json, finished in
+            let token = request(successed: { json, finished, _ in
                 observer.onNext(json)
                 if finished {
                     observer.onCompleted()

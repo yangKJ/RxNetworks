@@ -8,6 +8,9 @@
 import Foundation
 import Moya
 
+#if canImport(UIKit)
+import UIKit
+
 /// 指示器插件，该插件已被设置为全局使用
 /// Indicator plug-in, the plug-in has been set for global use
 public final class NetworkIndicatorPlugin {
@@ -40,3 +43,5 @@ extension NetworkIndicatorPlugin: PluginSubType {
         NetworkIndicatorPlugin.shared.numberOfRequests -= 1
     }
 }
+
+#endif

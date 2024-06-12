@@ -11,6 +11,7 @@
 import Foundation
 import Moya
 import MBProgressHUD
+import Booming
 
 /// 加载插件，基于MBProgressHUD封装
 /// Loading plugin, based on MBProgressHUD package

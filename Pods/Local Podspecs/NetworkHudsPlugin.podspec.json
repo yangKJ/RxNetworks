@@ -1,7 +1,7 @@
 {
-  "name": "Booming",
+  "name": "NetworkHudsPlugin",
   "version": "1.0.9",
-  "summary": "Network Api Library.",
+  "summary": "Network HUDs Plugin Library.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
   "license": {
@@ -17,8 +17,7 @@
   },
   "social_media_url": "https://juejin.cn/user/1987535102554472/posts",
   "platforms": {
-    "ios": "10.0",
-    "osx": "10.13"
+    "ios": "10.0"
   },
   "swift_versions": "5.0",
   "requires_arc": true,
@@ -28,36 +27,14 @@
     "SWIFT_WHOLE_MODULE_OPTIMIZATION": "YES",
     "OTHER_SWIFT_FLAGS[config=Debug]": "-D DEBUG"
   },
-  "ios": {
-    "source_files": "Booming.h"
+  "source_files": "Huds/*.swift",
+  "dependencies": {
+    "Booming/Core": [
+
+    ],
+    "MBProgressHUD": [
+
+    ]
   },
-  "subspecs": [
-    {
-      "name": "Core",
-      "source_files": "Booming/*.swift",
-      "dependencies": {
-        "Moya": [
-
-        ]
-      },
-      "frameworks": "Foundation"
-    },
-    {
-      "name": "Plugins",
-      "source_files": [
-        "Plugins/Features/*.swift",
-        "Plugins/Views/*.swift"
-      ],
-      "dependencies": {
-        "Booming/Core": [
-
-        ]
-      },
-      "pod_target_xcconfig": {
-        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "BOOMING_PLUGINGS_FEATURES",
-        "GCC_PREPROCESSOR_DEFINITIONS": "BOOMING_PLUGINGS_FEATURES=1"
-      }
-    }
-  ],
   "swift_version": "5.0"
 }

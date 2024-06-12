@@ -36,6 +36,9 @@ public protocol NetworkAPI: Moya.TargetType {
     /// A responsible for returning an `EndpointSampleResponse`.
     var sampleResponse: Moya.EndpointSampleResponse { get }
     
+    /// Mapped to json, Default is true.
+    var mapped2JSON: Bool { get }
+    
     /// Remove all HUDs displayed to `LevelStatusBarWindowController`.
     func removeHUD()
     

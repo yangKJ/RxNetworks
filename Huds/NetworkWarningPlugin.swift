@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 import MBProgressHUD
+import Booming
 
 /// 自动提示插件，基于MBProgressHUD封装
 /// Warning plugin, based on MBProgressHUD package

@@ -75,6 +75,9 @@ public struct X {
     }
     
     public static func toJSON(form value: Any, prettyPrint: Bool = false) -> String? {
+        if let data = value as? Data {
+            return String(data: data, encoding: .utf8)
+        }
         guard JSONSerialization.isValidJSONObject(value) else {
             return nil
         }
@@ -85,7 +88,7 @@ public struct X {
             jsonData = try? JSONSerialization.data(withJSONObject: value, options: [])
         }
         guard let data = jsonData else { return nil }
-        return String(data: data ,encoding: .utf8)
+        return String(data: data, encoding: .utf8)
     }
     
     public static func toDictionary(form json: String) -> [String : Any]? {

@@ -17,7 +17,7 @@ extension X {
         if let others = BoomingSetup.basePlugins {
             plugins_ += others
         }
-        #if BOOMING_PLUGINGS_VIEWS
+        #if canImport(UIKit) && BOOMING_PLUGINGS_FEATURES
         if BoomingSetup.addIndicator, !plugins_.contains(where: { $0 is NetworkIndicatorPlugin}) {
             let Indicator = NetworkIndicatorPlugin.shared
             plugins_.insert(Indicator, at: 0)

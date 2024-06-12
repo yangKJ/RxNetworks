@@ -53,6 +53,9 @@ public struct BoomingSetup {
     /// Maps data received from the signal into a JSON object, when the data is empty mapping should fail.
     public static var failsOnEmptyData: Bool = true
     
+    /// Mapped to json, Default is true.
+    public static var mapped2JSON: Bool = true
+    
     /// Update the default basic parameter data, which is generally used for what operation the user has switched.
     /// - Parameters:
     ///   - value: Update value

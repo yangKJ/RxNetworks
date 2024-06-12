@@ -66,4 +66,26 @@ extension NSWindow {
     }
 }
 
+extension NSView {
+    var center: CGPoint {
+        get {
+            return CGPointMake(NSMidX(frame), NSMidY(frame))
+        }
+    }
+    
+    var backgroundColor: NSColor? {
+        get {
+            guard let cg = self.layer?.backgroundColor else {
+                return nil
+            }
+            return NSColor.init(cgColor: cg)
+        }
+        set {
+            self.layer?.backgroundColor = newValue?.cgColor
+            self.needsDisplay = true
+            //self.layoutSubtreeIfNeeded()
+        }
+    }
+}
+
 #endif

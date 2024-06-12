@@ -45,6 +45,10 @@ extension NetworkAPI {
         return .networkResponse(200, self.sampleData)
     }
     
+    public var mapped2JSON: Bool {
+        return BoomingSetup.mapped2JSON
+    }
+    
     public func removeHUD() {
         HUDs.readHUD(prefix: keyPrefix).forEach {
             HUDs.removeHUD(key: $0.key)

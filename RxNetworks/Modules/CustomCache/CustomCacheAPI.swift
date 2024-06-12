@@ -7,6 +7,7 @@
 //
 
 import RxNetworks
+import NetworkHudsPlugin
 
 enum CustomCacheAPI: NetworkAPI {
     case cache(Int)

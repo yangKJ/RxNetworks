@@ -26,11 +26,15 @@ open class NetworkAPIOO {
     public var retry: APINumber = 0
     /// Callback queue. If nil - queue from provider initializer will be used.
     public var callbackQueue: DispatchQueue?
+    /// Default false.
+    public var httpShouldHandleCookies: Bool = false
+    /// Mapped to json, Default is true.
+    public var mapped2JSON: Bool = true
     
     // MARK: - test
     
     /// Test data, after setting the value of this property, only the test data is taken
-    public var testJSON: String?
+    public var testData: Data?
     /// Test data return time, the default is half a second
     public var testTime: Double = 0.5
     
@@ -40,15 +44,6 @@ open class NetworkAPIOO {
     open func request(successed: @escaping APISuccessed, failed: APIFailure? = nil) -> Moya.Cancellable? {
         return apiTarget.request(successed: successed, failed: { error in
             failed?(error)
-        }, queue: callbackQueue)
-    }
-    
-    @discardableResult
-    open func request(complete: @escaping APIComplete) -> Moya.Cancellable? {
-        return apiTarget.HTTPRequest(success: { json in
-            complete(.success(json))
-        }, failure: { error in
-            complete(.failure(error))
         }, queue: callbackQueue)
     }
     
@@ -89,8 +84,16 @@ private struct NetworkCompatible_: NetworkAPI {
         return target.retry
     }
     
+    var httpShouldHandleCookies: Bool {
+        target.httpShouldHandleCookies
+    }
+    
+    var mapped2JSON: Bool {
+        target.mapped2JSON
+    }
+    
     var stubBehavior: APIStubBehavior {
-        guard let _ = target.testJSON else {
+        guard let _ = target.testData else {
             return .never
         }
         if target.testTime > 0 {
@@ -101,9 +104,8 @@ private struct NetworkCompatible_: NetworkAPI {
     }
     
     var sampleData: Data {
-        if let json = target.testJSON {
-            return json.data(using: String.Encoding.utf8)!
-        }
-        return "{\"Condy\":\"yangkj310@gmail.com\"}".data(using: String.Encoding.utf8)!
+        return target.testData ?? {
+            "{\"Condy\":\"yangkj310@gmail.com\"}".data(using: String.Encoding.utf8)!
+        }()
     }
 }

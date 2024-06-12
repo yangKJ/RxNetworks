@@ -10,10 +10,10 @@ import RxNetworks
 
 class ClosureViewModel: NSObject {
     
-    func load(success: @escaping APISuccess) {
-        ClosureAPI.userInfo(name: "yangKJ").HTTPRequest(success: { json in
+    func load(success: @escaping (APISuccessJSON) -> Void) {
+        ClosureAPI.userInfo(name: "yangKJ").request(successed: { json, _, _ in
             success(json)
-        }, failure: { error in
+        }, failed: { error in
             print(error.localizedDescription)
         })
     }

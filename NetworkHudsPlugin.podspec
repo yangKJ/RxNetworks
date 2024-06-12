@@ -1,5 +1,5 @@
 #
-# Be sure to run 'pod lib lint Booming.podspec' to ensure this is a
+# Be sure to run 'pod lib lint NetworkHudsPlugin.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'Booming'
+  s.name             = 'NetworkHudsPlugin'
   s.version          = '1.0.9'
-  s.summary          = 'Network Api Library.'
+  s.summary          = 'Network HUDs Plugin Library.'
   
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,7 +25,6 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://juejin.cn/user/1987535102554472/posts'
   
   s.ios.deployment_target = '10.0'
-  s.osx.deployment_target = '10.13'
   s.swift_version    = '5.0'
   s.requires_arc     = true
   s.static_framework = true
@@ -36,23 +35,8 @@ Pod::Spec.new do |s|
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  #s.default_subspec  = 'Core'
-  s.ios.source_files = 'Booming.h'
-  
-  s.subspec 'Core' do |ss|
-    ss.source_files = 'Booming/*.swift'
-    ss.dependency 'Moya'
-    ss.framework = "Foundation"
-  end
-  
-  ################## -- 插件系列 -- ##################
-  s.subspec 'Plugins' do |ss|
-    ss.source_files = 'Plugins/Features/*.swift', 'Plugins/Views/*.swift'
-    ss.dependency 'Booming/Core'
-    ss.pod_target_xcconfig = {
-      'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'BOOMING_PLUGINGS_FEATURES',
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'BOOMING_PLUGINGS_FEATURES=1'
-    }
-  end
+  s.source_files = 'Huds/*.swift'
+  s.dependency 'Booming/Core'
+  s.dependency 'MBProgressHUD'
   
 end

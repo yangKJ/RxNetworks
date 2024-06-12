@@ -7,6 +7,7 @@
 //
 
 import RxNetworks
+import NetworkHudsPlugin
 
 enum SharedAPI {
     case loading(String)

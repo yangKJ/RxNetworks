@@ -8,6 +8,7 @@
 
 import RxNetworks
 import NetworkLottiePlugin
+import NetworkHudsPlugin
 
 enum ChainAPI {
     case test
