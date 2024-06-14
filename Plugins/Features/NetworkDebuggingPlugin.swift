@@ -229,7 +229,7 @@ extension NetworkDebuggingPlugin {
         if !openDebugResponse {
             return
         }
-        result.mapResult(success: { json, _ in
+        result.mapResult(success: { json in
             if options.logOptions.contains(.successResponseBody) {
                 printResponse(target, json, local, true)
             }

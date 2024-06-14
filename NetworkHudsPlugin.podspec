@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  s.source_files = 'Huds/*.swift'
+  s.source_files = 'Plugins/Huds/*.swift'
   s.dependency 'Booming/Core'
   s.dependency 'MBProgressHUD'
   

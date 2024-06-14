@@ -41,11 +41,14 @@ extension OutputResult {
     ///   - success: 成功回调
     ///   - failure: 失败回调
     ///   - setToResult: 是否需要设置到`mappedResult`
-    public func mapResult(success: APISuccess?, failure: APIFailure?, setToMappedResult: Bool = true, mapped2JSON: Bool = false) {
+    public func mapResult(success: ((APISuccessJSON?) -> Void)?,
+                          failure: APIFailure?,
+                          setToMappedResult: Bool = true,
+                          mapped2JSON: Bool = false) {
         if let mapResult = mappedResult {
             switch mapResult {
             case .success(let res):
-                success?(res, response)
+                success?(res)
             case .failure(let error):
                 failure?(error)
             }
@@ -55,14 +58,14 @@ extension OutputResult {
         case let .success(response):
             do {
                 if mustMapedToJSON(compulsion: mapped2JSON) {
-                    let json = try response.toJSON().get()
+                    let json = try response.bpm.toJSON()
                     if setToMappedResult {
                         self.mappedResult = .success(json)
                     }
-                    success?(json, response)
+                    success?(json)
                 } else {
                     let response = try response.filterSuccessfulStatusCodes()
-                    success?(response.data, response)
+                    success?(response.data)
                 }
             } catch {
                 if let error = error as? MoyaError {
@@ -80,9 +83,3 @@ extension OutputResult {
         return compulsion || mapped2JSON
     }
 }
-
-@available(*, deprecated, message: "Typo. Use `OutputResultBlock` instead", renamed: "OutputResultBlock")
-public typealias LastNeverCallback = OutputResultBlock
-
-@available(*, deprecated, message: "Typo. Use `OutputResult` instead", renamed: "OutputResult")
-public typealias LastNeverResult = OutputResult

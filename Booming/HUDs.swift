@@ -103,30 +103,3 @@ extension HUDs {
         return false
     }
 }
-
-extension X {
-    @available(*, deprecated, message: "Use HUDs.removeAll")
-    public static func removeAllAtLevelStatusBarWindow() {
-        HUDs.removeAll()
-    }
-    
-    @available(*, deprecated, message: "Use HUDs.removeLoadingHUDs")
-    public static func removeLoadingHUDs() {
-        HUDs.removeLoadingHUDs()
-    }
-    
-    @available(*, deprecated, message: "Use HUDs.readHUD:")
-    public static func readHUD(key: String) -> LevelStatusBarWindowController? {
-        HUDs.readHUD(key: key)
-    }
-    
-    @available(*, deprecated, message: "Use HUDs.saveHUD:viewController:")
-    public static func saveHUD(key: String, viewController: LevelStatusBarWindowController) {
-        HUDs.saveHUD(key: key, viewController: viewController)
-    }
-    
-    @available(*, deprecated, message: "Use HUDs.removeHUD:")
-    @discardableResult public static func removeHUD(key: String?) -> LevelStatusBarWindowController? {
-        HUDs.removeHUD(key: key)
-    }
-}

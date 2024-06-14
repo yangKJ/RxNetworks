@@ -26,9 +26,8 @@ class OOViewModel: NSObject {
             NetworkIgnorePlugin(pluginTypes: [NetworkActivityPlugin.self]),
         ]
         api.mapped2JSON = false
-        api.request(successed: { _, _, response in
-            guard let json = try? response.toJSON().get(),
-                  let string = X.toJSON(form: json, prettyPrint: true) else {
+        api.request(successed: { response in
+            guard let string = response.bpm.toJSONString(prettyPrint: true) else {
                 return
             }
             block(string)

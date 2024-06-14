@@ -28,7 +28,7 @@
     "SWIFT_WHOLE_MODULE_OPTIMIZATION": "YES",
     "OTHER_SWIFT_FLAGS[config=Debug]": "-D DEBUG"
   },
-  "source_files": "Lottie/*.swift",
+  "source_files": "Plugins/Lottie/*.swift",
   "dependencies": {
     "Booming/Core": [
 

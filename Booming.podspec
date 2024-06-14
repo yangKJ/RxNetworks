@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Booming'
-  s.version          = '1.1.0'
+  s.version          = '1.1.1'
   s.summary          = 'Network Api Library.'
   
   # This description is used to generate tags and improve search results.
@@ -37,7 +37,7 @@ Pod::Spec.new do |s|
   }
   
   #s.default_subspec  = 'Core'
-  s.ios.source_files = 'Booming.h'
+  s.source_files = 'Booming.h'
   
   s.subspec 'Core' do |ss|
     ss.source_files = 'Booming/*.swift'

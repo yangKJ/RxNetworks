@@ -28,7 +28,7 @@
     "SWIFT_WHOLE_MODULE_OPTIMIZATION": "YES",
     "OTHER_SWIFT_FLAGS[config=Debug]": "-D DEBUG"
   },
-  "source_files": "Cache/*.swift",
+  "source_files": "Plugins/Cache/*.swift",
   "dependencies": {
     "Booming/Core": [
 

@@ -80,11 +80,11 @@ extension Shared {
         self.tasks[key] = task
     }
     
-    mutating func resultSuccessed(_ json: APISuccessJSON?, key: Key, response: Moya.Response) {
+    mutating func resultSuccessed(_ response: Moya.Response, key: Key) {
         self.tasklock.lock()
         defer { tasklock.unlock() }
         self.cacheBlocks.forEach {
-            $0.key == key ? $0.successed(json, true, response) : nil
+            $0.key == key ? $0.successed(response) : nil
         }
         self.tasks.removeValue(forKey: key)
         self.cacheBlocks.removeAll { $0.key == key }

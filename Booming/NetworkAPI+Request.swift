@@ -13,15 +13,15 @@ public extension NetworkAPI {
     /// Network request
     /// Example:
     ///
-    ///     GitHubAPI.userInfo(name: "yangKJ").request(successed: { json, finished, response in
-    ///         print(json)
-    ///         let model = Deserialized<Model>.toModel(with: json)
+    ///     SharedAPI.userInfo(name: "yangKJ").request(successed: { response in
+    ///         print(response.bmp.mappedJson)
+    ///         // do somthing..
     ///     }, failed: { error in
     ///         print(error.localizedDescription)
     ///     })
     ///
     /// - Parameters:
-    ///   - successed: Success description, return in the main thread. Note: Download file, take the link address from the `json` parameter.
+    ///   - successed: Success description, return in the main thread.
     ///   - failed: Failure description, return in the main thread.
     ///   - progress: Progress description.
     ///   - queue: Callback queue. If nil - queue from provider initializer will be used.
@@ -42,10 +42,13 @@ public extension NetworkAPI {
         let headstreamRequest = self.setupHeadstreamRequest(plugins: pls)
         if headstreamRequest.endRequest, let result = headstreamRequest.result {
             let outputResult = OutputResult(result: result, mapped2JSON: mapped2JSON)
-            outputResult.mapResult(success: { json, response in
+            outputResult.mapResult(success: { json in
                 Shared.shared.removeRequestingAPI(key)
+                var response = outputResult.response
+                response.bpm.mappedJson = json
+                response.bpm.finished = true
                 progress?(ProgressResponse(response: response))
-                DispatchQueue.main.async { successed(json, true, response) }
+                DispatchQueue.main.async { successed(response) }
             }, failure: { error in
                 Shared.shared.removeRequestingAPI(key)
                 DispatchQueue.main.async { failed(error) }
@@ -55,16 +58,16 @@ public extension NetworkAPI {
         
         // 先抛出本地数据
         if mapped2JSON {
-            if let json = try? headstreamRequest.toJSON(), let response = try? headstreamRequest.toResponse() {
-                DispatchQueue.main.async {
-                    successed(json, false, response)
-                }
-            }            
+            if let json = try? headstreamRequest.toJSON(), var response = try? headstreamRequest.toResponse() {
+                response.bpm.mappedJson = json
+                response.bpm.finished = false
+                DispatchQueue.main.async { successed(response) }
+            }
         } else {
-            if let response = try? headstreamRequest.toResponse() {
-                DispatchQueue.main.async {
-                    successed(response.data, false, response)
-                }
+            if var response = try? headstreamRequest.toResponse() {
+                response.bpm.mappedJson = response.data
+                response.bpm.finished = false
+                DispatchQueue.main.async { successed(response) }
             }
         }
         
@@ -77,10 +80,13 @@ public extension NetworkAPI {
                 return task
             }
             let task = self.request(provider, key: key, output: { outputResult in
-                outputResult.mapResult(success: { json, response in
+                outputResult.mapResult(success: { json in
+                    var response = outputResult.response
+                    response.bpm.mappedJson = json
+                    response.bpm.finished = true
                     progress?(ProgressResponse(response: response))
                     DispatchQueue.main.async {
-                        Shared.shared.resultSuccessed(json, key: key, response: response)
+                        Shared.shared.resultSuccessed(response, key: key)
                     }
                 }, failure: { error in
                     DispatchQueue.main.async {
@@ -95,11 +101,12 @@ public extension NetworkAPI {
         
         // 最后处理网络数据
         return self.request(provider, key: key, output: { outputResult in
-            outputResult.mapResult(success: { json, response in
+            outputResult.mapResult(success: { json in
+                var response = outputResult.response
+                response.bpm.mappedJson = json
+                response.bpm.finished = true
                 progress?(ProgressResponse(response: response))
-                DispatchQueue.main.async {
-                    successed(json, true, response)
-                }
+                DispatchQueue.main.async { successed(response) }
             }, failure: { error in
                 DispatchQueue.main.async { failed(error) }
             })
@@ -218,34 +225,9 @@ extension NetworkAPI {
                     _ = request(provider, key: key, output: output, progress: progress)
                     return
                 }
-                output(outputResult)
                 Shared.shared.removeRequestingAPI(key)
+                output(outputResult)
             }
         })
-    }
-}
-
-public extension NetworkAPI {
-    @available(*, deprecated, message: "Typo. Use `request:successed:failed:progress:queue:plugins:` instead")
-    @discardableResult func HTTPRequest(
-        success: @escaping (APISuccessJSON) -> Void,
-        failure: @escaping APIFailure,
-        progress: ProgressBlock? = nil,
-        queue: DispatchQueue? = nil,
-        plugins: APIPlugins = []
-    ) -> Moya.Cancellable? {
-        request(successed: { json, _, _ in
-            success(json)
-        }, failed: failure, progress: progress, queue: queue, plugins: plugins)
-    }
-    
-    @available(*, deprecated, message: "Typo. Use `request:successed:failed:progress:queue:plugins:` instead")
-    @discardableResult
-    func request(plugins: APIPlugins = [], complete: @escaping (Result<APISuccessJSON, APIFailureError>) -> Void) -> Moya.Cancellable? {
-        HTTPRequest(success: { json in
-            complete(.success(json))
-        }, failure: { error in
-            complete(.failure(error))
-        }, plugins: plugins)
     }
 }

@@ -34,14 +34,14 @@ open class LevelStatusBarWindowController: ViewControllerType {
     private let windowController = NSWindowController()
     #else
     open override var prefersStatusBarHidden: Bool {
-        if let controller = X.topViewController() {
+        if let controller = self.topViewController() {
             return controller.prefersStatusBarHidden
         }
         return true
     }
     
     open override var preferredStatusBarStyle: UIStatusBarStyle {
-        if let controller = X.topViewController() {
+        if let controller = self.topViewController() {
             return controller.preferredStatusBarStyle
         }
         return .default
@@ -225,6 +225,34 @@ open class LevelStatusBarWindowController: ViewControllerType {
         }
         cancelAllBackgroundControllersShow()
     }
+    
+    #if canImport(UIKit)
+    private func topViewController() -> UIViewController? {
+        let window = UIApplication.shared.delegate?.window
+        guard window != nil, let rootViewController = window?!.rootViewController else {
+            return nil
+        }
+        return self.getTopViewController(controller: rootViewController)
+    }
+    
+    private func getTopViewController(controller: UIViewController) -> UIViewController {
+        if let presentedViewController = controller.presentedViewController {
+            return self.getTopViewController(controller: presentedViewController)
+        } else if let navigationController = controller as? UINavigationController {
+            if let topViewController = navigationController.topViewController {
+                return self.getTopViewController(controller: topViewController)
+            }
+            return navigationController
+        } else if let tabbarController = controller as? UITabBarController {
+            if let selectedViewController = tabbarController.selectedViewController {
+                return self.getTopViewController(controller: selectedViewController)
+            }
+            return tabbarController
+        } else {
+            return controller
+        }
+    }
+    #endif
 }
 
 extension LevelStatusBarWindowShowUpable {

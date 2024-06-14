@@ -11,8 +11,11 @@ import RxNetworks
 class ClosureViewModel: NSObject {
     
     func load(success: @escaping (APISuccessJSON) -> Void) {
-        ClosureAPI.userInfo(name: "yangKJ").request(successed: { json, _, _ in
-            success(json)
+        ClosureAPI.userInfo(name: "yangKJ").request(successed: { response in
+            guard let string = response.bpm.toJSONString(prettyPrint: true) else {
+                return
+            }
+            success(string)
         }, failed: { error in
             print(error.localizedDescription)
         })

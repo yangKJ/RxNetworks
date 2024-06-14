@@ -1,11 +1,11 @@
 PODS:
   - Alamofire (5.9.1)
-  - Booming (1.1.0):
-    - Booming/Core (= 1.1.0)
-    - Booming/Plugins (= 1.1.0)
-  - Booming/Core (1.1.0):
+  - Booming (1.1.1):
+    - Booming/Core (= 1.1.1)
+    - Booming/Plugins (= 1.1.1)
+  - Booming/Core (1.1.1):
     - Moya
-  - Booming/Plugins (1.1.0):
+  - Booming/Plugins (1.1.1):
     - Booming/Core
   - CacheX (1.1.1)
   - HandyJSON (5.0.2)
@@ -108,15 +108,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  Booming: 723d5fb145abcd160b32ed6982c05aa74672faeb
+  Booming: b568f471030bf26874baecb473b9ec16c7e58acc
   CacheX: 9665503a86f9e38b3eb0c4ab14251649a79d292d
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
-  NetworkCachePlugin: a792b359419327c51ab50f0340b838060dab2167
-  NetworkHudsPlugin: 14232f0196dcc862cdfb1a76ddb50b04f1743f55
-  NetworkLottiePlugin: a5cd057b3fa2bb57c3d13d3dd5c3f1fed2220a75
+  NetworkCachePlugin: 7a7a3b7d9edd4c153047f902189d85842fcdf515
+  NetworkHudsPlugin: 54ced244e76075bf999f0493674594f9b36f8c62
+  NetworkLottiePlugin: db206675fb12ac788d90dd0cec86f73f06c54a7f
   RxCocoa: fb0aefb9e7229c8ab057acde714136d19117f102
   RxNetworks: ba411e4e240cd11b6c3d02d19f8d8e0c9b68bf68
   RxRelay: 5d39f4d8da150ad47a71b9ce11915e3eae2a8f4d

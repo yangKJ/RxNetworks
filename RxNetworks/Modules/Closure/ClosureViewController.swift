@@ -39,8 +39,8 @@ class ClosureViewController: BaseViewController<ClosureViewModel> {
     }
     
     func setupViewModel() {
-        viewModel.load(success: { [weak self] json in
-            self?.textView.text = X.toJSON(form: json, prettyPrint: true) ?? "nil"
+        viewModel.load(success: { [weak self] text in
+            self?.textView.text = text as? String
         })
     }
 }

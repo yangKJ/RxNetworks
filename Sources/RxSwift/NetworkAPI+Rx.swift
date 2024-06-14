@@ -33,9 +33,11 @@ public extension NetworkAPI {
     /// - Returns: Observable sequence JSON object. May be thrown twice.
     func request(callbackQueue: DispatchQueue? = nil, plugins: APIPlugins = []) -> APIObservableJSON {
         var single = APIObservableJSON.create { observer in
-            let token = request(successed: { json, finished, _ in
-                observer.onNext(json)
-                if finished {
+            let token = request(successed: { response in
+                if let json = response.bpm.mappedJson {
+                    observer.onNext(json)
+                }
+                if response.bpm.finished {
                     observer.onCompleted()
                 }
             }, failed: { error in

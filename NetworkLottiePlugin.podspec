@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  s.source_files = 'Lottie/*.swift'
+  s.source_files = 'Plugins/Lottie/*.swift'
   s.dependency 'Booming/Core'
   s.dependency 'lottie-ios'
   

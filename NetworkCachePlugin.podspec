@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-D DEBUG",
   }
   
-  s.source_files = 'Cache/*.swift'
+  s.source_files = 'Plugins/Cache/*.swift'
   s.dependency 'Booming/Core'
   s.dependency 'CacheX'
   

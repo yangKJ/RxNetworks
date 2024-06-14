@@ -29,7 +29,7 @@ open class NetworkAPIOO {
     /// Default false.
     public var httpShouldHandleCookies: Bool = false
     /// Mapped to json, Default is true.
-    public var mapped2JSON: Bool = true
+    public var mapped2JSON: Bool = BoomingSetup.mapped2JSON
     
     // MARK: - test
     

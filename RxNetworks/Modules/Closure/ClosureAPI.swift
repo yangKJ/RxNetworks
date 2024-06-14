@@ -35,4 +35,8 @@ extension ClosureAPI: NetworkAPI {
         let ignore = NetworkIgnorePlugin(pluginTypes: [NetworkAuthenticationPlugin.self])
         return [loading, ignore]
     }
+    
+    var mapped2JSON: Bool {
+        return false
+    }
 }
