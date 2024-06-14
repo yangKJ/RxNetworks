@@ -11,10 +11,10 @@ import Moya
 
 #if swift(>=5.5)
 
-@available(iOS 13.0.0, *)
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public typealias Task = _Concurrency.Task
 
-@available(iOS 13.0.0, *)
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 extension NetworkAPI {
     
     /// Async network request.
