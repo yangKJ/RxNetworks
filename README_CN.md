@@ -18,23 +18,22 @@
 
 - 目前已封装14款插件供您使用：
     - [Header](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkHttpHeaderPlugin.swift): 配置请求头插件
+    - [Authentication](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkAuthenticationPlugin.swift): 拦截器插件
     - [Debugging](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkDebuggingPlugin.swift): 网络打印，内置插件
     - [GZip](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkGZipPlugin.swift): 解压缩插件
     - [Shared](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkSharedPlugin.swift): 网络共享插件
     - [Files](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkFilesPlugin.swift): 网络下载文件和上传资源插件
     - [Token](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkTokenPlugin.swift): Token令牌注入验证插件
     - [Ignore](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkIgnorePlugin.swift): 忽略默认插件
-    - [Authentication](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkAuthenticationPlugin.swift): 拦截器插件
-    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Cache/NetworkCachePlugin.swift): 网络数据缓存插件
     - [CustomCache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Features/NetworkCustomCachePlugin.swift): 自定义网络数据缓存插件
-    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Lottie/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
-    
+    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Cache/NetworkCachePlugin.swift): 网络数据缓存插件
+    - [Lottie](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Lottie/AnimatedLoadingPlugin.swift): 基于lottie动画加载插件
+
 iOS 系统:    
-- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Huds/NetworkLoadingPlugin.swift): 加载动画插件
-- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Huds/NetworkWarningPlugin.swift): 网络失败提示插件
+- [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkLoadingPlugin.swift): 加载动画插件
+- [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Huds/NetworkWarningPlugin.swift): 网络失败提示插件
 - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Plugins/Views/NetworkIndicatorPlugin.swift): 指示器插件
 
-    
 简单使用，在API协议当中实现该协议方法，然后将插件加入其中即可：
 
 ```
@@ -110,9 +109,8 @@ class OOViewModel: NSObject {
             NetworkIgnorePlugin(pluginTypes: [NetworkActivityPlugin.self]),
         ]
         api.mapped2JSON = false
-        api.request(successed: { _, _, response in
-            guard let json = try? response.toJSON().get(),
-                  let string = X.toJSON(form: json, prettyPrint: true) else {
+        api.request(successed: { response in
+            guard let string = response.bpm.toJSONString(prettyPrint: true) else {
                 return
             }
             block(string)

@@ -46,6 +46,9 @@
 ///
 /// 滤镜框架，支持多种数据源；
 /// https://github.com/yangKJ/Harbeth
+///
+/// 序列化与反序列化库，采用属性包装器设计；
+/// https://github.com/yangKJ/HollowCodable
 
 #import <Foundation/Foundation.h>
 

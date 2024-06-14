@@ -58,9 +58,8 @@ class OOViewModel: NSObject {
             NetworkIgnorePlugin(pluginTypes: [NetworkActivityPlugin.self]),
         ]
         api.mapped2JSON = false
-        api.request(successed: { _, _, response in
-            guard let json = try? response.toJSON().get(),
-                  let string = X.toJSON(form: json, prettyPrint: true) else {
+        api.request(successed: { response in
+            guard let string = response.bpm.toJSONString(prettyPrint: true) else {
                 return
             }
             block(string)
@@ -130,14 +129,18 @@ extension LoadingAPI: NetworkAPI {
 
 class LoadingViewModel: NSObject {
     
+    @MainActor
     func request(block: @escaping (_ text: String?) -> Void) {
-        LoadingAPI.test2("666").request(successed: { json, _, _ in
-            if let model = Deserialized<LoadingModel>.toModel(with: json) {
-                block(model.origin)
+        Task {
+            do {
+                let response = try await LoadingAPI.test2("666").requestAsync()
+                let json = response.bpm.mappedJson
+                let model = Deserialized<LoadingModel>.toModel(with: json)
+                block(model?.toJSONString(prettyPrint: true))
+            } catch {
+                block(error.localizedDescription)
             }
-        }, failed: { error in
-            block(error.localizedDescription)
-        })
+        }
     }
 }
 ```
