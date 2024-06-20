@@ -5,7 +5,7 @@ This module is based on the Moya encapsulated network API architecture.
 
 - Mainly divided into parts:
     - [BoomingSetup](https://github.com/yangKJ/RxNetworks/blob/master/Booming/BoomingSetup.swift): Set the configuration information at the beginning of the program.
-        - **addDebugging**：Whether to introduce the debug mode plugin by default.
+        - **basePlugins**：Plugins that require default injection, generally not recommended.
         - **baseURL**: Root path address to base URL.
         - **baseParameters**: Default basic parameters, like: userID, token, etc.
         - **baseMethod**: Default request method type.
@@ -22,20 +22,16 @@ This module is based on the Moya encapsulated network API architecture.
         - **request**: Network request method and return a Single sequence object.
     - [NetworkAPI+Ext](https://github.com/yangKJ/RxNetworks/blob/master/Booming/NetworkAPI+Ext.swift): Protocol default implementation scheme.
     - [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Booming/NetworkAPIOO.swift): OOP converter, MVP to OOP, convenient for friends who are used to OC thinking
-        - **cdy_ip**: Root path address to base URL.
-        - **cdy_path**: Request path.
-        - **cdy_parameters**: Request parameters.
-        - **cdy_plugins**: Set network plugins.
-        - **cdy_testJSON**: Network testing json string.
-        - **cdy_testTime**: Network test data return time, the default is half a second.
-        - **cdy_HTTPRequest**: Network request method and return a Single sequence object.
+        - **ip**: Root path address to base URL.
+        - **path**: Request path.
+        - **parameters**: Request parameters.
+        - **plugins**: Set network plugins.
+        - **testData**: Network test data.
+        - **testTime**: Network test data return time, the default is half a second.
+        - **request:successed:failed:**: Network request method.
     - [X](https://github.com/yangKJ/RxNetworks/blob/master/Booming/X.swift): extension function methods etc.
-        - **defaultPlugin**: Add default plugin.
-        - **transformAPIObservableJSON**: Transforms a `Observable` sequence JSON object.
-        - **handyConfigurationPlugin**: Handles configuration plugins.
-        - **toJSON**: to JSON string.
+        - **mapJSON**: to JSON string.
         - **toDictionary**: JSON string to dictionary.
-        - **+=**: Dictionary concatenation.
         
 ### Usage
 Provide some test cases for reference.🚁

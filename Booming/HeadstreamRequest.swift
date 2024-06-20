@@ -24,7 +24,7 @@ public final class HeadstreamRequest {
 
 extension HeadstreamRequest {
     
-    func toJSON() throws -> APISuccessJSON {
+    func toJSON() throws -> APIResultValue {
         try X.toJSON(with: try toResponse())
     }
     

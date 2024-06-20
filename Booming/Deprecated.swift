@@ -14,10 +14,13 @@ public typealias LastNeverCallback = OutputResultBlock
 @available(*, deprecated, message: "Typo. Use `OutputResult` instead", renamed: "OutputResult")
 public typealias LastNeverResult = OutputResult
 
+@available(*, deprecated, message: "Typo. Use `APIResultValue` instead", renamed: "APIResultValue")
+public typealias APISuccessJSON = APIResultValue
+
 public extension NetworkAPI {
     @available(*, deprecated, message: "Typo. Use `request:successed:failed:progress:queue:plugins:` instead")
     @discardableResult func HTTPRequest(
-        success: @escaping (APISuccessJSON) -> Void,
+        success: @escaping (APIResultValue) -> Void,
         failure: @escaping APIFailure,
         progress: ProgressBlock? = nil,
         queue: DispatchQueue? = nil,
@@ -33,7 +36,7 @@ public extension NetworkAPI {
     
     @available(*, deprecated, message: "Typo. Use `request:successed:failed:progress:queue:plugins:` instead")
     @discardableResult
-    func request(plugins: APIPlugins = [], complete: @escaping (Result<APISuccessJSON, APIFailureError>) -> Void) -> Moya.Cancellable? {
+    func request(plugins: APIPlugins = [], complete: @escaping (Result<APIResultValue, APIFailureError>) -> Void) -> Moya.Cancellable? {
         HTTPRequest(success: { json in
             complete(.success(json))
         }, failure: { error in

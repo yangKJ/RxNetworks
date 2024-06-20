@@ -147,10 +147,19 @@ This module is serialize and deserialize the data, Replace HandyJSON.
 func request(_ count: Int) -> Observable<[CodableModel]> {
     CodableAPI.cache(count)
         .request(callbackQueue: DispatchQueue(label: "request.codable"))
-        .deserialized(ApiResponse<[CodableModel]>.self, mapping: CodableModel.self)
+        .deserialized(ApiResponse<[CodableModel]>.self)
         .compactMap({ $0.data })
         .observe(on: MainScheduler.instance)
         .catchAndReturn([])
+}
+
+public extension Observable where Element: Any {
+    
+    @discardableResult func deserialized<T: HollowCodable>(_ type: T.Type) -> Observable<T> {
+        return self.map { element -> T in
+            return try T.deserialize(element: element)
+        }
+    }
 }
 ```
 

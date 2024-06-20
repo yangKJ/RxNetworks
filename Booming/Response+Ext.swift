@@ -18,7 +18,7 @@ extension BoomingWrapper where Base: Moya.Response {
     
     /// Has been successfully mapped into JSON.
     /// Note: Download file, take the link address from the `mappedJson` parameter.
-    public var mappedJson: APISuccessJSON? {
+    public var mappedJson: APIResultValue? {
         get {
             return synchronizedResponse {
                 objc_getAssociatedObject(base, &BoomingResponseJsonContext)
@@ -65,7 +65,7 @@ extension BoomingWrapper where Base: Moya.Response {
         return nil
     }
     
-    public func toJSON() throws -> APISuccessJSON {
+    public func toJSON() throws -> APIResultValue {
         try toJSONResult().get()
     }
     

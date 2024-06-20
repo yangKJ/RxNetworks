@@ -46,10 +46,11 @@ public typealias APIMethod = Moya.Method
 public typealias APIParameters = Alamofire.Parameters
 public typealias APIPlugins = [PluginSubType]
 public typealias APIStubBehavior = Moya.StubBehavior
-public typealias APISuccessJSON = Any
+
+public typealias APIResultValue = Any
 public typealias APIFailureError = MoyaError
 public typealias APIResponseResult = Result<Moya.Response, APIFailureError>
-public typealias APIJSONResult = Result<APISuccessJSON, APIFailureError>
+public typealias APIJSONResult = Result<APIResultValue, APIFailureError>
 
 public typealias APISuccessed = (_ response: Moya.Response) -> Void
 public typealias APIFailure = (_ error: APIFailureError) -> Void

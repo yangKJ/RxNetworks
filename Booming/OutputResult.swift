@@ -41,7 +41,7 @@ extension OutputResult {
     ///   - success: 成功回调
     ///   - failure: 失败回调
     ///   - setToResult: 是否需要设置到`mappedResult`
-    public func mapResult(success: ((APISuccessJSON?) -> Void)?,
+    public func mapResult(success: ((APIResultValue?) -> Void)?,
                           failure: APIFailure?,
                           setToMappedResult: Bool = true,
                           mapped2JSON: Bool = false) {

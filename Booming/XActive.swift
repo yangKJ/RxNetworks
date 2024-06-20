@@ -147,7 +147,7 @@ extension X {
         return target.baseURL.absoluteString + target.path + paramString
     }
     
-    static func toJSON(with response: Moya.Response) throws -> APISuccessJSON {
+    static func toJSON(with response: Moya.Response) throws -> APIResultValue {
         let response = try response.filterSuccessfulStatusCodes()
         return try response.mapJSON(failsOnEmptyData: BoomingSetup.failsOnEmptyData)
     }
