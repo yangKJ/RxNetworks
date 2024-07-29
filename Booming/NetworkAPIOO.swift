@@ -26,8 +26,8 @@ open class NetworkAPIOO {
     public var retry: APINumber = 0
     /// Callback queue. If nil - queue from provider initializer will be used.
     public var callbackQueue: DispatchQueue?
-    /// Default false.
-    public var httpShouldHandleCookies: Bool = false
+    /// Default true.
+    public var httpShouldHandleCookies: Bool = true
     /// Mapped to json, Default is true.
     public var mapped2JSON: Bool = BoomingSetup.mapped2JSON
     

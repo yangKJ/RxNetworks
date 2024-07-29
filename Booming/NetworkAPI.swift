@@ -30,7 +30,7 @@ public protocol NetworkAPI: Moya.TargetType {
     /// Identification key prefix, defaul MD5 request link.
     var keyPrefix: String { get }
     
-    /// Default false.
+    /// Default true.
     var httpShouldHandleCookies: Bool { get }
     
     /// A responsible for returning an `EndpointSampleResponse`.

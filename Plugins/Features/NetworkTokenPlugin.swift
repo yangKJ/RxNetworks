@@ -11,8 +11,6 @@ import Moya
 /// 注入Token验证插件
 public final class NetworkTokenPlugin {
     
-    static let invalidCode = 401
-    
     private var hasTokenBlock: ((String) -> Void)?
     
     public var options: NetworkTokenPlugin.Options
@@ -33,7 +31,7 @@ extension NetworkTokenPlugin {
         var tokenInvalidBlock: (MoyaError?, Moya.Response?) -> Bool = NetworkTokenPlugin.defaultTokenInvalid()
         
         /// You only need to unify the unauthorized status of 401.
-        public var tokenInvalidCode: Int = NetworkTokenPlugin.invalidCode
+        public var tokenInvalidCode: Int = BoomingSetup.tokenInvalidCode
         
         public init(addToken: @escaping () -> [String:String], reacquireToken: @escaping ReacquireTokenBlock) {
             self.reacquireTokenBlock = reacquireToken
@@ -71,7 +69,7 @@ extension NetworkTokenPlugin: PluginSubType {
             if !token_.isEmpty {
                 result.againRequest = true
             } else {
-                let code = self?.options.tokenInvalidCode ?? NetworkTokenPlugin.invalidCode
+                let code = self?.options.tokenInvalidCode ?? BoomingSetup.tokenInvalidCode
                 let response = Moya.Response(statusCode: code, data: Data())
                 result.result = .failure(.statusCode(response))
                 result.againRequest = false
@@ -99,11 +97,11 @@ extension NetworkTokenPlugin {
     /// Default judgement token is invalid.
     public final class func defaultTokenInvalid() -> (MoyaError?, Moya.Response?) -> Bool {
         return { error, response in
-            if let response = response, response.statusCode == NetworkTokenPlugin.invalidCode {
+            if let response = response, response.statusCode == BoomingSetup.tokenInvalidCode {
                 return true
             }
             if let error = error {
-                return error.errorCode == NetworkTokenPlugin.invalidCode
+                return error.errorCode == BoomingSetup.tokenInvalidCode
             }
             return false
         }

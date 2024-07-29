@@ -12,24 +12,8 @@ import Alamofire
 public typealias NetworkConfig = BoomingSetup
 
 /// 网络配置信息，只需要在程序开启的时刻配置一次
-/// Network configuration information, only need to be configured once when the program is started
+/// Network configuration information, only need to be configured once when the program is started.
 public struct BoomingSetup {
-    
-    /// Whether to add the Indicator plugin by default.
-    public static var addIndicator: Bool = false
-    #if BOOMING_PLUGINGS_FEATURES
-    /// Set the log plug-in to print content, Default concise.
-    public static var debuggingLogOption: NetworkDebuggingPlugin.Options = .concise
-    #endif
-    
-    /// Set the request timeout, the default is 30 seconds.
-    public static var timeoutIntervalForRequest: Double = 30
-    
-    /// Whether to support background URLSessionConfigurations with Alamofire.
-    public static var supportBackgroundRequest: Bool = false
-    /// Determines whether this instance will automatically start all requests.
-    /// If set to `false`, all requests created must have `.resume()` called. on them for them to start.
-    public static var startRequestsImmediately: Bool = false
     
     /// Root path address.
     public static var baseURL: APIHost = ""
@@ -43,6 +27,9 @@ public struct BoomingSetup {
     /// However, you can inject this kind of global unified general plugin, such as secret key plugin, certificate plugin, etc.
     public static var basePlugins: [PluginSubType]?
     
+    /// You only need to unify the unauthorized status of 401.
+    public static var tokenInvalidCode: Int = 401
+    
     /// Loading animation JSON, for `AnimatedLoadingPlugin` used.
     public static var animatedJSON: String?
     /// Loading the plugin name, to remove the loading plugin from level status bar window.
@@ -52,9 +39,23 @@ public struct BoomingSetup {
     
     /// Maps data received from the signal into a JSON object, when the data is empty mapping should fail.
     public static var failsOnEmptyData: Bool = true
-    
     /// Mapped to json, Default is true.
     public static var mapped2JSON: Bool = true
+    
+    /// Set the request timeout, the default is 30 seconds.
+    public static var timeoutIntervalForRequest: Double = 30
+    /// Whether to support background URLSessionConfigurations with Alamofire.
+    public static var supportBackgroundRequest: Bool = false
+    /// Determines whether this instance will automatically start all requests.
+    /// If set to `false`, all requests created must have `.resume()` called. on them for them to start.
+    public static var startRequestsImmediately: Bool = false
+    
+    /// Whether to add the Indicator plugin by default.
+    public static var addIndicator: Bool = false
+    #if BOOMING_PLUGINGS_FEATURES
+    /// Set the log plug-in to print content, Default concise.
+    public static var debuggingLogOption: NetworkDebuggingPlugin.Options = .concise
+    #endif
     
     /// Update the default basic parameter data, which is generally used for what operation the user has switched.
     /// - Parameters:
@@ -68,24 +69,5 @@ public struct BoomingSetup {
             dict.removeValue(forKey: key)
         }
         Self.baseParameters = dict
-    }
-}
-
-extension BoomingSetup {
-    @available(*, deprecated, message: "Use `NetworkAuthenticationPlugin` add to `BoomingSetup.basePlugins`")
-    /// It is recommended to use plug-in mode to add interceptor.
-    /// You can also add it to the `BoomingSetup.basePlugins`.
-    public static var interceptor: RequestInterceptor? = nil
-    
-    @available(*, deprecated, message: "Use `BoomingSetup.debuggingLogOption`, if you set false correspond to `BoomingSetup.debuggingLogOption = .nothing`")
-    /// Whether to add the Debugging plugin by default.
-    public static var addDebugging: Bool = true {
-        didSet {
-            if !addDebugging {
-                #if BOOMING_PLUGINGS_FEATURES
-                debuggingLogOption = .nothing
-                #endif
-            }
-        }
     }
 }

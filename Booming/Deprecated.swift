@@ -71,3 +71,22 @@ extension X {
         HUDs.removeHUD(key: key)
     }
 }
+
+extension BoomingSetup {
+    @available(*, deprecated, message: "Use `NetworkAuthenticationPlugin` add to `BoomingSetup.basePlugins`")
+    /// It is recommended to use plug-in mode to add interceptor.
+    /// You can also add it to the `BoomingSetup.basePlugins`.
+    public static var interceptor: RequestInterceptor? = nil
+    
+    @available(*, deprecated, message: "Use `BoomingSetup.debuggingLogOption`, if you set false correspond to `BoomingSetup.debuggingLogOption = .nothing`")
+    /// Whether to add the Debugging plugin by default.
+    public static var addDebugging: Bool = true {
+        didSet {
+            if !addDebugging {
+                #if BOOMING_PLUGINGS_FEATURES
+                debuggingLogOption = .nothing
+                #endif
+            }
+        }
+    }
+}

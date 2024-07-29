@@ -38,7 +38,7 @@ extension NetworkAPI {
     }
     
     public var httpShouldHandleCookies: Bool {
-        return false
+        return true
     }
     
     public var sampleResponse: Moya.EndpointSampleResponse {
