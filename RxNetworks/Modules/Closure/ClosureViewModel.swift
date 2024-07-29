@@ -12,7 +12,8 @@ class ClosureViewModel: NSObject {
     
     func load(success: @escaping (APIResultValue) -> Void) {
         ClosureAPI.userInfo(name: "yangKJ").request(successed: { response in
-            guard let string = response.bpm.toJSONString(prettyPrint: true) else {
+            guard let users = MineUsers.deserialize(from: response.data),
+                  let string = users.toJSONString(prettyPrint: true) else {
                 return
             }
             success(string)

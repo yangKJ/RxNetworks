@@ -11,6 +11,7 @@ ENV["RXNETWORKS_PLUGINGS_EXCLUDE"] = "INDICATOR"
 target 'RxNetworks_Example' do
   
   pod 'RxCocoa'
+  pod 'HollowCodable'
   
   pod 'RxNetworks', :path => './'
   pod 'Booming', :path => './'

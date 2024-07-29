@@ -16,19 +16,28 @@ enum LoadingAPI {
 extension LoadingAPI: NetworkAPI {
     
     var ip: APIHost {
-        return BoomingSetup.baseURL
+        //return "https://haokan.baidu.com/web"
+        return "https://haokan.baidu.com/web/author/listall?rn=10&ctime=17190335423453&app_id=1727467477413519"
     }
     
-    var path: APIPath {
-        return "/post"
+    var method: APIMethod {
+        return .get
     }
     
-    var parameters: APIParameters? {
-        switch self {
-        case .test2(let string):
-            return ["key": string]
-        }
-    }
+//    var path: APIPath {
+//        return "/author/listall"
+//    }
+//    
+//    var parameters: APIParameters? {
+//        switch self {
+//        case .test2(let string):
+//            return [
+//                "rn": string,
+//                "ctime": "17190335423453",
+//                "app_id": "1727467477413519",
+//            ]
+//        }
+//    }
     
     var plugins: APIPlugins {
         var options = NetworkLoadingPlugin.Options.init(delay: 2)

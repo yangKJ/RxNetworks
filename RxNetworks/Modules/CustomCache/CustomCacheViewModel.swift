@@ -45,7 +45,7 @@ extension CustomCacheViewModel {
     func request(_ count: Int) -> Observable<CacheModel> {
         let cache = NetworkCustomCachePlugin(cacheType: .cacheThenNetwork, cacher: storage)
         return CustomCacheAPI.cache(count).request(plugins: [cache])
-            .mapHandyJSON(CacheModel.self)
+            .deserialized(CacheModel.self)
             .observe(on: MainScheduler.instance)
     }
 }

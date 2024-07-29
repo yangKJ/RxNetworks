@@ -7,21 +7,20 @@
 //
 
 import Foundation
-import HandyJSON
-import RxNetworks
+import HollowCodable
 
-struct CacheModel: HandyJSON {
+struct CacheModel: HollowCodable {
     
     var ip: String?
     var url: String?
     var data: String?
+    
+    @DictionaryCoding
     var headers: [String: Any]?
     
     /// 转换映射key
-    mutating func mapping(mapper: HelpingMapper) {
-        mapper <<<
-            ip <-- "origin"
-        mapper <<<
-            url <-- "github"
+    static func mapping(mapper: HelpingMapper) {
+        mapper <<< CodingKeys.ip <-- "origin"
+        mapper <<< CodingKeys.url <-- "github"
     }
 }

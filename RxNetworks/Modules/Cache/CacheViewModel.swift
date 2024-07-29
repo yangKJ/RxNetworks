@@ -30,7 +30,7 @@ extension CacheViewModel {
     
     func request(_ count: Int) -> Observable<CacheModel> {
         CacheAPI.cache(count).request()
-            .mapHandyJSON(CacheModel.self)
+            .deserialized(CacheModel.self)
             .observe(on: MainScheduler.instance)
     }
 }

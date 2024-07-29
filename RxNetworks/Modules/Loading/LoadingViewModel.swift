@@ -9,6 +9,7 @@
 import Foundation
 import Booming
 import RxNetworks
+import HollowCodable
 
 class LoadingViewModel: NSObject {
     
@@ -16,9 +17,10 @@ class LoadingViewModel: NSObject {
     func request(block: @escaping (_ text: String?) -> Void) {
         Task {
             do {
-                let response = try await LoadingAPI.test2("666").requestAsync()
+                let response = try await LoadingAPI.test2("10").requestAsync()
                 let json = response.bpm.mappedJson
-                let model = Deserialized<LoadingModel>.toModel(with: json)
+                //let model = ApiResponse<LoadingModel>.deserialize(from: json, options: .CodingKeysConvertFromSnakeCase)?.data
+                let model = LoadingModel.deserialize(from: json, designatedPath: "data", options: .CodingKeysConvertFromSnakeCase)
                 block(model?.toJSONString(prettyPrint: true))
             } catch {
                 block(error.localizedDescription)
