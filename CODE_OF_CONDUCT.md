@@ -131,7 +131,7 @@ class LoadingViewModel: NSObject {
             do {
                 let response = try await LoadingAPI.test2("666").requestAsync()
                 let json = response.bpm.mappedJson
-                let model = Deserialized<LoadingModel>.toModel(with: json)
+                let model = LoadingModel.deserialize(from: json, designatedPath: "data", options: .CodingKeysConvertFromSnakeCase)
                 block(model?.toJSONString(prettyPrint: true))
             } catch {
                 block(error.localizedDescription)
@@ -163,7 +163,7 @@ extension CacheViewModel {
     
     func request(_ count: Int) -> Observable<[CacheModel]> {
         CacheAPI.cache(count).request()
-            .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+            .deserialize(ApiResponse<[CacheModel]>.self)
             .compactMap { $0.data }
             .observe(on: MainScheduler.instance) // the result is returned on the main thread
             .catchAndReturn([]) // return null on error

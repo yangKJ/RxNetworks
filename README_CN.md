@@ -198,7 +198,7 @@ extension CacheViewModel {
     func request(_ count: Int) -> Driver<[CacheModel]> {
         CacheAPI.cache(count).request()
             .asObservable()
-            .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+            .deserialize(ApiResponse<[CacheModel]>.self)
             .compactMap { $0.data }
             .observe(on: MainScheduler.instance) // 结果在主线程返回
             .delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回

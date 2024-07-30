@@ -52,6 +52,7 @@ Task {
         let response = try await LoadingAPI.test2("666").requestAsync()
         let json = response.bpm.mappedJson
         // do somthing..
+        let model = LoadingModel.deserialize(from: json, designatedPath: "data")
     } catch {
         block(error.localizedDescription)
     }
@@ -105,22 +106,74 @@ This module mainly supports responsive data binding.
 ```
 func request(_ count: Int) -> Observable<[CacheModel]> {
     CacheAPI.cache(count).request()
-        .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+        .deserialized(ApiResponse<[CacheModel]>.self)
         .compactMap { $0.data }
         .observe(on: MainScheduler.instance)
         .catchAndReturn([])
 }
 ```
 
+### HollowCodable
+**[HollowCodable](https://github.com/yangKJ/HollowCodable)** is a codable customization using property wrappers library for Swift.
+
+This module is serialize and deserialize the data, Replace HandyJSON.
+
+🎷 Example of use in conjunction with the network part:
+
+```
+func request(_ count: Int) -> Observable<[LoadingModel]> {
+    CodableAPI.cache(count)
+        .request(callbackQueue: DispatchQueue(label: "request.codable"))
+        .deserialized(ApiResponse<[LoadingModel]>.self)
+        .compactMap({ $0.data })
+        .observe(on: MainScheduler.instance)
+        .catchAndReturn([])
+}
+```
+
+<details>
+  <summary>RxSwift deserialized extension.</summary>
+
+```swift
+public extension Observable where Element: Any {
+    
+    @discardableResult func deserialized<T>(_ type: T.Type) -> Observable<T> where T: HollowCodable {
+        return self.map { element -> T in
+            return try T.deserialize(element: element)
+        }
+    }
+    
+    @discardableResult func deserialized<T>(_ type: [T].Type) -> Observable<[T]> where T: HollowCodable {
+        return self.map { element -> [T] in
+            return try [T].deserialize(element: element)
+        }
+    }
+    
+    @discardableResult func deserialized<T>(_ type: T.Type) -> Observable<ApiResponse<T.DataType>> where T: HasResponsable, T.DataType: HollowCodable {
+        return self.map { element -> ApiResponse<T.DataType> in
+            return try T.deserialize(element: element)
+        }
+    }
+    
+    @discardableResult func deserialized<T>(_ type: T.Type) -> Observable<ApiResponse<[T.DataType.Element]>> where T: HasResponsable, T.DataType: Collection, T.DataType.Element: HollowCodable {
+        return self.map { element -> ApiResponse<[T.DataType.Element]> in
+            return try T.deserialize(element: element)
+        }
+    }
+}
+```
+</details>
+
 ### HandyJSON
-This module is based on `HandyJSON` package network data parsing.
+⚠️ Note: This module is not recommended because it has stopped maintenance.
+
+<details>
+  <summary>This module is based on HandyJSON package network data parsing.</summary>
 
 - Roughly divided into the following 3 parts:
     - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift): Network outer data model.
     - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift): Parse error related.
     - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift): HandyJSON data parsing, currently provides two parsing solutions.
-        - **Option 1**: Combine `HandyDataModel` model to parse out data.
-        - **Option 2**: Parse the data of the specified key according to `keyPath`, the precondition is that the json data source must be in the form of a dictionary.
 
 🎷 Example of use in conjunction with the network part:
 
@@ -135,33 +188,7 @@ func request(_ count: Int) -> Driver<[CacheModel]> {
         .asDriver(onErrorJustReturn: [])
 }
 ```
-
-### HollowCodable
-**[HollowCodable](https://github.com/yangKJ/HollowCodable)** is a codable customization using property wrappers library for Swift.
-
-This module is serialize and deserialize the data, Replace HandyJSON.
-
-🎷 Example of use in conjunction with the network part:
-
-```
-func request(_ count: Int) -> Observable<[CodableModel]> {
-    CodableAPI.cache(count)
-        .request(callbackQueue: DispatchQueue(label: "request.codable"))
-        .deserialized(ApiResponse<[CodableModel]>.self)
-        .compactMap({ $0.data })
-        .observe(on: MainScheduler.instance)
-        .catchAndReturn([])
-}
-
-public extension Observable where Element: Any {
-    
-    @discardableResult func deserialized<T: HollowCodable>(_ type: T.Type) -> Observable<T> {
-        return self.map { element -> T in
-            return try T.deserialize(element: element)
-        }
-    }
-}
-```
+</details>
 
 ### CocoaPods
 
