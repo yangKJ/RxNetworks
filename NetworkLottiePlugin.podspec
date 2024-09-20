@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NetworkLottiePlugin'
-  s.version          = '1.0.8'
+  s.version          = '1.1.5'
   s.summary          = 'Network Lottie Plugin Library.'
   
   # This description is used to generate tags and improve search results.

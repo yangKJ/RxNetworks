@@ -115,7 +115,7 @@ extension AnimatedLoadingPlugin {
         } else {
             let animatedNamed = self.options.animatedJSON ?? BoomingSetup.animatedJSON
             let vc = LoadingHudViewController(createShowUpViewCallback: {
-                AnimatedLoadingHUD(frame: .zero, animatedNamed: animatedNamed, bundle: options.bundle, subdirectory: options.subdirectory)
+                AnimatedLoadingHUD(animatedNamed: animatedNamed, bundle: options.bundle, subdirectory: options.subdirectory)
             })
             setupHUD(hud: (vc.showUpView as? AnimatedLoadingHUD))
             vc.overlayBackgroundColor = options.overlayBackgroundColor

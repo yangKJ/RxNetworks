@@ -30,15 +30,22 @@ final class AnimatedLoadingHUD: ViewType {
     }()
     
     lazy var animatedView: LottieAnimationView = {
-        let view = LottieAnimationView()
-        view.contentMode = .scaleAspectFit
+        let animationView = LottieAnimationView()
+        animationView.contentMode = .scaleAspectFit
+        // Fixed the animation stops when it is covered.
+        animationView.backgroundBehavior = .pauseAndRestore
         #if os(macOS)
-        view.layer?.rasterizationScale = X.mainScale()
+        animationView.layer?.rasterizationScale = X.mainScale()
         #else
-        view.layer.rasterizationScale = X.mainScale()
+        animationView.layer.rasterizationScale = X.mainScale()
         #endif
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        if let animatedNamed = animatedNamed {
+            animationView.animation = LottieAnimation.named(animatedNamed, bundle: bundle, subdirectory: subdirectory)
+        }
+        animationView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        animationView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        return animationView
     }()
     
     lazy var textLabel: LabelType = {
@@ -55,13 +62,21 @@ final class AnimatedLoadingHUD: ViewType {
         label.numberOfLines = 0
         label.layer.rasterizationScale = X.mainScale()
         #endif
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
     
-    init(frame: CGRect, animatedNamed: String?, bundle: Bundle, subdirectory: String?) {
-        super.init(frame: frame)
+    private let animatedNamed: String?
+    private let bundle: Bundle
+    private let subdirectory: String?
+    
+    init(animatedNamed: String?, bundle: Bundle, subdirectory: String?) {
+        self.animatedNamed = animatedNamed
+        self.bundle = bundle
+        self.subdirectory = subdirectory
+        super.init(frame: .zero)
         self.setup()
-        self.setup(animatedNamed: animatedNamed, bundle: bundle, subdirectory: subdirectory)
     }
     
     required init?(coder: NSCoder) {
@@ -82,26 +97,25 @@ final class AnimatedLoadingHUD: ViewType {
     
     private func setup() {
         self.addSubview(containerView)
-        containerView.addSubview(animatedView)
-        NSLayoutConstraint.activate([
-            containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            containerView.widthAnchor.constraint(equalToConstant: containerSize.width),
-            containerView.heightAnchor.constraint(equalToConstant: containerSize.height),
-            animatedView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
-            animatedView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
-            animatedView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            animatedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-        ])
-    }
-    
-    private func setup(animatedNamed: String?, bundle: Bundle, subdirectory: String?) {
         if let animatedNamed = animatedNamed {
-            animatedView.animation = LottieAnimation.named(animatedNamed, bundle: bundle, subdirectory: subdirectory)
+            containerView.addSubview(animatedView)
+            NSLayoutConstraint.activate([
+                containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                containerView.widthAnchor.constraint(equalToConstant: containerSize.width),
+                containerView.heightAnchor.constraint(equalToConstant: containerSize.height),
+                animatedView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
+                animatedView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
+                animatedView.topAnchor.constraint(equalTo: containerView.topAnchor),
+                animatedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            ])
         } else {
-            animatedView.isHidden = true
             containerView.addSubview(textLabel)
             NSLayoutConstraint.activate([
+                containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                containerView.widthAnchor.constraint(equalToConstant: containerSize.width),
+                containerView.heightAnchor.constraint(equalToConstant: containerSize.height),
                 textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8),
                 textLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -8),
                 textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
@@ -122,6 +136,9 @@ final class AnimatedLoadingHUD: ViewType {
                     textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
                 ])
             } else {
+                NSLayoutConstraint.deactivate([
+                    animatedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+                ])
                 NSLayoutConstraint.activate([
                     animatedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -30),
                     textLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8),
@@ -131,8 +148,10 @@ final class AnimatedLoadingHUD: ViewType {
             }
         } else {
             NSLayoutConstraint.activate([
-                animatedView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-                animatedView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+                animatedView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
+                animatedView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
+                animatedView.topAnchor.constraint(equalTo: containerView.topAnchor),
+                animatedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             ])
         }
     }
