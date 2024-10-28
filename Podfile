@@ -1,3 +1,9 @@
+# Uncomment the next line to define a global platform for your project
+
+source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git' # 清华镜像源
+#source 'https://github.com/CocoaPods/Specs.git'
+#source 'git@github.com:Condy/PrivatePod.git' # 私有索引
+
 use_frameworks!
 inhibit_all_warnings!
 

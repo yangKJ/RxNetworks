@@ -1,11 +1,11 @@
 PODS:
   - Alamofire (5.9.1)
-  - Booming (1.1.1):
-    - Booming/Core (= 1.1.1)
-    - Booming/Plugins (= 1.1.1)
-  - Booming/Core (1.1.1):
+  - Booming (1.1.5):
+    - Booming/Core (= 1.1.5)
+    - Booming/Plugins (= 1.1.5)
+  - Booming/Core (1.1.5):
     - Moya
-  - Booming/Plugins (1.1.1):
+  - Booming/Plugins (1.1.5):
     - Booming/Core
   - CacheX (1.1.1)
   - HandyJSON (5.0.2)
@@ -111,7 +111,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  Booming: b568f471030bf26874baecb473b9ec16c7e58acc
+  Booming: 6ea38f6735db245e443af71ec44eda670fc4ccce
   CacheX: 9665503a86f9e38b3eb0c4ab14251649a79d292d
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   HollowCodable: 6d5666338911505c481a46051a6e9083576adcd7
@@ -126,6 +126,6 @@ SPEC CHECKSUMS:
   RxRelay: 4151ba01152436b08271e08410135e099880eae5
   RxSwift: b9a93a26031785159e11abd40d1a55bcb8057e52
 
-PODFILE CHECKSUM: b92697f041b60168760065baaa475424c0bb1159
+PODFILE CHECKSUM: ab05e2c5d741d50eac4a7d7d9dc2c45c16efdf58
 
 COCOAPODS: 1.15.2

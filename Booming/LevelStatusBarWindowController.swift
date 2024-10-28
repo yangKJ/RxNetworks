@@ -177,7 +177,7 @@ open class LevelStatusBarWindowController: ViewControllerType {
         }
         LevelStatusBarWindowController.window.rootViewController = nil
         LevelStatusBarWindowController.window.isHidden = true
-        if Self.controllers.count < 10 {
+        if LevelStatusBarWindowController.controllers.count < 10 {
             while let rootViewController = LevelStatusBarWindowController.controllers.last {
                 if rootViewController.isCalledClose {
                     LevelStatusBarWindowController.controllers.removeLast()

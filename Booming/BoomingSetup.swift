@@ -62,12 +62,12 @@ public struct BoomingSetup {
     ///   - value: Update value
     ///   - key: Update key
     public static func updateBaseParametersWithValue(_ value: AnyObject?, key: String) {
-        var dict = Self.baseParameters
+        var dict = BoomingSetup.baseParameters
         if let value = value {
             dict.updateValue(value, forKey: key)
         } else {
             dict.removeValue(forKey: key)
         }
-        Self.baseParameters = dict
+        BoomingSetup.baseParameters = dict
     }
 }

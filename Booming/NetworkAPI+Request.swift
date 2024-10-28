@@ -34,6 +34,41 @@ public extension NetworkAPI {
         queue: DispatchQueue? = nil,
         plugins: APIPlugins = []
     ) -> Moya.Cancellable? {
+        return setupRetryRequest(retry: retry, successed: { result in
+            DispatchQueue.main.async {
+                successed(result)
+            }
+        }, failed: { error in
+            DispatchQueue.main.async {
+                failed(error)
+            }
+        }, progress: progress, queue: queue, plugins: plugins)
+    }
+}
+
+// MARK: - private methods
+extension NetworkAPI {
+    
+    private func setupRetryRequest(retry: APINumber,
+                                   successed: @escaping APISuccessed,
+                                   failed: @escaping APIFailure,
+                                   progress: ProgressBlock?,
+                                   queue: DispatchQueue?,
+                                   plugins: APIPlugins) -> Moya.Cancellable? {
+        return setupRequest(successed: successed, failed: { error in
+            if retry > 0 {
+                _ = setupRetryRequest(retry: retry-1, successed: successed, failed: failed, progress: progress, queue: queue, plugins: plugins)
+            } else {
+                failed(error)
+            }
+        }, progress: progress, queue: queue, plugins: plugins)
+    }
+    
+    private func setupRequest(successed: @escaping APISuccessed,
+                              failed: @escaping APIFailure,
+                              progress: ProgressBlock?,
+                              queue: DispatchQueue?,
+                              plugins: APIPlugins) -> Moya.Cancellable? {
         let key = self.keyPrefix
         let pls = X.setupPluginsAndKey(key, plugins: self.plugins + plugins)
         
@@ -48,10 +83,10 @@ public extension NetworkAPI {
                 response.bpm.mappedJson = json
                 response.bpm.finished = true
                 progress?(ProgressResponse(response: response))
-                DispatchQueue.main.async { successed(response) }
+                successed(response)
             }, failure: { error in
                 Shared.shared.removeRequestingAPI(key)
-                DispatchQueue.main.async { failed(error) }
+                failed(error)
             })
             return nil
         }
@@ -61,13 +96,13 @@ public extension NetworkAPI {
             if let json = try? headstreamRequest.toJSON(), var response = try? headstreamRequest.toResponse() {
                 response.bpm.mappedJson = json
                 response.bpm.finished = false
-                DispatchQueue.main.async { successed(response) }
+                successed(response)
             }
         } else {
             if var response = try? headstreamRequest.toResponse() {
                 response.bpm.mappedJson = response.data
                 response.bpm.finished = false
-                DispatchQueue.main.async { successed(response) }
+                successed(response)
             }
         }
         
@@ -106,16 +141,13 @@ public extension NetworkAPI {
                 response.bpm.mappedJson = json
                 response.bpm.finished = true
                 progress?(ProgressResponse(response: response))
-                DispatchQueue.main.async { successed(response) }
+                successed(response)
             }, failure: { error in
-                DispatchQueue.main.async { failed(error) }
+                failed(error)
             })
         }, progress: progress)
     }
-}
-
-// MARK: - private methods
-extension NetworkAPI {
+    
     /// 最开始配置插件信息
     private func setupHeadstreamRequest(plugins: APIPlugins) -> HeadstreamRequest {
         var request = HeadstreamRequest()

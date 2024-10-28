@@ -8,20 +8,22 @@
 
 import Foundation
 import RxNetworks
+import RxRelay
 
 class WarningViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishSubject<String>()
+    let data = PublishRelay<String>()
 
     func loadData() {
-        WarningAPI.warning.request()
-            .asObservable()
-            .observe(on: MainScheduler.instance)
-            .map { $0 as! String }
-            .catchAndReturn("catch and return.")
-            .subscribe(data)
-            .disposed(by: disposeBag)
+        WarningAPI.warning.request(successed: { [weak self] response in
+            guard let response = response.bpm.mappedJson as? String else {
+                return
+            }
+            self?.data.accept(response)
+        }, failed: { [weak self] error in
+            self?.data.accept(error.localizedDescription)
+        })
     }
 }

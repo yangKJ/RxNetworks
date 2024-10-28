@@ -27,10 +27,16 @@ extension WarningAPI: NetworkAPI {
         return "/failed/path"
     }
     
+    var retry: APINumber {
+        return 1
+    }
+    
     var plugins: APIPlugins {
         var options = NetworkWarningPlugin.Options.init(duration: 2)
         options.setChangeHudParameters { hud in
-            guard let superview = hud.superview else { return }
+            guard let superview = hud.superview else {
+                return
+            }
             hud.center = CGPoint(x: superview.center.x, y: superview.frame.height - 100)
         }
         let warning = NetworkWarningPlugin.init(options: options)
