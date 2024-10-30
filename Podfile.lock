@@ -19,7 +19,7 @@ PODS:
   - NetworkCachePlugin (1.0.8):
     - Booming/Core
     - CacheX
-  - NetworkHudsPlugin (1.0.9):
+  - NetworkHudsPlugin (1.1.6):
     - Booming/Core
     - MBProgressHUD
   - NetworkLottiePlugin (1.1.5):
@@ -119,7 +119,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   NetworkCachePlugin: 7a7a3b7d9edd4c153047f902189d85842fcdf515
-  NetworkHudsPlugin: 54ced244e76075bf999f0493674594f9b36f8c62
+  NetworkHudsPlugin: d713964bb74991672a8e762d2451dc5d7cd5f82a
   NetworkLottiePlugin: 843c8482686e7fb975320da0122244d39a35fa65
   RxCocoa: f5609cb4637587a7faa99c5d5787e3ad582b75a4
   RxNetworks: ba411e4e240cd11b6c3d02d19f8d8e0c9b68bf68

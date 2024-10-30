@@ -30,14 +30,15 @@ extension NetworkWarningPlugin {
         public static let dontCover = Options.init(cover: false)
         /// The default duration.
         let duration: Double
-        /// 是否会覆盖上次的错误展示，如果上次错误展示还在，新的错误展示是否需要覆盖上次。
-        /// Whether it will overwrite the last error display,
-        /// If the last error display is still there, whether the new error display needs to overwrite the last one.
+        /// Whether it will overwrite the last error display, If the last error display is still there, whether the new error display needs to overwrite the last one.
         let coverLastToast: Bool
+        /// When the network failed, ignored the error codes will don't display.
+        let ignoreErrorCodes: [Int]
         
-        public init(duration: Double = 1.0, cover: Bool = true) {
+        public init(duration: Double = 1.0, cover: Bool = true, ignoreErrorCodes: [Int] = BoomingSetup.ignoreErrorCodes) {
             self.duration = duration
             self.coverLastToast = cover
+            self.ignoreErrorCodes = ignoreErrorCodes
         }
         
         var hudCallback: ((_ hud: MBProgressHUD) -> Void)?
@@ -63,6 +64,9 @@ extension NetworkWarningPlugin: PluginSubType {
     
     public func outputResult(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
         result.mapResult(success: nil, failure: { error in
+            if self.options.ignoreErrorCodes.contains(error.errorCode) {
+                return
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.showText(error.localizedDescription)
             }
@@ -92,7 +96,7 @@ extension NetworkWarningPlugin {
         hud.animationType = MBProgressHUDAnimation.zoom
         hud.removeFromSuperViewOnHide = true
         hud.bezelView.style = MBProgressHUDBackgroundStyle.solidColor
-        hud.bezelView.color = UIColor.black.withAlphaComponent(0.7)
+        hud.bezelView.color = UIColor.black.withAlphaComponent(0.8)
         hud.bezelView.layer.cornerRadius = 10
         hud.label.text = text
         hud.label.numberOfLines = 0

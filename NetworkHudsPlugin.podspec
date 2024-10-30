@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NetworkHudsPlugin'
-  s.version          = '1.0.9'
+  s.version          = '1.1.6'
   s.summary          = 'Network HUDs Plugin Library.'
   
   # This description is used to generate tags and improve search results.
