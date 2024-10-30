@@ -30,14 +30,24 @@ public protocol NetworkAPI: Moya.TargetType {
     /// Identification key prefix, defaul MD5 request link.
     var keyPrefix: String { get }
     
-    /// Default true.
+    /// Default cache policy for requests. Default is `BoomingSetup.requestCachePolicy` value.
+    var requestCachePolicy: NSURLRequest.CachePolicy { get }
+    
+    /// This will cause a timeout if no data is transmitted for the given timeout value.
+    /// Default is `BoomingSetup.timeoutIntervalForRequest` value.
+    var timeoutIntervalForRequest: Double { get }
+    
+    /// Allow the session to set cookies on requests. Default is `BoomingSetup.HTTPShouldSetCookies` value.
     var httpShouldHandleCookies: Bool { get }
+    
+    /// Allow the use of HTTP pipelining. Default is `BoomingSetup.HTTPShouldUsePipelining` value.
+    var httpShouldUsePipelining: Bool { get }
+    
+    /// Mapped to json, Default is `BoomingSetup.mapped2JSON` value.
+    var mapped2JSON: Bool { get }
     
     /// A responsible for returning an `EndpointSampleResponse`.
     var sampleResponse: Moya.EndpointSampleResponse { get }
-    
-    /// Mapped to json, Default is true.
-    var mapped2JSON: Bool { get }
     
     /// Remove all HUDs displayed to `LevelStatusBarWindowController`.
     func removeHUD()

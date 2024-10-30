@@ -37,8 +37,20 @@ extension NetworkAPI {
         return MD5.init().hex_md5(string)
     }
     
+    public var requestCachePolicy: NSURLRequest.CachePolicy {
+        return BoomingSetup.requestCachePolicy
+    }
+    
+    public var timeoutIntervalForRequest: TimeInterval {
+        return BoomingSetup.timeoutIntervalForRequest
+    }
+    
     public var httpShouldHandleCookies: Bool {
-        return true
+        return BoomingSetup.HTTPShouldSetCookies
+    }
+    
+    public var httpShouldUsePipelining: Bool {
+        return BoomingSetup.HTTPShouldUsePipelining
     }
     
     public var sampleResponse: Moya.EndpointSampleResponse {

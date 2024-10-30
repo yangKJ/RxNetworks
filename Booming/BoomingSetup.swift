@@ -27,8 +27,30 @@ public struct BoomingSetup {
     /// However, you can inject this kind of global unified general plugin, such as secret key plugin, certificate plugin, etc.
     public static var basePlugins: [PluginSubType]?
     
+    /// The network cache policy for the request.
+    public static var requestCachePolicy: NSURLRequest.CachePolicy = .reloadIgnoringCacheData
+    /// This will cause a timeout if no data is transmitted for the given timeout value, the default is 30 seconds.
+    public static var timeoutIntervalForRequest: Double = 30
+    /// Allow the use of HTTP pipelining.
+    public static var HTTPShouldUsePipelining: Bool = true
+    /// Allow the session to set cookies on requests.
+    public static var HTTPShouldSetCookies: Bool = true
+    
+    /// Whether to support background URLSessionConfigurations with Alamofire.
+    public static var supportBackgroundRequest: Bool = false
+    /// Determines whether this instance will automatically start all requests.
+    /// If set to `false`, all requests created must have `.resume()` called. on them for them to start.
+    public static var startRequestsImmediately: Bool = false
+    
     /// You only need to unify the unauthorized status of 401.
     public static var tokenInvalidCode: Int = 401
+    /// When the network failed, ignored the error codes will don't display.
+    public static var ignoreErrorCodes: [Int] = []
+    
+    /// Maps data received from the signal into a JSON object, when the data is empty mapping should fail.
+    public static var failsOnEmptyData: Bool = true
+    /// Mapped to json, Default is true.
+    public static var mapped2JSON: Bool = true
     
     /// Loading animation JSON, for `AnimatedLoadingPlugin` used.
     public static var animatedJSON: String?
@@ -36,19 +58,6 @@ public struct BoomingSetup {
     public static var loadingPluginNames: [String] = ["Loading", "AnimatedLoading"]
     /// Auto close all loading after the end of the last network requesting.
     public static var lastCompleteAndCloseLoadingHUDs: Bool = true
-    
-    /// Maps data received from the signal into a JSON object, when the data is empty mapping should fail.
-    public static var failsOnEmptyData: Bool = true
-    /// Mapped to json, Default is true.
-    public static var mapped2JSON: Bool = true
-    
-    /// Set the request timeout, the default is 30 seconds.
-    public static var timeoutIntervalForRequest: Double = 30
-    /// Whether to support background URLSessionConfigurations with Alamofire.
-    public static var supportBackgroundRequest: Bool = false
-    /// Determines whether this instance will automatically start all requests.
-    /// If set to `false`, all requests created must have `.resume()` called. on them for them to start.
-    public static var startRequestsImmediately: Bool = false
     
     /// Whether to add the Indicator plugin by default.
     public static var addIndicator: Bool = false

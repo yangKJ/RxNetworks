@@ -22,11 +22,11 @@ public final class OutputResult {
     /// 是否自动上次网络请求
     public var againRequest: Bool = false
     
-    private let mapped2JSON: Bool
+    private let needMapJson: Bool
     
-    public init(result: APIResponseResult, mapped2JSON: Bool) {
+    public init(result: APIResponseResult, needMapJson: Bool) {
         self.result = result
-        self.mapped2JSON = mapped2JSON
+        self.needMapJson = needMapJson
     }
 }
 
@@ -57,7 +57,7 @@ extension OutputResult {
         switch result {
         case let .success(response):
             do {
-                if mustMapedToJSON(compulsion: mapped2JSON) {
+                if mustMapedToJSON(mapped2JSON) {
                     let json = try response.bpm.toJSON()
                     if setToMappedResult {
                         self.mappedResult = .success(json)
@@ -79,7 +79,7 @@ extension OutputResult {
         }
     }
     
-    private func mustMapedToJSON(compulsion: Bool) -> Bool {
-        return compulsion || mapped2JSON
+    private func mustMapedToJSON(_ mapped2JSON: Bool) -> Bool {
+        return mapped2JSON || needMapJson
     }
 }

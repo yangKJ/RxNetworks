@@ -76,7 +76,7 @@ extension NetworkAPI {
         
         let headstreamRequest = self.setupHeadstreamRequest(plugins: pls)
         if headstreamRequest.endRequest, let result = headstreamRequest.result {
-            let outputResult = OutputResult(result: result, mapped2JSON: mapped2JSON)
+            let outputResult = OutputResult(result: result, needMapJson: mapped2JSON)
             outputResult.mapResult(success: { json in
                 Shared.shared.removeRequestingAPI(key)
                 var response = outputResult.response
@@ -110,8 +110,8 @@ extension NetworkAPI {
         
         // 共享网络插件处理
         if X.hasNetworkSharedPlugin(pls) {
+            Shared.shared.cacheBlocks(key: key, successed: successed, failed: failed)
             if let task = Shared.shared.readTask(key: key) {
-                Shared.shared.cacheBlocks(key: key, successed: successed, failed: failed)
                 return task
             }
             let task = self.request(provider, key: key, output: { outputResult in
@@ -130,7 +130,6 @@ extension NetworkAPI {
                 })
             }, progress: progress)
             Shared.shared.cacheTask(key: key, task: task)
-            Shared.shared.cacheBlocks(key: key, successed: successed, failed: failed)
             return task
         }
         
@@ -179,8 +178,10 @@ extension NetworkAPI {
         return { (endpoint, closure) in
             do {
                 var request = try endpoint.urlRequest()
+                request.cachePolicy = self.requestCachePolicy
+                request.timeoutInterval = self.timeoutIntervalForRequest
                 request.httpShouldHandleCookies = self.httpShouldHandleCookies
-                request.timeoutInterval = BoomingSetup.timeoutIntervalForRequest
+                request.httpShouldUsePipelining = self.httpShouldUsePipelining
                 closure(.success(request))
             } catch MoyaError.requestMapping(let url) {
                 closure(.failure(MoyaError.requestMapping(url)))
@@ -230,7 +231,7 @@ extension NetworkAPI {
     /// 最后的输出结果，插件配置处理
     private func setupOutputResult(provider: MoyaProvider<MultiTarget>, result: APIResponseResult, onNext: @escaping OutputResultBlock) {
         let plugins = provider.plugins.compactMap { $0 as? PluginSubType }
-        var outputResult = OutputResult.init(result: result, mapped2JSON: mapped2JSON)
+        var outputResult = OutputResult.init(result: result, needMapJson: mapped2JSON)
         let target = MultiTarget.target(self)
         var iterator = plugins.makeIterator()
         func output(_ plugin: PluginSubType?) {

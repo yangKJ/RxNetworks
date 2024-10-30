@@ -119,7 +119,7 @@ extension NetworkDebuggingPlugin: PluginSubType {
     public func configuration(_ request: HeadstreamRequest, target: TargetType) -> HeadstreamRequest {
         #if DEBUG
         if let result = request.result {
-            let lastResult = OutputResult(result: result, mapped2JSON: false)
+            let lastResult = OutputResult(result: result, needMapJson: false)
             ansysisResult(lastResult, target: target, local: true)
         }
         #endif
