@@ -69,13 +69,6 @@ extension PluginSubType {
     }
     
     public func outputResult(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
-        lastNever(result, target: target, onNext: onNext)
-    }
-}
-
-extension PluginSubType {
-    @available(*, deprecated, message: "Typo. Use `outputResult:target:onNext` instead")
-    public func lastNever(_ result: OutputResult, target: TargetType, onNext: @escaping OutputResultBlock) {
         onNext(result)
     }
 }

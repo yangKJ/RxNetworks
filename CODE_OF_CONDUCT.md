@@ -12,7 +12,7 @@ This module is based on the Moya encapsulated network API architecture.
         - **updateBaseParametersWithValue**: Update default base parameter value.
     - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Booming/PluginSubType.swift): Inherit and replace the Moya plug-in protocol to facilitate subsequent expansion.
          - **configuration**: After setting the network configuration information, this method can be used in scenarios such as throwing data directly when the local cache exists without executing subsequent network requests.
-         - **lastNever**: When the last network response is returned, this method can be used in scenarios such as key failure to re-obtain the key and then automatically re-request the network.
+         - **outputResult**: When the last network response is returned, this method can be used in scenarios such as key failure to re-obtain the key and then automatically re-request the network.
     - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Booming/NetworkAPI.swift): Add protocol attributes and encapsulate basic network requests based on TargetType.
         - **ip**: Root path address to base URL.
         - **parameters**: Request parameters.

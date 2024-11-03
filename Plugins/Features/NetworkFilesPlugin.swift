@@ -141,8 +141,7 @@ extension NetworkFilesPlugin {
             return Moya.Task.uploadCompositeMultipart(datas, urlParameters: parameters)
         case .downloadAsset:
             let fileName = "Booming-" + UUID().uuidString
-            var localLocation = Self.DownloadAssetDir.appendingPathComponent(fileName)
-            localLocation = localLocation.appendingPathExtension(baseURL.pathExtension)
+            let localLocation = NetworkFilesPlugin.DownloadAssetDir.appendingPathComponent(fileName).appendingPathExtension(baseURL.pathExtension)
             self.downloadAssetURL = localLocation
             let destination: Moya.DownloadDestination = { _, _ in
                 // `createIntermediateDirectories` will create directories in file path
