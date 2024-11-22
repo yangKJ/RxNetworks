@@ -216,7 +216,7 @@ open class LevelStatusBarWindowController: ViewControllerType {
     
     @objc private func dismissTemporarily() {
         self.showUpView?.close(animated: true, animation: { [weak self] in
-            self?.overlay.alpha = 0
+            self?.setupOverlayHidden(hide: true)
         }, completion: { _ in
             LevelStatusBarWindowController.window.isHidden = true
         })
@@ -229,9 +229,10 @@ open class LevelStatusBarWindowController: ViewControllerType {
         }
         shouldRestoreDisplay = false
         LevelStatusBarWindowController.window.isHidden = false
-        self.overlay.alpha = 0
+        self.setupOverlayHidden(hide: true)
         self.showUpView?.show(animated: true, animation: { [weak self] in
-            self?.overlay.alpha = 0.5
+            self?.setupOverlayHidden(hide: false)
+            self?.overlay.backgroundColor = self?.overlayBackgroundColor
         }, completion: nil)
     }
     
