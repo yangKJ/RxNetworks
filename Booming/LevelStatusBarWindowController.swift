@@ -28,7 +28,7 @@ open class LevelStatusBarWindowController: ViewControllerType {
     private static var controllers = [LevelStatusBarWindowController]()
     
     private var isCalledClose = false
-    private var canNotBeCanceled = false
+    private var shouldRestoreDisplay = false
     
     #if os(macOS)
     private let windowController = NSWindowController()
@@ -78,6 +78,8 @@ open class LevelStatusBarWindowController: ViewControllerType {
     
     public var key: String?
     
+    public var canNotBeCanceled = false
+    
     public var showUpView: LevelStatusBarWindowShowUpable?
     
     /// The outside world has added `showUpView` to the controller.
@@ -92,6 +94,10 @@ open class LevelStatusBarWindowController: ViewControllerType {
     private var overlayTapCloseBlock: ((LevelStatusBarWindowController) -> Void)?
     public func setOverlayTapCloseBlock(block: @escaping (LevelStatusBarWindowController) -> Void) {
         self.overlayTapCloseBlock = block
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     open override func viewDidLoad() {
@@ -111,6 +117,8 @@ open class LevelStatusBarWindowController: ViewControllerType {
             self.view.addSubview(containerView)
         }
         self.showUpView?.makeOpenedStatusConstraint(superview: self.view)
+        NotificationCenter.default.addObserver(self, selector: #selector(restoreDisplay), name: Notify.LevelStatusBarWindow.restoreDisplay, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissTemporarily), name: Notify.LevelStatusBarWindow.temporarilyHide, object: nil)
     }
     
     public func show(completion: ((Bool) -> Void)? = nil) {
@@ -204,6 +212,27 @@ open class LevelStatusBarWindowController: ViewControllerType {
             close()
             overlayTapCloseBlock?(self)
         }
+    }
+    
+    @objc private func dismissTemporarily() {
+        self.showUpView?.close(animated: true, animation: { [weak self] in
+            self?.overlay.alpha = 0
+        }, completion: { _ in
+            LevelStatusBarWindowController.window.isHidden = true
+        })
+        shouldRestoreDisplay = true
+    }
+    
+    @objc private func restoreDisplay() {
+        if !shouldRestoreDisplay {
+            return
+        }
+        shouldRestoreDisplay = false
+        LevelStatusBarWindowController.window.isHidden = false
+        self.overlay.alpha = 0
+        self.showUpView?.show(animated: true, animation: { [weak self] in
+            self?.overlay.alpha = 0.5
+        }, completion: nil)
     }
     
     private func setupOverlayHidden(hide: Bool) {
